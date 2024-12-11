@@ -8,10 +8,6 @@
 
 import Foundation
 
-#if canImport(FoundationNetworking)
-    import FoundationNetworking
-#endif
-
 /// Signature used by [Image.frameBuilder] to control the widget that will be
 /// used when an [Image] is built.
 ///

@@ -8,6 +8,11 @@
 
 import Foundation
 
+/// For non-Apple platforms
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
+
 /// Configuration information passed to the [ImageProvider.resolve] method to
 /// select a specific image.
 public struct ImageConfiguration: Equatable {
