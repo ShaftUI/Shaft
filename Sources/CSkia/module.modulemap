@@ -1,0 +1,9 @@
+module CSkia {
+    header "utils.h"
+    link "skia"
+    link "skshaper"
+    link "skparagraph"
+    link "skunicode_core"
+    link "skunicode_icu"
+    export *
+}

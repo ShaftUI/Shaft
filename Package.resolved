@@ -1,0 +1,77 @@
+{
+  "pins" : [
+    {
+      "identity" : "csprogress",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gregcotten/CSProgress",
+      "state" : {
+        "revision" : "b831bb234a8a2af02ccc04d6e91a62f7dabb7de4",
+        "version" : "0.0.1"
+      }
+    },
+    {
+      "identity" : "rainbow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Rainbow",
+      "state" : {
+        "revision" : "e0dada9cd44e3fa7ec3b867e49a8ddbf543e3df3",
+        "version" : "4.0.1"
+      }
+    },
+    {
+      "identity" : "splash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShaftUI/Splash",
+      "state" : {
+        "branch" : "master",
+        "revision" : "ed08785980b61de9b98306434410ce7fc10572ea"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "d029d9d39c87bed85b1c50adee7c41795261a192",
+        "version" : "1.0.6"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system",
+      "state" : {
+        "revision" : "c8a44d836fe7913603e246acab7c528c2e780168",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "swiftmath",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShaftUI/SwiftMath",
+      "state" : {
+        "revision" : "034d9010448694872655731129a7599bb27d5b01",
+        "version" : "3.3.2"
+      }
+    },
+    {
+      "identity" : "swiftsdl3",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShaftUI/SwiftSDL3",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a56a797f584de4e4cf3470f2e2dbf2e7fba6edf0"
+      }
+    },
+    {
+      "identity" : "zipfoundationmodern",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gregcotten/ZIPFoundationModern",
+      "state" : {
+        "revision" : "97755f1b1217dc2aa1ca9219630c1ba450519313",
+        "version" : "0.0.3"
+      }
+    }
+  ],
+  "version" : 2
+}
