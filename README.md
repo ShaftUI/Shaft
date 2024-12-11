@@ -1,7 +1,35 @@
 ![ShaftDemo](/docs/demo.png)
 
+<p>
+    <a href="https://github.com/ShaftUI/Shaft/actions/workflows/swift.yml">
+      <img alt="Actions" src="https://github.com/ShaftUI/Shaft/actions/workflows/swift.yml/badge.svg">
+    </a>
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ShaftUI/Shaft">
+    <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/ShaftUI/Shaft">
+    <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/ShaftUI/Shaft">
+</p>
+
+
+Shaft is a cross-platform UI framework designed for high-performance applications with a focus on simplicity and customizability.
+
+## Requirements
+
+- **MacOS**: 
+  Shaft requires [Xcode](https://developer.apple.com/xcode/) to be installed. After installing Xcode, if you encounter errors like `xcrun: error: unable to lookup item...`, try update your command line tools following [these instructions](https://stackoverflow.com/a/43418980).
+
+- **Linux**:
+    1. Install Swift from the [official guide](https://www.swift.org/install/linux/#platforms)
+    2. Install SDL backend dependencies from the [official documentation](https://wiki.libsdl.org/SDL3/README/linux). For Ubuntu 24.04, run:
+    ```sh
+    sudo apt install ninja-build pkg-config libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev libusb-1.0-0-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev libunwind-dev libpipewire-0.3-dev libdecor-0-dev libfontconfig-dev
+    ```
+
+- **Windows**: Install Swift following the [official guide](https://www.swift.org/install/windows/) shoube be enough. However, the stable release of Swift for Windows have a few issues that may prevent Shaft from running. It's **highly recommended** to use development snapshots instead. You can find the latest snapshot [here](https://www.swift.org/install/windows/#development-snapshots).
+
 ## Get Stared
-```
+```sh
+git clone https://github.com/ShaftUI/Shaft.git
+
 swift package plugin setup-skia
 
 swift run Playground
@@ -63,4 +91,4 @@ class CounterView: StatelessWidget {
 - **ShaftKit**: The built-in customizable widget toolkit that provides high-level widgets for rapid application development.
 - **ShaftApp**: The application that developer writes. 
 
-More documentation can be found in the [Playground]() app.
+More documentation can be found in the [Playground](/Sources/Playground/main.swift) app.
