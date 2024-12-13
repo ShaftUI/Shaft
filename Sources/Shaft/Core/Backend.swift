@@ -65,6 +65,18 @@ public protocol NativeView: AnyObject {
     var title: String { get set }
 }
 
+#if canImport(AppKit)
+    import AppKit
+
+    public protocol MacOSView: NativeView {
+        var nsWindow: NSWindow? { get }
+    }
+#else
+
+    public protocol MacOSView: NativeView {}
+
+#endif
+
 /// A protocol that represents a native mouse cursor. Can be used to set the
 /// cursor appearance when the mouse pointer is over a view.
 ///

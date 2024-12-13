@@ -185,3 +185,22 @@ private func sdlEventWatcher(
     let view = Unmanaged<SDLView>.fromOpaque(userdata!).takeUnretainedValue()
     return view.handleEventSync(&event!.pointee)
 }
+
+#if canImport(AppKit)
+    import AppKit
+
+    extension SDLView: MacOSView {
+        public var nsWindow: NSWindow? {
+            let ptr = SDL_GetPointerProperty(
+                SDL_GetWindowProperties(sdlWindow),
+                SDL_PROP_WINDOW_COCOA_WINDOW_POINTER,
+                nil
+            )
+            guard let ptr else {
+                return nil
+            }
+            return Unmanaged<NSWindow>.fromOpaque(ptr).takeUnretainedValue()
+        }
+    }
+
+#endif

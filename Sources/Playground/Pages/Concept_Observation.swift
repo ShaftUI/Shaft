@@ -262,16 +262,6 @@ class CounterView: StatelessWidget {
 
 @Observable
 class ShoppingList {
-    var items: [Entry] = [
-        Entry(name: "Milk", quantity: 1),
-        Entry(name: "Eggs", quantity: 12),
-        Entry(name: "Bread", quantity: 2),
-    ]
-
-    var total: Int {
-        items.reduce(0) { $0 + $1.quantity }
-    }
-
     @Observable
     class Entry {
         init(name: String, quantity: Int) {
@@ -281,6 +271,16 @@ class ShoppingList {
 
         var name: String
         var quantity: Int
+    }
+
+    var items = [
+        Entry(name: "Milk", quantity: 1),
+        Entry(name: "Eggs", quantity: 12),
+        Entry(name: "Bread", quantity: 2),
+    ]
+
+    var total: Int {
+        items.reduce(0) { $0 + $1.quantity }
     }
 }
 
