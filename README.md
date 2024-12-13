@@ -30,6 +30,8 @@ Shaft is a cross-platform UI framework designed for high-performance application
 ```sh
 git clone https://github.com/ShaftUI/Shaft.git
 
+cd Shaft
+
 swift package plugin setup-skia
 
 swift run Playground
