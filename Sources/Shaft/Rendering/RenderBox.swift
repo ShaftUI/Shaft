@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -19,8 +19,8 @@ public class BoxParentData: ParentData {
 /// This is a convenience class that mixes in the relevant classes with
 /// the relevant type arguments.
 public class ContainerBoxParentData<ChildType: RenderBox>: BoxParentData, ContainerParentData {
-    public var nextSibling: ChildType?
-    public var previousSibling: ChildType?
+    public weak var nextSibling: ChildType?
+    public weak var previousSibling: ChildType?
 }
 
 /// Immutable layout constraints for [RenderBox] layout.
@@ -464,7 +464,6 @@ open class RenderBox: RenderObject {
         size = computeDryLayout(boxConstraint)
         assert(size.isFinite)
     }
-
 
     open override func performLayout() {
         assert(sizedByParent, "\(self) did not implement performLayout()")

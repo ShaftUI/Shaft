@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -1179,7 +1179,7 @@ private struct TextLayout {
     // Computing plainText is a bit expensive and is currently not needed for
     // simple static text. Pass in the entire text painter so `TextPainter.plainText`
     // is only called when needed.
-    let painter: TextPainter
+    unowned let painter: TextPainter
 
     // This field is not final because the owner TextPainter could create a new
     // ui.Paragraph with the exact same text layout (for example, when only the

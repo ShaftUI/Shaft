@@ -137,7 +137,9 @@ open class ScrollController: ChangeNotifier {
     public func attach(_ position: ScrollPosition) {
         assert(!positions.contains(object: position))
         positions.append(position)
-        position.addListener(self, callback: notifyListeners)
+        position.addListener(self) { [weak self] in
+            self?.notifyListeners()
+        }
         if let onAttach {
             onAttach(position)
         }

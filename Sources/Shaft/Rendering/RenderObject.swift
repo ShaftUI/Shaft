@@ -499,7 +499,7 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
     }
 
     /// The parent of this node in the render tree.
-    public private(set) var parent: RenderObject?
+    public private(set) weak var parent: RenderObject?
 
     /// Called by subclasses when they decide a render object is a child.
     ///

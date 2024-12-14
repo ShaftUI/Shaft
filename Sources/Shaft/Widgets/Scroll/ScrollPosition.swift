@@ -43,7 +43,7 @@ public class ScrollPosition: ChangeNotifier, ViewportOffset, ScrollMetrics {
     /// Where the scrolling is taking place.
     ///
     /// Typically implemented by [ScrollableState].
-    public let context: ScrollContext
+    public unowned let context: ScrollContext
 
     /// Save the current scroll offset with [PageStorage] and restore it if
     /// this scroll position's scrollable is recreated.

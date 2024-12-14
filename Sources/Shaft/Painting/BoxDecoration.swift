@@ -280,5 +280,4 @@ private class BoxDecorationPainter: BoxPainter {
             borderRadius: decoration.borderRadius?.resolve(textDirection)
         )
     }
-
 }
