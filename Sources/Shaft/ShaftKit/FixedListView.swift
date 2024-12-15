@@ -55,10 +55,6 @@ public final class FixedListView: StatefulWidget {
 private class FixedListViewState: State<FixedListView>,
     FixedListViewStyleContext
 {
-    required init() {
-        super.init()
-    }
-
     public var children: [Widget] {
         widget.children
     }

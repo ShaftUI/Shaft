@@ -9,6 +9,8 @@
 /// [AnimationController]) for the lifetime of your [State], then using a
 /// [SingleTickerProviderStateMixin] is more efficient. This is the common case.
 public class TickerProviderStateMixin: TickerProvider, StateMixin {
+    public required init() {}
+
     public func initState() {}
 
     public func didUpdateWidget(_ oldWidget: any Widget) {}

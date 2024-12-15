@@ -1198,12 +1198,12 @@ public final class EditableText: StatefulWidget {
 }
 
 public final class EditableTextState: State<EditableText>, TextSelectionDelegate, TextInputClient {
+    public required init() {
+        super.init()
+        registerMixin(tickerProvider)
+    }
 
     private var tickerProvider = TickerProviderStateMixin()
-
-    public override var mixins: [StateMixin] {
-        [tickerProvider]
-    }
 
     public func onTextEditing(delta: any TextEditingDelta) {
         // This method handles text editing state updates from the platform text

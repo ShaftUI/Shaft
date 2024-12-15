@@ -17,14 +17,10 @@ public protocol Listenable: AnyObject {
     func removeListener(_ listener: AnyObject)
 }
 
-public protocol ValueListenable<Value>: AnyObject {
+public protocol ValueListenable<Value>: Listenable {
     associatedtype Value
 
     var value: Value { get }
-
-    func addListener(_ observer: AnyObject, callback: @escaping () -> Void)
-
-    func removeListener(_ observer: AnyObject)
 }
 
 @Observable

@@ -614,7 +614,11 @@ open class State<WidgetType: StatefulWidget>: StateProtocol {
 
     // MARK: - Lifecycle
 
-    open var mixins: [StateMixin] { [] }
+    private var mixins = [StateMixin]()
+
+    public func registerMixin(_ mixin: StateMixin) {
+        mixins.append(mixin)
+    }
 
     /// Called when this object is inserted into the tree.
     ///
@@ -764,6 +768,8 @@ open class State<WidgetType: StatefulWidget>: StateProtocol {
 /// A mixin can listen to the lifecycle of a [State] object to provide
 /// additional functionality.
 public protocol StateMixin {
+    init()
+
     /// Lifecycle method called when the [State] object is created.
     func initState()
 
