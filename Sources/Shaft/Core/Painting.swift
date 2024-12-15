@@ -584,6 +584,15 @@ public struct Color: Hashable {
         )
     }
 
+    public static func random(solid: Bool = false) -> Color {
+        Color.argb(
+            solid ? 255 : .random(in: 0...255),
+            .random(in: 0...255),
+            .random(in: 0...255),
+            .random(in: 0...255)
+        )
+    }
+
     /// A 32 bit value representing this color.
     ///
     /// * Bits 24-31 are the alpha value.
