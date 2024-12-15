@@ -1453,6 +1453,24 @@ public class Positioned: ParentDataWidget {
         self.child = child()
     }
 
+    /// Creates a Positioned object with the values from the given size and offset.
+    public init(size: Size, offset: Offset, @WidgetBuilder child: () -> Widget) {
+        self.left = offset.dx
+        self.top = offset.dy
+        self.width = size.width
+        self.height = size.height
+        self.child = child()
+    }
+
+    /// Creates a Positioned object with the values from the given [Rect].
+    public init(rect: Rect, @WidgetBuilder child: () -> Widget) {
+        self.left = rect.left
+        self.top = rect.top
+        self.width = rect.width
+        self.height = rect.height
+        self.child = child()
+    }
+
     public var child: Widget
 
     /// The distance that the child's left edge is inset from the left of the stack.
