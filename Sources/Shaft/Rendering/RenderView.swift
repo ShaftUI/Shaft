@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -132,12 +132,6 @@ public class RenderView: RenderObject, RenderObjectWithSingleChild {
         layer = rootLayer
         assert(needsPaint)
         owner!.nodesNeedingPaint.append(self)
-    }
-
-    override var layer: Layer? {
-        didSet {
-            mark("root layer set")
-        }
     }
 
     func replaceRootLayer(_ newLayer: OffsetLayer) {
