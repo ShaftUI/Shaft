@@ -12,6 +12,8 @@
 
 Shaft is a cross-platform UI framework designed for high-performance applications with a focus on simplicity and customizability.
 
+**New**✨: A blog post introducing Shaft in details has been posted [here](https://medium.com/@xty/shaft-a-new-cross-platform-ui-framework-for-demanding-workloads-and-developer-ergonomics-9bc1ea2fba35?source=friends_link&sk=44f7e7f79743628d2771c7b9d51d3f0f).
+
 ## Requirements
 
 - **MacOS**: 
