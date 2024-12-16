@@ -285,6 +285,95 @@ public class BoxHitTestResult: HitTestResult {
         }
         return isHit
     }
+
+    /// Transforms `position` to the local coordinate system of a child for
+    /// hit-testing the child.
+    ///
+    /// The actual hit testing of the child needs to be implemented in the
+    /// provided `hitTest` callback, which is invoked with the transformed
+    /// `position` as argument.
+    ///
+    /// The provided paint `transform` (which describes the transform from the
+    /// child to the parent in 3D) is processed by
+    /// [PointerEvent.removePerspectiveTransform] to remove the
+    /// perspective component and inverted before it is used to transform
+    /// `position` from the coordinate system of the parent to the system of the
+    /// child.
+    ///
+    /// If `transform` is null it will be treated as the identity transform and
+    /// `position` is provided to the `hitTest` callback as-is. If `transform`
+    /// cannot be inverted, the `hitTest` callback is not invoked and false is
+    /// returned. Otherwise, the return value of the `hitTest` callback is
+    /// returned.
+    ///
+    /// The `position` argument may be null, which will be forwarded to the
+    /// `hitTest` callback as-is. Using null as the position can be useful if
+    /// the child speaks a different hit test protocol than the parent and the
+    /// position is not required to do the actual hit testing in that protocol.
+    ///
+    /// The function returns the return value of the `hitTest` callback.
+    ///
+    /// See also:
+    ///
+    ///  * [addWithPaintOffset], which can be used for `transform`s that are just
+    ///    simple matrix translations by an [Offset].
+    ///  * [addWithRawTransform], which takes a transform matrix that is directly
+    ///    used to transform the position without any pre-processing.
+    public func addWithPaintTransform(
+        transform: Matrix4x4f?,
+        position: Offset,
+        hitTest: BoxHitTest
+    ) -> Bool {
+        var transform = transform
+        if transform != nil {
+            transform = transform!.removePerspectiveTransform().inversed
+            if transform == nil {
+                // Objects are not visible on screen and cannot be hit-tested.
+                return false
+            }
+        }
+        return addWithRawTransform(
+            transform: transform,
+            position: position,
+            hitTest: hitTest
+        )
+    }
+
+    /// Transforms `position` to the local coordinate system of a child for
+    /// hit-testing the child.
+    ///
+    /// The actual hit testing of the child needs to be implemented in the
+    /// provided `hitTest` callback, which is invoked with the transformed
+    /// `position` as argument.
+    ///
+    /// Unlike [addWithPaintTransform], the provided `transform` matrix is used
+    /// directly to transform `position` without any pre-processing.
+    ///
+    /// If `transform` is null it will be treated as the identity transform ad
+    /// `position` is provided to the `hitTest` callback as-is.
+    ///
+    /// The function returns the return value of the `hitTest` callback.
+    ///
+    /// See also:
+    ///
+    ///  * [addWithPaintTransform], which accomplishes the same thing, but takes a
+    ///    _paint_ transform matrix.
+    public func addWithRawTransform(
+        transform: Matrix4x4f?,
+        position: Offset,
+        hitTest: BoxHitTest
+    ) -> Bool {
+        let transformedPosition =
+            transform == nil ? position : MatrixUtils.transformPoint(transform!, position)
+        if transform != nil {
+            pushTransform(transform!)
+        }
+        let isHit = hitTest(self, transformedPosition)
+        if transform != nil {
+            popTransform()
+        }
+        return isHit
+    }
 }
 
 private enum IntrinsicDimension {

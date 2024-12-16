@@ -288,6 +288,51 @@ public class PaintingContext: ClipContext {
         }
     }
 
+    /// Transform further painting using a matrix.
+    ///
+    /// The `offset` argument is the offset to pass to `painter` and the offset to
+    /// the origin used by `transform`.
+    ///
+    /// The `transform` argument is the [Matrix4] with which to transform the
+    /// coordinate system while calling `painter`. It should not include `offset`.
+    /// It is applied effectively after applying `offset`.
+    ///
+    /// The `painter` callback will be called while the `transform` is applied. It
+    /// is called synchronously during the call to [pushTransform].
+    public func pushTransform(
+        needsCompositing: Bool,
+        offset: Offset,
+        transform: Matrix4x4f,
+        painter: (PaintingContext, Offset) -> Void,
+        oldLayer: TransformLayer? = nil
+    ) -> TransformLayer? {
+
+        var effectiveTransform =
+            Matrix4x4f.translate(tx: offset.dx, ty: offset.dy, tz: 0.0) * transform
+        effectiveTransform.translate(-offset.dx, -offset.dy, 0.0)
+
+        if needsCompositing {
+            let layer = oldLayer ?? TransformLayer()
+            layer.transform = effectiveTransform
+
+            pushLayer(
+                layer,
+                painter,
+                offset,
+                childPaintBounds: MatrixUtils.inverseTransformRect(
+                    effectiveTransform,
+                    estimatedBounds
+                )
+            )
+            return layer
+        } else {
+            canvas.save()
+            canvas.transform(effectiveTransform)
+            painter(self, offset)
+            canvas.restore()
+            return nil
+        }
+    }
 }
 
 /// The pipeline owner manages the rendering pipeline.

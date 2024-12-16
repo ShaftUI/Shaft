@@ -518,3 +518,232 @@ struct MatrixUtils {
     //     ..setRow(1, Vector4(0, 0, 0, offset.dy));
     // }
 }
+
+extension Matrix4x4f {
+
+    /// Zeros this.
+    public mutating func setZero() {
+        self[0, 0] = 0.0
+        self[0, 1] = 0.0
+        self[0, 2] = 0.0
+        self[0, 3] = 0.0
+        self[1, 0] = 0.0
+        self[1, 1] = 0.0
+        self[1, 2] = 0.0
+        self[1, 3] = 0.0
+        self[2, 0] = 0.0
+        self[2, 1] = 0.0
+        self[2, 2] = 0.0
+        self[2, 3] = 0.0
+        self[3, 0] = 0.0
+        self[3, 1] = 0.0
+        self[3, 2] = 0.0
+        self[3, 3] = 0.0
+    }
+
+    /// Rotate this [angle] radians around X
+    public mutating func rotateX(_ angle: Angle) {
+        let (sin:sinAngle, cos:cosAngle) = sincos(angle)
+
+        let t1 = self[1, 0] * cosAngle + self[2, 0] * sinAngle
+        let t2 = self[1, 1] * cosAngle + self[2, 1] * sinAngle
+        let t3 = self[1, 2] * cosAngle + self[2, 2] * sinAngle
+        let t4 = self[1, 3] * cosAngle + self[2, 3] * sinAngle
+        let t5 = self[1, 0] * -sinAngle + self[2, 0] * cosAngle
+        let t6 = self[1, 1] * -sinAngle + self[2, 1] * cosAngle
+        let t7 = self[1, 2] * -sinAngle + self[2, 2] * cosAngle
+        let t8 = self[1, 3] * -sinAngle + self[2, 3] * cosAngle
+        self[1, 0] = t1
+        self[1, 1] = t2
+        self[1, 2] = t3
+        self[1, 3] = t4
+        self[2, 0] = t5
+        self[2, 1] = t6
+        self[2, 2] = t7
+        self[2, 3] = t8
+    }
+
+    /// Rotate this matrix [angle] radians around Y
+    public mutating func rotateY(_ angle: Angle) {
+        let (sin:sinAngle, cos:cosAngle) = sincos(angle)
+
+        let t1 = self[0, 0] * cosAngle + self[2, 0] * -sinAngle
+        let t2 = self[0, 1] * cosAngle + self[2, 1] * -sinAngle
+        let t3 = self[0, 2] * cosAngle + self[2, 2] * -sinAngle
+        let t4 = self[0, 3] * cosAngle + self[2, 3] * -sinAngle
+        let t5 = self[0, 0] * sinAngle + self[2, 0] * cosAngle
+        let t6 = self[0, 1] * sinAngle + self[2, 1] * cosAngle
+        let t7 = self[0, 2] * sinAngle + self[2, 2] * cosAngle
+        let t8 = self[0, 3] * sinAngle + self[2, 3] * cosAngle
+        self[0, 0] = t1
+        self[0, 1] = t2
+        self[0, 2] = t3
+        self[0, 3] = t4
+        self[2, 0] = t5
+        self[2, 1] = t6
+        self[2, 2] = t7
+        self[2, 3] = t8
+    }
+
+    /// Rotate this matrix [angle] radians around Z
+    public mutating func rotateZ(_ angle: Angle) {
+        let (sin:sinAngle, cos:cosAngle) = sincos(angle)
+
+        let t1 = self[0, 0] * cosAngle + self[1, 0] * sinAngle
+        let t2 = self[0, 1] * cosAngle + self[1, 1] * sinAngle
+        let t3 = self[0, 2] * cosAngle + self[1, 2] * sinAngle
+        let t4 = self[0, 3] * cosAngle + self[1, 3] * sinAngle
+        let t5 = self[0, 0] * -sinAngle + self[1, 0] * cosAngle
+        let t6 = self[0, 1] * -sinAngle + self[1, 1] * cosAngle
+        let t7 = self[0, 2] * -sinAngle + self[1, 2] * cosAngle
+        let t8 = self[0, 3] * -sinAngle + self[1, 3] * cosAngle
+        self[0, 0] = t1
+        self[0, 1] = t2
+        self[0, 2] = t3
+        self[0, 3] = t4
+        self[1, 0] = t5
+        self[1, 1] = t6
+        self[1, 2] = t7
+        self[1, 3] = t8
+    }
+
+    /// Scale this matrix by x,y,z
+    public mutating func scale(_ x: Float, _ y: Float? = nil, _ z: Float? = nil, _ w: Float? = nil)
+    {
+        let sx: Float = x
+        let sy: Float = y ?? x
+        let sz: Float = z ?? x
+        let sw: Float = w ?? 1.0
+
+        self[0, 0] *= sx
+        self[0, 1] *= sx
+        self[0, 2] *= sx
+        self[0, 3] *= sx
+        self[1, 0] *= sy
+        self[1, 1] *= sy
+        self[1, 2] *= sy
+        self[1, 3] *= sy
+        self[2, 0] *= sz
+        self[2, 1] *= sz
+        self[2, 2] *= sz
+        self[2, 3] *= sz
+        self[3, 0] *= sw
+        self[3, 1] *= sw
+        self[3, 2] *= sw
+        self[3, 3] *= sw
+    }
+
+    /// Scale this matrix by a [Vector3]
+    public mutating func scale(_ vector: Vector3f) {
+        scale(vector.x, vector.y, vector.z)
+    }
+
+    /// Scale this matrix by a [Vector4]
+    public mutating func scale(_ vector: Vector4f) {
+        scale(vector.x, vector.y, vector.z, vector.w)
+    }
+
+    /// Rotate this [angle] radians around [axis]
+    public mutating func rotate(_ axis: Vector3f, _ angle: Angle) {
+        let len = axis.length
+        let x = axis.x / len
+        let y = axis.y / len
+        let z = axis.z / len
+        let c = cos(angle)
+        let s = sin(angle)
+        let C = 1.0 - c
+        let m11 = x * x * C + c
+        let m12 = x * y * C - z * s
+        let m13 = x * z * C + y * s
+        let m21 = y * x * C + z * s
+        let m22 = y * y * C + c
+        let m23 = y * z * C - x * s
+        let m31 = z * x * C - y * s
+        let m32 = z * y * C + x * s
+        let m33 = z * z * C + c
+        let t1 = self[0, 0] * m11 + self[1, 0] * m21 + self[2, 0] * m31
+        let t2 = self[0, 1] * m11 + self[1, 1] * m21 + self[2, 1] * m31
+        let t3 = self[0, 2] * m11 + self[1, 2] * m21 + self[2, 2] * m31
+        let t4 = self[0, 3] * m11 + self[1, 3] * m21 + self[2, 3] * m31
+        let t5 = self[0, 0] * m12 + self[1, 0] * m22 + self[2, 0] * m32
+        let t6 = self[0, 1] * m12 + self[1, 1] * m22 + self[2, 1] * m32
+        let t7 = self[0, 2] * m12 + self[1, 2] * m22 + self[2, 2] * m32
+        let t8 = self[0, 3] * m12 + self[1, 3] * m22 + self[2, 3] * m32
+        let t9 = self[0, 0] * m13 + self[1, 0] * m23 + self[2, 0] * m33
+        let t10 = self[0, 1] * m13 + self[1, 1] * m23 + self[2, 1] * m33
+        let t11 = self[0, 2] * m13 + self[1, 2] * m23 + self[2, 2] * m33
+        let t12 = self[0, 3] * m13 + self[1, 3] * m23 + self[2, 3] * m33
+        self[0, 0] = t1
+        self[0, 1] = t2
+        self[0, 2] = t3
+        self[0, 3] = t4
+        self[1, 0] = t5
+        self[1, 1] = t6
+        self[1, 2] = t7
+        self[1, 3] = t8
+        self[2, 0] = t9
+        self[2, 1] = t10
+        self[2, 2] = t11
+        self[2, 3] = t12
+    }
+
+    /// Translate this matrix by x,y,z
+    public mutating func translate(_ x: Float, _ y: Float = 0.0, _ z: Float = 0.0, _ w: Float = 1.0)
+    {
+        let tx = x
+        let ty = y
+        let tz = z
+        let tw = w
+
+        let t1 = self[0, 0] * tx + self[1, 0] * ty + self[2, 0] * tz + self[3, 0] * tw
+        let t2 = self[0, 1] * tx + self[1, 1] * ty + self[2, 1] * tz + self[3, 1] * tw
+        let t3 = self[0, 2] * tx + self[1, 2] * ty + self[2, 2] * tz + self[3, 2] * tw
+        let t4 = self[0, 3] * tx + self[1, 3] * ty + self[2, 3] * tz + self[3, 3] * tw
+        self[3, 0] = t1
+        self[3, 1] = t2
+        self[3, 2] = t3
+        self[3, 3] = t4
+    }
+
+    /// Translate this matrix by a [Vector3]
+    public mutating func translate(_ vector: Vector3f) {
+        translate(vector.x, vector.y, vector.z)
+    }
+
+    /// Translate this matrix by a [Vector4]
+    public mutating func translate(_ vector: Vector4f) {
+        translate(vector.x, vector.y, vector.z, vector.w)
+    }
+
+    /// Removes the "perspective" component from `transform`.
+    ///
+    /// When applying the resulting transform matrix to a point with a
+    /// z-coordinate of zero (which is generally assumed for all points
+    /// represented by an [Offset]), the other coordinates will get transformed as
+    /// before, but the new z-coordinate is going to be zero again. This is
+    /// achieved by setting the third column and third row of the matrix to
+    /// "0, 0, 1, 0".
+    /// Removes the "perspective" component from `transform`.
+    ///
+    /// When applying the resulting transform matrix to a point with a
+    /// z-coordinate of zero (which is generally assumed for all points
+    /// represented by an [Offset]), the other coordinates will get transformed as
+    /// before, but the new z-coordinate is going to be zero again. This is
+    /// achieved by setting the third column and third row of the matrix to
+    /// "0, 0, 1, 0".
+    public func removePerspectiveTransform() -> Matrix4x4f {
+        var result = self
+
+        result[0, 2] = 0.0
+        result[1, 2] = 0.0
+        result[3, 2] = 0.0
+
+        result[2, 0] = 0.0
+        result[2, 1] = 0.0
+        result[2, 3] = 0.0
+
+        result[2, 2] = 1.0
+
+        return result
+    }
+}

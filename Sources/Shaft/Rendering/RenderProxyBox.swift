@@ -271,3 +271,239 @@ public class RenderDecoratedBox: RenderProxyBox {
         super.dispose()
     }
 }
+
+/// Applies a transformation before painting its child.
+public class RenderTransform: RenderProxyBox {
+    /// Creates a render object that transforms its child.
+    public init(
+        transform: Matrix4x4f,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = nil,
+        textDirection: TextDirection? = nil,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil,
+        child: RenderBox? = nil
+    ) {
+        self.transform = transform
+        self.origin = origin
+        self.alignment = alignment
+        self.textDirection = textDirection ?? .ltr
+        self.transformHitTests = transformHitTests
+        self.filterQuality = filterQuality
+        super.init(child: child)
+    }
+
+    /// The origin of the coordinate system (relative to the upper left corner of
+    /// this render object) in which to apply the matrix.
+    ///
+    /// Setting an origin is equivalent to conjugating the transform matrix by a
+    /// translation. This property is provided just for convenience.
+    public var origin: Offset? {
+        didSet {
+            if origin == oldValue {
+                return
+            }
+            markNeedsPaint()
+            // markNeedsSemanticsUpdate()
+        }
+    }
+
+    /// The alignment of the origin, relative to the size of the box.
+    ///
+    /// This is equivalent to setting an origin based on the size of the box.
+    /// If it is specified at the same time as an offset, both are applied.
+    ///
+    /// An [AlignmentDirectional.centerStart] value is the same as an [Alignment]
+    /// whose [Alignment.x] value is `-1.0` if [textDirection] is
+    /// [TextDirection.ltr], and `1.0` if [textDirection] is [TextDirection.rtl].
+    /// Similarly [AlignmentDirectional.centerEnd] is the same as an [Alignment]
+    /// whose [Alignment.x] value is `1.0` if [textDirection] is
+    /// [TextDirection.ltr], and `-1.0` if [textDirection] is [TextDirection.rtl].
+    public var alignment: (any AlignmentGeometry)? {
+        didSet {
+            if alignment == nil && oldValue == nil {
+                return
+            }
+            if let alignment, let oldValue {
+                if alignment.isEqualTo(oldValue) {
+                    return
+                }
+            }
+            markNeedsPaint()
+            // markNeedsSemanticsUpdate()
+        }
+    }
+
+    /// The text direction with which to resolve [alignment].
+    ///
+    /// This may be changed to null, but only after [alignment] has been changed
+    /// to a value that does not depend on the direction.
+    public var textDirection: TextDirection = .ltr {
+        didSet {
+            if textDirection == oldValue {
+                return
+            }
+            markNeedsPaint()
+            // markNeedsSemanticsUpdate()
+        }
+    }
+
+    public override var alwaysNeedsCompositing: Bool {
+        return child != nil && filterQuality != nil
+    }
+
+    /// When set to true, hit tests are performed based on the position of the
+    /// child as it is painted. When set to false, hit tests are performed
+    /// ignoring the transformation.
+    ///
+    /// [applyPaintTransform], and therefore [localToGlobal] and [globalToLocal],
+    /// always honor the transformation, regardless of the value of this property.
+    public var transformHitTests: Bool
+
+    /// The matrix to transform the child by during painting. The provided value
+    /// is copied on assignment.
+    public var transform: Matrix4x4f {
+        didSet {
+            if transform == oldValue {
+                return
+            }
+            markNeedsPaint()
+            // markNeedsSemanticsUpdate()
+        }
+    }
+
+    /// The filter quality with which to apply the transform as a bitmap operation.
+    public var filterQuality: FilterQuality? {
+        didSet {
+            if filterQuality == oldValue {
+                return
+            }
+            let didNeedCompositing = child != nil && oldValue != nil
+            if didNeedCompositing != alwaysNeedsCompositing {
+                markNeedsCompositingBitsUpdate()
+            }
+            markNeedsPaint()
+        }
+    }
+    /// Sets the transform to the identity matrix.
+    public func setIdentity() {
+        transform = Matrix4x4f.identity
+    }
+
+    /// Concatenates a rotation about the x axis into the transform.
+    public func rotateX(_ angle: Angle) {
+        transform.rotateX(angle)
+    }
+
+    /// Concatenates a rotation about the y axis into the transform.
+    public func rotateY(_ angle: Angle) {
+        transform.rotateY(angle)
+    }
+
+    /// Concatenates a rotation about the z axis into the transform.
+    public func rotateZ(_ angle: Angle) {
+        transform.rotateZ(angle)
+    }
+
+    /// Concatenates a translation by (x, y, z) into the transform.
+    public func translate(x: Float, y: Float = 0.0, z: Float = 0.0) {
+        transform.translate(x, y, z)
+    }
+
+    /// Concatenates a scale into the transform.
+    public func scale(x: Float, y: Float? = nil, z: Float? = nil) {
+        transform.scale(x, y, z)
+    }
+
+    private var _effectiveTransform: Matrix4x4f? {
+        let resolvedAlignment = alignment?.resolve(textDirection)
+        if origin == nil && resolvedAlignment == nil {
+            return transform
+        }
+        var result = Matrix4x4f.identity
+        if let origin {
+            result.translate(origin.dx, origin.dy)
+        }
+        var translation: Offset?
+        if let resolvedAlignment {
+            translation = resolvedAlignment.alongSize(size)
+            result.translate(translation!.dx, translation!.dy)
+        }
+        result = result * transform
+        if let translation {
+            result.translate(-translation.dx, -translation.dy)
+        }
+        if let origin {
+            result.translate(-origin.dx, -origin.dy)
+        }
+        return result
+    }
+
+    public override func hitTest(_ result: HitTestResult, position: Offset) -> Bool {
+        // RenderTransform objects don't check if they are
+        // themselves hit, because it's confusing to think about
+        // how the untransformed size and the child's transformed
+        // position interact.
+        return hitTestChildren(result, position: position)
+    }
+
+    public override func hitTestChildren(_ result: HitTestResult, position: Offset) -> Bool {
+        assert(!transformHitTests || _effectiveTransform != nil)
+        return (result as! BoxHitTestResult).addWithPaintTransform(
+            transform: transformHitTests ? _effectiveTransform : nil,
+            position: position,
+            hitTest: { result, position in
+                return super.hitTestChildren(result, position: position)
+            }
+        )
+    }
+    public override func paint(context: PaintingContext, offset: Offset) {
+        if child != nil {
+            let transform = _effectiveTransform!
+            // if filterQuality == nil {
+            if true {
+                let childOffset = MatrixUtils.getAsTranslation(transform)
+                if childOffset == nil {
+                    // if the matrix is singular the children would be compressed to a line or
+                    // single point, instead short-circuit and paint nothing.
+                    let det = transform.determinant
+                    if det == 0 || !det.isFinite {
+                        layer = nil
+                        return
+                    }
+                    layer = context.pushTransform(
+                        needsCompositing: needsCompositing,
+                        offset: offset,
+                        transform: transform,
+                        painter: super.paint,
+                        oldLayer: layer as? TransformLayer
+                    )
+                } else {
+                    super.paint(context: context, offset: offset + childOffset!)
+                    layer = nil
+                }
+            } else {
+                // var effectiveTransform =
+                //     Matrix4x4f.translate(tx: offset.dx, ty: offset.dy, tz: 0.0)
+                //     * transform
+                // effectiveTransform.translate(-offset.dx, -offset.dy)
+
+                // let filter = ImageFilter.matrix(
+                //     effectiveTransform.storage,
+                //     filterQuality: filterQuality!
+                // )
+                // if layer is ImageFilterLayer {
+                //     let filterLayer = layer! as! ImageFilterLayer
+                //     filterLayer.imageFilter = filter
+                // } else {
+                //     layer = ImageFilterLayer(imageFilter: filter)
+                // }
+                // context.pushLayer(layer!, super.paint, offset)
+            }
+        }
+    }
+
+    public override func applyPaintTransform(_ child: RenderObject, transform: inout Matrix4x4f) {
+        transform = transform * _effectiveTransform!
+    }
+}

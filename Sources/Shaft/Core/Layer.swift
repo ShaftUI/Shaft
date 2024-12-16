@@ -92,7 +92,7 @@ public class OffsetLayer: ContainerLayer {
 /// This class inherits from [OffsetLayer] to make it one of the layers that
 /// can be used at the root of a [RenderObject] hierarchy.
 public class TransformLayer: OffsetLayer {
-    public init(transform: Matrix4x4f) {
+    public init(transform: Matrix4x4f = .identity) {
         self.transform = transform
     }
 
@@ -100,7 +100,7 @@ public class TransformLayer: OffsetLayer {
 
     public override func paint(context: LayerPaintContext) {
         let effectiveTransform =
-            offset != Offset.zero
+            offset == Offset.zero
             ? transform
             : Matrix4x4f.translate(tx: offset.dx, ty: offset.dy, tz: 0) * transform
         context.canvas.save()

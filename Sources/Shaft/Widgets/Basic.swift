@@ -6,6 +6,353 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import SwiftMath
+
+/// A widget that applies a transformation before painting its child.
+///
+/// Unlike [RotatedBox], which applies a rotation prior to layout, this object
+/// applies its transformation just prior to painting, which means the
+/// transformation is not taken into account when calculating how much space
+/// this widget's child (and thus this widget) consumes.
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=9z_YNlRlWfA}
+///
+/// See also:
+///
+///  * [RotatedBox], which rotates the child widget during layout, not just
+///    during painting.
+///  * [FractionalTranslation], which applies a translation to the child
+///    that is relative to the child's size.
+///  * [FittedBox], which sizes and positions its child widget to fit the parent
+///    according to a given [BoxFit] discipline.
+///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
+public class Transform: SingleChildRenderObjectWidget {
+    /// Creates a widget that transforms its child.
+    public init(
+        transform: Matrix4x4f,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = nil,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        self.transform = transform
+        self.origin = origin
+        self.alignment = alignment
+        self.transformHitTests = transformHitTests
+        self.filterQuality = filterQuality
+        self.child = child()
+    }
+
+    /// Creates a widget that transforms its child using a rotation around the
+    /// center.
+    ///
+    /// The `angle` argument gives the rotation in clockwise radians.
+    ///
+    /// See also:
+    ///
+    ///  * [RotationTransition], which animates changes in rotation smoothly
+    ///    over a given duration.
+    public init(
+        angle: Angle,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = Alignment.center,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        self.transform = Transform._computeRotation(angle)
+        self.origin = origin
+        self.alignment = alignment
+        self.transformHitTests = transformHitTests
+        self.filterQuality = filterQuality
+        self.child = child()
+    }
+
+    /// Creates a widget that transforms its child using a translation.
+    ///
+    /// The `offset` argument specifies the translation.
+    public init(
+        offset: Offset,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        self.transform = Matrix4x4f().translated(by: .init(x: offset.dx, y: offset.dy, z: 0.0))
+        self.origin = nil
+        self.alignment = nil
+        self.transformHitTests = transformHitTests
+        self.filterQuality = filterQuality
+        self.child = child()
+    }
+
+    /// Creates a widget that scales its child along the 2D plane.
+    ///
+    /// The `scaleX` argument provides the scalar by which to multiply the `x`
+    /// axis, and the `scaleY` argument provides the scalar by which to multiply
+    /// the `y` axis. Either may be omitted, in which case the scaling factor for
+    /// that axis defaults to 1.0.
+    ///
+    /// For convenience, to scale the child uniformly, instead of providing
+    /// `scaleX` and `scaleY`, the `scale` parameter may be used.
+    ///
+    /// At least one of `scale`, `scaleX`, and `scaleY` must be non-null. If
+    /// `scale` is provided, the other two must be null; similarly, if it is not
+    /// provided, one of the other two must be provided.
+    ///
+    /// The [alignment] controls the origin of the scale; by default, this is the
+    /// center of the box.
+    ///
+    /// See also:
+    ///
+    /// * [ScaleTransition], which animates changes in scale smoothly over a given
+    ///   duration.
+    public init(
+        scale: Float? = nil,
+        scaleX: Float? = nil,
+        scaleY: Float? = nil,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = Alignment.center,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        assert(
+            !(scale == nil && scaleX == nil && scaleY == nil),
+            "At least one of 'scale', 'scaleX' and 'scaleY' is required to be non-null"
+        )
+        assert(
+            scale == nil || (scaleX == nil && scaleY == nil),
+            "If 'scale' is non-null then 'scaleX' and 'scaleY' must be left null"
+        )
+        self.transform = Matrix4x4f(
+            diagonal: .init(
+                x: scale ?? scaleX ?? 1.0,
+                y: scale ?? scaleY ?? 1.0,
+                z: 1.0,
+                w: 1.0
+            )
+        )
+        self.origin = origin
+        self.alignment = alignment
+        self.transformHitTests = transformHitTests
+        self.filterQuality = filterQuality
+        self.child = child()
+    }
+
+    /// Creates a widget that mirrors its child about the widget's center point.
+    ///
+    /// If `flipX` is true, the child widget will be flipped horizontally. Defaults to false.
+    ///
+    /// If `flipY` is true, the child widget will be flipped vertically. Defaults to false.
+    ///
+    /// If both are true, the child widget will be flipped both vertically and horizontally, equivalent to a 180 degree rotation.
+    public init(
+        flipX: Bool = false,
+        flipY: Bool = false,
+        origin: Offset? = nil,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        self.transform = Matrix4x4f(
+            diagonal: .init(x: flipX ? -1.0 : 1.0, y: flipY ? -1.0 : 1.0, z: 1.0, w: 1.0)
+        )
+        self.origin = origin
+        self.alignment = Alignment.center
+        self.transformHitTests = transformHitTests
+        self.filterQuality = filterQuality
+        self.child = child()
+    }
+
+    // Computes a rotation matrix for an angle in radians, attempting to keep rotations
+    // at integral values for angles of 0, π/2, π, 3π/2.
+    private static func _computeRotation(_ angle: Angle) -> Matrix4x4f {
+        assert(
+            angle.degrees.isFinite,
+            "Cannot compute the rotation matrix for a non-finite angle: \(angle)"
+        )
+        if angle.degrees == 0.0 {
+            return Matrix4x4f.identity
+        }
+        let sinValue = sin(angle)
+        if sinValue == 1.0 {
+            return _createZRotation(1.0, 0.0)
+        }
+        if sinValue == -1.0 {
+            return _createZRotation(-1.0, 0.0)
+        }
+        let cosValue = cos(angle)
+        if cosValue == -1.0 {
+            return _createZRotation(0.0, -1.0)
+        }
+        return _createZRotation(sinValue, cosValue)
+    }
+
+    private static func _createZRotation(_ sin: Float, _ cos: Float) -> Matrix4x4f {
+        var result = Matrix4x4f()
+        result[0, 0] = cos
+        result[0, 1] = sin
+        result[1, 0] = -sin
+        result[1, 1] = cos
+        result[2, 2] = 1.0
+        result[3, 3] = 1.0
+        return result
+    }
+    /// The matrix to transform the child by during painting.
+    public let transform: Matrix4x4f
+
+    /// The origin of the coordinate system (relative to the upper left corner of
+    /// this render object) in which to apply the matrix.
+    ///
+    /// Setting an origin is equivalent to conjugating the transform matrix by a
+    /// translation. This property is provided just for convenience.
+    public let origin: Offset?
+
+    /// The alignment of the origin, relative to the size of the box.
+    ///
+    /// This is equivalent to setting an origin based on the size of the box.
+    /// If it is specified at the same time as the [origin], both are applied.
+    ///
+    /// An [AlignmentDirectional.centerStart] value is the same as an [Alignment]
+    /// whose [Alignment.x] value is `-1.0` if [Directionality.of] returns
+    /// [TextDirection.ltr], and `1.0` if [Directionality.of] returns
+    /// [TextDirection.rtl].	 Similarly [AlignmentDirectional.centerEnd] is the
+    /// same as an [Alignment] whose [Alignment.x] value is `1.0` if
+    /// [Directionality.of] returns	 [TextDirection.ltr], and `-1.0` if
+    /// [Directionality.of] returns [TextDirection.rtl].
+    public let alignment: (any AlignmentGeometry)?
+
+    /// Whether to apply the transformation when performing hit tests.
+    public let transformHitTests: Bool
+
+    /// The filter quality with which to apply the transform as a bitmap operation.
+    ///
+    /// {@template flutter.widgets.Transform.optional.FilterQuality}
+    /// The transform will be applied by re-rendering the child if [filterQuality] is null,
+    /// otherwise it controls the quality of an [ImageFilter.matrix] applied to a bitmap
+    /// rendering of the child.
+    /// {@endtemplate}
+    public let filterQuality: FilterQuality?
+
+    public let child: Widget?
+
+    public func createRenderObject(context: BuildContext) -> RenderTransform {
+        RenderTransform(
+            transform: transform,
+            origin: origin,
+            alignment: alignment,
+            textDirection: .ltr,
+            transformHitTests: transformHitTests,
+            filterQuality: filterQuality
+        )
+    }
+
+    public func updateRenderObject(context: BuildContext, renderObject: RenderTransform) {
+        renderObject.transform = transform
+        renderObject.origin = origin
+        renderObject.alignment = alignment
+        renderObject.textDirection = .ltr
+        renderObject.transformHitTests = transformHitTests
+        renderObject.filterQuality = filterQuality
+    }
+}
+
+extension Widget {
+    /// Returns a new widget with a transformation applied to it.
+    public func transform(
+        _ transform: Matrix4x4f,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = nil,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil
+    ) -> Transform {
+        Transform(
+            transform: transform,
+            origin: origin,
+            alignment: alignment,
+            transformHitTests: transformHitTests,
+            filterQuality: filterQuality
+        ) {
+            self
+        }
+    }
+
+    /// Returns a new widget with a rotation around the Z axis applied to it.
+    public func rotate(
+        _ angle: Angle,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = Alignment.center,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil
+    ) -> Transform {
+        Transform(
+            angle: angle,
+            origin: origin,
+            alignment: alignment,
+            transformHitTests: transformHitTests,
+            filterQuality: filterQuality
+        ) {
+            self
+        }
+    }
+
+    /// Returns a new widget with a translation applied to it.
+    public func translate(
+        _ offset: Offset,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil
+    ) -> Transform {
+        Transform(
+            offset: offset,
+            transformHitTests: transformHitTests,
+            filterQuality: filterQuality
+        ) {
+            self
+        }
+    }
+
+    /// Returns a new widget with a scale applied to it.
+    public func scale(
+        _ scale: Float? = nil,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = Alignment.center,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil
+    ) -> Transform {
+        Transform(
+            scale: scale,
+            origin: origin,
+            alignment: alignment,
+            transformHitTests: transformHitTests,
+            filterQuality: filterQuality
+        ) {
+            self
+        }
+    }
+
+    /// Returns a new widget with a scale applied to it.
+    public func scale(
+        x: Float? = nil,
+        y: Float? = nil,
+        origin: Offset? = nil,
+        alignment: (any AlignmentGeometry)? = Alignment.center,
+        transformHitTests: Bool = true,
+        filterQuality: FilterQuality? = nil
+    ) -> Transform {
+        Transform(
+            scaleX: x,
+            scaleY: y,
+            origin: origin,
+            alignment: alignment,
+            transformHitTests: transformHitTests,
+            filterQuality: filterQuality
+        ) {
+            self
+        }
+    }
+}
+
 /// A widget that paints its area with a specified [Color] and then draws its
 /// child on top of that color.
 public class ColoredBox: LeafRenderObjectWidget {
