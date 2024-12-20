@@ -908,16 +908,18 @@ private enum PaintOffset: Int, CaseIterable {
 }
 
 public struct Paint: Equatable {
+    public init() {}
+
     /// Whether to apply anti-aliasing to lines and images drawn on the
     /// canvas.
     ///
     /// Defaults to true.
-    var isAntiAlias: Bool = true
+    public var isAntiAlias: Bool = true
 
     /// The color to use when stroking or filling a shape.
     ///
     /// Defaults to opaque black.
-    var color: Color = Color(0xFF00_0000)
+    public var color: Color = Color(0xFF00_0000)
 
     /// A blend mode to apply when a shape is drawn or a layer is composited.
     ///
@@ -930,25 +932,25 @@ public struct Paint: Equatable {
     /// layer is being composited.
     ///
     /// Defaults to [BlendMode.srcOver].
-    var blendMode: BlendMode = .srcOver
+    public var blendMode: BlendMode = .srcOver
 
     /// Whether to paint inside shapes, the edges of shapes, or both.
     ///
     /// Defaults to [PaintingStyle.fill].
-    var style: PaintingStyle = .fill
+    public var style: PaintingStyle = .fill
 
     /// How wide to make edges drawn when [style] is set to
     /// [PaintingStyle.stroke]. The width is given in logical pixels measured in
     /// the direction orthogonal to the direction of the path.
     ///
     /// Defaults to 0.0, which correspond to a hairline width.
-    var strokeWidth: Float = 0.0
+    public var strokeWidth: Float = 0.0
 
     /// The kind of finish to place on the end of lines drawn when
     /// [style] is set to [PaintingStyle.stroke].
     ///
     /// Defaults to [StrokeCap.butt], i.e. no caps.
-    var strokeCap: StrokeCap = .butt
+    public var strokeCap: StrokeCap = .butt
 
     /// The kind of finish to place on the joins between segments.
     ///
@@ -956,7 +958,7 @@ public struct Paint: Equatable {
     /// It does not apply to points drawn as lines with [Canvas.drawPoints].
     ///
     /// Defaults to [StrokeJoin.miter], i.e. sharp corners.
-    var strokeJoin: StrokeJoin = .miter
+    public var strokeJoin: StrokeJoin = .miter
 
     /// The limit for miters to be drawn on segments when the join is set to
     /// [StrokeJoin.miter] and the [style] is set to [PaintingStyle.stroke]. If
@@ -968,35 +970,35 @@ public struct Paint: Equatable {
     ///
     /// Defaults to 4.0.  Using zero as a limit will cause a [StrokeJoin.bevel]
     /// join to be used all the time.
-    var strokeMiterLimit: Float = 4.0
+    public var strokeMiterLimit: Float = 4.0
 
     /// A mask filter (for example, a blur) to apply to a shape after it has been
     /// drawn but before it has been composited into the image.
-    var maskFilter: MaskFilter?
+    public var maskFilter: MaskFilter?
 
     /// Controls the performance vs quality trade-off to use when sampling bitmaps,
     /// as with an [ImageShader], or when drawing images, as with [Canvas.drawImage],
     /// [Canvas.drawImageRect], [Canvas.drawImageNine] or [Canvas.drawAtlas].
     ///
     /// Defaults to [FilterQuality.none].
-    var filterQuality: FilterQuality = .none
+    public var filterQuality: FilterQuality = .none
 
     /// The shader to use when stroking or filling a shape.
     ///
     /// When this is null, the [color] is used instead.
-    // var shader: Shader?
+    // public var shader: Shader?
 
     /// A color filter to apply when a shape is drawn or when a layer is
     /// composited.
     ///
     /// See [ColorFilter] for details.
-    // var colorFilter: ColorFilter?
+    // public var colorFilter: ColorFilter?
 
     /// The [ImageFilter] to use when drawing raster images.
     ///
     /// For example, to blur an image using [Canvas.drawImage], apply an
     /// [ImageFilter.blur]:
-    // var imageFilter: ImageFilter?
+    // public var imageFilter: ImageFilter?
 }
 
 /// A single shadow.
