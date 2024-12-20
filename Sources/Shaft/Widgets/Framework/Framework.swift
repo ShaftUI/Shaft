@@ -934,7 +934,7 @@ extension RenderObjectWidget {
 /// that have no children.
 ///
 /// Subclasses must implement [createRenderObject] and [updateRenderObject].
-protocol LeafRenderObjectWidget: RenderObjectWidget {}
+public protocol LeafRenderObjectWidget: RenderObjectWidget {}
 
 extension LeafRenderObjectWidget {
     public func createElement() -> Element {
