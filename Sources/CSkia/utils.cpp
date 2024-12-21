@@ -18,16 +18,9 @@ auto fontMgr = SkFontMgr_New_DirectWrite(nullptr);
 auto fontMgr = SkFontMgr_New_FontConfig(nullptr);
 #endif
 
-// The singleton font collection that will be used by all paragraph builders.
-auto fontCollection1 = sk_make_sp<FontCollection>();
-
-ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style)
+ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection)
 {
-    // auto fontCollection1 = sk_make_sp<FontCollection>();
-    fontCollection1->setDefaultFontManager(fontMgr);
-
-    auto result = ParagraphBuilder::make(style, fontCollection1);
-    // auto result = ParagraphBuilder::make(*style, font_collection);
+    auto result = ParagraphBuilder::make(style, fontCollection);
     auto result2 = result.release();
     return result2;
 }

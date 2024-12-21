@@ -918,8 +918,6 @@ public struct ParagraphStyle {
 }
 
 public protocol ParagraphBuilder: AnyObject {
-    init(_ style: ParagraphStyle)
-
     /// Applies the given style to the added text until [pop] is called.
     ///
     /// See [pop] for details.

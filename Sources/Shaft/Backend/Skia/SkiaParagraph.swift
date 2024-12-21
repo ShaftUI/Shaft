@@ -4,14 +4,11 @@
 
 import CSkia
 
-// let fontCollection = test_font_collection()
-
 public class SkiaParagraphBuilder: ParagraphBuilder {
-    public required init(_ style: ParagraphStyle) {
+    public init(_ style: ParagraphStyle, fontCollection: SkiaFontCollection) {
         var skiaStyle = skia.textlayout.ParagraphStyle()
         style.copyToSkia(&skiaStyle)
-        // builder = paragraph_builder_new(&skiaStyle, fontCollection)
-        builder = paragraph_builder_new(&skiaStyle)
+        builder = paragraph_builder_new(&skiaStyle, &fontCollection.collection)
     }
 
     deinit {

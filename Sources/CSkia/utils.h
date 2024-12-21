@@ -111,7 +111,7 @@ typedef sk_sp<SkTextBlob> SkTextBlob_sp;
 
 // MARK: - ParagraphBuilder
 
-ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style);
+ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection);
 void paragraph_builder_add_text(ParagraphBuilder *builder, const char *text);
 void paragraph_builder_push_style(ParagraphBuilder *builder, const TextStyle *style);
 void paragraph_builder_pop(ParagraphBuilder *builder);
