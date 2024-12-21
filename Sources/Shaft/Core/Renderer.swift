@@ -9,9 +9,13 @@ import Foundation
 public protocol Renderer {
     func createParagraphBuilder(_ style: ParagraphStyle) -> ParagraphBuilder
 
+    func createTextBlob(_ glyphs: [GlyphID], positions: [Offset], font: Font) -> TextBlob
+
     func decodeImageFromData(_ data: Data) -> AnimatedImage?
 
     func createPath() -> Path
+
+    var fontCollection: FontCollection { get }
 }
 
 public protocol GLRenderer: Renderer {

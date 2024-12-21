@@ -48,6 +48,12 @@ public class SkiaCanvas: DirectCanvas {
         paragraph.paint(self, offset)
     }
 
+    public func drawTextBlob(_ blob: any TextBlob, _ offset: Offset, _ paint: Paint) {
+        let blob = blob as! SkiaTextBlob
+        paint.copyToSkia(paint: &self.skPaint)
+        sk_canvas_draw_text_blob(skCanvas, &blob.skTextBlob, offset.dx, offset.dy, self.skPaint)
+    }
+
     public func drawRRect(_ rrect: RRect, _ paint: Paint) {
         var skRect = SkRect()
         skRect.setLTRB(rrect.left, rrect.top, rrect.right, rrect.bottom)

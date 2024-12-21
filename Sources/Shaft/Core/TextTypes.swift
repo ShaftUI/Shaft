@@ -6,6 +6,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import Foundation
+
 /// The measurements of a character (or a sequence of visually connected
 /// characters) within a paragraph.
 public struct GlyphInfo {
@@ -1309,7 +1311,7 @@ public struct LineMetrics {
 /// Where to vertically align the placeholder relative to the surrounding text.
 ///
 /// Used by [ParagraphBuilder.addPlaceholder].
-enum PlaceholderAlignment {
+public enum PlaceholderAlignment {
     /// Match the baseline of the placeholder with the baseline.
     ///
     /// The [TextBaseline] to use must be specified and non-null when using this
@@ -1348,3 +1350,53 @@ enum PlaceholderAlignment {
     /// from the top and bottom of the line.
     case middle
 }
+
+/// A protocol that defines a collection of fonts that can be used to draw text.
+public protocol FontCollection {
+    /// Creates a typeface from the provided font file data.
+    func makeTypefaceFrom(_ data: Data) -> Typeface
+
+    /// Finds the closest matching typeface to the specified family name and
+    /// style.
+    func findTypeface(_ family: [String], style: FontStyle, weight: FontWeight) -> [Typeface]
+
+    /// Finds any font in the available font managers that resolves the
+    /// specified Unicode codepoint.
+    func findTypefaceFor(_ codepoint: UInt32) -> Typeface?
+}
+
+/// A typeface in Shaft is typically a loaded font file. It can be used to
+/// create a font object with a specific size and style or to retrieve the
+/// glyph id for a specific code point.
+public protocol Typeface: AnyObject {
+    // Retrieves the glyph ids for each code point in the provided string. Note
+    // that glyph IDs are typeface-dependent; different faces may have different
+    // ids for the same code point.
+    func getGlyphIDs(_ text: String) -> [GlyphID?]
+
+    /// Retrieves the glyph id for the provided unicode code point. Note that
+    /// glyph IDs are typeface-dependent; different faces may have different ids
+    /// for the same code point.
+    func getGlyphID(_ codePoint: UInt32) -> GlyphID?
+
+    /// Return the number of glyphs in the typeface.
+    var glyphCount: Int { get }
+
+    /// Creates a font object with the specified size and style.
+    func createFont(_ size: Float) -> Font
+
+    /// Return the family name for this typeface.
+    var familyName: String { get }
+}
+
+/// A Typeface at specific size and style.
+public protocol Font: AnyObject {
+    /// The size of the font in logical pixels.
+    var size: Float { get }
+}
+
+/// An id that represents a glyph in a typeface. This is typeface-dependent.
+public typealias GlyphID = UInt16
+
+/// A list of glyphs and their positions in the paragraph.
+public protocol TextBlob {}

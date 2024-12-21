@@ -2,6 +2,8 @@
 #define SK_METAL
 #define SK_GANESH
 
+#include <swift/bridging>
+
 #include "include/android/SkAnimatedImage.h"
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkBmpDecoder.h"
@@ -102,6 +104,8 @@ typedef sk_sp<const GrGLInterface> GrGLInterface_sp;
 typedef sk_sp<GrDirectContext> GrDirectContext_sp;
 typedef sk_sp<FontCollection> FontCollection_sp;
 typedef sk_sp<ParagraphBuilder> ParagraphBuilder_sp;
+typedef sk_sp<SkTypeface> SkTypeface_sp;
+typedef sk_sp<SkTextBlob> SkTextBlob_sp;
 
 // FontCollection_sp test_font_collection();
 
@@ -131,6 +135,20 @@ bool paragraph_get_glyph_info_at(Paragraph *paragraph, size_t codeUnitIndex, Par
 Paragraph::GlyphInfo paragraph_get_closest_glyph_info_at(Paragraph *paragraph, SkScalar dx, SkScalar dy);
 void paragraph_unref(Paragraph *paragraph);
 
+// MARK: - Font
+
+FontCollection_sp sk_fontcollection_new();
+SkTypeface_sp sk_typeface_create_from_data(FontCollection_sp &collection, const char *data, size_t length);
+std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(FontCollection_sp &collection, std::vector<SkString> &families, SkFontStyle style);
+SkTypeface_sp sk_fontcollection_default_fallback(FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale);
+std::vector<GlyphID> sk_typeface_get_glyphs(SkTypeface_sp &typeface, const SkUnichar *text, size_t length);
+GlyphID sk_typeface_get_glyph(SkTypeface_sp &typeface, SkUnichar unicode);
+int sk_typeface_count_glyphs(SkTypeface_sp &typeface);
+void sk_typeface_get_family_name(SkTypeface_sp &typeface, SkString *familyName);
+SkFont sk_font_new(SkTypeface_sp &typeface, float size);
+float sk_font_get_size(SkFont &font);
+SkTextBlob_sp sk_text_blob_make_from_glyphs(const SkGlyphID *glyphs, const SkPoint *positions, size_t length, const SkFont &font);
+
 // MARK: - Canvas
 
 void sk_canvas_concat(SkCanvas *canvas, const SkM44 &matrix);
@@ -148,6 +166,7 @@ void sk_canvas_draw_path(SkCanvas *canvas, const SkPath &path, const SkPaint &pa
 void sk_canvas_draw_image(SkCanvas *canvas, SkImage_sp &image, float x, float y, const SkPaint *paint);
 void sk_canvas_draw_image_rect(SkCanvas *canvas, SkImage_sp &image, const SkRect &src, const SkRect &dst, const SkPaint *paint);
 void sk_canvas_draw_image_nine(SkCanvas *canvas, SkImage_sp &image, const SkIRect &center, const SkRect &dst, const SkPaint *paint);
+void sk_canvas_draw_text_blob(SkCanvas *canvas, SkTextBlob_sp &blob, float x, float y, const SkPaint &paint);
 void sk_canvas_clip_rect(SkCanvas *canvas, const SkRect &rect, SkClipOp op, bool doAntiAlias);
 void sk_canvas_translate(SkCanvas *canvas, float dx, float dy);
 void sk_canvas_scale(SkCanvas *canvas, float sx, float sy);
@@ -193,9 +212,8 @@ GrDirectContext_sp gr_mtl_direct_context_make(GrMtlBackendContext &context);
 // MARK: - Misc
 
 std::vector<SkString> skstring_vector_new();
+const char *skstring_c_str(const SkString &string) SWIFT_RETURNS_INDEPENDENT_VALUE;
 sk_sp<SkColorSpace> color_space_new_srgb();
 sk_sp<SkColorSpace> color_space_new_null();
-
-SkTextBlob *sk_text_blob_make_from_text(const char *text, const SkFont &font);
 
 #endif // CSKIA_UTILS_H

@@ -10,6 +10,7 @@ internal enum DisplayListOp {
     case drawLine(p0: Offset, p1: Offset, paint: Paint)
     case drawDisplayList(displayList: DisplayList)
     case drawParagraph(paragraph: Paragraph, offset: Offset)
+    case drawTextBlob(textBlob: TextBlob, offset: Offset, paint: Paint)
     case drawRRect(rrect: RRect, paint: Paint)
     case drawDRRect(outer: RRect, inner: RRect, paint: Paint)
     case drawCircle(center: Offset, radius: Float, paint: Paint)
@@ -55,6 +56,10 @@ public class DisplayListBuilder: DlOpReceiver {
 
     public func drawParagraph(_ paragraph: Paragraph, _ offset: Offset) {
         push(.drawParagraph(paragraph: paragraph, offset: offset))
+    }
+
+    public func drawTextBlob(_ textBlob: TextBlob, _ offset: Offset, _ paint: Paint) {
+        push(.drawTextBlob(textBlob: textBlob, offset: offset, paint: paint))
     }
 
     public func drawRRect(_ rrect: RRect, _ paint: Paint) {

@@ -19,6 +19,8 @@ public struct DisplayList {
                 receiver.drawDisplayList(displayList)
             case let .drawParagraph(paragraph, offset):
                 receiver.drawParagraph(paragraph, offset)
+            case let .drawTextBlob(textBlob, offset, paint):
+                receiver.drawTextBlob(textBlob, offset, paint)
             case let .transform(transform):
                 receiver.transform(transform)
             case let .drawRRect(rrect, paint):

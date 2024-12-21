@@ -153,6 +153,11 @@ std::vector<SkString> skstring_vector_new()
     return std::vector<SkString>();
 }
 
+const char *skstring_c_str(const SkString &string)
+{
+    return string.c_str();
+}
+
 sk_sp<SkColorSpace> color_space_new_srgb()
 {
     return SkColorSpace::MakeSRGB();
@@ -166,6 +171,73 @@ sk_sp<SkColorSpace> color_space_new_null()
 SkCanvas *sk_surface_get_canvas(const sk_sp<SkSurface> &surface)
 {
     return surface->getCanvas();
+}
+
+// MARK: - Font
+
+FontCollection_sp sk_fontcollection_new()
+{
+    auto collection = sk_make_sp<FontCollection>();
+    collection->setDefaultFontManager(fontMgr);
+    return collection;
+}
+
+SkTypeface_sp sk_typeface_create_from_data(FontCollection_sp &collection, const char *data, size_t length)
+{
+    auto bytes = SkData::MakeWithCopy(data, length);
+    return collection->getFallbackManager()->makeFromData(bytes);
+}
+
+std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(FontCollection_sp &collection, std::vector<SkString> &families, SkFontStyle style)
+{
+    return collection->findTypefaces(families, style);
+}
+
+SkTypeface_sp sk_fontcollection_default_fallback(FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale)
+{
+    return collection->defaultFallback(unicode, style, locale);
+}
+
+std::vector<GlyphID> sk_typeface_get_glyphs(SkTypeface_sp &typeface, const SkUnichar *text, size_t length)
+{
+    std::vector<GlyphID> glyphs;
+    glyphs.resize(length);
+    typeface->unicharsToGlyphs(text, length, glyphs.data());
+    return glyphs;
+}
+
+GlyphID sk_typeface_get_glyph(SkTypeface_sp &typeface, SkUnichar unicode)
+{
+    return typeface->unicharToGlyph(unicode);
+}
+
+void sk_typeface_get_family_name(SkTypeface_sp &typeface, SkString *familyName)
+{
+    typeface->getFamilyName(familyName);
+}
+
+int sk_typeface_count_glyphs(SkTypeface_sp &typeface)
+{
+    return typeface->countGlyphs();
+}
+
+SkFont sk_font_new(SkTypeface_sp &typeface, float size)
+{
+    return SkFont(typeface, size);
+}
+
+float sk_font_get_size(SkFont &font)
+{
+    return font.getSize();
+}
+
+SkTextBlob_sp sk_text_blob_make_from_glyphs(const SkGlyphID *glyphs, const SkPoint *positions, size_t length, const SkFont &font)
+{
+    SkTextBlobBuilder builder;
+    auto buffer = builder.allocRunPos(font, length);
+    memcpy(buffer.glyphs, glyphs, length * sizeof(SkGlyphID));
+    memcpy(buffer.points(), positions, length * sizeof(SkPoint));
+    return builder.make();
 }
 
 // MARK: - Canvas
@@ -243,6 +315,11 @@ void sk_canvas_draw_image_rect(SkCanvas *canvas, SkImage_sp &image, const SkRect
 void sk_canvas_draw_image_nine(SkCanvas *canvas, SkImage_sp &image, const SkIRect &center, const SkRect &dst, const SkPaint *paint)
 {
     canvas->drawImageNine(image.get(), center, dst, SkFilterMode::kLinear, paint);
+}
+
+void sk_canvas_draw_text_blob(SkCanvas *canvas, SkTextBlob_sp &blob, float x, float y, const SkPaint &paint)
+{
+    canvas->drawTextBlob(blob.get(), x, y, paint);
 }
 
 void sk_canvas_clip_rect(SkCanvas *canvas, const SkRect &rect, SkClipOp op, bool doAntiAlias)

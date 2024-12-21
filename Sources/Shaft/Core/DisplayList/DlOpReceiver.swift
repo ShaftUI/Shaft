@@ -484,6 +484,11 @@ public protocol DlOpReceiver {
     /// The arguments must not be null.
     // void drawShadow(Path path, Color color, double elevation, bool transparentOccluder);
 
+    /// Draws the given TextBlob at (x, y) using the current clip, current
+    /// matrix, and the provided paint. The fonts used to draw TextBlob are part
+    /// of the blob.
+    func drawTextBlob(_ blob: TextBlob, _ offset: Offset, _ paint: Paint)
+
     /// Clears the entire canvas with the given [Color].
     func clear(color: Color)
 }
