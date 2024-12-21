@@ -6,6 +6,7 @@ template struct sk_sp<FontCollection>;
 template struct sk_sp<SkSurface>;
 template struct sk_sp<SkImage>;
 template struct sk_sp<SkTypeface>;
+template void SkSafeUnref<FontCollection>(FontCollection *obj);
 
 // MARK: - ParagraphBuilder
 
@@ -186,15 +187,15 @@ SkTypeface_sp sk_fontcollection_default_fallback(FontCollection_sp &collection, 
     return collection->defaultFallback(unicode, style, locale);
 }
 
-std::vector<GlyphID> sk_typeface_get_glyphs(SkTypeface_sp &typeface, const SkUnichar *text, size_t length)
+std::vector<SkGlyphID> sk_typeface_get_glyphs(SkTypeface_sp &typeface, const SkUnichar *text, size_t length)
 {
-    std::vector<GlyphID> glyphs;
+    std::vector<SkGlyphID> glyphs;
     glyphs.resize(length);
     typeface->unicharsToGlyphs(text, length, glyphs.data());
     return glyphs;
 }
 
-GlyphID sk_typeface_get_glyph(SkTypeface_sp &typeface, SkUnichar unicode)
+SkGlyphID sk_typeface_get_glyph(SkTypeface_sp &typeface, SkUnichar unicode)
 {
     return typeface->unicharToGlyph(unicode);
 }

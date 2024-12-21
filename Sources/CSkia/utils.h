@@ -27,6 +27,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
+#include "include/core/SkTypes.h"
 
 #include "include/docs/SkPDFDocument.h"
 
@@ -106,8 +107,6 @@ typedef sk_sp<ParagraphBuilder> ParagraphBuilder_sp;
 typedef sk_sp<SkTypeface> SkTypeface_sp;
 typedef sk_sp<SkTextBlob> SkTextBlob_sp;
 
-template void SkSafeUnref<FontCollection>(FontCollection *obj);
-
 // FontCollection_sp test_font_collection();
 
 // MARK: - ParagraphBuilder
@@ -142,8 +141,8 @@ FontCollection_sp sk_fontcollection_new();
 SkTypeface_sp sk_typeface_create_from_data(FontCollection_sp &collection, const char *data, size_t length);
 std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(FontCollection_sp &collection, std::vector<SkString> &families, SkFontStyle style);
 SkTypeface_sp sk_fontcollection_default_fallback(FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale);
-std::vector<GlyphID> sk_typeface_get_glyphs(SkTypeface_sp &typeface, const SkUnichar *text, size_t length);
-GlyphID sk_typeface_get_glyph(SkTypeface_sp &typeface, SkUnichar unicode);
+std::vector<SkGlyphID> sk_typeface_get_glyphs(SkTypeface_sp &typeface, const SkUnichar *text, size_t length);
+SkGlyphID sk_typeface_get_glyph(SkTypeface_sp &typeface, SkUnichar unicode);
 int sk_typeface_count_glyphs(SkTypeface_sp &typeface);
 void sk_typeface_get_family_name(SkTypeface_sp &typeface, SkString *familyName);
 SkFont sk_font_new(SkTypeface_sp &typeface, float size);
