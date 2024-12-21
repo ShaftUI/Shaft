@@ -18,29 +18,35 @@ auto fontMgr = SkFontMgr_New_DirectWrite(nullptr);
 auto fontMgr = SkFontMgr_New_FontConfig(nullptr);
 #endif
 
-ParagraphBuilder_up paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection)
+ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection)
 {
-    return ParagraphBuilder::make(style, fontCollection);
+    auto result = ParagraphBuilder::make(style, fontCollection);
+    return result.release();
 }
 
-void paragraph_builder_add_text(const ParagraphBuilder_up &builder, const char *text)
+void paragraph_builder_add_text(ParagraphBuilder *builder, const char *text)
 {
     builder->addText(text);
 }
 
-void paragraph_builder_push_style(const ParagraphBuilder_up &builder, const TextStyle *style)
+void paragraph_builder_push_style(ParagraphBuilder *builder, const TextStyle *style)
 {
     builder->pushStyle(*style);
 }
 
-void paragraph_builder_pop(const ParagraphBuilder_up &builder)
+void paragraph_builder_pop(ParagraphBuilder *builder)
 {
     builder->pop();
 }
 
-Paragraph *paragraph_builder_build(const ParagraphBuilder_up &builder)
+Paragraph *paragraph_builder_build(ParagraphBuilder *builder)
 {
     return builder->Build().release();
+}
+
+void paragraph_builder_unref(ParagraphBuilder *builder)
+{
+    delete builder;
 }
 
 // MARK: - Paragraph

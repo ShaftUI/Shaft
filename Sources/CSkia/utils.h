@@ -106,17 +106,17 @@ typedef sk_sp<FontCollection> FontCollection_sp;
 typedef sk_sp<ParagraphBuilder> ParagraphBuilder_sp;
 typedef sk_sp<SkTypeface> SkTypeface_sp;
 typedef sk_sp<SkTextBlob> SkTextBlob_sp;
-typedef std::unique_ptr<ParagraphBuilder> ParagraphBuilder_up;
 
 // FontCollection_sp test_font_collection();
 
 // MARK: - ParagraphBuilder
 
-ParagraphBuilder_up paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection);
-void paragraph_builder_add_text(const ParagraphBuilder_up &builder, const char *text);
-void paragraph_builder_push_style(const ParagraphBuilder_up &builder, const TextStyle *style);
-void paragraph_builder_pop(const ParagraphBuilder_up &builder);
-Paragraph *paragraph_builder_build(const ParagraphBuilder_up &builder);
+ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection);
+void paragraph_builder_add_text(ParagraphBuilder *builder, const char *text);
+void paragraph_builder_push_style(ParagraphBuilder *builder, const TextStyle *style);
+void paragraph_builder_pop(ParagraphBuilder *builder);
+Paragraph *paragraph_builder_build(ParagraphBuilder *builder);
+void paragraph_builder_unref(ParagraphBuilder *builder);
 
 // MARK: - Paragraph
 
