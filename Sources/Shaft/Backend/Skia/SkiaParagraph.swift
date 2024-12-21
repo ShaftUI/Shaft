@@ -11,11 +11,7 @@ public class SkiaParagraphBuilder: ParagraphBuilder {
         builder = paragraph_builder_new(&skiaStyle, &fontCollection.collection)
     }
 
-    deinit {
-        paragraph_builder_unref(builder)
-    }
-
-    public let builder: UnsafeMutablePointer<skia.textlayout.ParagraphBuilder>
+    public let builder: ParagraphBuilder_up
 
     public func pushStyle(_ style: SpanStyle) {
         var skiaStyle = skia.textlayout.TextStyle()
