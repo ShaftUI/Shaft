@@ -2,8 +2,6 @@
 #define SK_METAL
 #define SK_GANESH
 
-#include <swift/bridging>
-
 #include "include/android/SkAnimatedImage.h"
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkBmpDecoder.h"
@@ -16,6 +14,7 @@
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
 #include "include/core/SkFontMetrics.h"
@@ -106,6 +105,8 @@ typedef sk_sp<FontCollection> FontCollection_sp;
 typedef sk_sp<ParagraphBuilder> ParagraphBuilder_sp;
 typedef sk_sp<SkTypeface> SkTypeface_sp;
 typedef sk_sp<SkTextBlob> SkTextBlob_sp;
+
+template void SkSafeUnref<FontCollection>(FontCollection *obj);
 
 // FontCollection_sp test_font_collection();
 
@@ -212,8 +213,9 @@ GrDirectContext_sp gr_mtl_direct_context_make(GrMtlBackendContext &context);
 // MARK: - Misc
 
 std::vector<SkString> skstring_vector_new();
-const char *skstring_c_str(const SkString &string) SWIFT_RETURNS_INDEPENDENT_VALUE;
+void skstring_c_str(const SkString &string, const char **out);
 sk_sp<SkColorSpace> color_space_new_srgb();
+
 sk_sp<SkColorSpace> color_space_new_null();
 
 #endif // CSKIA_UTILS_H

@@ -77,7 +77,9 @@ public class SkiaTypeface: Typeface {
     public var familyName: String {
         var skString = SkString()
         sk_typeface_get_family_name(&self.typeface, &skString)
-        return String(cString: skstring_c_str(skString))
+        var cString: UnsafePointer<CChar>?
+        skstring_c_str(skString, &cString)
+        return String(cString: cString!)
     }
 }
 

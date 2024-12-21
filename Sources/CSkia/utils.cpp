@@ -2,18 +2,6 @@
 
 using namespace skia::textlayout;
 
-// FontCollection_sp test_font_collection()
-// {
-//     // auto c = SkCanvas();
-//     auto fontCollection = sk_make_sp<FontCollection>();
-//     // auto fontMgr = SkFontMgr::RefDefault()
-//     auto fontMgr = SkFontMgr::RefEmpty();
-//     assert(fontMgr != nullptr);
-//     fontCollection->setDefaultFontManager(fontMgr);
-//     return fontCollection;
-//     // return nullptr;
-// }
-
 template struct sk_sp<FontCollection>;
 template struct sk_sp<SkSurface>;
 template struct sk_sp<SkImage>;
@@ -153,9 +141,9 @@ std::vector<SkString> skstring_vector_new()
     return std::vector<SkString>();
 }
 
-const char *skstring_c_str(const SkString &string)
+void skstring_c_str(const SkString &string, const char **out)
 {
-    return string.c_str();
+    *out = string.c_str();
 }
 
 sk_sp<SkColorSpace> color_space_new_srgb()
