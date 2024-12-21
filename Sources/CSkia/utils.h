@@ -111,7 +111,7 @@ typedef sk_sp<SkTextBlob> SkTextBlob_sp;
 
 // MARK: - ParagraphBuilder
 
-ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection);
+ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, const FontCollection_sp &fontCollection);
 void paragraph_builder_add_text(ParagraphBuilder *builder, const char *text);
 void paragraph_builder_push_style(ParagraphBuilder *builder, const TextStyle *style);
 void paragraph_builder_pop(ParagraphBuilder *builder);
@@ -138,9 +138,9 @@ void paragraph_unref(Paragraph *paragraph);
 // MARK: - Font
 
 FontCollection_sp sk_fontcollection_new();
-SkTypeface_sp sk_typeface_create_from_data(FontCollection_sp &collection, const char *data, size_t length);
-std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(FontCollection_sp &collection, std::vector<SkString> &families, SkFontStyle style);
-SkTypeface_sp sk_fontcollection_default_fallback(FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale);
+SkTypeface_sp sk_typeface_create_from_data(const FontCollection_sp &collection, const char *data, size_t length);
+std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(const FontCollection_sp &collection, const std::vector<SkString> &families, SkFontStyle style);
+SkTypeface_sp sk_fontcollection_default_fallback(const FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale);
 std::vector<SkGlyphID> sk_typeface_get_glyphs(SkTypeface_sp &typeface, const SkUnichar *text, size_t length);
 SkGlyphID sk_typeface_get_glyph(SkTypeface_sp &typeface, SkUnichar unicode);
 int sk_typeface_count_glyphs(SkTypeface_sp &typeface);

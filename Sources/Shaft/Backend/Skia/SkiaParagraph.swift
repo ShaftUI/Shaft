@@ -8,7 +8,7 @@ public class SkiaParagraphBuilder: ParagraphBuilder {
     public init(_ style: ParagraphStyle, fontCollection: SkiaFontCollection) {
         var skiaStyle = skia.textlayout.ParagraphStyle()
         style.copyToSkia(&skiaStyle)
-        builder = paragraph_builder_new(&skiaStyle, &fontCollection.collection)
+        builder = paragraph_builder_new(&skiaStyle, fontCollection.collection)
     }
 
     deinit {

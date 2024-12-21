@@ -18,7 +18,7 @@ auto fontMgr = SkFontMgr_New_DirectWrite(nullptr);
 auto fontMgr = SkFontMgr_New_FontConfig(nullptr);
 #endif
 
-ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, FontCollection_sp &fontCollection)
+ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, const FontCollection_sp &fontCollection)
 {
     auto result = ParagraphBuilder::make(style, fontCollection);
     return result.release();
@@ -162,18 +162,18 @@ FontCollection_sp sk_fontcollection_new()
     return collection;
 }
 
-SkTypeface_sp sk_typeface_create_from_data(FontCollection_sp &collection, const char *data, size_t length)
+SkTypeface_sp sk_typeface_create_from_data(const FontCollection_sp &collection, const char *data, size_t length)
 {
     auto bytes = SkData::MakeWithCopy(data, length);
     return collection->getFallbackManager()->makeFromData(bytes);
 }
 
-std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(FontCollection_sp &collection, std::vector<SkString> &families, SkFontStyle style)
+std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(const FontCollection_sp &collection, const std::vector<SkString> &families, SkFontStyle style)
 {
     return collection->findTypefaces(families, style);
 }
 
-SkTypeface_sp sk_fontcollection_default_fallback(FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale)
+SkTypeface_sp sk_fontcollection_default_fallback(const FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale)
 {
     return collection->defaultFallback(unicode, style, locale);
 }

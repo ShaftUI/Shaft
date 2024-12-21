@@ -11,7 +11,7 @@ public class SkiaFontCollection: FontCollection {
     public func makeTypefaceFrom(_ data: Data) -> any Typeface {
         let typeface = data.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
             let data = ptr.bindMemory(to: UInt8.self)
-            return sk_typeface_create_from_data(&collection, data.baseAddress, data.count)
+            return sk_typeface_create_from_data(collection, data.baseAddress, data.count)
         }
         return SkiaTypeface(typeface)
     }
@@ -25,8 +25,8 @@ public class SkiaFontCollection: FontCollection {
         }
 
         let typefaces = sk_fontcollection_find_typefaces(
-            &self.collection,
-            &families,
+            self.collection,
+            families,
             toSkiaFontStyle(fontStyle: style, fontWeight: weight)
         )
 
@@ -35,7 +35,7 @@ public class SkiaFontCollection: FontCollection {
 
     public func findTypefaceFor(_ codepoint: UInt32) -> (any Typeface)? {
         let typeface = sk_fontcollection_default_fallback(
-            &self.collection,
+            self.collection,
             SkUnichar(codepoint),
             SkFontStyle(),
             SkString()
