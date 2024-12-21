@@ -11,7 +11,7 @@ public class SkiaRenderer: Renderer {
     }
 
     public func createParagraphBuilder(_ style: ParagraphStyle) -> ParagraphBuilder {
-        SkiaParagraphBuilder(style)
+        SkiaParagraphBuilder(style, fontCollection: _fontCollection)
     }
 
     public func createTextBlob(_ glyphs: [GlyphID], positions: [Offset], font: any Font)
@@ -28,5 +28,6 @@ public class SkiaRenderer: Renderer {
         SkiaPath()
     }
 
-    public let fontCollection: FontCollection = SkiaFontCollection()
+    public let _fontCollection = SkiaFontCollection()
+    public var fontCollection: FontCollection { _fontCollection }
 }
