@@ -333,4 +333,25 @@ class TapAndDragTest: XCTestCase {
             XCTAssertEqual(events, ["down#1", "up#1"])
         }
     }
+
+    func test_Recognizer_rejects_pointer_that_is_not_the_primary_one_FILO_before_acceptance() {
+        testGesture { [self] tester in
+            setUpTapAndPanGestureRecognizer()
+
+            tapAndDrag.addPointer(event: down1)
+            tapAndDrag.addPointer(event: down2)
+            tester.closeArena(1)
+            tester.route(down1)
+
+            tester.closeArena(2)
+            tester.route(down2)
+
+            tester.route(up2)
+            GestureBinding.shared.gestureArena.sweep(2)
+
+            tester.route(up1)
+            GestureBinding.shared.gestureArena.sweep(1)
+            XCTAssertEqual(events, ["down#1", "up#1"])
+        }
+    }
 }
