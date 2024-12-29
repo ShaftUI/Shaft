@@ -17,6 +17,7 @@ let package = Package(
         .executable(name: "Playground", targets: ["Playground"]),
         .library(name: "Shaft", targets: ["Shaft"]),
         .plugin(name: "CSkiaSetupPlugin", targets: ["CSkiaSetupPlugin"]),
+        .plugin(name: "BuilderPlugin", targets: ["BuilderPlugin"]),
     ],
 
     dependencies: [
