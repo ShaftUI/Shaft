@@ -116,6 +116,20 @@ let package = Package(
             ]
         ),
 
+        .plugin(
+            name: "BuilderPlugin",
+            capability: .command(
+                intent: .custom(verb: "build", description: "Build application bundle"),
+                permissions: [
+                    .allowNetworkConnections(
+                        scope: .all(),
+                        reason: "To retrieve additional resources"
+                    ),
+                    .writeToPackageDirectory(reason: "To read configuration files"),
+                ]
+            )
+        ),
+
         .executableTarget(
             name: "CSkiaSetup",
             dependencies: [
