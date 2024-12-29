@@ -1,0 +1,8 @@
+{
+    "app": {
+        "name": "Playground",
+        "identifier": "dev.shaftui.playground",
+        "version": "1.0.0",
+        "product": "Playground"
+    }
+}
