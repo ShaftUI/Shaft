@@ -94,6 +94,10 @@ func createBundle(from artifect: PackageManager.BuildResult.BuiltArtifact, appSp
     try! structure.ensureDirectoriesExist()
 
     // Copy the main executable to the bundle
+    if FileManager.default.fileExists(atPath: structure.mainExecutable.path) {
+        print("Removing existing executable at \(structure.mainExecutable.path)")
+        try! FileManager.default.removeItem(at: structure.mainExecutable)
+    }
     try! FileManager.default.copyItem(
         at: URL(fileURLWithPath: artifect.path.string),
         to: structure.mainExecutable
@@ -118,4 +122,6 @@ func createBundle(from artifect: PackageManager.BuildResult.BuiltArtifact, appSp
         """
 
     try! infoPlist.write(to: structure.infoPlistFile, atomically: true, encoding: .utf8)
+
+    print("Bundle created at \(outputDirectory)")
 }
