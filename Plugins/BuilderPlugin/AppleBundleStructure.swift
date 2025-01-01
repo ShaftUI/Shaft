@@ -20,6 +20,7 @@ struct AppleBundleStructure {
     let infoPlistFile: URL
     let appIconFile: URL
     let mainExecutable: URL
+    let mainExecutableDSYM: URL
 
     init(at bundleDirectory: URL, platform: ApplePlatform, appName: String) {
         switch platform {
@@ -40,6 +41,7 @@ struct AppleBundleStructure {
         appIconFile = resourcesDirectory.appendingPathComponent("AppIcon.icns")
 
         mainExecutable = executableDirectory.appendingPathComponent(appName)
+        mainExecutableDSYM = mainExecutable.appendingPathExtension("dSYM")
     }
 
     func ensureDirectoriesExist() throws {
