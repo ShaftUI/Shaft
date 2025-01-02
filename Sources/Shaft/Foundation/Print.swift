@@ -5,6 +5,11 @@
 import Foundation
 import Rainbow
 
+/// Prints a formatted message with file, function, and line information.
+///
+/// This function is used for logging and debugging purposes. It prints a
+/// message with the current time, file path, function name, and line number.
+/// The message is colored and formatted for easy reading.
 public func mark(
     _ message: Any...,
     file: String = #file,
@@ -24,11 +29,3 @@ public func mark(
     let fileinfo = "[\(relativePath):\(line)]"
     print("\("INFO".green) \(time.cyan) \(fileinfo.magenta) \(function.yellow): \(message)")
 }
-
-// private func _toString<T>(_ value: T) -> String {
-//     if let value = value as? CustomStringConvertible {
-//         return value.description
-//     } else {
-//         return "\(value)"
-//     }
-// }
