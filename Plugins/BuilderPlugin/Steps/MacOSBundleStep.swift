@@ -23,18 +23,18 @@ func executeMacOSBundleStep(_ input: MacOSBundleInput, context: StepContext) {
 
     if !buildResult.succeeded {
         print("Build failed. See logs above for details.")
-        return
+        exit(1)
     }
 
     guard let mainArtifect = buildResult.builtArtifacts.first else {
-        print("No built artifacts found. Skipping bundle creation.")
-        return
+        print("No built artifacts found. Cannot create bundle.")
+        exit(1)
     }
     print("Main artifact: \(mainArtifect.path.string)")
 
     if mainArtifect.kind != .executable {
-        print("Main artifact is \(mainArtifect.kind). Skipping bundle creation.")
-        return
+        print("Main artifact is \(mainArtifect.kind). Cannot create bundle.")
+        exit(1)
     }
 
     print("Creating bundle with input: \(input)")
