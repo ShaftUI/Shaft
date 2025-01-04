@@ -110,7 +110,7 @@ public class PointerEvent {
     ///
     /// If this event has not been transformed, [position] is returned as-is.
     /// See also:
-    lazy var localPosition: Offset = Self.transformPosition(transform, position)
+    public private(set) lazy var localPosition: Offset = Self.transformPosition(transform, position)
 
     /// The [delta] transformed into the event receiver's local coordinate
     /// system according to [transform].
