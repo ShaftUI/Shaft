@@ -30,6 +30,7 @@ public class PointerEvent {
         self.delta = delta
         self.buttons = buttons
         self.down = down
+        self.transform = transform
     }
 
     public func copyWith(
@@ -103,7 +104,7 @@ public class PointerEvent {
     ///
     /// This value affects what is returned by [localPosition] and [localDelta].
     /// If this value is null, it is treated as the identity transformation.
-    public let transform: Matrix4x4f? = nil
+    public let transform: Matrix4x4f?
 
     /// The [position] transformed into the event receiver's local coordinate
     /// system according to [transform].
