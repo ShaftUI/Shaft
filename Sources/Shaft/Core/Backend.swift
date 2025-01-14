@@ -63,6 +63,19 @@ public protocol NativeView: AnyObject {
 
     /// Getting/Setting the title of the view if possible.
     var title: String { get set }
+
+    /// A raw pointer to the underlying view object that this NativeView wraps.
+    ///
+    /// - On MacOS, this is an pointer to a `NSView`.
+    /// - On iOS/tvOS, this is a pointer to a `UIView`.
+    ///
+    /// This is an optional property, and it is not guaranteed to be implemented
+    /// on all platforms.
+    var rawView: UnsafeMutableRawPointer? { get }
+}
+
+extension NativeView {
+    public var rawView: UnsafeMutableRawPointer? { nil }
 }
 
 #if canImport(AppKit)

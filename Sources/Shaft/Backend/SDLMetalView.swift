@@ -62,6 +62,10 @@
                 drawable.present()
             }
         }
+
+        public override var rawView: UnsafeMutableRawPointer? {
+            sdlMetalView
+        }
     }
 
 #endif

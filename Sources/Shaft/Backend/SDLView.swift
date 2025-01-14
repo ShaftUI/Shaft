@@ -175,6 +175,10 @@ public class SDLView: NativeView {
             SDL_SetWindowTitle(sdlWindow, newValue)
         }
     }
+
+    public var rawView: UnsafeMutableRawPointer? {
+        nil
+    }
 }
 
 // typedef bool (SDLCALL * SDL_EventFilter) (void *userdata, SDL_Event * event);
