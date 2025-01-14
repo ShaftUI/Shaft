@@ -167,14 +167,18 @@ public class WidgetsBinding {
 /// against the previous widget tree and any differences are applied to the
 /// underlying render tree, similar to what happens when a [StatefulWidget]
 /// rebuilds after calling [State.setState].
-public func runApp(_ app: Widget) {
+///
+/// An additional optional parameter `view` can be passed to specify the
+/// `NativeView` to use for rendering the app. If not provided, a new
+/// `NativeView` will be created.
+public func runApp(_ app: Widget, view: NativeView? = nil) {
     runPlainApp(
         DefaultApp { app }
     )
 }
 
-public func runPlainApp(_ app: Widget) {
-    guard let view = backend.createView() else {
+public func runPlainApp(_ app: Widget, view: NativeView? = nil) {
+    guard let view = view ?? backend.createView() else {
         fatalError("Failed to create view")
     }
 
