@@ -504,6 +504,7 @@ private class SDLTimerManager {
     private var callbackByTimerID: [SDL_TimerID: VoidCallback] = [:]
 
     public func createTimer(_ delay: Duration, _ callback: @escaping VoidCallback) -> SDLTimer {
+        assert(backend.isMainThread)
         let timerID = SDL_AddTimer(Uint32(delay.inMilliseconds), sdlTimerCallback, nil)
         let timer = SDLTimer(timerID)
         callbackByTimerID[timer.timerID] = callback
@@ -511,6 +512,7 @@ private class SDLTimerManager {
     }
 
     public func cancelTimer(_ timerID: SDL_TimerID) {
+        assert(backend.isMainThread)
         SDL_RemoveTimer(timerID)
         callbackByTimerID.removeValue(forKey: timerID)
     }
@@ -519,10 +521,17 @@ private class SDLTimerManager {
         return callbackByTimerID[timerID] != nil
     }
 
-    public func fireTimer(_ timerID: SDL_TimerID) {
+    fileprivate func fireTimer(_ timerID: SDL_TimerID) {
+        backend.runOnMainThread {
+            self.fireTimerInner(timerID)
+        }
+    }
+
+    private func fireTimerInner(_ timerID: SDL_TimerID) {
+        assert(backend.isMainThread)
         if let callback = callbackByTimerID[timerID] {
             callbackByTimerID.removeValue(forKey: timerID)
-            SDLBackend.shared.runOnMainThread(callback)
+            callback()
         }
     }
 }
