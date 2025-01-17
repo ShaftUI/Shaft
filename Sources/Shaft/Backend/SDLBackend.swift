@@ -151,7 +151,7 @@ public class SDLBackend: Backend {
     }
 
     public func createTimer(_ delay: Duration, _ f: @escaping () -> Void) -> any Timer {
-        SDLTimer(self, delay, f)
+        return SDLTimerManager.shared.createTimer(delay, f)
     }
 
     // const Uint32 myEventType = SDL_RegisterEvents(1);
@@ -498,46 +498,59 @@ private class TaskQueue {
     // }
 }
 
-public class SDLTimer: Timer {
-    public init(_ backend: SDLBackend, _ delay: Duration, _ callback: @escaping VoidCallback) {
-        self.backend = backend
-        self.callback = callback
+private class SDLTimerManager {
+    public static let shared = SDLTimerManager()
 
-        let timerCallback: SDL_TimerCallback = { (param, timerID, interval) -> UInt32 in
-            let timer = Unmanaged<SDLTimer>.fromOpaque(param!)
-            timer.takeUnretainedValue().scheduleCallback()
-            timer.takeUnretainedValue().isActive = false
-            timer.release()
-            return 0
-        }
+    private var callbackByTimerID: [SDL_TimerID: VoidCallback] = [:]
 
-        self.selfPtr = Unmanaged.passRetained(self)
-
-        self.timerID = SDL_AddTimer(
-            Uint32(delay.inMilliseconds),
-            timerCallback,
-            selfPtr.toOpaque()
-        )
-
+    public func createTimer(_ delay: Duration, _ callback: @escaping VoidCallback) -> SDLTimer {
+        let timerID = SDL_AddTimer(Uint32(delay.inMilliseconds), sdlTimerCallback, nil)
+        let timer = SDLTimer(timerID)
+        callbackByTimerID[timer.timerID] = callback
+        return timer
     }
 
-    private func scheduleCallback() {
-        backend.postTask(callback)
+    public func cancelTimer(_ timerID: SDL_TimerID) {
+        SDL_RemoveTimer(timerID)
+        callbackByTimerID.removeValue(forKey: timerID)
+    }
+
+    public func hasTimer(_ timerID: SDL_TimerID) -> Bool {
+        return callbackByTimerID[timerID] != nil
+    }
+
+    public func fireTimer(_ timerID: SDL_TimerID) {
+        if let callback = callbackByTimerID[timerID] {
+            callbackByTimerID.removeValue(forKey: timerID)
+            SDLBackend.shared.runOnMainThread(callback)
+        }
+    }
+}
+
+private func sdlTimerCallback(
+    param: UnsafeMutableRawPointer?,
+    timerID: SDL_TimerID,
+    interval: Uint32
+)
+    -> Uint32
+{
+    let manager = SDLTimerManager.shared
+    manager.fireTimer(timerID)
+    return 0
+}
+
+private class SDLTimer: Timer {
+    public let timerID: SDL_TimerID
+
+    public init(_ timerID: SDL_TimerID) {
+        self.timerID = timerID
     }
 
     public func cancel() {
-        if isActive {
-            SDL_RemoveTimer(timerID)
-            isActive = false
-            selfPtr.release()
-        }
+        SDLTimerManager.shared.cancelTimer(timerID)
     }
 
-    public var isActive: Bool = true
-
-    private let callback: VoidCallback
-    private let backend: SDLBackend
-
-    private var timerID: SDL_TimerID = 0
-    private var selfPtr: Unmanaged<SDLTimer>!
+    public var isActive: Bool {
+        return SDLTimerManager.shared.hasTimer(timerID)
+    }
 }
