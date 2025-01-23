@@ -9,16 +9,16 @@
 /// A resultBuilder that builds a single widget.
 @resultBuilder
 public struct WidgetBuilder {
-    static public func buildBlock(_ components: Widget...) -> Widget {
+    public static func buildBlock(_ components: Widget...) -> Widget {
         assert(components.count == 1)
         return components[0]
     }
 
-    static func buildEither(first component: Widget) -> Widget {
+    public static func buildEither(first component: Widget) -> Widget {
         return component
     }
 
-    static func buildEither(second component: Widget) -> Widget {
+    public static func buildEither(second component: Widget) -> Widget {
         return component
     }
 
@@ -30,7 +30,7 @@ public struct WidgetBuilder {
     //     return WidgetGroup(components: components)
     // }
 
-    static func buildExpression(_ expression: Widget) -> Widget {
+    public static func buildExpression(_ expression: Widget) -> Widget {
         return expression
     }
 
@@ -45,7 +45,7 @@ public struct WidgetBuilder {
 
 @resultBuilder
 public struct OptionalWidgetBuilder {
-    static public func buildBlock(_ components: Widget?...) -> Widget? {
+    public static func buildBlock(_ components: Widget?...) -> Widget? {
         if components.count == 0 {
             return nil
         } else {
@@ -54,15 +54,15 @@ public struct OptionalWidgetBuilder {
         }
     }
 
-    static func buildEither(first component: Widget?) -> Widget? {
+    public static func buildEither(first component: Widget?) -> Widget? {
         return component
     }
 
-    static func buildEither(second component: Widget?) -> Widget? {
+    public static func buildEither(second component: Widget?) -> Widget? {
         return component
     }
 
-    static func buildOptional(_ component: Widget?) -> Widget? {
+    public static func buildOptional(_ component: Widget?) -> Widget? {
         return component
     }
 
@@ -70,7 +70,7 @@ public struct OptionalWidgetBuilder {
     //     return WidgetGroup(components: components)
     // }
 
-    static func buildExpression(_ expression: Widget?) -> Widget? {
+    public static func buildExpression(_ expression: Widget?) -> Widget? {
         return expression
     }
 
