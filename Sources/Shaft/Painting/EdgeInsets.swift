@@ -25,6 +25,19 @@ public protocol EdgeInsetsGeometry {
 
     /// The total offset in the vertical direction.
     var vertical: Float { get }
+
+    /// Whether every dimension is non-negative.
+    var isNonNegative: Bool { get }
+}
+
+extension EdgeInsetsGeometry {
+    /// The total offset in the given direction.
+    public func along(_ axis: Axis) -> Float {
+        return switch axis {
+        case .horizontal: horizontal
+        case .vertical: vertical
+        }
+    }
 }
 
 public struct EdgeInsets: EdgeInsetsGeometry, Equatable {
@@ -85,6 +98,8 @@ public struct EdgeInsets: EdgeInsetsGeometry, Equatable {
 
     public var vertical: Float { (top + bottom) }
 
+    public var isNonNegative: Bool { (left >= 0 && top >= 0 && right >= 0 && bottom >= 0) }
+
     public func resolve(_ direction: TextDirection?) -> EdgeInsets {
         self
     }
@@ -94,6 +109,22 @@ public struct EdgeInsets: EdgeInsetsGeometry, Equatable {
             return self == other
         }
         return false
+    }
+
+    /// Creates a copy of this EdgeInsets but with the given fields replaced
+    /// with the new values.
+    public func copyWith(
+        left: Float? = nil,
+        top: Float? = nil,
+        right: Float? = nil,
+        bottom: Float? = nil
+    ) -> EdgeInsets {
+        EdgeInsets(
+            left: left ?? self.left,
+            top: top ?? self.top,
+            right: right ?? self.right,
+            bottom: bottom ?? self.bottom
+        )
     }
 }
 

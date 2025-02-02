@@ -20,7 +20,7 @@ public protocol NativeView: AnyObject {
     ///
     /// Device pixels are also referred to as physical pixels. Logical pixels are
     /// also referred to as device-independent or resolution-independent pixels.
-    var devicePixelRatio: Double { get }
+    var devicePixelRatio: Float { get }
 
     /// Updates the view's rendering on the GPU with the newly provided [Scene].
     func render(_ layerTree: LayerTree)

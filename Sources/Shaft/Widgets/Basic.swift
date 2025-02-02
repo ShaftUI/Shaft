@@ -1652,6 +1652,7 @@ public func getAxisDirectionFromAxisReverseAndDirectionality(
         return reverse ? .up : .down
     }
 }
+
 /// A widget that positions its children relative to the edges of its box.
 ///
 /// This class is useful if you want to overlap several children in a simple
@@ -1968,5 +1969,45 @@ public class Builder: StatelessWidget {
 
     public func build(context: BuildContext) -> Widget {
         builder(context)
+    }
+}
+
+/// A sliver that applies padding on each side of another sliver.
+///
+/// Slivers are special-purpose widgets that can be combined using a
+/// [CustomScrollView] to create custom scroll effects. A [SliverPadding]
+/// is a basic sliver that insets another sliver by applying padding on each
+/// side.
+///
+/// See also:
+///
+///  * [CustomScrollView], which displays a scrollable list of slivers.
+///  * [Padding], the box version of this widget.
+public class SliverPadding: SingleChildRenderObjectWidget {
+    /// Creates a sliver that applies padding on each side of another sliver.
+    public init(
+        key: (any Key)? = nil,
+        padding: EdgeInsetsGeometry,
+        sliver: Widget? = nil
+    ) {
+        self.padding = padding
+        self.child = sliver
+    }
+
+    public let child: (any Widget)?
+
+    /// The amount of space by which to inset the child sliver.
+    public let padding: EdgeInsetsGeometry
+
+    public func createRenderObject(context: BuildContext) -> RenderSliverPadding {
+        RenderSliverPadding(
+            padding: padding,
+            textDirection: .ltr
+        )
+    }
+
+    public func updateRenderObject(context: BuildContext, renderObject: RenderSliverPadding) {
+        renderObject.padding = padding
+        renderObject.textDirection = .ltr
     }
 }

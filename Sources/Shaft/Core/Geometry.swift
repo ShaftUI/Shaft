@@ -156,7 +156,7 @@ public struct TSize<T: Numeric>: Equatable {
         self.height = height
     }
 
-    static var zero: TSize<T> {
+    public static var zero: TSize<T> {
         TSize(0, 0)
     }
 
@@ -237,7 +237,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// and this [Size].
     ///
     /// See also [Rect.topLeft].
-    func topLeft(origin: TOffset<T>) -> TOffset<T> {
+    public func topLeft(origin: TOffset<T>) -> TOffset<T> {
         origin
     }
 
@@ -245,7 +245,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// given offset (which is interpreted as the top-left corner) and this size.
     ///
     /// See also [Rect.topCenter].
-    func topCenter(origin: TOffset<T>) -> TOffset<T> {
+    public func topCenter(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx + width / T(2.0), origin.dy)
     }
 
@@ -254,7 +254,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// and this size.
     ///
     /// See also [Rect.topRight].
-    func topRight(origin: TOffset<T>) -> TOffset<T> {
+    public func topRight(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx + width, origin.dy)
     }
 
@@ -262,7 +262,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// given offset (which is interpreted as the top-left corner) and this size.
     ///
     /// See also [Rect.centerLeft].
-    func centerLeft(origin: TOffset<T>) -> TOffset<T> {
+    public func centerLeft(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx, origin.dy + height / T(2.0))
     }
 
@@ -271,7 +271,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// interpreted as the top-left corner) and this size.
     ///
     /// See also [Rect.center].
-    func center(origin: TOffset<T>) -> TOffset<T> {
+    public func center(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx + width / T(2.0), origin.dy + height / T(2.0))
     }
 
@@ -279,7 +279,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// given offset (which is interpreted as the top-left corner) and this size.
     ///
     /// See also [Rect.centerLeft].
-    func centerRight(origin: TOffset<T>) -> TOffset<T> {
+    public func centerRight(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx + width, origin.dy + height / T(2.0))
     }
 
@@ -288,7 +288,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// top-left corner) and this size.
     ///
     /// See also [Rect.bottomLeft].
-    func bottomLeft(origin: TOffset<T>) -> TOffset<T> {
+    public func bottomLeft(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx, origin.dy + height)
     }
 
@@ -297,7 +297,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// size.
     ///
     /// See also [Rect.bottomLeft].
-    func bottomCenter(origin: TOffset<T>) -> TOffset<T> {
+    public func bottomCenter(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx + width / T(2.0), origin.dy + height)
     }
 
@@ -306,7 +306,7 @@ extension TSize where T: BinaryFloatingPoint {
     /// top-left corner) and this size.
     ///
     /// See also [Rect.bottomRight].
-    func bottomRight(origin: TOffset<T>) -> TOffset<T> {
+    public func bottomRight(origin: TOffset<T>) -> TOffset<T> {
         TOffset<T>(origin.dx + width, origin.dy + height)
     }
 }
@@ -315,6 +315,14 @@ extension TSize where T: BinaryInteger {
     public static func / (lhs: TSize, rhs: Float) -> Size {
         Size(Float(lhs.width) / rhs, Float(lhs.height) / rhs)
     }
+}
+
+extension TSize where T: SignedNumeric, T: Comparable {
+    /// The lesser of the magnitudes of the [width] and the [height].
+    public var shortestSide: T { min(abs(width), abs(height)) }
+
+    /// The greater of the magnitudes of the [width] and the [height].
+    public var longestSide: T { max(abs(width), abs(height)) }
 }
 
 extension TSize where T: Comparable {
@@ -666,7 +674,7 @@ public struct TRRect<T: Numeric>: Equatable {
     ///
     /// The corner radii default to [Radius.zero], i.e. right-angled corners. Will
     /// assert in debug mode if any of the radii are negative in either x or y.
-    static func fromRectAndCorners(
+    public static func fromRectAndCorners(
         _ rect: TRect<T>,
         topLeft: TRadius<T> = TRadius<T>.zero,
         topRight: TRadius<T> = TRadius<T>.zero,
@@ -693,7 +701,7 @@ public struct TRRect<T: Numeric>: Equatable {
     /// the same in each corner.
     ///
     /// Will assert in debug mode if the `radius` is negative in either x or y.
-    static func fromRectAndRadius(_ rect: TRect<T>, _ radius: TRadius<T>) -> Self {
+    public static func fromRectAndRadius(_ rect: TRect<T>, _ radius: TRadius<T>) -> Self {
         Self(
             left: rect.left,
             top: rect.top,
@@ -715,7 +723,7 @@ public struct TRRect<T: Numeric>: Equatable {
     ///
     /// The corner radii default to [Radius.zero], i.e. right-angled corners. Will
     /// assert in debug mode if any of the radii are negative in either x or y.
-    static func fromLTRBAndCorners(
+    public static func fromLTRBAndCorners(
         _ left: T,
         _ top: T,
         _ right: T,
@@ -866,7 +874,7 @@ extension TRRect where T: BinaryFloatingPoint {
     /// radii the first time it is called on a particular [RRect] instance. When
     /// using this method, prefer to reuse existing [RRect]s rather than
     /// recreating the object each time.
-    func contains(_ offset: TOffset<T>) -> Bool {
+    public func contains(_ offset: TOffset<T>) -> Bool {
         if offset.dx < left || offset.dx >= right || offset.dy < top || offset.dy >= bottom {
             return false
         }

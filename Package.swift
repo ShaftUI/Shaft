@@ -36,7 +36,8 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/apple/swift-collections",
-            .upToNextMinor(from: "1.0.0")  // or `.upToNextMajor
+            // .upToNextMinor(from: "1.1.0")
+            branch: "main"
         ),
         .package(
             url: "https://github.com/gregcotten/ZIPFoundationModern",

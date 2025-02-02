@@ -51,7 +51,7 @@ public final class Scrollable: StatefulWidget {
         controller: ScrollController? = nil,
         physics: ScrollPhysics? = nil,
         excludeFromSemantics: Bool = false,
-        semanticChildCount: UInt? = nil,
+        semanticChildCount: Int? = nil,
         dragStartBehavior: DragStartBehavior = .start,
         restorationId: String? = nil,
         scrollBehavior: ScrollBehavior? = nil,
@@ -182,7 +182,7 @@ public final class Scrollable: StatefulWidget {
     ///
     ///  * [CustomScrollView], for an explanation of scroll semantics.
     ///  * [SemanticsConfiguration.scrollChildCount], the corresponding semantics property.
-    public let semanticChildCount: UInt?
+    public let semanticChildCount: Int?
 
     // TODO(jslavitz): Set the DragStartBehavior default to be start across all widgets.
     /// Determines the way that drag start behavior is handled.
@@ -309,6 +309,8 @@ public final class ScrollableState: State<Scrollable>, ScrollContext {
     public var axisDirection: AxisDirection {
         widget.axisDirection
     }
+
+    public var devicePixelRatio: Float { 2 }
 
     private var fallbackScrollController: ScrollController?
 

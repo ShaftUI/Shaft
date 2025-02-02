@@ -110,4 +110,8 @@ class ScrollPositionWithSingleContext: ScrollPosition {
             //   goBallistic(0.0);
         }
     }
+
+    override var axisDirection: AxisDirection {
+        context.axisDirection
+    }
 }

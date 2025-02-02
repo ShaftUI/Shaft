@@ -15,9 +15,9 @@ public struct ViewConfiguration: Equatable {
     var size: Size
 
     /// The pixel density of the output surface.
-    var devicePixelRatio: Double
+    var devicePixelRatio: Float
 
-    public init(size: Size, devicePixelRatio: Double) {
+    public init(size: Size, devicePixelRatio: Float) {
         self.size = size
         self.devicePixelRatio = devicePixelRatio
     }

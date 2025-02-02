@@ -56,7 +56,7 @@ public class SDLView: NativeView {
 
     /// The actual rendering logic that runs on the raster thread.
     internal func performRender(_ layerTree: LayerTree) {
-        assertionFailure("Not implemented")
+        shouldImplement()
     }
 
     public var logicalSize: ISize {
@@ -76,8 +76,8 @@ public class SDLView: NativeView {
         return ISize(Int(width), Int(height))
     }
 
-    public var devicePixelRatio: Double {
-        return Double(SDL_GetWindowDisplayScale(sdlWindow))
+    public var devicePixelRatio: Float {
+        return SDL_GetWindowDisplayScale(sdlWindow)
     }
 
     /// Retrieves the suggested amplification factor when drawing in native

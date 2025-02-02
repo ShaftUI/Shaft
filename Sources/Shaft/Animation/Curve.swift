@@ -39,7 +39,7 @@ open class ParametricCurve<T> {
     ///
     /// The given parametric value `t` will be between 0.0 and 1.0, inclusive.
     open func transformInternal(_ t: Double) -> T {
-        fatalError("Not implemented")
+        shouldImplement()
     }
 }
 

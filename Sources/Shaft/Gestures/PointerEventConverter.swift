@@ -12,7 +12,7 @@
 /// Returns null if no view with the provided ID exists.
 ///
 /// Used by [PointerEventConverter.expand].
-typealias DevicePixelRatioGetter = (Int) -> Double?
+typealias DevicePixelRatioGetter = (Int) -> Float?
 
 // Add `kPrimaryButton` to [buttons] when a pointer of certain devices is down.
 //

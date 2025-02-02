@@ -165,6 +165,15 @@ public struct BoxConstraints: Constraints, Equatable {
         )
     }
 
+    /// Returns the size that both satisfies the constraints and is as close as
+    /// possible to the given width and height.
+    ///
+    /// When you already have a [Size], prefer [constrain], which applies the same
+    /// algorithm to a [Size] directly.
+    public func constrainDimensions(width: Float, height: Float) -> Size {
+        return Size(constrainWidth(width), constrainHeight(height))
+    }
+
     /// Returns a size that attempts to meet the following conditions, in order:
     ///
     ///  * The size must satisfy these constraints.
@@ -206,6 +215,68 @@ public struct BoxConstraints: Constraints, Equatable {
         return Size(constrainWidth(width), constrainHeight(height))
     }
 
+    /// Whether there is an upper bound on the maximum width.
+    ///
+    /// See also:
+    ///
+    ///  * [hasBoundedHeight], the equivalent for the vertical axis.
+    ///  * [hasInfiniteWidth], which describes whether the minimum width
+    ///    constraint is infinite.
+    public var hasBoundedWidth: Bool {
+        maxWidth < Float.infinity
+    }
+
+    /// Whether there is an upper bound on the maximum height.
+    ///
+    /// See also:
+    ///
+    ///  * [hasBoundedWidth], the equivalent for the horizontal axis.
+    ///  * [hasInfiniteHeight], which describes whether the minimum height
+    ///    constraint is infinite.
+    public var hasBoundedHeight: Bool {
+        maxHeight < Float.infinity
+    }
+
+    /// Whether the width constraint is infinite.
+    ///
+    /// Such a constraint is used to indicate that a box should grow as large as
+    /// some other constraint (in this case, horizontally). If constraints are
+    /// infinite, then they must have other (non-infinite) constraints [enforce]d
+    /// upon them, or must be [tighten]ed, before they can be used to derive a
+    /// [Size] for a [RenderBox.size].
+    ///
+    /// See also:
+    ///
+    ///  * [hasInfiniteHeight], the equivalent for the vertical axis.
+    ///  * [hasBoundedWidth], which describes whether the maximum width
+    ///    constraint is finite.
+    public var hasInfiniteWidth: Bool {
+        minWidth >= Float.infinity
+    }
+
+    /// Whether the height constraint is infinite.
+    ///
+    /// Such a constraint is used to indicate that a box should grow as large as
+    /// some other constraint (in this case, vertically). If constraints are
+    /// infinite, then they must have other (non-infinite) constraints [enforce]d
+    /// upon them, or must be [tighten]ed, before they can be used to derive a
+    /// [Size] for a [RenderBox.size].
+    ///
+    /// See also:
+    ///
+    ///  * [hasInfiniteWidth], the equivalent for the horizontal axis.
+    ///  * [hasBoundedHeight], which describes whether the maximum height
+    ///    constraint is finite.
+    public var hasInfiniteHeight: Bool {
+        minHeight >= Float.infinity
+    }
+
+    /// Whether the given size satisfies the constraints.
+    public func isSatisfiedBy(_ size: Size) -> Bool {
+        // assert(debugAssertIsValid())
+        return (minWidth <= size.width) && (size.width <= maxWidth) && (minHeight <= size.height)
+            && (size.height <= maxHeight)
+    }
 }
 
 extension BoxConstraints {
@@ -228,6 +299,18 @@ extension BoxConstraints {
 ///  * [RenderBox.hitTest], which documents more details around hit testing
 ///    [RenderBox]es.
 public typealias BoxHitTest = (BoxHitTestResult, Offset) -> Bool
+
+/// Method signature for hit testing a [RenderBox] with a manually
+/// managed position (one that is passed out-of-band).
+///
+/// Used by [RenderSliverSingleBoxAdapter.hitTestBoxChild] to hit test
+/// [RenderBox] children of a [RenderSliver].
+///
+/// See also:
+///
+///  * [RenderBox.hitTest], which documents more details around hit testing
+///    [RenderBox]es.
+public typealias BoxHitTestWithOutOfBandPosition = (BoxHitTestResult) -> Bool
 
 /// The result of performing a hit test on [RenderBox]es.
 ///
@@ -372,6 +455,62 @@ public class BoxHitTestResult: HitTestResult {
         if transform != nil {
             popTransform()
         }
+        return isHit
+    }
+
+    /// Pass-through method for adding a hit test while manually managing
+    /// the position transformation logic.
+    ///
+    /// The actual hit testing of the child needs to be implemented in the
+    /// provided `hitTest` callback. The position needs to be handled by
+    /// the caller.
+    ///
+    /// The function returns the return value of the `hitTest` callback.
+    ///
+    /// A `paintOffset`, `paintTransform`, or `rawTransform` should be
+    /// passed to the method to update the hit test stack.
+    ///
+    ///  * `paintOffset` has the semantics of the `offset` passed to
+    ///    [addWithPaintOffset].
+    ///
+    ///  * `paintTransform` has the semantics of the `transform` passed to
+    ///    [addWithPaintTransform], except that it must be invertible; it
+    ///    is the responsibility of the caller to ensure this.
+    ///
+    ///  * `rawTransform` has the semantics of the `transform` passed to
+    ///    [addWithRawTransform].
+    ///
+    /// Exactly one of these must be non-null.
+    ///
+    /// See also:
+    ///
+    ///  * [addWithPaintTransform], which takes a generic paint transform matrix and
+    ///    documents the intended usage of this API in more detail.
+    public func addWithOutOfBandPosition(
+        paintOffset: Offset? = nil,
+        paintTransform: Matrix4x4f? = nil,
+        rawTransform: Matrix4x4f? = nil,
+        hitTest: BoxHitTestWithOutOfBandPosition
+    ) -> Bool {
+        assert(
+            (paintOffset == nil && paintTransform == nil && rawTransform != nil)
+                || (paintOffset == nil && paintTransform != nil && rawTransform == nil)
+                || (paintOffset != nil && paintTransform == nil && rawTransform == nil),
+            "Exactly one transform or offset argument must be provided."
+        )
+
+        if let paintOffset {
+            pushOffset(-paintOffset)
+        } else if let rawTransform {
+            pushTransform(rawTransform)
+        } else {
+            assert(paintTransform != nil)
+            let transformMatrix = paintTransform!.removePerspectiveTransform().inversed
+            pushTransform(transformMatrix)
+        }
+
+        let isHit = hitTest(self)
+        popTransform()
         return isHit
     }
 }
@@ -650,49 +789,6 @@ open class RenderBox: RenderObject {
 }
 
 extension RenderBox {
-    /// {@template flutter.rendering.RenderObject.getTransformTo}
-    /// Applies the paint transform up the tree to `ancestor`.
-    ///
-    /// Returns a matrix that maps the local paint coordinate system to the
-    /// coordinate system of `ancestor`.
-    ///
-    /// If `ancestor` is null, this method returns a matrix that maps from the
-    /// local paint coordinate system to the coordinate system of the
-    /// [PipelineOwner.rootNode].
-    /// {@endtemplate}
-    ///
-    /// For the render tree owned by the [RendererBinding] (i.e. for the main
-    /// render tree displayed on the device) this means that this method maps to
-    /// the global coordinate system in logical pixels. To get physical pixels,
-    /// use [applyPaintTransform] from the [RenderView] to further transform the
-    /// coordinate.
-    public func getTransformTo(_ ancestor: RenderObject? = nil) -> Matrix4x4f {
-        var ancestor = ancestor
-        let ancestorSpecified = ancestor != nil
-        assert(attached)
-        if ancestor == nil {
-            let rootNode = owner?.rootNode
-            if let rootNode {
-                ancestor = rootNode
-            }
-        }
-        var renderers: [RenderObject] = []
-        var renderer: RenderObject = self
-        while renderer !== ancestor {
-            renderers.append(renderer)
-            assert(renderer.parent != nil)  // Failed to find ancestor in parent chain.
-            renderer = renderer.parent!
-        }
-        if ancestorSpecified {
-            renderers.append(ancestor!)
-        }
-        var transform = Matrix4x4f.identity
-        for index in stride(from: renderers.count - 1, to: 0, by: -1) {
-            renderers[index].applyPaintTransform(renderers[index - 1], transform: &transform)
-        }
-        return transform
-    }
-
     /// Convert the given point from the global coordinate system in logical
     /// pixels to the local coordinate system for this box.
     ///

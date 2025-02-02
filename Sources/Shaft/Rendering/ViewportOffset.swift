@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -40,6 +40,22 @@ public enum ScrollDirection {
     /// An anecdote for this most common case is reversing, or backing away, from
     /// the zero position.
     case reverse
+}
+
+/// Returns the opposite of the given [ScrollDirection].
+///
+/// Specifically, returns [ScrollDirection.reverse] for [ScrollDirection.forward]
+/// (and vice versa) and returns [ScrollDirection.idle] for
+/// [ScrollDirection.idle].
+public func flipScrollDirection(_ direction: ScrollDirection) -> ScrollDirection {
+    switch direction {
+    case .idle:
+        return .idle
+    case .forward:
+        return .reverse
+    case .reverse:
+        return .forward
+    }
 }
 
 /// Which part of the content inside the viewport should be visible.
