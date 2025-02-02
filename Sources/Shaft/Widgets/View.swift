@@ -153,10 +153,9 @@ class RawViewElement: RenderObjectElement {
         child = updateChild(child, (widget as! RawView).child, nil)
     }
 
-    override func insertRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    override func insertRenderObjectChild(_ child: RenderObject, slot: Slot?) {
         let renderObject = (renderObject as! RenderView)
         renderObject.child = (child as! RenderBox)
-        // renderObject.child
     }
 
     override func visitChildren(_ visitor: (Element) -> Void) {

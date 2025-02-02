@@ -321,7 +321,7 @@ public protocol BuildContext: AnyObject {
     ///
     /// All of the qualifications about when [dependOnInheritedWidgetOfExactType] can
     /// be called apply to this method as well.
-    func dependOnInheritedElement(_ ancestor: InheritedElement, aspect: AnyObject?)
+    func dependOnInheritedElement(_ ancestor: InheritedElement, aspect: Any?)
         -> any InheritedWidget
 
     /// Returns the nearest widget of the given type `T` and creates a dependency
@@ -411,6 +411,163 @@ public protocol BuildContext: AnyObject {
     /// whenever the widget is removed from the tree.
     func getElementForInheritedWidgetOfExactType(_ type: AnyObject.Type)
         -> InheritedElement?
+
+    /// Returns the nearest ancestor widget of the given type `T`, which must be the
+    /// type of a concrete [Widget] subclass.
+    ///
+    /// In general, [dependOnInheritedWidgetOfExactType] is more useful, since
+    /// inherited widgets will trigger consumers to rebuild when they change. This
+    /// method is appropriate when used in interaction event handlers (e.g.
+    /// gesture callbacks) or for performing one-off tasks such as asserting that
+    /// you have or don't have a widget of a specific type as an ancestor. The
+    /// return value of a Widget's build method should not depend on the value
+    /// returned by this method, because the build context will not rebuild if the
+    /// return value of this method changes. This could lead to a situation where
+    /// data used in the build method changes, but the widget is not rebuilt.
+    ///
+    /// Calling this method is relatively expensive (O(N) in the depth of the
+    /// tree). Only call this method if the distance from this widget to the
+    /// desired ancestor is known to be small and bounded.
+    ///
+    /// This method should not be called from [State.deactivate] or [State.dispose]
+    /// because the widget tree is no longer stable at that time. To refer to
+    /// an ancestor from one of those methods, save a reference to the ancestor
+    /// by calling [findAncestorWidgetOfExactType] in [State.didChangeDependencies].
+    ///
+    /// Returns null if a widget of the requested type does not appear in the
+    /// ancestors of this context.
+    // func findAncestorWidgetOfExactType<T: Widget>(_ type: T.Type) -> T?
+
+    /// Returns the [State] object of the nearest ancestor [StatefulWidget] widget
+    /// that is an instance of the given type `T`.
+    ///
+    /// This should not be used from build methods, because the build context will
+    /// not be rebuilt if the value that would be returned by this method changes.
+    /// In general, [dependOnInheritedWidgetOfExactType] is more appropriate for such
+    /// cases. This method is useful for changing the state of an ancestor widget in
+    /// a one-off manner, for example, to cause an ancestor scrolling list to
+    /// scroll this build context's widget into view, or to move the focus in
+    /// response to user interaction.
+    ///
+    /// In general, though, consider using a callback that triggers a stateful
+    /// change in the ancestor rather than using the imperative style implied by
+    /// this method. This will usually lead to more maintainable and reusable code
+    /// since it decouples widgets from each other.
+    ///
+    /// Calling this method is relatively expensive (O(N) in the depth of the
+    /// tree). Only call this method if the distance from this widget to the
+    /// desired ancestor is known to be small and bounded.
+    ///
+    /// This method should not be called from [State.deactivate] or [State.dispose]
+    /// because the widget tree is no longer stable at that time. To refer to
+    /// an ancestor from one of those methods, save a reference to the ancestor
+    /// by calling [findAncestorStateOfType] in [State.didChangeDependencies].
+    // func findAncestorStateOfType<T: StateProtocol>(_ type: T.Type) -> T?
+
+    /// Returns the [State] object of the furthest ancestor [StatefulWidget] widget
+    /// that is an instance of the given type `T`.
+    ///
+    /// Functions the same way as [findAncestorStateOfType] but keeps visiting subsequent
+    /// ancestors until there are none of the type instance of `T` remaining.
+    /// Then returns the last one found.
+    ///
+    /// This operation is O(N) as well though N is the entire widget tree rather than
+    /// a subtree.
+    // func findRootAncestorStateOfType<T: StateProtocol>(_ type: T.Type) -> T?
+
+    /// Returns the [RenderObject] object of the nearest ancestor [RenderObjectWidget] widget
+    /// that is an instance of the given type `T`.
+    ///
+    /// This should not be used from build methods, because the build context will
+    /// not be rebuilt if the value that would be returned by this method changes.
+    /// In general, [dependOnInheritedWidgetOfExactType] is more appropriate for such
+    /// cases. This method is useful only in esoteric cases where a widget needs
+    /// to cause an ancestor to change its layout or paint behavior. For example,
+    /// it is used by [Material] so that [InkWell] widgets can trigger the ink
+    /// splash on the [Material]'s actual render object.
+    ///
+    /// Calling this method is relatively expensive (O(N) in the depth of the
+    /// tree). Only call this method if the distance from this widget to the
+    /// desired ancestor is known to be small and bounded.
+    ///
+    /// This method should not be called from [State.deactivate] or [State.dispose]
+    /// because the widget tree is no longer stable at that time. To refer to
+    /// an ancestor from one of those methods, save a reference to the ancestor
+    /// by calling [findAncestorRenderObjectOfType] in [State.didChangeDependencies].
+    // func findAncestorRenderObjectOfType<T: RenderObject>(_ type: T.Type) -> T?
+
+    /// Walks the ancestor chain, starting with the parent of this build context's
+    /// widget, invoking the argument for each ancestor.
+    ///
+    /// The callback is given a reference to the ancestor widget's corresponding
+    /// [Element] object. The walk stops when it reaches the root widget or when
+    /// the callback returns false. The callback must not return null.
+    ///
+    /// This is useful for inspecting the widget tree.
+    ///
+    /// Calling this method is relatively expensive (O(N) in the depth of the tree).
+    ///
+    /// This method should not be called from [State.deactivate] or [State.dispose]
+    /// because the element tree is no longer stable at that time. To refer to
+    /// an ancestor from one of those methods, save a reference to the ancestor
+    /// by calling [visitAncestorElements] in [State.didChangeDependencies].
+    func visitAncestorElements(_ visitor: (Element) -> Bool)
+
+    /// Walks the children of this widget.
+    ///
+    /// {@template flutter.widgets.BuildContext.visitChildElements}
+    /// This is useful for applying changes to children after they are built
+    /// without waiting for the next frame, especially if the children are known,
+    /// and especially if there is exactly one child (as is always the case for
+    /// [StatefulWidget]s or [StatelessWidget]s).
+    ///
+    /// Calling this method is very cheap for build contexts that correspond to
+    /// [StatefulWidget]s or [StatelessWidget]s (O(1), since there's only one
+    /// child).
+    ///
+    /// Calling this method is potentially expensive for build contexts that
+    /// correspond to [RenderObjectWidget]s (O(N) in the number of children).
+    ///
+    /// Calling this method recursively is extremely expensive (O(N) in the number
+    /// of descendants), and should be avoided if possible. Generally it is
+    /// significantly cheaper to use an [InheritedWidget] and have the descendants
+    /// pull data down, than it is to use [visitChildElements] recursively to push
+    /// data down to them.
+    /// {@endtemplate}
+    func visitChildElements(_ visitor: (Element) -> Void)
+
+    /// Start bubbling this notification at the given build context.
+    ///
+    /// The notification will be delivered to any [NotificationListener] widgets
+    /// with the appropriate type parameters that are ancestors of the given
+    /// [BuildContext].
+    // func dispatchNotification(_ notification: Notification)
+
+    /// Returns a description of the [Element] associated with the current build context.
+    ///
+    /// The `name` is typically something like "The element being rebuilt was".
+    ///
+    /// See also:
+    ///
+    ///  * [Element.describeElements], which can be used to describe a list of elements.
+    //   DiagnosticsNode describeElement(String name, {DiagnosticsTreeStyle style = DiagnosticsTreeStyle.errorProperty});
+
+    /// Returns a description of the [Widget] associated with the current build context.
+    ///
+    /// The `name` is typically something like "The widget being rebuilt was".
+    //   DiagnosticsNode describeWidget(String name, {DiagnosticsTreeStyle style = DiagnosticsTreeStyle.errorProperty});
+
+    /// Adds a description of a specific type of widget missing from the current
+    /// build context's ancestry tree.
+    ///
+    /// You can find an example of using this method in [debugCheckHasMaterial].
+    //   List<DiagnosticsNode> describeMissingAncestor({ required Type expectedAncestorType });
+
+    /// Adds a description of the ownership chain from a specific [Element]
+    /// to the error report.
+    ///
+    /// The ownership chain is useful for debugging the source of an element.
+    //   DiagnosticsNode describeOwnershipChain(String name);
 }
 
 extension BuildContext {
@@ -1265,7 +1422,7 @@ enum ElementLifecycle {
 ///
 /// It is safe to call `element.visitChildElements` reentrantly within
 /// this callback.
-typealias ElementVisitor = (Element) -> Void
+public typealias ElementVisitor = (Element) -> Void
 
 /// An instantiation of a [Widget] at a particular location in the tree.
 ///
@@ -1355,6 +1512,49 @@ public class Element: BuildContext, HashableObject, DiagnosticableTree {
             return renderObject.size
         }
         return nil
+    }
+
+    public func visitAncestorElements(_ visitor: (Element) -> Bool) {
+        assert(debugCheckStateIsActiveForAncestorLookup())
+        var ancestor: Element? = parent
+        while let current = ancestor, visitor(current) {
+            ancestor = current.parent
+        }
+    }
+
+    /// Wrapper around [visitChildren] for [BuildContext].
+    public func visitChildElements(_ visitor: ElementVisitor) {
+        assert {
+            if owner == nil || !owner!.debugStateLocked {
+                return true
+            }
+            preconditionFailure(
+                """
+                visitChildElements() called during build.
+                The BuildContext.visitChildElements() method can't be called during
+                build because the child list is still being updated at that point,
+                so the children might not be constructed yet, or might be old children
+                that are going to be replaced.
+                """
+            )
+        }
+        visitChildren(visitor)
+    }
+
+    func debugCheckStateIsActiveForAncestorLookup() -> Bool {
+        assert {
+            if lifecycleState != ElementLifecycle.active {
+                assertionFailure(
+                    """
+                    Looking up a deactivated widget's ancestor is unsafe.
+                    At this point the state of the widget's element tree is no longer stable.
+                    To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+                    """
+                )
+            }
+            return true
+        }
+        return true
     }
 
     /// Returns the child of this [Element] that will insert a [RenderObject] into
@@ -2114,7 +2314,7 @@ public class Element: BuildContext, HashableObject, DiagnosticableTree {
         markNeedsBuild()
     }
 
-    public func dependOnInheritedElement(_ ancestor: InheritedElement, aspect: AnyObject? = nil)
+    public func dependOnInheritedElement(_ ancestor: InheritedElement, aspect: Any? = nil)
         -> any InheritedWidget
     {
         dependencies = dependencies ?? Set<InheritedElement>()
@@ -2172,6 +2372,53 @@ public class Element: BuildContext, HashableObject, DiagnosticableTree {
         return children
     }
 }
+
+/// Signature for a function that creates a widget for a given index, e.g., in a
+/// list.
+///
+/// Used by [ListView.builder] and other APIs that use lazily-generated widgets.
+///
+/// See also:
+///
+///  * [WidgetBuilder], which is similar but only takes a [BuildContext].
+///  * [TransitionBuilder], which is similar but also takes a child.
+///  * [NullableIndexedWidgetBuilder], which is similar but may return null.
+public typealias IndexedWidgetBuilder = (BuildContext, Int) -> Widget
+
+/// Signature for a function that creates a widget for a given index, e.g., in a
+/// list, but may return null.
+///
+/// Used by [SliverChildBuilderDelegate.builder] and other APIs that
+/// use lazily-generated widgets where the child count is not known
+/// ahead of time.
+///
+/// Unlike most builders, this callback can return null, indicating the index
+/// is out of range. Whether and when this is valid depends on the semantics
+/// of the builder. For example, [SliverChildBuilderDelegate.builder] returns
+/// null when the index is out of range, where the range is defined by the
+/// [SliverChildBuilderDelegate.childCount]; so in that case the `index`
+/// parameter's value may determine whether returning null is valid or not.
+///
+/// See also:
+///
+///  * [WidgetBuilder], which is similar but only takes a [BuildContext].
+///  * [TransitionBuilder], which is similar but also takes a child.
+///  * [IndexedWidgetBuilder], which is similar but not nullable.
+public typealias NullableIndexedWidgetBuilder = (BuildContext, Int) -> Widget?
+
+/// A builder that builds a widget given a child.
+///
+/// The child should typically be part of the returned widget tree.
+///
+/// Used by [AnimatedBuilder.builder], [ListenableBuilder.builder],
+/// [WidgetsApp.builder], and [MaterialApp.builder].
+///
+/// See also:
+///
+/// * [WidgetBuilder], which is similar but only takes a [BuildContext].
+/// * [IndexedWidgetBuilder], which is similar but also takes an index.
+/// * [ValueWidgetBuilder], which is similar but takes a value and a child.
+public typealias TransitionBuilder = (BuildContext, Widget?) -> Widget
 
 /// An [Element] that composes other [Element]s.
 ///
@@ -2475,7 +2722,7 @@ public class ParentDataElement: ProxyElement {
 }
 
 public class InheritedElement: ProxyElement {
-    private var dependents: [Element: AnyObject?] = [:]
+    private var dependents: [Element: Any?] = [:]
 
     override func updateInheritance() {
         assert(lifecycleState == .active)
@@ -2517,7 +2764,7 @@ public class InheritedElement: ProxyElement {
     ///    dependencies value to decide if the dependent needs to be rebuilt.
     ///  * [InheritedModel], which is an example of a class that uses this method
     ///    to manage dependency values.
-    public func getDependencies(_ dependent: Element) -> AnyObject? {
+    public func getDependencies(_ dependent: Element) -> Any? {
         dependents[dependent] ?? nil
     }
 
@@ -2543,7 +2790,7 @@ public class InheritedElement: ProxyElement {
     ///    [getDependencies] value to decide if the dependent needs to be rebuilt.
     ///  * [InheritedModel], which is an example of a class that uses this method
     ///    to manage dependency values.
-    public func setDependencies(_ dependent: Element, _ value: AnyObject?) {
+    public func setDependencies(_ dependent: Element, _ value: Any?) {
         dependents[dependent] = value
     }
 
@@ -2569,7 +2816,7 @@ public class InheritedElement: ProxyElement {
     ///    dependencies value to decide if the dependent needs to be rebuilt.
     ///  * [InheritedModel], which is an example of a class that uses this method
     ///    to manage dependency values.
-    public func updateDependencies(_ dependent: Element, aspect: AnyObject?) {
+    public func updateDependencies(_ dependent: Element, aspect: Any?) {
         setDependencies(dependent, nil)
     }
 
@@ -2758,7 +3005,7 @@ public class RenderObjectElement: Element {
     public override func attachRenderObject(_ newSlot: Slot?) {
         slot = newSlot
         ancestorRenderObjectElement = findAncestorRenderObjectElement()
-        ancestorRenderObjectElement?.insertRenderObjectChild(_renderObject!, newSlot)
+        ancestorRenderObjectElement?.insertRenderObjectChild(_renderObject!, slot: newSlot)
         for parentDataElement in findAncestorParentDataElements() {
             let parentDataWidget = parentDataElement.widget as! any ParentDataWidget
             updateParentData(parentDataWidget)
@@ -2767,21 +3014,21 @@ public class RenderObjectElement: Element {
 
     public override func detachRenderObject() {
         if let ancestorRenderObjectElement {
-            ancestorRenderObjectElement.removeRenderObjectChild(_renderObject!, slot)
+            ancestorRenderObjectElement.removeRenderObjectChild(_renderObject!, slot: slot)
             self.ancestorRenderObjectElement = nil
         }
         slot = nil
     }
 
-    func insertRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    func insertRenderObjectChild(_ child: RenderObject, slot: Slot?) {
         assertionFailure("\(Self.self) does not support addChild.")
     }
 
-    func moveRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    func moveRenderObjectChild(_ child: RenderObject, oldSlot: Slot?, newSlot: Slot?) {
         assertionFailure("\(Self.self) does not support moveChild.")
     }
 
-    func removeRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    func removeRenderObjectChild(_ child: RenderObject, slot: Slot?) {
         assertionFailure("\(Self.self) does not support removeChild.")
     }
 
@@ -2844,7 +3091,7 @@ public class SingleChildRenderObjectElement: RenderObjectElement {
         child = updateChild(child, (widget as! any SingleChildRenderObjectWidget).child, nil)
     }
 
-    override func insertRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    override func insertRenderObjectChild(_ child: RenderObject, slot: Slot?) {
         // let renderObject = renderObject as! RenderObjectWithSingleChild
         let renderObject = renderObject as! any RenderObjectWithSingleChild
         assert(slot == nil)
@@ -2852,11 +3099,11 @@ public class SingleChildRenderObjectElement: RenderObjectElement {
         assert(renderObject === self.renderObject)
     }
 
-    override func moveRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    override func moveRenderObjectChild(_ child: RenderObject, oldSlot: Slot?, newSlot: Slot?) {
         assertionFailure("\(Self.self) does not support moveChild.")
     }
 
-    override func removeRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    override func removeRenderObjectChild(_ child: RenderObject, slot: Slot?) {
         let renderObject = renderObject as! any RenderObjectWithSingleChild
         assert(slot == nil)
         // assert(renderObject.child === child)
@@ -2880,19 +3127,19 @@ public class MultiChildRenderObjectElement: RenderObjectElement {
     // repeatedly to remove children.
     private var forgottenChildren = Box(Set<Element>())
 
-    override func insertRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    override func insertRenderObjectChild(_ child: RenderObject, slot: Slot?) {
         let renderObject = _renderObject as! any RenderObjectWithChildren
         let slot = slot as! IndexedSlot
         renderObject.insert(child, after: slot.value?.renderObject)
     }
 
-    override func moveRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    override func moveRenderObjectChild(_ child: RenderObject, oldSlot: Slot?, newSlot: Slot?) {
         let renderObject = _renderObject as! any RenderObjectWithChildren
         let slot = slot as! IndexedSlot
         renderObject.move(child, after: slot.value?.renderObject)
     }
 
-    override func removeRenderObjectChild(_ child: RenderObject, _ slot: Slot?) {
+    override func removeRenderObjectChild(_ child: RenderObject, slot: Slot?) {
         let renderObject = _renderObject as! any RenderObjectWithChildren
         renderObject.remove(child)
     }
@@ -2956,11 +3203,30 @@ public protocol Slot {
     func isEqualTo(_ other: Slot) -> Bool
 }
 
-private func slotEqual(_ a: Slot?, _ b: Slot?) -> Bool {
+internal func slotEqual(_ a: Slot?, _ b: Slot?) -> Bool {
     if let a = a, let b = b {
         return a.isEqualTo(b)
     } else {
         return a == nil && b == nil
+    }
+}
+
+extension Int: Slot {
+    public func isEqualTo(_ other: Slot) -> Bool {
+        guard let other = other as? Int else {
+            return false
+        }
+        return other == self
+    }
+}
+
+/// A slot that only equals itself.
+public class UniqueSlot: Slot {
+    public func isEqualTo(_ other: Slot) -> Bool {
+        guard let other = other as? Self else {
+            return false
+        }
+        return other === self
     }
 }
 

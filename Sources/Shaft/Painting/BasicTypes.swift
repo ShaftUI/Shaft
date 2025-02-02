@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -189,5 +189,68 @@ extension AxisDirection {
         case AxisDirection.down, AxisDirection.right:
             return false
         }
+    }
+}
+
+/// Returns the [Axis] that contains the given [AxisDirection].
+///
+/// Specifically, returns [Axis.vertical] for [AxisDirection.up] and
+/// [AxisDirection.down] and returns [Axis.horizontal] for [AxisDirection.left]
+/// and [AxisDirection.right].
+public func axisDirectionToAxis(_ axisDirection: AxisDirection) -> Axis {
+    switch axisDirection {
+    case .up, .down:
+        return .vertical
+    case .left, .right:
+        return .horizontal
+    }
+}
+
+/// Returns the [AxisDirection] in which reading occurs in the given [TextDirection].
+///
+/// Specifically, returns [AxisDirection.left] for [TextDirection.rtl] and
+/// [AxisDirection.right] for [TextDirection.ltr].
+public func textDirectionToAxisDirection(_ textDirection: TextDirection) -> AxisDirection {
+    switch textDirection {
+    case .rtl:
+        return .left
+    case .ltr:
+        return .right
+    }
+}
+
+/// Returns the opposite of the given [AxisDirection].
+///
+/// Specifically, returns [AxisDirection.up] for [AxisDirection.down] (and
+/// vice versa), as well as [AxisDirection.left] for [AxisDirection.right] (and
+/// vice versa).
+///
+/// See also:
+///
+///  * [flipAxis], which does the same thing for [Axis] values.
+public func flipAxisDirection(_ axisDirection: AxisDirection) -> AxisDirection {
+    switch axisDirection {
+    case .up:
+        return .down
+    case .right:
+        return .left
+    case .down:
+        return .up
+    case .left:
+        return .right
+    }
+}
+
+/// Returns whether traveling along the given axis direction visits coordinates
+/// along that axis in numerically decreasing order.
+///
+/// Specifically, returns true for [AxisDirection.up] and [AxisDirection.left]
+/// and false for [AxisDirection.down] and [AxisDirection.right].
+public func axisDirectionIsReversed(_ axisDirection: AxisDirection) -> Bool {
+    switch axisDirection {
+    case .up, .left:
+        return true
+    case .down, .right:
+        return false
     }
 }

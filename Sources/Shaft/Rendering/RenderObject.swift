@@ -370,7 +370,22 @@ public class RenderOwner {
     /// before continuing to process dirty relayout boundaries.
     private var shouldMergeDirtyNodes = false
 
+    /// Whether this pipeline is currently in the layout phase.
+    ///
+    /// Specifically, whether [flushLayout] is currently running.
+    ///
+    /// Only valid when asserts are enabled; in release builds, this
+    /// always returns false.
+    public private(set) var debugDoingLayout = false
+
+    public private(set) var debugDoingChildLayout = false
+
     public func flushLayout() {
+        assert {
+            debugDoingLayout = true
+            return true
+        }
+
         while nodesNeedingLayout.isNotEmpty {
             var dirtyNodes = nodesNeedingLayout
             nodesNeedingLayout.removeAll()
@@ -394,9 +409,21 @@ public class RenderOwner {
             }
         }
 
+        assert {
+            debugDoingChildLayout = false
+            return true
+        }
+
         // for (final PipelineOwner child in _children) {
         //     child.flushLayout();
         // }
+
+        assert {
+            debugDoingLayout = false
+            debugDoingChildLayout = false
+            return true
+        }
+
     }
 
     // MARK: - Compositing Bits
@@ -451,6 +478,131 @@ public class RenderOwner {
 
 }
 
+/// An object in the render tree.
+///
+/// The [RenderObject] class hierarchy is the core of the rendering
+/// library's reason for being.
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=zmbmrw07qBc}
+///
+/// [RenderObject]s have a [parent], and have a slot called [parentData] in
+/// which the parent [RenderObject] can store child-specific data, for example,
+/// the child position. The [RenderObject] class also implements the basic
+/// layout and paint protocols.
+///
+/// The [RenderObject] class, however, does not define a child model (e.g.
+/// whether a node has zero, one, or more children). It also doesn't define a
+/// coordinate system (e.g. whether children are positioned in Cartesian
+/// coordinates, in polar coordinates, etc) or a specific layout protocol (e.g.
+/// whether the layout is width-in-height-out, or constraint-in-size-out, or
+/// whether the parent sets the size and position of the child before or after
+/// the child lays out, etc; or indeed whether the children are allowed to read
+/// their parent's [parentData] slot).
+///
+/// The [RenderBox] subclass introduces the opinion that the layout
+/// system uses Cartesian coordinates.
+///
+/// ## Lifecycle
+///
+/// A [RenderObject] must [dispose] when it is no longer needed. The creator
+/// of the object is responsible for disposing of it. Typically, the creator is
+/// a [RenderObjectElement], and that element will dispose the object it creates
+/// when it is unmounted.
+///
+/// [RenderObject]s are responsible for cleaning up any expensive resources
+/// they hold when [dispose] is called, such as [Picture] or [Image] objects.
+/// This includes any [Layer]s that the render object has directly created. The
+/// base implementation of dispose will nullify the [layer] property. Subclasses
+/// must also nullify any other layer(s) it directly creates.
+///
+/// ## Writing a RenderObject subclass
+///
+/// In most cases, subclassing [RenderObject] itself is overkill, and
+/// [RenderBox] would be a better starting point. However, if a render object
+/// doesn't want to use a Cartesian coordinate system, then it should indeed
+/// inherit from [RenderObject] directly. This allows it to define its own
+/// layout protocol by using a new subclass of [Constraints] rather than using
+/// [BoxConstraints], and by potentially using an entirely new set of objects
+/// and values to represent the result of the output rather than just a [Size].
+/// This increased flexibility comes at the cost of not being able to rely on
+/// the features of [RenderBox]. For example, [RenderBox] implements an
+/// intrinsic sizing protocol that allows you to measure a child without fully
+/// laying it out, in such a way that if that child changes size, the parent
+/// will be laid out again (to take into account the new dimensions of the
+/// child). This is a subtle and bug-prone feature to get right.
+///
+/// Most aspects of writing a [RenderBox] apply to writing a [RenderObject] as
+/// well, and therefore the discussion at [RenderBox] is recommended background
+/// reading. The main differences are around layout and hit testing, since those
+/// are the aspects that [RenderBox] primarily specializes.
+///
+/// ### Layout
+///
+/// A layout protocol begins with a subclass of [Constraints]. See the
+/// discussion at [Constraints] for more information on how to write a
+/// [Constraints] subclass.
+///
+/// The [performLayout] method should take the [constraints], and apply them.
+/// The output of the layout algorithm is fields set on the object that describe
+/// the geometry of the object for the purposes of the parent's layout. For
+/// example, with [RenderBox] the output is the [RenderBox.size] field. This
+/// output should only be read by the parent if the parent specified
+/// `parentUsesSize` as true when calling [layout] on the child.
+///
+/// Anytime anything changes on a render object that would affect the layout of
+/// that object, it should call [markNeedsLayout].
+///
+/// ### Hit Testing
+///
+/// Hit testing is even more open-ended than layout. There is no method to
+/// override, you are expected to provide one.
+///
+/// The general behavior of your hit-testing method should be similar to the
+/// behavior described for [RenderBox]. The main difference is that the input
+/// need not be an [Offset]. You are also allowed to use a different subclass of
+/// [HitTestEntry] when adding entries to the [HitTestResult]. When the
+/// [handleEvent] method is called, the same object that was added to the
+/// [HitTestResult] will be passed in, so it can be used to track information
+/// like the precise coordinate of the hit, in whatever coordinate system is
+/// used by the new layout protocol.
+///
+/// ### Adapting from one protocol to another
+///
+/// In general, the root of a Flutter render object tree is a [RenderView]. This
+/// object has a single child, which must be a [RenderBox]. Thus, if you want to
+/// have a custom [RenderObject] subclass in the render tree, you have two
+/// choices: you either need to replace the [RenderView] itself, or you need to
+/// have a [RenderBox] that has your class as its child. (The latter is the much
+/// more common case.)
+///
+/// This [RenderBox] subclass converts from the box protocol to the protocol of
+/// your class.
+///
+/// In particular, this means that for hit testing it overrides
+/// [RenderBox.hitTest], and calls whatever method you have in your class for
+/// hit testing.
+///
+/// Similarly, it overrides [performLayout] to create a [Constraints] object
+/// appropriate for your class and passes that to the child's [layout] method.
+///
+/// ### Layout interactions between render objects
+///
+/// In general, the layout of a render object should only depend on the output of
+/// its child's layout, and then only if `parentUsesSize` is set to true in the
+/// [layout] call. Furthermore, if it is set to true, the parent must call the
+/// child's [layout] if the child is to be rendered, because otherwise the
+/// parent will not be notified when the child changes its layout outputs.
+///
+/// It is possible to set up render object protocols that transfer additional
+/// information. For example, in the [RenderBox] protocol you can query your
+/// children's intrinsic dimensions and baseline geometry. However, if this is
+/// done then it is imperative that the child call [markNeedsLayout] on the
+/// parent any time that additional information changes, if the parent used it
+/// in the last layout phase. For an example of how to implement this, see the
+/// [RenderBox.markNeedsLayout] method. It overrides
+/// [RenderObject.markNeedsLayout] so that if a parent has queried the intrinsic
+/// or baseline information, it gets marked dirty whenever the child's geometry
+/// changes.
 open class RenderObject: HitTestTarget, DiagnosticableTree {
 
     // MARK: - Tree Node Basics
@@ -578,8 +730,25 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
         }
         markNeedsLayout()
         markNeedsCompositingBitsUpdate()
-
     }
+
+    /// Whether [performResize] for this render object is currently running.
+    ///
+    /// Only valid when asserts are enabled. In release builds, always returns
+    /// false.
+    public private(set) var debugDoingThisResize = false
+
+    /// Whether [performLayout] for this render object is currently running.
+    ///
+    /// Only valid when asserts are enabled. In release builds, always returns
+    /// false.
+    public private(set) var debugDoingThisLayout = false
+
+    /// The render object that is actively computing layout.
+    ///
+    /// Only valid when asserts are enabled. In release builds, always returns
+    /// null.
+    public private(set) static var debugActiveLayout: RenderObject?
 
     /// The depth of this node in the tree.
     ///
@@ -633,11 +802,27 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
         }
     }
 
+    /// Mark this render object's layout information as dirty, and then defer to
+    /// the parent.
+    ///
+    /// This function should only be called from [markNeedsLayout] or
+    /// [markNeedsLayoutForSizedByParentChange] implementations of subclasses
+    /// that introduce more reasons for deferring the handling of dirty layout
+    /// to the parent. See [markNeedsLayout] for details.
+    ///
+    /// Only call this if [parent] is not null.
     public func markParentNeedsLayout() {
+        // assert(_debugCanPerformMutations);
         needsLayout = true
-        if let parent {
-            parent.markNeedsLayout()
+        guard let parent else {
+            preconditionFailure()
         }
+        if !doingThisLayoutWithCallback {
+            parent.markNeedsLayout()
+        } else {
+            assert(parent.debugDoingThisLayout)
+        }
+        assert(parent === self.parent)
     }
 
     private func cleanRelayoutBoundary() {
@@ -663,11 +848,27 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
     }
 
     public func layout(_ constraints: any Constraints, parentUsesSize: Bool = false) {
+        assert(!debugDoingThisResize)
+        assert(!debugDoingThisLayout)
+
         let isRepaintBoundary =
             !parentUsesSize || sizedByParent || constraints.isTight || parent == nil
         let relayoutBoundary = isRepaintBoundary ? self : parent!.relayoutBoundary
 
         if !needsLayout && constraints.isEqualTo(self.constraints) {
+            assert {
+                // in case parentUsesSize changed since the last invocation, set size
+                // to itself, so it has the right internal debug values.
+                debugDoingThisResize = sizedByParent
+                debugDoingThisLayout = !sizedByParent
+                let debugPreviousActiveLayout = RenderObject.debugActiveLayout
+                RenderObject.debugActiveLayout = self
+                // debugResetSize()
+                RenderObject.debugActiveLayout = debugPreviousActiveLayout
+                debugDoingThisLayout = false
+                debugDoingThisResize = false
+                return true
+            }
             if self.relayoutBoundary !== relayoutBoundary {
                 self.relayoutBoundary = relayoutBoundary
                 (self as? any RenderObjectWithChild)?.visitChildren { child in
@@ -687,11 +888,36 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
         }
         self.relayoutBoundary = relayoutBoundary
 
+        assert(!doingThisLayoutWithCallback)
         if sizedByParent {
+            assert {
+                debugDoingThisResize = true
+                return true
+            }
             performResize()
+            assert {
+                debugDoingThisResize = false
+                return true
+            }
+        }
+
+        var debugPreviousActiveLayout: RenderObject?
+        assert {
+            debugDoingThisLayout = true
+            debugPreviousActiveLayout = RenderObject.debugActiveLayout
+            RenderObject.debugActiveLayout = self
+            return true
         }
 
         performLayout()
+
+        assert {
+            RenderObject.debugActiveLayout = debugPreviousActiveLayout
+            debugDoingThisLayout = false
+            // debugMutationsLocked = false
+            return true
+        }
+
         needsLayout = false
         markNeedsPaint()
     }
@@ -712,8 +938,59 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
     /// parent are available via the [constraints] getter.
     open func performLayout() {}
 
+    /// Allows mutations to be made to this object's child list (and any
+    /// descendants) as well as to any other dirty nodes in the render tree owned
+    /// by the same [PipelineOwner] as this object. The `callback` argument is
+    /// invoked synchronously, and the mutations are allowed only during that
+    /// callback's execution.
+    ///
+    /// This exists to allow child lists to be built on-demand during layout (e.g.
+    /// based on the object's size), and to enable nodes to be moved around the
+    /// tree as this happens (e.g. to handle [GlobalKey] reparenting), while still
+    /// ensuring that any particular node is only laid out once per frame.
+    ///
+    /// Calling this function disables a number of assertions that are intended to
+    /// catch likely bugs. As such, using this function is generally discouraged.
+    ///
+    /// This function can only be called during layout.
+    public func invokeLayoutCallback<T: Constraints>(_ callback: (T) -> Void) {
+        // assert(!debugMutationsLocked)
+        assert(debugDoingThisLayout)
+        assert(!doingThisLayoutWithCallback)
+        doingThisLayoutWithCallback = true
+        callback(constraints as! T)
+        doingThisLayoutWithCallback = false
+    }
+
+    public private(set) var doingThisLayoutWithCallback = false
+
     fileprivate func layoutWithoutResize() {
+        assert(needsLayout)
+        assert(relayoutBoundary === self)
+        var debugPreviousActiveLayout: RenderObject?
+        // assert(!debugMutationsLocked)
+        assert(!doingThisLayoutWithCallback)
+        // assert(debugCanParentUseSize != nil)
+        assert {
+            // debugMutationsLocked = true
+            debugDoingThisLayout = true
+            debugPreviousActiveLayout = RenderObject.debugActiveLayout
+            RenderObject.debugActiveLayout = self
+            // if debugPrintLayouts {
+            //     debugPrint("Laying out (without resize) \(self)")
+            // }
+            return true
+        }
+
         performLayout()
+
+        assert {
+            RenderObject.debugActiveLayout = debugPreviousActiveLayout
+            debugDoingThisLayout = false
+            // debugMutationsLocked = false
+            return true
+        }
+
         needsLayout = false
         markNeedsPaint()
     }
@@ -831,6 +1108,112 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
     /// the parent must return `false` from [paintsChild].
     open func applyPaintTransform(_ child: RenderObject, transform: inout Matrix4x4f) {
         assert(child.parent === self)
+    }
+
+    /// Whether the given child would be painted if [paint] were called.
+    ///
+    /// Some RenderObjects skip painting their children if they are configured to
+    /// not produce any visible effects. For example, a [RenderOffstage] with
+    /// its `offstage` property set to true, or a [RenderOpacity] with its opacity
+    /// value set to zero.
+    ///
+    /// In these cases, the parent may still supply a non-zero matrix in
+    /// [applyPaintTransform] to inform callers about where it would paint the
+    /// child if the child were painted at all. Alternatively, the parent may
+    /// supply a zeroed out matrix if it would not otherwise be able to determine
+    /// a valid matrix for the child and thus cannot meaningfully determine where
+    /// the child would paint.
+    open func paintsChild(_ child: RenderObject) -> Bool {
+        assert(child.parent === self)
+        return true
+    }
+
+    /// Applies the paint transform from this [RenderObject] to the `target`
+    /// [RenderObject].
+    ///
+    /// Returns a matrix that maps the local paint coordinate system to the
+    /// coordinate system of `target`, or a [Matrix4.zero] if the paint transform
+    /// can not be computed.
+    ///
+    /// This method throws an exception when the `target` is not in the same render
+    /// tree as this [RenderObject], as the behavior is undefined.
+    ///
+    /// This method ignores [RenderObject.paintsChild]. This means it will still
+    /// try to compute the paint transform even if this [RenderObject] or
+    /// `target` is currently not visible.
+    ///
+    /// If `target` is null, this method returns a matrix that maps from the
+    /// local paint coordinate system to the coordinate system of the
+    /// [PipelineOwner.rootNode].
+    ///
+    /// For the render tree owned by the [RendererBinding] (i.e. for the main
+    /// render tree displayed on the device) this means that this method maps to
+    /// the global coordinate system in logical pixels. To get physical pixels,
+    /// use [applyPaintTransform] from the [RenderView] to further transform the
+    /// coordinate.
+    public func getTransformTo(_ target: RenderObject?) -> Matrix4x4f {
+        assert(attached)
+        // The paths from to fromRenderObject and toRenderObject's common ancestor.
+        // Each list's length is greater than 1 if not null.
+        //
+        // [this, ...., commonAncestorRenderObject], or null if `this` is the common
+        // ancestor.
+        var fromPath: [RenderObject]?
+        // [target, ...., commonAncestorRenderObject], or null if `target` is the
+        // common ancestor.
+        var toPath: [RenderObject]?
+
+        var from: RenderObject = self
+        var to: RenderObject = target ?? owner!.rootNode!
+
+        while from !== to {
+            let fromDepth = from.depth
+            let toDepth = to.depth
+
+            if fromDepth >= toDepth {
+                guard let fromParent = from.parent else {
+                    fatalError("target and self are not in the same render tree.")
+                }
+                fromPath = (fromPath ?? [self])
+                fromPath?.append(fromParent)
+                from = fromParent
+            }
+            if fromDepth <= toDepth {
+                guard let toParent = to.parent else {
+                    fatalError("target and self are not in the same render tree.")
+                }
+                assert(
+                    target != nil,
+                    "self has a depth that is less than or equal to \(String(describing: owner?.rootNode))"
+                )
+                toPath = (toPath ?? [target!])
+                toPath?.append(toParent)
+                to = toParent
+            }
+        }
+
+        var fromTransform: Matrix4x4f?
+        if let fromPath = fromPath {
+            assert(fromPath.count > 1)
+            fromTransform = Matrix4x4f.identity
+            let lastIndex = target == nil ? fromPath.count - 2 : fromPath.count - 1
+            for index in stride(from: lastIndex, through: 1, by: -1) {
+                fromPath[index].applyPaintTransform(fromPath[index - 1], transform: &fromTransform!)
+            }
+        }
+        if toPath == nil {
+            return fromTransform ?? Matrix4x4f.identity
+        }
+
+        assert(toPath!.count > 1)
+        var toTransform = Matrix4x4f.identity
+        for index in stride(from: toPath!.count - 1, through: 1, by: -1) {
+            toPath![index].applyPaintTransform(toPath![index - 1], transform: &toTransform)
+        }
+        if toTransform.inversed.determinant == 0 {  // If the matrix is singular then `invert()` doesn't do anything.
+            return Matrix4x4f()
+        }
+        return fromTransform?.multiplied(by: toTransform) ?? toTransform
     }
 
     // MARK: - Compositing Bits
@@ -981,8 +1364,16 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
 public protocol RenderObjectWithChild<ChildType>: RenderObject {
     associatedtype ChildType: RenderObject
 
+    /// Calls visitor for each immediate child of this render object.
+    ///
+    /// Override in subclasses with children and call the visitor for each
+    /// child.
     func visitChildren(visitor: (ChildType) -> Void)
 
+    /// Adjust the [depth] of the given [child] to be greater than this node's
+    /// own [depth].
+    ///
+    /// Only call this method from overrides of [redepthChildren].
     func redepthChildren()
 
     func attachChild(_ owner: RenderOwner)
@@ -1083,6 +1474,25 @@ public protocol RenderObjectWithChildren: RenderObjectWithChild {
 }
 
 extension RenderObjectWithChildren {
+    /// The first child in the child list.
+    public var firstChild: ChildType? { childMixin.firstChild }
+
+    /// The last child in the child list.
+    public var lastChild: ChildType? { childMixin.lastChild }
+
+    /// The previous child before the given child in the child list.
+    public func childBefore(_ child: ChildType) -> ChildType? {
+        assert(child.parent === self)
+        let childParentData = child.parentData! as! ParentDataType
+        return childParentData.previousSibling
+    }
+
+    /// The next child after the given child in the child list.
+    public func childAfter(_ child: ChildType) -> ChildType? {
+        assert(child.parent === self)
+        let childParentData = child.parentData! as! ParentDataType
+        return childParentData.nextSibling
+    }
     /// The number of children.
     public var childCount: Int { childMixin.childCount }
 
@@ -1156,6 +1566,14 @@ extension RenderObjectWithChildren {
     /// If `after` is null, then this inserts the child at the start of the list,
     /// and the child becomes the new [firstChild].
     public func insert(_ child: RenderObject, after: RenderObject? = nil) {
+        _insert(child, after: after)
+    }
+
+    /// Insert child into this render object's child list after the given child.
+    ///
+    /// NOTE: This is a workaround for subclasses that need to override `insert`
+    /// but still call the superclass implementation.
+    public func _insert(_ child: RenderObject, after: RenderObject? = nil) {
         let child = child as! ChildType
         let after = after as! ChildType?
         assert(child !== self, "A RenderObject cannot be inserted into itself.")
@@ -1216,7 +1634,15 @@ extension RenderObjectWithChildren {
     /// Remove this child from the child list.
     ///
     /// Requires the child to be present in the child list.
-    func remove(_ child: RenderObject) {
+    public func remove(_ child: RenderObject) {
+        _remove(child)
+    }
+
+    /// Remove this child from the child list.
+    ///
+    /// NOTE: This is a workaround for subclasses that need to override `remove`
+    /// but still call the superclass implementation.
+    public func _remove(_ child: RenderObject) {
         let child = child as! ChildType
         removeFromChildList(child)
         dropChild(child: child)
@@ -1225,7 +1651,15 @@ extension RenderObjectWithChildren {
     /// Remove all their children from this render object's child list.
     ///
     /// More efficient than removing them individually.
-    func removeAll() {
+    public func removeAll() {
+        _removeAll()
+    }
+
+    /// Remove all their children from this render object's child list.
+    ///
+    /// NOTE: This is a workaround for subclasses that need to override `removeAll`
+    /// but still call the superclass implementation.
+    public func _removeAll() {
         var child: ChildType? = childMixin.firstChild
         while child != nil {
             let childParentData = child!.parentData as! ParentDataType
@@ -1245,7 +1679,15 @@ extension RenderObjectWithChildren {
     /// More efficient than removing and re-adding the child. Requires the child
     /// to already be in the child list at some position. Pass null for `after` to
     /// move the child to the start of the child list.
-    func move(_ child: RenderObject, after: RenderObject? = nil) {
+    public func move(_ child: RenderObject, after: RenderObject? = nil) {
+        _move (child, after: after)
+    }
+
+    /// Move the given `child` in the child list to be after another child.
+    ///
+    /// NOTE: This is a workaround for subclasses that need to override `move`
+    /// but still call the superclass implementation.
+    public func _move(_ child: RenderObject, after: RenderObject? = nil) {
         let child = child as! ChildType
         let after = after as! ChildType?
         assert(child !== self)
@@ -1262,6 +1704,12 @@ extension RenderObjectWithChildren {
     }
 
     public func visitChildren(visitor: (ChildType) -> Void) {
+        _visitChildren(visitor: visitor)
+    }
+
+    /// NOTE: This is a workaround for subclasses that need to override
+    /// `_visitChildren` but still call the superclass implementation.
+    public func _visitChildren(visitor: (ChildType) -> Void) {
         var next: ChildType? = childMixin.firstChild
         while let child = next {
             visitor(child)
@@ -1272,15 +1720,7 @@ extension RenderObjectWithChildren {
 }
 
 extension RenderObjectWithChildren where ParentDataType: ContainerBoxParentData<ChildType> {
-    //       void defaultPaint(PaintingContext context, Offset offset) {
-    //     ChildType? child = firstChild;
-    //     while (child != null) {
-    //       final ParentDataType childParentData = child.parentData! as ParentDataType;
-    //       context.paintChild(child, childParentData.offset + offset);
-    //       child = childParentData.nextSibling;
-    //     }
-    //   }
-    func defaultPaint(context: PaintingContext, offset: Offset) {
+    public func defaultPaint(context: PaintingContext, offset: Offset) {
         visitChildren { child in
             let childParentData = child.parentData as! ParentDataType
             context.paintChild(child, offset: childParentData.offset + offset)
@@ -1296,7 +1736,7 @@ extension RenderObjectWithChildren where ParentDataType: ContainerBoxParentData<
     ///
     ///  * [defaultPaint], which paints the children appropriate for this
     ///    hit-testing strategy.
-    func defaultHitTestChildren(_ result: BoxHitTestResult, position: Offset) -> Bool {
+    public func defaultHitTestChildren(_ result: BoxHitTestResult, position: Offset) -> Bool {
         var child: ChildType? = childMixin.lastChild
         while child != nil {
             // The x, y parameters have the top left of the node's box as the origin.

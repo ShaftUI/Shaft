@@ -60,17 +60,20 @@ public class ScrollPosition: ChangeNotifier, ViewportOffset, ScrollMetrics {
     /// output.
     public let debugLabel: String?
 
-    public private(set) var minScrollExtent: Float!
+    public var minScrollExtent: Float { _minScrollExtent }
+    private var _minScrollExtent: Float!
 
-    public private(set) var maxScrollExtent: Float!
+    public var maxScrollExtent: Float { _maxScrollExtent }
+    private var _maxScrollExtent: Float!
 
-    public var hasContentDimensions: Bool { minScrollExtent != nil && maxScrollExtent != nil }
+    public var hasContentDimensions: Bool { _minScrollExtent != nil && _maxScrollExtent != nil }
 
-    public private(set) var pixels: Float!
+    public var pixels: Float!
 
-    public private(set) var viewportDimension: Float!
+    public var viewportDimension: Float { _viewportDimension }
+    private var _viewportDimension: Float!
 
-    public var hasViewportDimension: Bool { viewportDimension != nil }
+    public var hasViewportDimension: Bool { _viewportDimension != nil }
 
     public var allowImplicitScrolling: Bool { physics.allowImplicitScrolling }
 
@@ -88,8 +91,8 @@ public class ScrollPosition: ChangeNotifier, ViewportOffset, ScrollMetrics {
     }
 
     public func applyViewportDimension(_ viewportDimension: Float) -> Bool {
-        if self.viewportDimension != viewportDimension {
-            self.viewportDimension = viewportDimension
+        if _viewportDimension != viewportDimension {
+            _viewportDimension = viewportDimension
             didChangeViewportDimensionOrReceiveCorrection = true
             // If this is called, you can rely on applyContentDimensions being called
             // soon afterwards in the same layout phase. So we put all the logic that
@@ -105,8 +108,8 @@ public class ScrollPosition: ChangeNotifier, ViewportOffset, ScrollMetrics {
         //     _didChangeViewportDimensionOrReceiveCorrection ||
         //     _lastAxis != axis) {
         assert(minScrollExtent <= maxScrollExtent)
-        self.minScrollExtent = minScrollExtent
-        self.maxScrollExtent = maxScrollExtent
+        _minScrollExtent = minScrollExtent
+        _maxScrollExtent = maxScrollExtent
         //   _lastAxis = axis;
         //   final ScrollMetrics? currentMetrics = haveDimensions ? copyWith() : null;
         didChangeViewportDimensionOrReceiveCorrection = false
@@ -255,7 +258,7 @@ public class ScrollPosition: ChangeNotifier, ViewportOffset, ScrollMetrics {
     ///
     /// The animation is typically handled by an [DrivenScrollActivity].
     public func animateTo(_ to: Float, duration: Duration, curve: Curve) {
-        assertionFailure("Not implemented")
+        shouldImplement()
     }
 
     /// Changes the scrolling position based on a pointer signal from current
@@ -273,4 +276,10 @@ public class ScrollPosition: ChangeNotifier, ViewportOffset, ScrollMetrics {
     public func pointerScroll(_ delta: Float) {
         assertionFailure("Subclasses should override this method.")
     }
+
+    public var axisDirection: AxisDirection {
+        context.axisDirection
+    }
+
+    public var devicePixelRatio: Float { context.devicePixelRatio }
 }

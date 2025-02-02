@@ -6,11 +6,9 @@ func assert(_ clousure: () -> Bool) {
     assert(clousure())
 }
 
-// func assert(clousure: () -> Void) {
-//     assert(
-//         {
-//             clousure()
-//             return true
-//         }()
-//     )
-// }
+/// Asserts that the given function should be implemented.
+func shouldImplement(_ function: String = #function, file: String = #file, line: Int = #line)
+    -> Never
+{
+    preconditionFailure("Should implement \(function) in \(file) at line \(line)")
+}

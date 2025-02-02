@@ -746,4 +746,8 @@ extension Matrix4x4f {
 
         return result
     }
+
+    public func multiplied(by other: Matrix4x4f) -> Matrix4x4f {
+        return self * other
+    }
 }

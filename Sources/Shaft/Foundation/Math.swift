@@ -128,3 +128,7 @@ internal func clampInt<T: FixedWidthInteger>(_ value: T, _ min: T, _ max: T) -> 
         return value
     }
 }
+
+internal func ceilToInt(_ value: Float) -> Int {
+    return value.ceil()
+}
