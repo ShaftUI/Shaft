@@ -54,24 +54,24 @@ public class Text: StatelessWidget {
     /// The text to display.
     ///
     /// This will be null if a [textSpan] is provided instead.
-    let data: String?
+    public let data: String?
 
     /// The text to display as a [InlineSpan].
     ///
     /// This will be null if [data] is provided instead.
-    let textSpan: InlineSpan?
+    public let textSpan: InlineSpan?
 
     /// If non-null, the style to use for this text.
     ///
     /// If the style's "inherit" property is true, the style will be merged with
     /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
     /// replace the closest enclosing [DefaultTextStyle].
-    let style: TextStyle?
+    public let style: TextStyle?
 
-    let strutStyle: StrutStyle?
+    public let strutStyle: StrutStyle?
 
     /// How the text should be aligned horizontally.
-    let textAlign: TextAlign?
+    public let textAlign: TextAlign?
 
     /// The directionality of the text.
     ///
@@ -86,7 +86,7 @@ public class Text: StatelessWidget {
     /// its left.
     ///
     /// Defaults to the ambient [Directionality], if any.
-    let textDirection: TextDirection?
+    public let textDirection: TextDirection?
 
     /// Used to select a font when the same Unicode character can
     /// be rendered differently, depending on the locale.
@@ -95,21 +95,21 @@ public class Text: StatelessWidget {
     /// is inherited from the enclosing app with `Localizations.localeOf(context)`.
     ///
     /// See [RenderParagraph.locale] for more information.
-    // let locale: Locale?
+    // public let locale: Locale?
 
     /// Whether the text should break at soft line breaks.
     ///
     /// If false, the glyphs in the text will be positioned as if there was unlimited horizontal space.
-    let softWrap: Bool?
+    public let softWrap: Bool?
 
     /// How visual overflow should be handled.
     ///
     /// If this is null [TextStyle.overflow] will be used, otherwise the value
     /// from the nearest [DefaultTextStyle] ancestor will be used.
-    let overflow: TextOverflow?
+    public let overflow: TextOverflow?
 
     /// {@macro flutter.painting.textPainter.textScaler}
-    let textScaler: (any TextScaler)?
+    public let textScaler: (any TextScaler)?
 
     /// An optional maximum number of lines for the text to span, wrapping if necessary.
     /// If the text exceeds the given number of lines, it will be truncated according
@@ -122,18 +122,18 @@ public class Text: StatelessWidget {
     /// an explicit number for its [DefaultTextStyle.maxLines], then the
     /// [DefaultTextStyle] value will take precedence. You can use a [RichText]
     /// widget directly to entirely override the [DefaultTextStyle].
-    let maxLines: Int?
+    public let maxLines: Int?
 
     /// An alternative semantics label for this text.
     ///
     /// If present, the semantics of this widget will contain this value instead
     /// of the actual text. This will overwrite any of the semantics labels applied
     /// directly to the [TextSpan]s.
-    let semanticsLabel: String?
+    public let semanticsLabel: String?
 
-    let textWidthBasis: TextWidthBasis?
+    public let textWidthBasis: TextWidthBasis?
 
-    let textHeightBehavior: TextHeightBehavior?
+    public let textHeightBehavior: TextHeightBehavior?
 
     /// The color to use when painting the selection.
     ///
@@ -143,7 +143,7 @@ public class Text: StatelessWidget {
     /// If null, the ambient [DefaultSelectionStyle] is used (if any); failing
     /// that, the selection color defaults to [DefaultSelectionStyle.defaultColor]
     /// (semi-transparent grey).
-    let selectionColor: Color?
+    public let selectionColor: Color?
 
     public func build(context: BuildContext) -> Widget {
         let defaultTextStyle = DefaultTextStyle.of(context)

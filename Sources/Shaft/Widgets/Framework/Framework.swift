@@ -2508,26 +2508,26 @@ public class ComponentElement: Element {
 }
 
 /// An [Element] that uses a [StatelessWidget] as its configuration.
-class StatelessElement: ComponentElement {
-    override init(_ widget: Widget) {
+public class StatelessElement: ComponentElement {
+    public override init(_ widget: Widget) {
         assert(widget is StatelessWidget)
         super.init(widget)
     }
 
-    override func update(_ newWidget: Widget) {
+    public override func update(_ newWidget: Widget) {
         super.update(newWidget)
         assert(widget === newWidget)
         rebuild(force: true)
     }
 
-    override func build() -> Widget {
+    public override func build() -> Widget {
         return (widget as! StatelessWidget).build(context: self)
     }
 }
 
 /// An [Element] that uses a [StatefulWidget] as its configuration.
-class StatefulElement<T: StatefulWidget>: ComponentElement {
-    init(_ widget: T) {
+public class StatefulElement<T: StatefulWidget>: ComponentElement {
+    public init(_ widget: T) {
         super.init(widget)
         state = widget.createState()
         assert(state.element == nil)
@@ -2541,13 +2541,13 @@ class StatefulElement<T: StatefulWidget>: ComponentElement {
     /// There is a one-to-one relationship between [State] objects and the
     /// [StatefulElement] objects that hold them. The [State] objects are created
     /// by [StatefulElement] in [mount].
-    var state: State<T>!
+    public private(set) var state: State<T>!
 
-    override func build() -> Widget {
+    public override func build() -> Widget {
         state.build(context: self)
     }
 
-    override func firstBuild() {
+    public override func firstBuild() {
         assert {
             state.debugLifecycleState = .created
             return true
@@ -2565,7 +2565,7 @@ class StatefulElement<T: StatefulWidget>: ComponentElement {
         super.firstBuild()
     }
 
-    override func performRebuild() {
+    public override func performRebuild() {
         if _didChangeDependencies {
             state.didChangeDependencies()
             _didChangeDependencies = false
@@ -2573,7 +2573,7 @@ class StatefulElement<T: StatefulWidget>: ComponentElement {
         super.performRebuild()
     }
 
-    override func update(_ newWidget: Widget) {
+    public override func update(_ newWidget: Widget) {
         super.update(newWidget)
         assert(widget === newWidget)
         let oldWidget = state.widget!
@@ -2582,24 +2582,22 @@ class StatefulElement<T: StatefulWidget>: ComponentElement {
         rebuild(force: true)
     }
 
-    //   @override
-    //   void activate() {
-    //     super.activate();
-    //     state.activate();
-    //     // Since the State could have observed the deactivate() and thus disposed of
-    //     // resources allocated in the build method, we have to rebuild the widget
-    //     // so that its State can reallocate its resources.
-    //     assert(_lifecycleState == _ElementLifecycle.active); // otherwise markNeedsBuild is a no-op
-    //     markNeedsBuild();
-    //   }
+    public override func activate() {
+        super.activate()
+        state.activate()
+        // Since the State could have observed the deactivate() and thus disposed of
+        // resources allocated in the build method, we have to rebuild the widget
+        // so that its State can reallocate its resources.
+        assert(lifecycleState == .active)
+        markNeedsBuild()
+    }
 
-    //   @override
-    //   void deactivate() {
-    //     state.deactivate();
-    //     super.deactivate();
-    //   }
+    public override func deactivate() {
+        state.deactivate()
+        super.deactivate()
+    }
 
-    override func unmount() {
+    public override func unmount() {
         super.unmount()
         state.dispose()
         assert(state.debugLifecycleState == .defunct)
@@ -2620,7 +2618,7 @@ class StatefulElement<T: StatefulWidget>: ComponentElement {
     /// to [didChangeDependencies] set it to true.
     private var _didChangeDependencies = false
 
-    override func didChangeDependencies() {
+    public override func didChangeDependencies() {
         super.didChangeDependencies()
         _didChangeDependencies = true
     }
@@ -2628,16 +2626,16 @@ class StatefulElement<T: StatefulWidget>: ComponentElement {
 
 /// An [Element] that uses a [ProxyWidget] as its configuration.
 public class ProxyElement: ComponentElement {
-    override init(_ widget: Widget) {
+    public override init(_ widget: Widget) {
         assert(widget is ProxyWidget)
         super.init(widget)
     }
 
-    override public func build() -> Widget {
+    public override func build() -> Widget {
         return (widget as! ProxyWidget).child
     }
 
-    override public func update(_ newWidget: Widget) {
+    public override func update(_ newWidget: Widget) {
         let oldWidget = widget as! ProxyWidget
         assert(widget !== newWidget)
         super.update(newWidget)
@@ -2715,7 +2713,7 @@ public class ParentDataElement: ProxyElement {
         applyParentData(newWidget)
     }
 
-    override public func notifyClients(_ oldWidget: ProxyWidget) {
+    public override func notifyClients(_ oldWidget: ProxyWidget) {
         let widget = widget as! any ParentDataWidget
         applyParentData(widget)
     }

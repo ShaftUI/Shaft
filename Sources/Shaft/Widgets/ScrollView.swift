@@ -545,15 +545,15 @@ public class CustomScrollView: ScrollViewBase {
         center: (any Key)? = nil,
         anchor: Float = 0.0,
         cacheExtent: Float? = nil,
-        slivers: [Widget] = [],
         semanticChildCount: Int? = nil,
         dragStartBehavior: DragStartBehavior = .start,
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior = .manual,
         restorationId: String? = nil,
         clipBehavior: Clip = .hardEdge,
-        hitTestBehavior: HitTestBehavior = .opaque
+        hitTestBehavior: HitTestBehavior = .opaque,
+        @WidgetListBuilder slivers: () -> [Widget]
     ) {
-        self.slivers = slivers
+        self.slivers = slivers()
         super.init(
             key: key,
             scrollDirection: scrollDirection,
