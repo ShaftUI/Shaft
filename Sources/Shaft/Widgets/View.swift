@@ -158,6 +158,20 @@ class RawViewElement: RenderObjectElement {
         renderObject.child = (child as! RenderBox)
     }
 
+    override func moveRenderObjectChild(
+        _ child: RenderObject,
+        oldSlot: (any Slot)?,
+        newSlot: (any Slot)?
+    ) {
+        assertionFailure()
+    }
+
+    override func removeRenderObjectChild(_ child: RenderObject, slot: (any Slot)?) {
+        assert(slot == nil)
+        assert((renderObject as! RenderView).child === child)
+        (renderObject as! RenderView).child = nil
+    }
+
     override func visitChildren(_ visitor: (Element) -> Void) {
         if let child = child {
             visitor(child)

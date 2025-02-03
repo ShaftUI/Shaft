@@ -231,7 +231,7 @@ public final class Scrollable: StatefulWidget {
     /// to [ScrollView.clipBehavior] and is supplied to the [Viewport].
     public let clipBehavior: Clip
 
-    public func createState() -> State<Scrollable> {
+    public func createState() -> ScrollableState {
         ScrollableState()
     }
 

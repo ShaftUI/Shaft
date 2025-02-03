@@ -13,7 +13,7 @@
 /// single [ScrollContext], such as a [Scrollable]. An instance of this class
 /// manages [ScrollActivity] instances, which change what content is visible in
 /// the [Scrollable]'s [Viewport].
-class ScrollPositionWithSingleContext: ScrollPosition {
+public class ScrollPositionWithSingleContext: ScrollPosition {
     public init(
         physics: ScrollPhysics,
         context: ScrollContext,
@@ -68,7 +68,7 @@ class ScrollPositionWithSingleContext: ScrollPosition {
     }
 
     private var _userScrollDirection: ScrollDirection = .idle
-    override var userScrollDirection: ScrollDirection {
+    public override var userScrollDirection: ScrollDirection {
         _userScrollDirection
     }
 
@@ -83,7 +83,19 @@ class ScrollPositionWithSingleContext: ScrollPosition {
         // didUpdateScrollDirection(value)
     }
 
-    override func pointerScroll(_ delta: Float) {
+    public override func jumpTo(_ value: Float) {
+        goIdle()
+        if pixels != value {
+            // let oldPixels = pixels
+            forcePixels(value)
+            // didStartScroll()
+            // didUpdateScrollPositionBy(pixels - oldPixels)
+            // didEndScroll()
+        }
+        goBallistic(0.0)
+    }
+
+    public override func pointerScroll(_ delta: Float) {
         // If an update is made to pointer scrolling here, consider if the same
         // (or similar) change should be made in
         // _NestedScrollCoordinator.pointerScroll.
@@ -111,7 +123,7 @@ class ScrollPositionWithSingleContext: ScrollPosition {
         }
     }
 
-    override var axisDirection: AxisDirection {
+    public override var axisDirection: AxisDirection {
         context.axisDirection
     }
 }

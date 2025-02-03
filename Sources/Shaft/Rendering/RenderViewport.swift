@@ -372,6 +372,9 @@ public class RenderViewportBase<ParentDataType: SliverContainerParentData>: Rend
     ///  * [cacheExtentStyle], which controls the units of the [cacheExtent].
     public var cacheExtent: Float? {
         didSet {
+            if cacheExtent == nil {
+                cacheExtent = defaultCacheExtent
+            }
             if cacheExtent != oldValue {
                 markNeedsLayout()
             }

@@ -171,16 +171,16 @@ public class SliverList: SliverMultiBoxAdaptorWidget {
     /// )
     ///
     /// {@end-tool}
-    public convenience init(
-        builder key: (any Key)? = nil,
-        itemBuilder: @escaping NullableIndexedWidgetBuilder,
-        findChildIndexCallback: ChildIndexGetter? = nil,
+    public static func builder(
+        key: (any Key)? = nil,
         itemCount: Int? = nil,
         addAutomaticKeepAlives: Bool = true,
         addRepaintBoundaries: Bool = true,
-        addSemanticIndexes: Bool = true
-    ) {
-        self.init(
+        addSemanticIndexes: Bool = true,
+        itemBuilder: @escaping NullableIndexedWidgetBuilder,
+        findChildIndexCallback: ChildIndexGetter? = nil
+    ) -> SliverList {
+        .init(
             key: key,
             delegate: SliverChildBuilderDelegate(
                 itemBuilder,
@@ -302,15 +302,15 @@ public class SliverList: SliverMultiBoxAdaptorWidget {
     /// {@end-tool}
     public static func list(
         key: (any Key)? = nil,
-        children: [Widget],
         addAutomaticKeepAlives: Bool = true,
         addRepaintBoundaries: Bool = true,
-        addSemanticIndexes: Bool = true
+        addSemanticIndexes: Bool = true,
+        @WidgetBuilder children: () -> [Widget]
     ) -> SliverList {
         .init(
             key: key,
             delegate: SliverChildListDelegate(
-                children,
+                children(),
                 addAutomaticKeepAlives: addAutomaticKeepAlives,
                 addRepaintBoundaries: addRepaintBoundaries,
                 addSemanticIndexes: addSemanticIndexes
@@ -1229,4 +1229,130 @@ public class SliverMultiBoxAdaptorElement: RenderObjectElement, RenderSliverBoxC
     //             && parentData.layoutOffset! + itemExtent > renderObject.constraints.scrollOffset
     //     }.forEach(visitor)
     // }
+}
+
+/// A sliver that places multiple sliver children in a linear array along
+/// the cross axis.
+///
+/// ## Layout algorithm
+///
+/// _This section describes how the framework causes [RenderSliverCrossAxisGroup]
+/// to position its children._
+///
+/// Layout for a [RenderSliverCrossAxisGroup] has four steps:
+///
+/// 1. Layout each child with a null or zero flex factor with cross axis constraint
+///    being whatever cross axis space is remaining after laying out any previous
+///    sliver. Slivers with null or zero flex factor should determine their own
+///    [SliverGeometry.crossAxisExtent]. For example, the [SliverConstrainedCrossAxis]
+///    widget uses either [SliverConstrainedCrossAxis.maxExtent] or
+///    [SliverConstraints.crossAxisExtent], deciding between whichever is smaller.
+/// 2. Divide up the remaining cross axis space among the children with non-zero flex
+///    factors according to their flex factor. For example, a child with a flex
+///    factor of 2.0 will receive twice the amount of cross axis space as a child
+///    with a flex factor 1.0.
+/// 3. Layout each of the remaining children with the cross axis constraint
+///    allocated in the previous step.
+/// 4. Set the geometry to that of whichever child has the longest
+///    [SliverGeometry.scrollExtent] with the [SliverGeometry.crossAxisExtent] adjusted
+///    to [SliverConstraints.crossAxisExtent].
+///
+/// {@tool dartpad}
+/// In this sample the [SliverCrossAxisGroup] sizes its three [children] so that
+/// the first normal [SliverList] has a flex factor of 1, the second [SliverConstrainedCrossAxis]
+/// has a flex factor of 0 and a maximum cross axis extent of 200.0, and the third
+/// [SliverCrossAxisExpanded] has a flex factor of 2.
+///
+/// ** See code in examples/api/lib/widgets/sliver/sliver_cross_axis_group.0.dart **
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [SliverCrossAxisExpanded], which is the [ParentDataWidget] for setting a flex
+///    value to a widget.
+///  * [SliverConstrainedCrossAxis], which is a [RenderObjectWidget] for setting
+///    an extent to constrain the widget to.
+///  * [SliverMainAxisGroup], which is the [RenderObjectWidget] for laying out
+///    multiple slivers along the main axis.
+/// A sliver that places multiple sliver children in a linear array along
+/// the cross axis.
+public class SliverCrossAxisGroup: MultiChildRenderObjectWidget {
+    /// Creates a sliver that places sliver children in a linear array along
+    /// the cross axis.
+    public init(
+        key: (any Key)? = nil,
+        slivers: [Widget]
+    ) {
+        self.key = key
+        self.children = slivers
+    }
+
+    public let key: (any Key)?
+    public var children: [any Widget]
+
+    public func createRenderObject(context: BuildContext) -> RenderSliverCrossAxisGroup {
+        return RenderSliverCrossAxisGroup()
+    }
+}
+
+/// A sliver that places multiple sliver children in a linear array along
+/// the main axis, one after another.
+///
+/// ## Layout algorithm
+///
+/// _This section describes how the framework causes [RenderSliverMainAxisGroup]
+/// to position its children._
+///
+/// Layout for a [RenderSliverMainAxisGroup] has four steps:
+///
+/// 1. Keep track of an offset variable which is the total [SliverGeometry.scrollExtent]
+///    of the slivers laid out so far.
+/// 2. To determine the constraints for the next sliver child to layout, calculate the
+///    amount of paint extent occupied from 0.0 to the offset variable and subtract this from
+///    [SliverConstraints.remainingPaintExtent] minus to use as the child's
+///    [SliverConstraints.remainingPaintExtent]. For the [SliverConstraints.scrollOffset],
+///    take the provided constraint's value and subtract out the offset variable, using
+///    0.0 if negative.
+/// 3. Once we finish laying out all the slivers, this offset variable represents
+///    the total [SliverGeometry.scrollExtent] of the sliver group. Since it is possible
+///    for specialized slivers to try to paint itself outside of the bounds of the
+///    sliver group's scroll extent (see [SliverPersistentHeader]), we must do a
+///    second pass to set a [SliverPhysicalParentData.paintOffset] to make sure it
+///    is within the bounds of the sliver group.
+/// 4. Finally, set the [RenderSliverMainAxisGroup.geometry] with the total
+///    [SliverGeometry.scrollExtent], [SliverGeometry.paintExtent] calculated from
+///    the constraints and [SliverGeometry.scrollExtent], and [SliverGeometry.maxPaintExtent].
+///
+/// {@tool dartpad}
+/// In this sample the [CustomScrollView] renders a [SliverMainAxisGroup] and a
+/// [SliverToBoxAdapter] with some content. The [SliverMainAxisGroup] renders a
+/// [SliverAppBar], [SliverList], and [SliverToBoxAdapter]. Notice that when the
+/// [SliverMainAxisGroup] goes out of view, so does the pinned [SliverAppBar].
+///
+/// ** See code in examples/api/lib/widgets/sliver/sliver_main_axis_group.0.dart **
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [SliverPersistentHeader], which is a [RenderObjectWidget] which may require
+///    adjustment to its [SliverPhysicalParentData.paintOffset] to make it fit
+///    within the computed [SliverGeometry.scrollExtent] of the [SliverMainAxisGroup].
+///  * [SliverCrossAxisGroup], which is the [RenderObjectWidget] for laying out
+///    multiple slivers along the cross axis.
+public class SliverMainAxisGroup: MultiChildRenderObjectWidget {
+    public init(
+        key: (any Key)? = nil,
+        @WidgetListBuilder children: () -> [Widget]
+    ) {
+        self.key = key
+        self.children = children()
+    }
+
+    public var key: (any Key)?
+
+    public var children: [any Widget]
+
+    public func createRenderObject(context: any BuildContext) -> some RenderObject {
+        return RenderSliverMainAxisGroup()
+    }
 }
