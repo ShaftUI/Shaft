@@ -69,8 +69,8 @@ private final class ListTileState<T: Hashable>: State<ListTile<T>>, ListTileStyl
         setState { isHovered = false }
     }
 
-    private var selectionDelegate: (any ListSelectionDelegate<T>)? {
-        return ListSelectionScope.maybeOf(context)?.selection as? any ListSelectionDelegate<T>
+    private var selectionDelegate: (any SelectionDelegate<T>)? {
+        return SelectionScope.maybeOf(context)?.delegate as? any SelectionDelegate<T>
     }
 
     private func updateSelectionIfNeeded() {
