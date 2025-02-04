@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Rainbow",
       "state" : {
-        "revision" : "e0dada9cd44e3fa7ec3b867e49a8ddbf543e3df3",
-        "version" : "4.0.1"
+        "revision" : "0c627a4f8a39ef37eadec1ceec02e4a7f55561ac",
+        "version" : "4.1.0"
       }
     },
     {
@@ -30,10 +30,10 @@
     {
       "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-collections",
+      "location" : "https://github.com/ShaftUI/swift-collections",
       "state" : {
-        "branch" : "main",
-        "revision" : "52a1f698d5faa632df0e1219b1bbffa07cf65260"
+        "revision" : "52a1f698d5faa632df0e1219b1bbffa07cf65260",
+        "version" : "1.3.0"
       }
     },
     {
