@@ -45,7 +45,7 @@ public final class FixedListView: StatefulWidget {
 
     public let children: [Widget]
 
-    public let selectionDelegate: (any ListSelectionDelegate)?
+    public let selectionDelegate: (any SelectionDelegate)?
 
     public func createState() -> some State<FixedListView> {
         FixedListViewState()
@@ -61,13 +61,13 @@ private class FixedListViewState: State<FixedListView>,
 
     public override func build(context: any BuildContext) -> any Widget {
         let style: any FixedListViewStyle = Inherited.valueOf(context) ?? .default
-        return ListSelectionScope(selection: widget.selectionDelegate) {
+        return SelectionScope(delegate: widget.selectionDelegate) {
             style.build(context: self)
         }
     }
 }
 
-public protocol ListSelectionDelegate<T>: AnyObject {
+public protocol SelectionDelegate<T>: AnyObject {
     associatedtype T: Hashable
 
     func addSelection(_ item: T)
@@ -79,12 +79,12 @@ public protocol ListSelectionDelegate<T>: AnyObject {
     func isInSelection(_ item: T) -> Bool
 }
 
-public class SingleValueNotifierSelectionDelegate<T: Hashable>: ListSelectionDelegate {
-    init(selection: ValueNotifier<T>) {
+public class SingleValueNotifierSelectionDelegate<T: Hashable>: SelectionDelegate {
+    public init(selection: ValueNotifier<T>) {
         self.selection = selection
     }
 
-    let selection: ValueNotifier<T>
+    public let selection: ValueNotifier<T>
 
     public func addSelection(_ item: T) {
         selection.value = item
@@ -104,12 +104,12 @@ public class SingleValueNotifierSelectionDelegate<T: Hashable>: ListSelectionDel
     }
 }
 
-public class OptionalValueNotifierSelectionDelegate<T: Hashable>: ListSelectionDelegate {
-    init(selection: ValueNotifier<T?>) {
+public class OptionalValueNotifierSelectionDelegate<T: Hashable>: SelectionDelegate {
+    public init(selection: ValueNotifier<T?>) {
         self.selection = selection
     }
 
-    let selection: ValueNotifier<T?>
+    public let selection: ValueNotifier<T?>
 
     public func addSelection(_ item: T) {
         selection.value = item
@@ -128,12 +128,12 @@ public class OptionalValueNotifierSelectionDelegate<T: Hashable>: ListSelectionD
     }
 }
 
-public class ListValueNotifierSelectionDelegate<T: Hashable>: ListSelectionDelegate {
-    init(selection: ValueNotifier<Set<T>>) {
+public class ListValueNotifierSelectionDelegate<T: Hashable>: SelectionDelegate {
+    public init(selection: ValueNotifier<Set<T>>) {
         self.selection = selection
     }
 
-    let selection: ValueNotifier<Set<T>>
+    public let selection: ValueNotifier<Set<T>>
 
     public func addSelection(_ item: T) {
         selection.value.insert(item)
@@ -152,16 +152,49 @@ public class ListValueNotifierSelectionDelegate<T: Hashable>: ListSelectionDeleg
     }
 }
 
-public class ListSelectionScope: InheritedWidget {
+public class SelectionScope: InheritedWidget {
     public init(
-        selection: (any ListSelectionDelegate)? = nil,
+        delegate: (any SelectionDelegate)? = nil,
         @WidgetBuilder child: () -> Widget
     ) {
-        self.selection = selection
+        self.delegate = delegate
         self.child = child()
     }
 
-    public let selection: (any ListSelectionDelegate)?
+    public static func single<T: Hashable>(
+        selection: ValueNotifier<T>,
+        @WidgetBuilder child: () -> Widget
+    ) -> Widget {
+        SelectionScope(
+            delegate: SingleValueNotifierSelectionDelegate(selection: selection)
+        ) {
+            child()
+        }
+    }
+
+    public static func optional<T: Hashable>(
+        selection: ValueNotifier<T?>,
+        @WidgetBuilder child: () -> Widget
+    ) -> Widget {
+        SelectionScope(
+            delegate: OptionalValueNotifierSelectionDelegate(selection: selection)
+        ) {
+            child()
+        }
+    }
+
+    public static func multiple<T: Hashable>(
+        selection: ValueNotifier<Set<T>>,
+        @WidgetBuilder child: () -> Widget
+    ) -> Widget {
+        SelectionScope(
+            delegate: ListValueNotifierSelectionDelegate(selection: selection)
+        ) {
+            child()
+        }
+    }
+
+    public let delegate: (any SelectionDelegate)?
 
     public let child: Widget
 
@@ -169,8 +202,8 @@ public class ListSelectionScope: InheritedWidget {
         child
     }
 
-    public func updateShouldNotify(_ oldWidget: ListSelectionScope) -> Bool {
-        selection !== oldWidget.selection
+    public func updateShouldNotify(_ oldWidget: SelectionScope) -> Bool {
+        delegate !== oldWidget.delegate
     }
 }
 
