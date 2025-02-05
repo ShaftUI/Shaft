@@ -10,6 +10,7 @@ extension Paint {
         paint.setAntiAlias(isAntiAlias)
         paint.setColor(color.value)
         // paint.setBlender(blender)
+        paint.setBlendMode(blendMode.toSkia())
         paint.setStyle(style.toSkia())
         paint.setStrokeWidth(strokeWidth)
         paint.setStrokeCap(strokeCap.toSkia())
@@ -97,6 +98,42 @@ extension PaintingStyle {
             return SkPaint.Style.init(0)
         case .stroke:
             return SkPaint.Style.init(1)
+        }
+    }
+}
+
+extension BlendMode {
+    func toSkia() -> SkBlendMode {
+        switch self {
+        case .clear: .clear
+        case .src: .src
+        case .dst: .dst
+        case .srcOver: .srcOver
+        case .dstOver: .dstOver
+        case .srcIn: .srcIn
+        case .dstIn: .dstIn
+        case .srcOut: .srcOut
+        case .dstOut: .dstOut
+        case .srcATop: .srcATop
+        case .dstATop: .dstATop
+        case .xor: .xor
+        case .plus: .plus
+        case .modulate: .modulate
+        case .screen: .screen
+        case .overlay: .overlay
+        case .darken: .darken
+        case .lighten: .lighten
+        case .colorDodge: .colorDodge
+        case .colorBurn: .colorBurn
+        case .hardLight: .hardLight
+        case .softLight: .softLight
+        case .difference: .difference
+        case .exclusion: .exclusion
+        case .multiply: .multiply
+        case .hue: .hue
+        case .saturation: .saturation
+        case .color: .color
+        case .luminosity: .luminosity
         }
     }
 }
