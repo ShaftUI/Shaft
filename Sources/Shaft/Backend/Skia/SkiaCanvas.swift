@@ -119,6 +119,7 @@ public class SkiaCanvas: DirectCanvas {
 
     public func drawImage(_ image: NativeImage, _ offset: Offset, _ paint: Paint) {
         let image = image as! SkiaImage
+        paint.copyToSkia(paint: &self.skPaint)
         sk_canvas_draw_image(skCanvas, &image.skImage, offset.dx, offset.dy, &self.skPaint)
     }
 
@@ -128,6 +129,7 @@ public class SkiaCanvas: DirectCanvas {
         skSrc.setLTRB(src.left, src.top, src.right, src.bottom)
         var skDst = SkRect()
         skDst.setLTRB(dst.left, dst.top, dst.right, dst.bottom)
+        paint.copyToSkia(paint: &self.skPaint)
         sk_canvas_draw_image_rect(skCanvas, &image.skImage, skSrc, skDst, &self.skPaint)
     }
 
@@ -142,6 +144,7 @@ public class SkiaCanvas: DirectCanvas {
         )
         var skDst = SkRect()
         skDst.setLTRB(dst.left, dst.top, dst.right, dst.bottom)
+        paint.copyToSkia(paint: &self.skPaint)
         sk_canvas_draw_image_nine(skCanvas, &image.skImage, skCenter, skDst, &self.skPaint)
     }
 
