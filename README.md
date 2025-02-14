@@ -7,6 +7,7 @@
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ShaftUI/Shaft">
     <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/ShaftUI/Shaft">
     <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/ShaftUI/Shaft">
+    <img alt="Platforms" src="https://img.shields.io/badge/Platforms-Windows%20%7C%20Linux%20%7C%20macOS-blue">
 </p>
 
 
