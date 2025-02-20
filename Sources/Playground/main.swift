@@ -2,6 +2,11 @@ import Foundation
 import Shaft
 import ShaftCodeHighlight
 
+#if DEBUG && os(macOS)  // only tested on macOS
+    import SwiftReload
+    LocalSwiftReloader(onReload: backend.scheduleReassemble).start()
+#endif
+
 runApp(
     Playground()
 )

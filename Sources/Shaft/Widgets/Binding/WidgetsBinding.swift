@@ -112,6 +112,7 @@ public class WidgetsBinding {
     private init() {
         RendererBinding.shared.beforeFrameCallbacks.add(beforeDrawFrame)
         RendererBinding.shared.afterFrameCallbacks.add(afterDrawFrame)
+        backend.onReassemble = reassemble
     }
 
     /// The [BuildOwner] in charge of executing the build pipeline for the
@@ -152,6 +153,13 @@ public class WidgetsBinding {
 
     private func afterDrawFrame() {
         buildOwner.finalizeTree()
+    }
+
+    private func reassemble() {
+        if let rootElement {
+            buildOwner.reassemble(rootElement)
+        }
+        RendererBinding.shared.reassemble()
     }
 }
 

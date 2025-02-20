@@ -216,6 +216,16 @@ public class SDLBackend: Backend {
         }
     }
 
+    // MARK: - Hot Reload
+
+    public var onReassemble: VoidCallback?
+
+    public func scheduleReassemble() {
+        runOnMainThread {
+            self.onReassemble?()
+        }
+    }
+
     // MARK: - Event Handlers
 
     public var onPointerData: PointerDataCallback?

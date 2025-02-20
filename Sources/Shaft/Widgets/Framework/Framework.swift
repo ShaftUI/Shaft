@@ -811,6 +811,17 @@ open class State<WidgetType: StatefulWidget>: StateProtocol {
         }
     }
 
+    /// In addition to this method being invoked, it is guaranteed that the
+    /// [build] method will be invoked when a reassemble is signaled. Most
+    /// widgets therefore do not need to do anything in the [reassemble] method.
+    ///
+    /// See also:
+    ///
+    ///  * [Element.reassemble]
+    ///  * [BindingBase.reassembleApplication]
+    ///  * [Image], which uses this to reload images.
+    open func reassemble() {}
+
     /// Called when a dependency of this [State] object changes.
     ///
     /// For example, if the previous call to [build] referenced an
@@ -1349,6 +1360,18 @@ public class BuildOwner {
         }
         assert(debugStateLockLevel >= 0)
 
+    }
+
+    /// Cause the entire subtree rooted at the given [Element] to be entirely
+    /// rebuilt. This is used by development tools when the application code has
+    /// changed and is being hot-reloaded, to cause the widget tree to pick up any
+    /// changed implementations.
+    ///
+    /// This is expensive and should not be called except during development.
+    func reassemble(_ root: Element) {
+        assert(root.parent == nil)
+        assert(root.owner === self)
+        root.reassemble()
     }
 }
 
@@ -2351,6 +2374,40 @@ public class Element: BuildContext, HashableObject, DiagnosticableTree {
         return nil
     }
 
+    /// {@template flutter.widgets.Element.reassemble}
+    /// Called whenever the application is reassembled during debugging, for
+    /// example during hot reload.
+    ///
+    /// This method should rerun any initialization logic that depends on global
+    /// state, for example, image loading from asset bundles (since the asset
+    /// bundle may have changed).
+    ///
+    /// This function will only be called during development. In release builds,
+    /// the `ext.flutter.reassemble` hook is not available, and so this code will
+    /// never execute.
+    ///
+    /// Implementers should not rely on any ordering for hot reload source update,
+    /// reassemble, and build methods after a hot reload has been initiated. It is
+    /// possible that a [Timer] (e.g. an [Animation]) or a debugging session
+    /// attached to the isolate could trigger a build with reloaded code _before_
+    /// reassemble is called. Code that expects preconditions to be set by
+    /// reassemble after a hot reload must be resilient to being called out of
+    /// order, e.g. by fizzling instead of throwing. That said, once reassemble is
+    /// called, build will be called after it at least once.
+    /// {@endtemplate}
+    ///
+    /// See also:
+    ///
+    ///  * [State.reassemble]
+    ///  * [BindingBase.reassembleApplication]
+    ///  * [Image], which uses this to reload images.
+    open func reassemble() {
+        markNeedsBuild()
+        visitChildren { child in
+            child.reassemble()
+        }
+    }
+
     public func toStringShort() -> String {
         if let widget {
             let type = objectRuntimeType(widget)
@@ -2621,6 +2678,11 @@ public class StatefulElement<T: StatefulWidget>: ComponentElement {
     public override func didChangeDependencies() {
         super.didChangeDependencies()
         _didChangeDependencies = true
+    }
+
+    public override func reassemble() {
+        state.reassemble()
+        super.reassemble()
     }
 }
 
