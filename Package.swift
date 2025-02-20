@@ -46,6 +46,8 @@ let package = Package(
             url: "https://github.com/ShaftUI/Splash",
             branch: "master"
         ),
+        .package(url: "https://github.com/ShaftUI/SwiftReload.git", branch: "main"),
+
     ],
 
     targets: [
@@ -56,9 +58,11 @@ let package = Package(
                 "SwiftMath",
                 "Shaft",
                 "ShaftCodeHighlight",
+                "SwiftReload",
             ],
             swiftSettings: [
-                .interoperabilityMode(.Cxx)
+                .interoperabilityMode(.Cxx),
+                .unsafeFlags(["-Xfrontend", "-enable-implicit-dynamic"]),
             ]
         ),
 
@@ -70,6 +74,10 @@ let package = Package(
             publicHeadersPath: ".",
             cxxSettings: [
                 .define("SK_FONTMGR_FONTCONFIG_AVAILABLE", .when(platforms: [.linux]))
+            ],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-private-imports"]),
+                .unsafeFlags(["-Xfrontend", "-enable-implicit-dynamic"]),
             ],
             linkerSettings: [
                 .linkedLibrary("d3d12", .when(platforms: [.windows])),

@@ -208,8 +208,16 @@ public protocol Backend: AnyObject {
     /// happens after any deferred work queued by the [onBeginFrame] phase.
     var onDrawFrame: VoidCallback? { get set }
 
+    /// A callback that is invoked when hot reload happens and the application
+    /// needs to reassemble the current view.
+    var onReassemble: VoidCallback? { get set }
+
     /// Schedule a frame to be rendered.
     func scheduleFrame()
+
+    /// Schedule a reassemble immediately. This causes the [onReassemble]
+    /// callback to be called as soon as possible if supported by the backend.
+    func scheduleReassemble()
 
     /// Enter the event loop. Blocks until the application is ready to exit.
     func run()
@@ -269,6 +277,13 @@ extension Backend {
             postTask(fn)
         }
     }
+
+    public var onReassemble: VoidCallback? {
+        get { nil }
+        set {}
+    }
+
+    public func scheduleReassemble() {}
 }
 
 public protocol Timer {

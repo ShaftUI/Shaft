@@ -604,6 +604,30 @@ public class RenderOwner {
 /// or baseline information, it gets marked dirty whenever the child's geometry
 /// changes.
 open class RenderObject: HitTestTarget, DiagnosticableTree {
+    /// Cause the entire subtree rooted at the given [RenderObject] to be marked
+    /// dirty for layout, paint, etc, so that the effects of a hot reload can be
+    /// seen, or so that the effect of changing a global debug flag (such as
+    /// [debugPaintSizeEnabled]) can be applied.
+    ///
+    /// This is called by the [RendererBinding] in response to the
+    /// `ext.flutter.reassemble` hook, which is used by development tools when the
+    /// application code has changed, to cause the widget tree to pick up any
+    /// changed implementations.
+    ///
+    /// This is expensive and should not be called except during development.
+    ///
+    /// See also:
+    ///
+    ///  * [BindingBase.reassembleApplication]
+    public func reassemble() {
+        markNeedsLayout()
+        markNeedsCompositingBitsUpdate()
+        markNeedsPaint()
+        // markNeedsSemanticsUpdate()
+        (self as? any RenderObjectWithChild)?.visitChildren { child in
+            child.reassemble()
+        }
+    }
 
     // MARK: - Tree Node Basics
 

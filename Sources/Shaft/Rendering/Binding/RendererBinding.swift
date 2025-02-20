@@ -117,4 +117,12 @@ public class RendererBinding {
             drawFrame()
         }
     }
+
+    public func reassemble() {
+        for view in renderViews {
+            view.reassemble()
+        }
+        // scheduleWarmUpFrame()
+        // await endOfFrame
+    }
 }
