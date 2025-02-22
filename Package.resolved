@@ -55,15 +55,6 @@
       }
     },
     {
-      "identity" : "swift-tools-support-core",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-tools-support-core",
-      "state" : {
-        "branch" : "main",
-        "revision" : "bd9e2de5fdada4a0249de3be88f9ad95fe8511f6"
-      }
-    },
-    {
       "identity" : "swiftmath",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShaftUI/SwiftMath",
@@ -78,7 +69,7 @@
       "location" : "https://github.com/ShaftUI/SwiftReload.git",
       "state" : {
         "branch" : "main",
-        "revision" : "dfabe140d39ccfd2e76fa69b80e94dda33ee92e5"
+        "revision" : "b65767259c7630a7fb3aaed981090300db52cd3d"
       }
     },
     {

@@ -2,7 +2,7 @@ import Foundation
 import Shaft
 import ShaftCodeHighlight
 
-#if DEBUG && os(macOS)  // only tested on macOS
+#if DEBUG && !os(Windows)
     import SwiftReload
     LocalSwiftReloader(onReload: backend.scheduleReassemble).start()
 #endif
