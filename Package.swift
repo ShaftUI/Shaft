@@ -62,7 +62,14 @@ let package = Package(
             ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
+                .unsafeFlags(["-Xfrontend", "-enable-private-imports"]),
                 .unsafeFlags(["-Xfrontend", "-enable-implicit-dynamic"]),
+            ],
+            linkerSettings: [
+                .unsafeFlags(
+                    ["-Xlinker", "--export-dynamic"],
+                    .when(platforms: [.linux, .android])
+                )
             ]
         ),
 
