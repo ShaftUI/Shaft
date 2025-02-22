@@ -37,12 +37,21 @@
       }
     },
     {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
+      "state" : {
+        "revision" : "0687f71944021d616d34d922343dcef086855920",
+        "version" : "600.0.1"
+      }
+    },
+    {
       "identity" : "swift-system",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-system",
       "state" : {
-        "revision" : "c8a44d836fe7913603e246acab7c528c2e780168",
-        "version" : "1.4.0"
+        "revision" : "a34201439c74b53f0fd71ef11741af7e7caf01e1",
+        "version" : "1.4.2"
       }
     },
     {
@@ -55,12 +64,30 @@
       }
     },
     {
+      "identity" : "swiftreload",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShaftUI/SwiftReload.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "b65767259c7630a7fb3aaed981090300db52cd3d"
+      }
+    },
+    {
       "identity" : "swiftsdl3",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShaftUI/SwiftSDL3",
       "state" : {
         "branch" : "main",
         "revision" : "d33d998856d263f19f7fc8c5f893fbb82e6564dc"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams.git",
+      "state" : {
+        "revision" : "2688707e563b44d7d87c29ba6c5ca04ce86ae58b",
+        "version" : "5.3.0"
       }
     },
     {

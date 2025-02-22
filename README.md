@@ -48,6 +48,10 @@ To create a new project with Shaft, the [CounterTemplate](https://github.com/Sha
 
 ## Features
 
+- **🔥Hot reload** 
+
+A cross-platform hot reload solution is developed along with Shaft, enabling developers to see changes in real-time without restarting the application. Simply follow the instructions in the [SwiftReload](https://github.com/ShaftUI/SwiftReload) or clone the [CounterTemplate](https://github.com/ShaftUI/CounterTemplate) to get started.
+
 - **Simple & Hackable**
   
 No build infrastructure or special toolchain required - just a regular Swift package containing both engine and framework, makes it easy to customize, extend, and adapt to your specific needs.
