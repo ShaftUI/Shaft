@@ -6,7 +6,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-public protocol BorderRadiusGeometry {
+public protocol BorderRadiusGeometry: Equatable {
     /// Convert this instance into a [BorderRadius], so that the radii are
     /// expressed for specific physical corners (top-left, top-right, etc) rather
     /// than in a direction-dependent manner.
@@ -36,10 +36,6 @@ public struct BorderRadius: BorderRadiusGeometry, Equatable {
             bottomLeft: radius,
             bottomRight: radius
         )
-    }
-
-    public static var zero: BorderRadius {
-        return BorderRadius.all(Radius.zero)
     }
 
     public init(
@@ -95,5 +91,9 @@ extension BorderRadiusGeometry where Self == BorderRadius {
 
     public static func circular(_ radius: Float) -> BorderRadius {
         return .all(.circular(radius))
+    }
+
+    public static var zero: BorderRadius {
+        return BorderRadius.all(Radius.zero)
     }
 }

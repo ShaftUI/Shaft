@@ -168,6 +168,7 @@ void sk_canvas_draw_image_rect(SkCanvas *canvas, SkImage_sp &image, const SkRect
 void sk_canvas_draw_image_nine(SkCanvas *canvas, SkImage_sp &image, const SkIRect &center, const SkRect &dst, const SkPaint *paint);
 void sk_canvas_draw_text_blob(SkCanvas *canvas, SkTextBlob_sp &blob, float x, float y, const SkPaint &paint);
 void sk_canvas_clip_rect(SkCanvas *canvas, const SkRect &rect, SkClipOp op, bool doAntiAlias);
+void sk_canvas_clip_rrect(SkCanvas *canvas, const SkRRect &rrect, SkClipOp op, bool doAntiAlias);
 void sk_canvas_translate(SkCanvas *canvas, float dx, float dy);
 void sk_canvas_scale(SkCanvas *canvas, float sx, float sy);
 
