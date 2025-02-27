@@ -25,7 +25,7 @@ public class BoxDecoration: Decoration {
     public init(
         color: Color? = nil,
         border: BoxBorder? = nil,
-        borderRadius: BorderRadiusGeometry? = nil,
+        borderRadius: (any BorderRadiusGeometry)? = nil,
         boxShadow: [BoxShadow]? = nil,
         backgroundBlendMode: BlendMode? = nil,
         shape: BoxShape = .rectangle
@@ -71,7 +71,7 @@ public class BoxDecoration: Decoration {
     ///
     /// Applies only to boxes with rectangular shapes; ignored if [shape] is not
     /// [BoxShape.rectangle].
-    let borderRadius: BorderRadiusGeometry?
+    let borderRadius: (any BorderRadiusGeometry)?
 
     /// A list of shadows cast by this box behind the box.
     ///
@@ -144,7 +144,7 @@ extension Decoration where Self == BoxDecoration {
     public static func box(
         color: Color? = nil,
         border: BoxBorder? = nil,
-        borderRadius: BorderRadiusGeometry? = nil,
+        borderRadius: (any BorderRadiusGeometry)? = nil,
         boxShadow: [BoxShadow]? = nil,
         backgroundBlendMode: BlendMode? = nil,
         shape: BoxShape = .rectangle

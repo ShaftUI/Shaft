@@ -164,7 +164,7 @@ public protocol DlOpReceiver {
     /// If multiple draw commands intersect with the clip boundary, this can result
     /// in incorrect blending at the clip boundary. See [saveLayer] for a
     /// discussion of how to address that and some examples of using [clipRRect].
-    // void clipRRect(RRect rrect, {bool doAntiAlias = true});
+    func clipRRect(_ rrect: RRect, _ doAntiAlias: Bool)
 
     /// Reduces the clip region to the intersection of the current clip and the
     /// given [Path].

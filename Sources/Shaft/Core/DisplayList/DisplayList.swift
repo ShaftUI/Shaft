@@ -39,6 +39,8 @@ public struct DisplayList {
                 receiver.drawImageNine(image, center, dst, paint)
             case let .clipRect(rect: rect, clipOp: clipOp, doAntiAlias: doAntiAlias):
                 receiver.clipRect(rect, clipOp, doAntiAlias)
+            case let .clipRRect(rrect, doAntiAlias):
+                receiver.clipRRect(rrect, doAntiAlias)
             case let .translate(dx, dy):
                 receiver.translate(dx, dy)
             case let .scale(sx, sy):

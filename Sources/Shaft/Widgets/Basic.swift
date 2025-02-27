@@ -1990,9 +1990,12 @@ public class SliverPadding: SingleChildRenderObjectWidget {
         padding: EdgeInsetsGeometry,
         sliver: Widget? = nil
     ) {
+        self.key = key
         self.padding = padding
         self.child = sliver
     }
+
+    public let key: (any Key)?
 
     public let child: (any Widget)?
 
@@ -2009,5 +2012,220 @@ public class SliverPadding: SingleChildRenderObjectWidget {
     public func updateRenderObject(context: BuildContext, renderObject: RenderSliverPadding) {
         renderObject.padding = padding
         renderObject.textDirection = .ltr
+    }
+}
+
+public protocol CustomClipper<T>: AnyObject, Listenable {
+    associatedtype T
+
+    func getClip(size: Size) -> T
+
+    func shouldReclip(oldClipper: Self) -> Bool
+}
+
+/// A widget that clips its child using a rectangle.
+///
+/// By default, [ClipRect] prevents its child from painting outside its
+/// bounds, but the size and location of the clip rect can be customized using a
+/// custom [clipper].
+///
+/// [ClipRect] is commonly used with these widgets, which commonly paint outside
+/// their bounds:
+///
+///  * [CustomPaint]
+///  * [CustomSingleChildLayout]
+///  * [CustomMultiChildLayout]
+///  * [Align] and [Center] (e.g., if [Align.widthFactor] or
+///    [Align.heightFactor] is less than 1.0).
+///  * [OverflowBox]
+///  * [SizedOverflowBox]
+///
+/// {@tool snippet}
+///
+/// For example, by combining a [ClipRect] with an [Align], one can show just
+/// the top half of an [Image]:
+///
+/// ```dart
+/// ClipRect(
+///   child: Align(
+///     alignment: Alignment.topCenter,
+///     heightFactor: 0.5,
+///     child: Image.network(userAvatarUrl),
+///   ),
+/// )
+/// ```
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [CustomClipper], for information about creating custom clips.
+///  * [ClipRRect], for a clip with rounded corners.
+///  * [ClipOval], for an elliptical clip.
+///  * [ClipPath], for an arbitrarily shaped clip.
+public class ClipRect: SingleChildRenderObjectWidget {
+    /// Creates a rectangular clip.
+    ///
+    /// If [clipper] is null, the clip will match the layout size and position of
+    /// the child.
+    ///
+    /// If [clipBehavior] is [Clip.none], no clipping will be applied.
+    public init(
+        key: (any Key)? = nil,
+        clipper: (any CustomClipper<Rect>)? = nil,
+        clipBehavior: Clip = .hardEdge,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        self.key = key
+        self.clipper = clipper
+        self.clipBehavior = clipBehavior
+        self.child = child()
+    }
+
+    public let key: (any Key)?
+
+    /// If non-null, determines which clip to use.
+    public let clipper: (any CustomClipper<Rect>)?
+
+    /// {@macro flutter.rendering.ClipRectLayer.clipBehavior}
+    ///
+    /// Defaults to [Clip.hardEdge].
+    public let clipBehavior: Clip
+
+    public var child: Widget?
+
+    public func createRenderObject(context: BuildContext) -> RenderClipRect {
+        RenderClipRect(clipper: clipper, clipBehavior: clipBehavior)
+    }
+
+    public func updateRenderObject(context: BuildContext, renderObject: RenderClipRect) {
+        renderObject.clipper = clipper
+        renderObject.clipBehavior = clipBehavior
+    }
+
+    public func didUnmountRenderObject(_ renderObject: RenderClipRect) {
+        renderObject.clipper = nil
+    }
+}
+
+extension Widget {
+    public func clipRect(
+        clipper: (any CustomClipper<Rect>)? = nil,
+        clipBehavior: Clip = .hardEdge
+    ) -> ClipRect {
+        ClipRect(
+            clipper: clipper,
+            clipBehavior: clipBehavior,
+            child: { self }
+        )
+    }
+}
+
+/// A widget that clips its child using a rounded rectangle.
+///
+/// By default, [ClipRRect] uses its own bounds as the base rectangle for the
+/// clip, but the size and location of the clip can be customized using a custom
+/// [clipper].
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=eI43jkQkrvs}
+///
+/// {@tool dartpad}
+/// This example shows various [ClipRRect]s applied to containers.
+///
+/// ** See code in examples/api/lib/widgets/basic/clip_rrect.0.dart **
+/// {@end-tool}
+///
+/// ## Troubleshooting
+///
+/// ### Why doesn't my [ClipRRect] child have rounded corners?
+///
+/// When a [ClipRRect] is bigger than the child it contains, its rounded corners
+/// could be drawn in unexpected positions. Make sure that [ClipRRect] and its child
+/// have the same bounds (by shrinking the [ClipRRect] with a [FittedBox] or by
+/// growing the child).
+///
+/// {@tool dartpad}
+/// This example shows a [ClipRRect] that adds round corners to an image.
+///
+/// ** See code in examples/api/lib/widgets/basic/clip_rrect.1.dart **
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [CustomClipper], for information about creating custom clips.
+///  * [ClipRect], for more efficient clips without rounded corners.
+///  * [ClipOval], for an elliptical clip.
+///  * [ClipPath], for an arbitrarily shaped clip.
+public class ClipRRect: SingleChildRenderObjectWidget {
+    /// Creates a rounded-rectangular clip.
+    ///
+    /// The [borderRadius] defaults to [BorderRadius.zero], i.e. a rectangle with
+    /// right-angled corners.
+    ///
+    /// If [clipper] is non-null, then [borderRadius] is ignored.
+    ///
+    /// If [clipBehavior] is [Clip.none], no clipping will be applied.
+    public init(
+        key: (any Key)? = nil,
+        borderRadius: any BorderRadiusGeometry = BorderRadius.zero,
+        clipper: (any CustomClipper<RRect>)? = nil,
+        clipBehavior: Clip = .antiAlias,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        self.key = key
+        self.borderRadius = borderRadius
+        self.clipper = clipper
+        self.clipBehavior = clipBehavior
+        self.child = child()
+    }
+
+    public let key: (any Key)?
+
+    /// The border radius of the rounded corners.
+    ///
+    /// Values are clamped so that horizontal and vertical radii sums do not
+    /// exceed width/height.
+    ///
+    /// This value is ignored if [clipper] is non-null.
+    public let borderRadius: any BorderRadiusGeometry
+
+    /// If non-null, determines which clip to use.
+    public let clipper: (any CustomClipper<RRect>)?
+
+    /// {@macro flutter.rendering.ClipRectLayer.clipBehavior}
+    ///
+    /// Defaults to [Clip.antiAlias].
+    public let clipBehavior: Clip
+
+    public var child: Widget?
+
+    public func createRenderObject(context: BuildContext) -> RenderClipRRect {
+        RenderClipRRect(
+            borderRadius: borderRadius,
+            clipper: clipper,
+            clipBehavior: clipBehavior,
+            textDirection: .ltr
+        )
+    }
+
+    public func updateRenderObject(context: BuildContext, renderObject: RenderClipRRect) {
+        renderObject.borderRadius = borderRadius
+        renderObject.clipBehavior = clipBehavior
+        renderObject.clipper = clipper
+        renderObject.textDirection = .ltr
+    }
+}
+
+extension Widget {
+    public func clipRRect(
+        _ borderRadius: any BorderRadiusGeometry = .zero,
+        clipper: (any CustomClipper<RRect>)? = nil,
+        clipBehavior: Clip = .antiAlias
+    ) -> ClipRRect {
+        ClipRRect(
+            borderRadius: borderRadius,
+            clipper: clipper,
+            clipBehavior: clipBehavior,
+            child: { self }
+        )
     }
 }

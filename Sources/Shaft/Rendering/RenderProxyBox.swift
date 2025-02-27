@@ -507,3 +507,246 @@ public class RenderTransform: RenderProxyBox {
         transform = transform * _effectiveTransform!
     }
 }
+
+public class _RenderCustomClip<T>: RenderProxyBox {
+    public init(
+        child: RenderBox? = nil,
+        clipper: (any CustomClipper<T>)? = nil,
+        clipBehavior: Clip = .antiAlias
+    ) {
+        self.clipper = clipper
+        self.clipBehavior = clipBehavior
+        super.init(child: child)
+    }
+
+    /// If non-null, determines which clip to use on the child.
+    public var clipper: (any CustomClipper<T>)? {
+        didSet {
+            if clipper === oldValue {
+                return
+            }
+            assert(clipper != nil || oldValue != nil)
+            if clipper == nil || oldValue == nil || shouldClip(clipper!, oldValue!) {
+                _markNeedsClip()
+            }
+            if attached {
+                oldValue?.removeListener(self)
+                clipper?.addListener(self, callback: _markNeedsClip)
+            }
+        }
+    }
+
+    private func shouldClip<T1: CustomClipper, T2: CustomClipper>(
+        _ newClipper: T1,
+        _ oldClipper: T2
+    )
+        -> Bool
+    {
+        guard let oldClipper = oldClipper as? T1 else {
+            return true
+        }
+        if newClipper.shouldReclip(oldClipper: oldClipper) {
+            return true
+        }
+        return false
+    }
+
+    public override func attach(_ owner: RenderOwner) {
+        super.attach(owner)
+        clipper?.addListener(self, callback: _markNeedsClip)
+    }
+
+    public override func detach() {
+        clipper?.removeListener(self)
+        super.detach()
+    }
+
+    fileprivate func _markNeedsClip() {
+        _clip = nil
+        markNeedsPaint()
+        // markNeedsSemanticsUpdate()
+    }
+
+    public var _defaultClip: T { fatalError("Must be implemented by subclass") }
+    fileprivate var _clip: T?
+
+    public var clipBehavior: Clip {
+        didSet {
+            if clipBehavior != oldValue {
+                markNeedsPaint()
+            }
+        }
+    }
+
+    public override func performLayout() {
+        let oldSize = hasSize ? size : nil
+        super.performLayout()
+        if oldSize != size {
+            _clip = nil
+        }
+    }
+
+    public func _updateClip() {
+        _clip = clipper?.getClip(size: size) ?? _defaultClip
+    }
+
+    // public override func describeApproximatePaintClip(_ child: RenderObject) -> Rect? {
+    //     switch clipBehavior {
+    //     case .none:
+    //         return nil
+    //     case .hardEdge, .antiAlias, .antiAliasWithSaveLayer:
+    //         return clipper?.getApproximateClipRect(size) ?? (Offset.zero & size)
+    //     }
+    // }
+}
+
+/// Clips its child using a rectangle.
+///
+/// By default, [RenderClipRect] prevents its child from painting outside its
+/// bounds, but the size and location of the clip rect can be customized using a
+/// custom [clipper].
+public class RenderClipRect: _RenderCustomClip<Rect> {
+    /// Creates a rectangular clip.
+    ///
+    /// If [clipper] is null, the clip will match the layout size and position of
+    /// the child.
+    ///
+    /// If [clipBehavior] is [Clip.none], no clipping will be applied.
+    public override init(
+        child: RenderBox? = nil,
+        clipper: (any CustomClipper<Rect>)? = nil,
+        clipBehavior: Clip = .hardEdge
+    ) {
+        super.init(child: child, clipper: clipper, clipBehavior: clipBehavior)
+    }
+
+    public override var _defaultClip: Rect {
+        return Offset.zero & size
+    }
+
+    public override func hitTest(_ result: HitTestResult, position: Offset) -> Bool {
+        if clipper != nil {
+            _updateClip()
+            assert(_clip != nil)
+            if !_clip!.contains(position) {
+                return false
+            }
+        }
+
+        return super.hitTest(result, position: position)
+    }
+
+    public override func paint(context: PaintingContext, offset: Offset) {
+        if let child {
+            if clipBehavior != .none {
+                _updateClip()
+                layer = context.pushClipRect(
+                    needsCompositing: needsCompositing,
+                    offset: offset,
+                    clipRect: _clip!,
+                    clipBehavior: clipBehavior,
+                    painter: super.paint,
+                    oldLayer: layer as? ClipRectLayer
+                )
+            } else {
+                context.paintChild(child, offset: offset)
+                layer = nil
+            }
+        } else {
+            layer = nil
+        }
+    }
+}
+
+/// Clips its child using a rounded rectangle.
+///
+/// By default, [RenderClipRRect] uses its own bounds as the base rectangle for
+/// the clip, but the size and location of the clip can be customized using a
+/// custom [clipper].
+public class RenderClipRRect: _RenderCustomClip<RRect> {
+    /// Creates a rounded-rectangular clip.
+    ///
+    /// The [borderRadius] defaults to [BorderRadius.zero], i.e. a rectangle with
+    /// right-angled corners.
+    ///
+    /// If [clipper] is non-null, then [borderRadius] is ignored.
+    ///
+    /// If [clipBehavior] is [Clip.none], no clipping will be applied.
+
+    public init(
+        child: RenderBox? = nil,
+        borderRadius: any BorderRadiusGeometry = .zero,
+        clipper: (any CustomClipper<RRect>)? = nil,
+        clipBehavior: Clip = .hardEdge,
+        textDirection: TextDirection? = nil
+    ) {
+        self.borderRadius = borderRadius
+        self.textDirection = textDirection
+        super.init(child: child, clipper: clipper, clipBehavior: clipBehavior)
+    }
+
+    /// The border radius of the rounded corners.
+    ///
+    /// Values are clamped so that horizontal and vertical radii sums do not
+    /// exceed width/height.
+    ///
+    /// This value is ignored if [clipper] is non-null.
+
+    public var borderRadius: any BorderRadiusGeometry {
+        didSet {
+            if isEqual(borderRadius, oldValue) {
+                return
+            }
+            _markNeedsClip()
+        }
+    }
+
+    /// The text direction with which to resolve [borderRadius].
+
+    public var textDirection: TextDirection? {
+        didSet {
+            if textDirection == oldValue {
+                return
+            }
+            _markNeedsClip()
+        }
+    }
+
+    public override var _defaultClip: RRect {
+        return borderRadius.resolve(textDirection).toRRect(Offset.zero & size)
+    }
+
+    public override func hitTest(_ result: HitTestResult, position: Offset) -> Bool {
+        if clipper != nil {
+            _updateClip()
+            assert(_clip != nil)
+            if !_clip!.contains(position) {
+                return false
+            }
+        }
+
+        return super.hitTest(result, position: position)
+    }
+
+    public override func paint(context: PaintingContext, offset: Offset) {
+        if let child {
+            if clipBehavior != .none {
+                _updateClip()
+                layer = context.pushClipRRect(
+                    needsCompositing: needsCompositing,
+                    offset: offset,
+                    bounds: _clip!.outerRect,
+                    clipRRect: _clip!,
+                    painter: super.paint,
+                    clipBehavior: clipBehavior,
+                    oldLayer: layer as? ClipRRectLayer
+                )
+            } else {
+                context.paintChild(child, offset: offset)
+                layer = nil
+            }
+        } else {
+            layer = nil
+        }
+    }
+}

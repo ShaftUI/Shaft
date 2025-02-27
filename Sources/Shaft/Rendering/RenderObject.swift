@@ -288,6 +288,50 @@ public class PaintingContext: ClipContext {
         }
     }
 
+    /// Clip further painting using a rounded rectangle.
+    ///
+    /// The `bounds` argument is used to specify the region of the canvas (in the
+    /// caller's coordinate system) into which `painter` will paint.
+    ///
+    /// The `clipRRect` argument specifies the rounded-rectangle (in the caller's
+    /// coordinate system) to use to clip the painting done by `painter`. It
+    /// should not include the `offset`.
+    ///
+    /// The `painter` callback will be called while the `clipRRect` is applied. It
+    /// is called synchronously during the call to [pushClipRRect].
+    ///
+    /// The `clipBehavior` argument controls how the rounded rectangle is clipped.
+    ///
+    /// {@macro flutter.rendering.PaintingContext.pushClipRect.oldLayer}
+    public func pushClipRRect(
+        needsCompositing: Bool,
+        offset: Offset,
+        bounds: Rect,
+        clipRRect: RRect,
+        painter: (PaintingContext, Offset) -> Void,
+        clipBehavior: Clip = .antiAlias,
+        oldLayer: ClipRRectLayer? = nil
+    ) -> ClipRRectLayer? {
+        if clipBehavior == .none {
+            painter(self, offset)
+            return nil
+        }
+        let offsetBounds = bounds.shift(offset)
+        let offsetClipRRect = clipRRect.shift(offset)
+        if needsCompositing {
+            let layer = oldLayer ?? ClipRRectLayer()
+            layer.clipRRect = offsetClipRRect
+            layer.clipBehavior = clipBehavior
+            pushLayer(layer, painter, offset, childPaintBounds: offsetBounds)
+            return layer
+        } else {
+            clipRRectAndPaint(offsetClipRRect, clipBehavior, offsetBounds) {
+                painter(self, offset)
+            }
+            return nil
+        }
+    }
+
     /// Transform further painting using a matrix.
     ///
     /// The `offset` argument is the offset to pass to `painter` and the offset to

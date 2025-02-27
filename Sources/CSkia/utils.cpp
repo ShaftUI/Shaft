@@ -307,6 +307,11 @@ void sk_canvas_clip_rect(SkCanvas *canvas, const SkRect &rect, SkClipOp op, bool
     canvas->clipRect(rect, op, doAntiAlias);
 }
 
+void sk_canvas_clip_rrect(SkCanvas *canvas, const SkRRect &rrect, SkClipOp op, bool doAntiAlias)
+{
+    canvas->clipRRect(rrect, op, doAntiAlias);
+}
+
 void sk_canvas_translate(SkCanvas *canvas, float dx, float dy)
 {
     canvas->translate(dx, dy);

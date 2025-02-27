@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -56,24 +56,6 @@ extension ClipContext {
     //     )
     // }
 
-    /// Clip [canvas] with [Path] according to `rrect` and then paint. [canvas] is
-    /// restored to the pre-clip status afterwards.
-    ///
-    /// `bounds` is the saveLayer bounds used for [Clip.antiAliasWithSaveLayer].
-    // public func clipRRectAndPaint(
-    //     _ rrect: RRect,
-    //     _ clipBehavior: Clip,
-    //     _ bounds: Rect,
-    //     _ painter: () -> Void
-    // ) {
-    //     clipAndPaint(
-    //         { doAntiAlias in canvas.clipRRect(rrect, doAntiAlias: doAntiAlias) },
-    //         clipBehavior,
-    //         bounds,
-    //         painter
-    //     )
-    // }
-
     /// Clip [canvas] with [Path] according to `rect` and then paint. [canvas] is
     /// restored to the pre-clip status afterwards.
     ///
@@ -86,6 +68,24 @@ extension ClipContext {
     ) {
         clipAndPaint(
             { doAntiAlias in canvas.clipRect(rect, doAntiAlias: doAntiAlias) },
+            clipBehavior,
+            bounds,
+            painter
+        )
+    }
+
+    /// Clip [canvas] with [Path] according to `rrect` and then paint. [canvas] is
+    /// restored to the pre-clip status afterwards.
+    ///
+    /// `bounds` is the saveLayer bounds used for [Clip.antiAliasWithSaveLayer].
+    public func clipRRectAndPaint(
+        _ rrect: RRect,
+        _ clipBehavior: Clip,
+        _ bounds: Rect,
+        _ painter: () -> Void
+    ) {
+        clipAndPaint(
+            { doAntiAlias in canvas.clipRRect(rrect, doAntiAlias) },
             clipBehavior,
             bounds,
             painter
