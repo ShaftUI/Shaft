@@ -188,6 +188,24 @@ public class SkiaCanvas: DirectCanvas {
         sk_canvas_clip_rect(skCanvas, skRect, clipOp.toSkia(), doAntiAlias)
     }
 
+    public func clipRRect(_ rrect: RRect, _ doAntiAlias: Bool) {
+        var skRect = SkRect()
+        skRect.setLTRB(rrect.left, rrect.top, rrect.right, rrect.bottom)
+
+        var radii = [SkPoint]()
+        radii.append(SkPoint(fX: rrect.tlRadiusX, fY: rrect.tlRadiusY))
+        radii.append(SkPoint(fX: rrect.trRadiusX, fY: rrect.trRadiusY))
+        radii.append(SkPoint(fX: rrect.brRadiusX, fY: rrect.brRadiusY))
+        radii.append(SkPoint(fX: rrect.blRadiusX, fY: rrect.blRadiusY))
+
+        var skRrect = SkRRect()
+        radii.withUnsafeBufferPointer { ptr in
+            skRrect.setRectRadii(skRect, ptr.baseAddress)
+        }
+
+        sk_canvas_clip_rrect(skCanvas, skRrect, SkClipOp.intersect, doAntiAlias)
+    }
+
     public func save() {
         sk_canvas_save(skCanvas)
     }

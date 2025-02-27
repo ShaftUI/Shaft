@@ -802,6 +802,48 @@ public struct TRRect<T: Numeric>: Equatable {
 
     /// The distance between the top and bottom edges of this rectangle.
     public var height: T { bottom - top }
+
+    public static var zero: Self {
+        Self(
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            tlRadiusX: 0,
+            tlRadiusY: 0,
+            trRadiusX: 0,
+            trRadiusY: 0,
+            blRadiusX: 0,
+            blRadiusY: 0,
+            brRadiusX: 0,
+            brRadiusY: 0
+        )
+    }
+
+    /// The bounding box of this rounded rectangle (the rectangle with no rounded corners).
+    public var outerRect: TRect<T> {
+        TRect(left: left, top: top, right: right, bottom: bottom)
+    }
+
+    // /// The non-rounded rectangle that is constrained by the smaller of the two
+    // /// diagonals, with each diagonal traveling through the middle of the curve
+    // /// corners. The middle of a corner is the intersection of the curve with its
+    // /// respective quadrant bisector.
+    // public var safeInnerRect: TRect<T> {
+    //     let kInsetFactor: T = T(0.29289321881)  // 1-cos(pi/4)
+
+    //     let leftRadius = max(blRadiusX, tlRadiusX)
+    //     let topRadius = max(tlRadiusY, trRadiusY)
+    //     let rightRadius = max(trRadiusX, brRadiusX)
+    //     let bottomRadius = max(brRadiusY, blRadiusY)
+
+    //     return TRect(
+    //         left: left + leftRadius * kInsetFactor,
+    //         top: top + topRadius * kInsetFactor,
+    //         right: right - rightRadius * kInsetFactor,
+    //         bottom: bottom - bottomRadius * kInsetFactor
+    //     )
+    // }
 }
 
 public typealias RRect = TRRect<Float>
@@ -949,4 +991,21 @@ extension TRRect where T: BinaryFloatingPoint {
             || blRadiusX.isNaN || blRadiusY.isNaN
     }
 
+    /// Returns a new [RRect] translated by the given offset.
+    public func shift(_ offset: TOffset<T>) -> Self {
+        Self(
+            left: left + offset.dx,
+            top: top + offset.dy,
+            right: right + offset.dx,
+            bottom: bottom + offset.dy,
+            tlRadiusX: tlRadiusX,
+            tlRadiusY: tlRadiusY,
+            trRadiusX: trRadiusX,
+            trRadiusY: trRadiusY,
+            blRadiusX: blRadiusX,
+            blRadiusY: blRadiusY,
+            brRadiusX: brRadiusX,
+            brRadiusY: brRadiusY
+        )
+    }
 }

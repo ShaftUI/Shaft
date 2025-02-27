@@ -157,3 +157,32 @@ public class ClipRectLayer: ContainerLayer {
         context.canvas.restore()
     }
 }
+
+/// A composite layer that clips its children using a rounded rectangle.
+public class ClipRRectLayer: ContainerLayer {
+    public init(clipRRect: RRect = .zero, clipBehavior: Clip = .hardEdge) {
+        self.clipRRect = clipRRect
+        self.clipBehavior = clipBehavior
+    }
+
+    /// The rounded rectangle to clip in the parent's coordinate system.
+    public var clipRRect: RRect
+
+    /// Controls how to clip.
+    ///
+    /// Must not be set to null or [Clip.none].
+    public var clipBehavior: Clip = .hardEdge
+
+    public override func paint(context: LayerPaintContext) {
+        context.canvas.save()
+        context.canvas.clipRRect(clipRRect, clipBehavior != .hardEdge)
+        if clipBehavior == .antiAliasWithSaveLayer {
+            context.canvas.saveLayer(clipRRect.outerRect, paint: nil)
+        }
+        super.paint(context: context)
+        if clipBehavior == .antiAliasWithSaveLayer {
+            context.canvas.restore()
+        }
+        context.canvas.restore()
+    }
+}

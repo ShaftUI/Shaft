@@ -22,6 +22,7 @@ internal enum DisplayListOp {
     case translate(dx: Float, dy: Float)
     case scale(sx: Float, sy: Float)
     case clipRect(rect: Rect, clipOp: ClipOp, doAntiAlias: Bool)
+    case clipRRect(rrect: RRect, doAntiAlias: Bool)
     case save
     case saveLayer(bounds: Rect, paint: Paint?)
     case restore
@@ -104,6 +105,10 @@ public class DisplayListBuilder: DlOpReceiver {
 
     public func clipRect(_ rect: Rect, _ clipOp: ClipOp, _ doAntiAlias: Bool) {
         push(.clipRect(rect: rect, clipOp: clipOp, doAntiAlias: doAntiAlias))
+    }
+
+    public func clipRRect(_ rrect: RRect, _ doAntiAlias: Bool) {
+        push(.clipRRect(rrect: rrect, doAntiAlias: doAntiAlias))
     }
 
     public func save() {
