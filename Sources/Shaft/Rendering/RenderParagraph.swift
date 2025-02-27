@@ -388,17 +388,17 @@ public class RenderParagraph: RenderBox, RenderObjectWithChildren {
         // works properly.
         layoutTextWithConstraints(boxConstraint)
 
-        // if needsClipping {
-        //     let bounds = offset & size
-        //     if let overflowShader {
-        //         // This layer limits what the shader below blends with to be just the
-        //         // text (as opposed to the text and its background).
-        //         context.canvas.saveLayer(bounds, Paint())
-        //     } else {
-        //         context.canvas.save()
-        //     }
-        //     context.canvas.clipRect(bounds)
-        // }
+        if needsClipping {
+            let bounds = offset & size
+            if let overflowShader {
+                // This layer limits what the shader below blends with to be just the
+                // text (as opposed to the text and its background).
+                context.canvas.saveLayer(bounds, paint: Paint())
+            } else {
+                context.canvas.save()
+            }
+            context.canvas.clipRect(bounds)
+        }
 
         // if let lastSelectableFragments {
         //     for fragment in lastSelectableFragments {
@@ -410,16 +410,16 @@ public class RenderParagraph: RenderBox, RenderObjectWithChildren {
 
         // paintInlineChildren(context, offset);
 
-        // if needsClipping {
-        //     if let overflowShader {
-        //         context.canvas.translate(offset.dx, offset.dy)
-        //         let paint = Paint()
-        //         paint.blendMode = BlendMode.modulate
-        //         paint.shader = _overflowShader
-        //         context.canvas.drawRect(Offset.zero & size, paint)
-        //     }
-        //     context.canvas.restore()
-        // }
+        if needsClipping {
+            // if let overflowShader {
+            //     context.canvas.translate(offset.dx, offset.dy)
+            //     let paint = Paint()
+            //     paint.blendMode = BlendMode.modulate
+            //     paint.shader = _overflowShader
+            //     context.canvas.drawRect(Offset.zero & size, paint)
+            // }
+            context.canvas.restore()
+        }
     }
 
     public override func hitTestSelf(_ position: Offset) -> Bool {
