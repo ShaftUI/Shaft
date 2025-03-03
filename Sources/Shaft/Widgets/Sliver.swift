@@ -780,11 +780,11 @@ public class SliverGrid: SliverMultiBoxAdaptorWidget {
         mainAxisSpacing: Float = 0.0,
         crossAxisSpacing: Float = 0.0,
         childAspectRatio: Float = 1.0,
-        children: [Widget] = []
+        @WidgetListBuilder children: () -> [Widget]
     ) -> SliverGrid {
         return SliverGrid(
             key: key,
-            delegate: SliverChildListDelegate(children),
+            delegate: SliverChildListDelegate(children()),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
                 mainAxisSpacing: mainAxisSpacing,
@@ -809,11 +809,11 @@ public class SliverGrid: SliverMultiBoxAdaptorWidget {
         mainAxisSpacing: Float = 0.0,
         crossAxisSpacing: Float = 0.0,
         childAspectRatio: Float = 1.0,
-        children: [Widget] = []
+        @WidgetListBuilder children: () -> [Widget]
     ) -> SliverGrid {
         return SliverGrid(
             key: key,
-            delegate: SliverChildListDelegate(children),
+            delegate: SliverChildListDelegate(children()),
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: maxCrossAxisExtent,
                 mainAxisSpacing: mainAxisSpacing,
