@@ -90,6 +90,17 @@ class CounterView: StatelessWidget {
 }
 ```
 
+## Benchmarks
+
+Shaft is fast from the beginning as it combines Flutter’s design with Swift’s native performance. And by leveraging ARC based memory management it uses as little memory as possible.
+
+<p>
+    <img src="docs/benchmark_cpu.png" width="300">
+    <img src="docs/benchmark_mem.png" width="300">
+</p>
+
+> The benchmark was conducted on a 2021 MacBook Pro with Apple M1 Max processor and 64 GB of RAM.
+
 ## Concepts
 
 ![Architecture](/docs/architecture.png)
