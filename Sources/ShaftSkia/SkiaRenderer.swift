@@ -4,6 +4,7 @@
 
 import CSkia
 import Foundation
+import Shaft
 
 /// An implementation of ``Renderer`` using Skia as the backend.
 public class SkiaRenderer: Renderer {
@@ -31,3 +32,19 @@ public class SkiaRenderer: Renderer {
     public let _fontCollection = SkiaFontCollection()
     public var fontCollection: FontCollection { _fontCollection }
 }
+
+#if canImport(Metal)
+    import Metal
+    public func defaultSkiaRenderer() -> Renderer {
+        let metalDevice = MTLCreateSystemDefaultDevice()!
+        let metalCommandQueue = metalDevice.makeCommandQueue()!
+        return SkiaMetalRenderer(
+            device: metalDevice,
+            queue: metalCommandQueue
+        )
+    }
+#else
+    public func defaultSkiaRenderer() -> Renderer {
+        return SkiaGLRenderer()
+    }
+#endif

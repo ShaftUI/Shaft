@@ -599,28 +599,28 @@ public struct Color: Hashable {
     /// * Bits 16-23 are the red value.
     /// * Bits 8-15 are the green value.
     /// * Bits 0-7 are the blue value.
-    var value: UInt32
+    public var value: UInt32
 
     /// The alpha channel of this color in an 8 bit value.
     ///
     /// A value of 0 means this color is fully transparent. A value of 255 means
     /// this color is fully opaque.
-    var alpha: UInt8 {
+    public var alpha: UInt8 {
         UInt8((value >> 24) & 0xff)
     }
 
     /// The red channel of this color in an 8 bit value.
-    var red: UInt8 {
+    public var red: UInt8 {
         UInt8((value >> 16) & 0xff)
     }
 
     /// The green channel of this color in an 8 bit value.
-    var green: UInt8 {
+    public var green: UInt8 {
         UInt8((value >> 8) & 0xff)
     }
 
     /// The blue channel of this color in an 8 bit value.
-    var blue: UInt8 {
+    public var blue: UInt8 {
         UInt8(value & 0xff)
     }
 
@@ -687,7 +687,7 @@ public struct Color: Hashable {
     ///
     /// Values for `t` are usually obtained from an [Animation<double>], such as
     /// an [AnimationController].
-    static func lerp(_ a: Color?, _ b: Color?, _ t: Float) -> Color? {
+    public static func lerp(_ a: Color?, _ b: Color?, _ t: Float) -> Color? {
         guard let b else {
             guard let a else {
                 return nil
@@ -1186,6 +1186,11 @@ public protocol AnimatedImage: AnyObject {
 /// To obtain an instance of the [FrameInfo] interface, see
 /// [AnimatedImage.getNextFrame].
 public struct FrameInfo {
+    public init(duration: Duration?, image: NativeImage) {
+        self.duration = duration
+        self.image = image
+    }
+
     /// The duration this frame should be shown.
     ///
     /// A nil duration indicates that the frame should be shown indefinitely.

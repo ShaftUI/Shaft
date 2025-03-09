@@ -4,6 +4,7 @@
 
 import CSkia
 import Foundation
+import Shaft
 
 /// An implementation of ``Renderer`` using Skia as the backend.
 public class SkiaGLRenderer: SkiaRenderer, GLRenderer {

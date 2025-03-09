@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import CSkia
+import Shaft
 import SwiftMath
 
 /// A canvas implemention that uses Skia as the backend.
@@ -35,7 +36,7 @@ public class SkiaCanvas: DirectCanvas {
         sk_canvas_draw_line(skCanvas, p0.dx, p0.dy, p1.dx, p1.dy, self.skPaint)
     }
 
-    public func drawRect(_ rect: Rect, _ paint: Paint) {
+    public func drawRect(_ rect: Shaft.Rect, _ paint: Paint) {
         var skRect = SkRect()
         skRect.setLTRB(rect.left, rect.top, rect.right, rect.bottom)
 
@@ -123,7 +124,12 @@ public class SkiaCanvas: DirectCanvas {
         sk_canvas_draw_image(skCanvas, &image.skImage, offset.dx, offset.dy, &self.skPaint)
     }
 
-    public func drawImageRect(_ image: NativeImage, _ src: Rect, _ dst: Rect, _ paint: Paint) {
+    public func drawImageRect(
+        _ image: NativeImage,
+        _ src: Shaft.Rect,
+        _ dst: Shaft.Rect,
+        _ paint: Paint
+    ) {
         let image = image as! SkiaImage
         var skSrc = SkRect()
         skSrc.setLTRB(src.left, src.top, src.right, src.bottom)
@@ -133,7 +139,12 @@ public class SkiaCanvas: DirectCanvas {
         sk_canvas_draw_image_rect(skCanvas, &image.skImage, skSrc, skDst, &self.skPaint)
     }
 
-    public func drawImageNine(_ image: NativeImage, _ center: Rect, _ dst: Rect, _ paint: Paint) {
+    public func drawImageNine(
+        _ image: NativeImage,
+        _ center: Shaft.Rect,
+        _ dst: Shaft.Rect,
+        _ paint: Paint
+    ) {
         let image = image as! SkiaImage
         var skCenter = SkIRect()
         skCenter.setLTRB(
@@ -182,7 +193,7 @@ public class SkiaCanvas: DirectCanvas {
         sk_canvas_scale(skCanvas, sx, sy)
     }
 
-    public func clipRect(_ rect: Rect, _ clipOp: ClipOp, _ doAntiAlias: Bool) {
+    public func clipRect(_ rect: Shaft.Rect, _ clipOp: ClipOp, _ doAntiAlias: Bool) {
         var skRect = SkRect()
         skRect.setLTRB(rect.left, rect.top, rect.right, rect.bottom)
         sk_canvas_clip_rect(skCanvas, skRect, clipOp.toSkia(), doAntiAlias)
@@ -210,7 +221,7 @@ public class SkiaCanvas: DirectCanvas {
         sk_canvas_save(skCanvas)
     }
 
-    public func saveLayer(_ bounds: Rect, paint: Paint?) {
+    public func saveLayer(_ bounds: Shaft.Rect, paint: Paint?) {
         var skRect = SkRect()
         skRect.setLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom)
         if let paint = paint {

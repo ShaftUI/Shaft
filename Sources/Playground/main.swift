@@ -1,6 +1,9 @@
 import Foundation
 import Shaft
 import ShaftCodeHighlight
+import ShaftSetup
+
+ShaftSetup.useDefault()
 
 #if DEBUG && !os(Windows)
     import SwiftReload

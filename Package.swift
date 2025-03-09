@@ -14,9 +14,30 @@ let package = Package(
     ],
 
     products: [
+        // Shaft playground app
         .executable(name: "Playground", targets: ["Playground"]),
+
+        // The Shaft framework, is platform-independent and requires a backend
+        // to run.
         .library(name: "Shaft", targets: ["Shaft"]),
+
+        // The helper library for setting up the default backend and renderer.
+        .library(name: "ShaftSetup", targets: ["ShaftSetup"]),
+
+        // Code highlighting library for Shaft
+        .library(name: "ShaftCodeHighlight", targets: ["ShaftCodeHighlight"]),
+
+        // The SDL3 backend for Shaft
+        .library(name: "ShaftSDL3", targets: ["ShaftSDL3"]),
+
+        // The Skia renderer for Shaft
+        .library(name: "ShaftSkia", targets: ["ShaftSkia"]),
+
+        // Companion tool for downloading Skia binaries. Will be removed in the
+        // future when BuilderPlugin is more mature.
         .plugin(name: "CSkiaSetupPlugin", targets: ["CSkiaSetupPlugin"]),
+
+        // (experimental) Tool to build application bundles
         .plugin(name: "BuilderPlugin", targets: ["BuilderPlugin"]),
     ],
 
@@ -57,6 +78,7 @@ let package = Package(
                 "CSkia",
                 "SwiftMath",
                 "Shaft",
+                "ShaftSetup",
                 "ShaftCodeHighlight",
                 "SwiftReload",
             ],
@@ -157,11 +179,46 @@ let package = Package(
             name: "Shaft",
             dependencies: [
                 "SwiftMath",
-                "CSkia",
-                "CSkiaResource",
                 "Rainbow",
                 "SwiftSDL3",
                 .product(name: "Collections", package: "swift-collections"),
+            ],
+            swiftSettings: [.interoperabilityMode(.Cxx)]
+        ),
+
+        .target(
+            name: "ShaftSetup",
+            dependencies: [
+                "Shaft",
+                .target(
+                    name: "ShaftSkia",
+                    condition: .when(platforms: [.linux, .windows, .macOS])
+                ),
+                .target(
+                    name: "ShaftSDL3",
+                    condition: .when(platforms: [.linux, .windows, .macOS])
+                ),
+            ],
+            swiftSettings: [.interoperabilityMode(.Cxx)]
+        ),
+
+        .target(
+            name: "ShaftSDL3",
+            dependencies: [
+                "SwiftSDL3",
+                "SwiftMath",
+                "Shaft",
+            ],
+            swiftSettings: [.interoperabilityMode(.Cxx)]
+        ),
+
+        .target(
+            name: "ShaftSkia",
+            dependencies: [
+                "CSkia",
+                "CSkiaResource",
+                "SwiftMath",
+                "Shaft",
             ],
             swiftSettings: [.interoperabilityMode(.Cxx)]
         ),

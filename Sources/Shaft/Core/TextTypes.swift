@@ -230,26 +230,26 @@ public class SpanStyle {
         self.shadows = shadows
     }
 
-    var color: Color?
-    var decoration: TextDecoration?
-    var decorationColor: Color?
-    var decorationStyle: TextDecorationStyle?
-    var decorationThickness: Float?
-    var fontWeight: FontWeight?
-    var fontStyle: FontStyle?
-    var textBaseline: TextBaseline?
-    var fontFamilies: [String]?
-    var fontSize: Float?
-    var letterSpacing: Float?
-    var wordSpacing: Float?
-    var height: Float?
-    var leadingDistribution: TextLeadingDistribution?
-    // var locale: Locale?
-    var background: Paint?
-    var foreground: Paint?
-    var shadows: [Shadow]?
-    // var fontFeatures: [FontFeature]?
-    // var fontVariations: [FontVariation]?
+    public var color: Color?
+    public var decoration: TextDecoration?
+    public var decorationColor: Color?
+    public var decorationStyle: TextDecorationStyle?
+    public var decorationThickness: Float?
+    public var fontWeight: FontWeight?
+    public var fontStyle: FontStyle?
+    public var textBaseline: TextBaseline?
+    public var fontFamilies: [String]?
+    public var fontSize: Float?
+    public var letterSpacing: Float?
+    public var wordSpacing: Float?
+    public var height: Float?
+    public var leadingDistribution: TextLeadingDistribution?
+    // public var locale: Locale?
+    public var background: Paint?
+    public var foreground: Paint?
+    public var shadows: [Shadow]?
+    // public var fontFeatures: [FontFeature]?
+    // public var fontVariations: [FontVariation]?
 }
 
 /// A way to disambiguate a [TextPosition] when its offset could match two
@@ -594,7 +594,7 @@ public struct TextPosition: Equatable {
     /// For example, given the string `'Hello'`, offset 0 represents the cursor
     /// being before the `H`, while offset 5 represents the cursor being just
     /// after the `o`.
-    var offset: TextIndex
+    public var offset: TextIndex
 
     /// Disambiguates cases where the position in the string given by [offset]
     /// could represent two different visual positions in the rendered text. For
@@ -603,7 +603,7 @@ public struct TextPosition: Equatable {
     ///
     /// See the documentation for [TextAffinity] for more information on how
     /// TextAffinity disambiguates situations like these.
-    var affinity: TextAffinity
+    public var affinity: TextAffinity
 }
 
 /// A range of characters in a string of text.
@@ -684,7 +684,7 @@ public struct TextRange: Equatable {
 
 public struct TextBox {
     /// Creates an object that describes a box containing text.
-    init(left: Float, top: Float, right: Float, bottom: Float, direction: TextDirection) {
+    public init(left: Float, top: Float, right: Float, bottom: Float, direction: TextDirection) {
         self.left = left
         self.top = top
         self.right = right
@@ -766,7 +766,7 @@ public struct StrutStyle: Equatable {
     /// was found, the default platform font family will be used instead. Unlike
     /// [TextStyle.fontFamilyFallback], the font does not need to contain the
     /// desired glyphs to match.
-    var fontFamilies: [String]?
+    public var fontFamilies: [String]?
 
     /// The size of text (in logical pixels) to use when obtaining metrics from
     /// the font.
@@ -776,12 +776,12 @@ public struct StrutStyle: Equatable {
     /// as a multiple of [fontSize].
     ///
     /// The default fontSize is 14 logical pixels.
-    var fontSize: Float?
+    public var fontSize: Float?
 
     /// The typeface variant to use when calculating the strut (e.g., italics).
     ///
     /// The default fontStyle is [FontStyle.normal].
-    var fontStyle: FontStyle?
+    public var fontStyle: FontStyle?
 
     /// The minimum height of the strut, as a multiple of [fontSize].
     ///
@@ -806,7 +806,7 @@ public struct StrutStyle: Equatable {
     /// See [TextStyle.height], which works in a similar manner.
     ///
     /// The default height is null.
-    var height: Float?
+    public var height: Float?
 
     /// The additional leading to apply to the strut as a multiple of
     /// [fontSize], independent of [height] and [leadingDistribution].
@@ -817,7 +817,7 @@ public struct StrutStyle: Equatable {
     /// above and below the baseline, regardless of [leadingDistribution].
     ///
     /// The default leading is null, which will use the font-specified leading.
-    var leading: Float?
+    public var leading: Float?
 
     /// Whether the strut height should be forced.
     ///
@@ -836,7 +836,7 @@ public struct StrutStyle: Equatable {
     /// resulting in all lines having the height of the strut.
     ///
     /// The default is false.
-    var forceHeight: Bool?
+    public var forceHeight: Bool?
 
     // var enabled: Bool
     // var heightOverride: Bool
@@ -866,21 +866,21 @@ public struct ParagraphStyle {
         self.textHeightBehavior = textHeightBehavior
     }
 
-    var strutStyle: StrutStyle?
+    public var strutStyle: StrutStyle?
 
-    var defaultSpanStyle: SpanStyle?
+    public var defaultSpanStyle: SpanStyle?
 
     /// The alignment of the text within the lines of the paragraph. If the last
     /// line is ellipsized (see `ellipsis` below), the alignment is applied to
     /// that line after it has been truncated but before the ellipsis has been
     /// added.
-    var textAlign: TextAlign?
+    public var textAlign: TextAlign?
 
     /// The directionality of the text, left-to-right (e.g. Norwegian) or
     /// right-to-left (e.g. Hebrew). This controls the overall directionality of
     /// the paragraph, as well as the meaning of [TextAlign.start] and
     /// [TextAlign.end] in the `textAlign` field.
-    var textDirection: TextDirection?
+    public var textDirection: TextDirection?
 
     /// The maximum number of lines painted. Lines beyond this number are
     /// silently dropped. For example, if `maxLines` is 1, then only one line is
@@ -888,7 +888,7 @@ public struct ParagraphStyle {
     /// after the first one that overflows the width constraints are dropped.
     /// The width constraints are those set in the [ParagraphConstraints] object
     /// passed to the [Paragraph.layout] method.
-    var maxLines: Int?
+    public var maxLines: Int?
 
     /// String used to ellipsize overflowing text. If `maxLines` is not null,
     /// then the `ellipsis`, if any, is applied to the last rendered line, if
@@ -898,23 +898,23 @@ public struct ParagraphStyle {
     /// those set in the [ParagraphConstraints] object passed to the
     /// [Paragraph.layout] method. The empty string and the null value are
     /// considered equivalent and turn off this behavior.
-    var ellipsis: String?
+    public var ellipsis: String?
 
     /// The fallback height of the spans as a multiplier of the font size. The
     /// fallback height is used when no height is provided through
     /// [TextStyle.height]. Omitting `height` here and in [TextStyle] will allow
     /// the line height to take the height as defined by the font, which may not
     /// be exactly the height of the `fontSize`.
-    var height: Float?
+    public var height: Float?
 
     /// Specifies how the `height` multiplier is applied to ascent of the first
     /// line and the descent of the last line.
-    var textHeightBehavior: TextHeightBehavior?
+    public var textHeightBehavior: TextHeightBehavior?
 
-    // var hintingIsOn: Bool
-    // var replaceTabCharacters: Bool
-    // var textIndent: TextIndent
-    // var fontRastrSettings: FontRastrSettings
+    // public var hintingIsOn: Bool
+    // public var replaceTabCharacters: Bool
+    // public var textIndent: TextIndent
+    // public var fontRastrSettings: FontRastrSettings
 }
 
 public protocol ParagraphBuilder: AnyObject {
@@ -1227,6 +1227,36 @@ extension Paragraph {
 /// [LineMetrics] should be obtained directly from the [Paragraph.computeLineMetrics]
 /// method.
 public struct LineMetrics {
+    public init(
+        startIndex: TextIndex,
+        endIndex: TextIndex,
+        endIncludingNewline: TextIndex,
+        endExcludingWhitespace: TextIndex,
+        hardBreak: Bool,
+        ascent: Float,
+        descent: Float,
+        unscaledAscent: Float,
+        height: Float,
+        width: Float,
+        left: Float,
+        baseline: Float,
+        lineNumber: Int
+    ) {
+        self.startIndex = startIndex
+        self.endIndex = endIndex
+        self.endIncludingNewline = endIncludingNewline
+        self.endExcludingWhitespace = endExcludingWhitespace
+        self.hardBreak = hardBreak
+        self.ascent = ascent
+        self.descent = descent
+        self.unscaledAscent = unscaledAscent
+        self.height = height
+        self.width = width
+        self.left = left
+        self.baseline = baseline
+        self.lineNumber = lineNumber
+    }
+
     /// The starting index of the line in the text buffer.
     public let startIndex: TextIndex
 

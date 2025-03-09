@@ -7,6 +7,16 @@
 // found in the LICENSE file.
 
 public struct KeyEvent {
+    public init(
+        type: KeyEventType,
+        physicalKey: PhysicalKeyboardKey,
+        logicalKey: LogicalKeyboardKey
+    ) {
+        self.type = type
+        self.physicalKey = physicalKey
+        self.logicalKey = logicalKey
+    }
+
     /// The type of the key event.
     public let type: KeyEventType
 

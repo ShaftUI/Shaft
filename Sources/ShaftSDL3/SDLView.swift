@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import Foundation
+import Shaft
 import SwiftMath
 import SwiftSDL3
 
@@ -121,10 +122,10 @@ public class SDLView: NativeView {
         SDL_StopTextInput(sdlWindow)
     }
 
-    private var _lastEditableSize: Size?
+    private var _lastEditableSize: Shaft.Size?
     private var _lastEditableTransform: Matrix4x4f?
 
-    public func setComposingRect(_ rect: Rect) {
+    public func setComposingRect(_ rect: Shaft.Rect) {
         guard let editableTransform = _lastEditableTransform else {
             return
         }
@@ -140,7 +141,7 @@ public class SDLView: NativeView {
         SDL_SetTextInputArea(sdlWindow, &sdlRect, 0)
     }
 
-    public func setEditableSizeAndTransform(_ size: Size, _ transform: Matrix4x4f) {
+    public func setEditableSizeAndTransform(_ size: Shaft.Size, _ transform: Matrix4x4f) {
         _lastEditableSize = size
         _lastEditableTransform = transform
     }

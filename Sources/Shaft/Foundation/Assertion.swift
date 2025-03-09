@@ -7,7 +7,7 @@ func assert(_ clousure: () -> Bool) {
 }
 
 /// Asserts that the given function should be implemented.
-func shouldImplement(_ function: String = #function, file: String = #file, line: Int = #line)
+public func shouldImplement(_ function: String = #function, file: String = #file, line: Int = #line)
     -> Never
 {
     preconditionFailure("Should implement \(function) in \(file) at line \(line)")

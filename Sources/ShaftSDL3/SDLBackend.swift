@@ -3,35 +3,18 @@
 // found in the LICENSE file.
 
 import Foundation
+import Shaft
 import SwiftMath
 import SwiftSDL3
 
-#if canImport(Metal)
-    import Metal
-    private func createDefaultRenderer() -> Renderer {
-        let metalDevice = MTLCreateSystemDefaultDevice()!
-        let metalCommandQueue = metalDevice.makeCommandQueue()!
-        return SkiaMetalRenderer(
-            device: metalDevice,
-            queue: metalCommandQueue
-        )
-    }
-#else
-    private func createDefaultRenderer() -> Renderer {
-        return SkiaGLRenderer()
-    }
-#endif
-
 public class SDLBackend: Backend {
-    public static let shared = SDLBackend()
-
     private let tasks = TaskQueue()
 
     public let renderer: Renderer
 
-    private init(renderer: Renderer? = nil) {
+    public init(renderer: Renderer) {
         assert(Thread.isMainThread)
-        self.renderer = renderer ?? createDefaultRenderer()
+        self.renderer = renderer
         SDL_SetHint("SDL_WINDOWS_DPI_AWARENESS", "permonitorv2")
         SDL_SetHint(SDL_HINT_MAC_SCROLL_MOMENTUM, "1")
         guard SDL_Init(SDL_INIT_VIDEO) else {
@@ -150,7 +133,7 @@ public class SDLBackend: Backend {
         wake()
     }
 
-    public func createTimer(_ delay: Duration, _ f: @escaping () -> Void) -> any Timer {
+    public func createTimer(_ delay: Duration, _ f: @escaping () -> Void) -> any Shaft.Timer {
         return SDLTimerManager.shared.createTimer(delay, f)
     }
 
@@ -443,7 +426,7 @@ public class SDLBackend: Backend {
 }
 
 /// A timer-based vsync implementation with fixed frame rate.
-public class SDLVsyncWaiter: VsyncWaiter {
+public class SDLVsyncWaiter {
     init(frameRate: Int) {
         self.targetFrameRate = frameRate
     }
@@ -558,7 +541,7 @@ private func sdlTimerCallback(
     return 0
 }
 
-private class SDLTimer: Timer {
+private class SDLTimer: Shaft.Timer {
     public let timerID: SDL_TimerID
 
     public init(_ timerID: SDL_TimerID) {

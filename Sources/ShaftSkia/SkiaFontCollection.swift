@@ -1,5 +1,6 @@
 import CSkia
 import Foundation
+import Shaft
 
 public class SkiaFontCollection: FontCollection {
     public init() {

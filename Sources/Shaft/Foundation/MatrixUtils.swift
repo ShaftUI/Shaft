@@ -4,12 +4,12 @@
 
 import SwiftMath
 
-struct MatrixUtils {
+public struct MatrixUtils {
     /// Returns the given [transform] matrix as an [Offset], if the matrix is
     /// nothing but a 2D translation.
     ///
     /// Otherwise, returns null.
-    static func getAsTranslation(_ transform: Matrix4x4f) -> Offset? {
+    public static func getAsTranslation(_ transform: Matrix4x4f) -> Offset? {
         // Values are stored in column-major order.
         if transform[0, 0] == 1.0  // col 1
             && transform[0, 1] == 0.0
@@ -35,7 +35,7 @@ struct MatrixUtils {
     /// scale, if the matrix is nothing but a symmetric 2D scale transform.
     ///
     /// Otherwise, returns null.
-    static func getAsScale(_ transform: Matrix4x4f) -> Float? {
+    public static func getAsScale(_ transform: Matrix4x4f) -> Float? {
         // Values are stored in column-major order.
         if transform[0, 1] == 0.0  // col 1 (value 0 is the scale)
             && transform[0, 2] == 0.0
@@ -60,7 +60,7 @@ struct MatrixUtils {
 
     /// Returns true if the given matrices are exactly equal, and false
     /// otherwise. Null values are assumed to be the identity matrix.
-    static func matrixEquals(_ a: Matrix4x4f?, _ b: Matrix4x4f?) -> Bool {
+    public static func matrixEquals(_ a: Matrix4x4f?, _ b: Matrix4x4f?) -> Bool {
         if a == b {
             return true
         }
@@ -90,7 +90,7 @@ struct MatrixUtils {
     }
 
     /// Whether the given matrix is the identity matrix.
-    static func isIdentity(_ a: Matrix4x4f) -> Bool {
+    public static func isIdentity(_ a: Matrix4x4f) -> Bool {
         return a[0, 0] == 1.0  // col 1
             && a[0, 1] == 0.0
             && a[0, 2] == 0.0
@@ -120,7 +120,7 @@ struct MatrixUtils {
     /// the zero matrix to indicate its content is currently not visible. Trying
     /// to convert an `Offset` to its coordinate space always results in
     /// (NaN, NaN).
-    static func transformPoint(_ transform: Matrix4x4f, _ point: Offset) -> Offset {
+    public static func transformPoint(_ transform: Matrix4x4f, _ point: Offset) -> Offset {
         let x = point.dx
         let y = point.dy
 
@@ -144,7 +144,7 @@ struct MatrixUtils {
     /// This version of the operation is slower than the regular transformRect
     /// method, but it avoids creating infinite values from large finite values
     /// if it can.
-    static func _safeTransformRect(_ transform: Matrix4x4f, _ rect: Rect) -> Rect {
+    public static func _safeTransformRect(_ transform: Matrix4x4f, _ rect: Rect) -> Rect {
         let isAffine = transform[0, 3] == 0.0 && transform[1, 3] == 0.0 && transform[3, 3] == 1.0
 
         _accumulate(transform, rect.left, rect.top, true, isAffine)
@@ -155,8 +155,8 @@ struct MatrixUtils {
         return Rect(left: _minMax[0], top: _minMax[1], right: _minMax[2], bottom: _minMax[3])
     }
 
-    static var _minMax = [Float](repeating: 0, count: 4)
-    static func _accumulate(
+    public static var _minMax = [Float](repeating: 0, count: 4)
+    public static func _accumulate(
         _ m: Matrix4x4f,
         _ x: Float,
         _ y: Float,
@@ -193,7 +193,7 @@ struct MatrixUtils {
     /// This function assumes the given rect is in the plane with z equals 0.0.
     /// The transformed rect is then projected back into the plane with z equals
     /// 0.0 before computing its bounding rect.
-    static func transformRect(_ transform: Matrix4x4f, _ rect: Rect) -> Rect {
+    public static func transformRect(_ transform: Matrix4x4f, _ rect: Rect) -> Rect {
         let x = rect.left
         let y = rect.top
         let w = rect.right - x
@@ -409,13 +409,13 @@ struct MatrixUtils {
         }
     }
 
-    static func _min4(_ a: Float, _ b: Float, _ c: Float, _ d: Float) -> Float {
+    public static func _min4(_ a: Float, _ b: Float, _ c: Float, _ d: Float) -> Float {
         let e = (a < b) ? a : b
         let f = (c < d) ? c : d
         return (e < f) ? e : f
     }
 
-    static func _max4(_ a: Float, _ b: Float, _ c: Float, _ d: Float) -> Float {
+    public static func _max4(_ a: Float, _ b: Float, _ c: Float, _ d: Float) -> Float {
         let e = (a > b) ? a : b
         let f = (c > d) ? c : d
         return (e > f) ? e : f
@@ -427,7 +427,7 @@ struct MatrixUtils {
     /// This function assumes the given rect is in the plane with z equals 0.0.
     /// The transformed rect is then projected back into the plane with z equals
     /// 0.0 before computing its bounding rect.
-    static func inverseTransformRect(_ transform: Matrix4x4f, _ rect: Rect) -> Rect {
+    public static func inverseTransformRect(_ transform: Matrix4x4f, _ rect: Rect) -> Rect {
         // As exposed by `unrelated_type_equality_checks`, this assert was a no-op.
         // Fixing it introduces a bunch of runtime failures; for more context see:
         // https://github.com/flutter/flutter/pull/31568
@@ -470,7 +470,7 @@ struct MatrixUtils {
     // /// outer side of the cylinder at or past ±π/2 or 90 degrees and it's
     // /// almost always possible to end up seeing the inner side of the cylinder
     // /// or the back side of the transformed plane before π / 2 when perspective > 0.
-    // static Matrix4 createCylindricalProjectionTransform({
+    // public static Matrix4 createCylindricalProjectionTransform({
     //   required double radius,
     //   required double angle,
     //   double perspective = 0.001,
@@ -512,7 +512,7 @@ struct MatrixUtils {
     // }
 
     // /// Returns a matrix that transforms every point to [offset].
-    // static Matrix4 forceToPoint(Offset offset) {
+    // public static Matrix4 forceToPoint(Offset offset) {
     //   return Matrix4.identity()
     //     ..setRow(0, Vector4(0, 0, 0, offset.dx))
     //     ..setRow(1, Vector4(0, 0, 0, offset.dy));
