@@ -12,10 +12,20 @@ import Shaft
 /// Shaft itself does have direct dependencies on any platform-specific code.
 /// Everything is abstracted away behind the [Backend] protocol. Thus, you need
 /// to set up the `backend` global variable to use Shaft in your application.
+///
+/// No-op if the backend has already been set.
 public func useDefault() {
-    #if os(macOS) || os(Linux) || os(Windows)
-        Shaft.backend = SDLBackend(renderer: defaultSkiaRenderer())
+    guard !backendInitialized else {
         return
+    }
+
+    Shaft.backend = createDefaultBackend()
+}
+
+/// Creates the default backend for the current platform.
+public func createDefaultBackend() -> Backend {
+    #if os(macOS) || os(Linux) || os(Windows)
+        return SDLBackend(renderer: defaultSkiaRenderer())
     #endif
 
     preconditionFailure("No backend available for this platform")

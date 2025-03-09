@@ -28,3 +28,8 @@ private var _backend: Backend?
 public var renderer: Renderer {
     backend.renderer
 }
+
+/// Returns `true` if the backend has been set.
+public var backendInitialized: Bool {
+    _backend != nil
+}

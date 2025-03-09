@@ -1,5 +1,6 @@
 import Foundation
 import Shaft
+import ShaftSetup
 import SwiftMath
 
 struct ElementSequence: Sequence {
@@ -519,8 +520,12 @@ class TestBackend: Backend {
 }
 
 func testWidgets(_ callback: @escaping (WidgetTester) -> Void) {
-    let testBackend = TestBackend(wrap: SDLBackend.shared)
-    backend = testBackend
+    if !backendInitialized {
+        backend = TestBackend(wrap: ShaftSetup.createDefaultBackend())
+    }
+
+    let testBackend = backend as! TestBackend
+
     testBackend.inner.postTask {
         callback(WidgetTester())
         testBackend.onBeginFrame?(.zero)

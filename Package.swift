@@ -234,7 +234,10 @@ let package = Package(
 
         .testTarget(
             name: "ShaftTests",
-            dependencies: ["Shaft"],
+            dependencies: [
+                "Shaft",
+                "ShaftSetup",
+            ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx)
             ]
