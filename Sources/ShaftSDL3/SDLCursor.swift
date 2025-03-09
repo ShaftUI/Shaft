@@ -1,3 +1,4 @@
+import Shaft
 import SwiftSDL3
 
 public final class SDLCursor: NativeMouseCursor {

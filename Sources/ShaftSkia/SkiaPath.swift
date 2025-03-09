@@ -1,4 +1,5 @@
 import CSkia
+import Shaft
 
 public class SkiaPath: Path {
     internal var skPath = SkPath()

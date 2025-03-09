@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import Foundation
+import Shaft
 import SwiftSDL3
 
 /// A NativeView implementation that uses SDL window as backend.

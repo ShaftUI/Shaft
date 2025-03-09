@@ -236,6 +236,40 @@ public struct PointerButtons: OptionSet {
 
 /// Information about the state of a pointer.
 public struct PointerData {
+    public init(
+        viewId: Int,
+        timeStamp: Duration,
+        change: PointerChange = .none,
+        kind: PointerDeviceKind,
+        signalKind: PointerSignalKind = .none,
+        device: Int,
+        pointerIdentifier: Int,
+        physicalX: Int = 0,
+        physicalY: Int = 0,
+        physicalDeltaX: Int = 0,
+        physicalDeltaY: Int = 0,
+        buttons: PointerButtons,
+        synthesized: Bool = false,
+        scrollDeltaX: Double = 0.0,
+        scrollDeltaY: Double = 0.0
+    ) {
+        self.viewId = viewId
+        self.timeStamp = timeStamp
+        self.change = change
+        self.kind = kind
+        self.signalKind = signalKind
+        self.device = device
+        self.pointerIdentifier = pointerIdentifier
+        self.physicalX = physicalX
+        self.physicalY = physicalY
+        self.physicalDeltaX = physicalDeltaX
+        self.physicalDeltaY = physicalDeltaY
+        self.buttons = buttons
+        self.synthesized = synthesized
+        self.scrollDeltaX = scrollDeltaX
+        self.scrollDeltaY = scrollDeltaY
+    }
+
     /// The ID of the [NativeView] this [PointerEvent] originated from.
     public var viewId: Int
 

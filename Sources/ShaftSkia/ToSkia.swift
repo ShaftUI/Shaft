@@ -4,6 +4,7 @@
 
 import CSkia
 import CxxStdlib
+import Shaft
 
 extension Paint {
     func copyToSkia(paint: inout SkPaint) {

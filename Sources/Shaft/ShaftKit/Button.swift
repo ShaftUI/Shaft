@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import CSkia
 import SwiftSDL3
 
 /// A button role provides a description of a button’s purpose.

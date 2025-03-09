@@ -10,6 +10,10 @@ import SwiftMath
 
 /// A place for layers to paint themselves.
 public struct LayerPaintContext {
+    public init(canvas: Canvas) {
+        self.canvas = canvas
+    }
+
     var canvas: Canvas
 }
 

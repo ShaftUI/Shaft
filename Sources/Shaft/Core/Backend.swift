@@ -255,17 +255,6 @@ public protocol Backend: AnyObject {
     func createCursor(_ cursor: SystemMouseCursor) -> NativeMouseCursor?
 }
 
-/// Represents a platform specific mechanism for getting callbacks when a vsync
-/// event happens.
-protocol VsyncWaiter {
-    /// Sets the callback that should be called when a vsync event happens.
-    /// The callback may be called on a different thread.
-    func setCallback(_ callback: @escaping VoidCallback)
-
-    /// Requests the callback to be called on the next vsync event.
-    func waitAsync()
-}
-
 extension Backend {
     /// A helper method that runs the given function on the ui thread. The
     /// function is executed immediately if the current thread is the ui thread.

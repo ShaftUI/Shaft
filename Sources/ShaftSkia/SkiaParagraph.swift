@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import CSkia
+import Shaft
 
 public class SkiaParagraphBuilder: ParagraphBuilder {
     public init(_ style: ParagraphStyle, fontCollection: SkiaFontCollection) {
@@ -86,7 +87,7 @@ public class SkiaParagraph: Paragraph {
         )
     }
 
-    public func getWordBoundary(_ position: TextPosition) -> TextRange {
+    public func getWordBoundary(_ position: TextPosition) -> Shaft.TextRange {
         let range = paragraph_get_word_boundary(paragraph, UInt32(position.offset.utf16Offset))
         return TextRange(
             start: .init(utf16Offset: Int(range.start)),
@@ -194,8 +195,8 @@ private func toRect(_ r: SkRect) -> Rect {
     )
 }
 
-private func toTextRange(_ r: skia.textlayout.TextRange) -> TextRange {
-    TextRange(
+private func toTextRange(_ r: skia.textlayout.TextRange) -> Shaft.TextRange {
+    Shaft.TextRange(
         start: .init(utf16Offset: Int(r.start)),
         end: .init(utf16Offset: Int(r.end))
     )
