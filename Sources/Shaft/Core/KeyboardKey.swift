@@ -1522,7 +1522,7 @@ public enum PhysicalKeyboardKey: UInt, CaseIterable {
 /// Unlike [PhysicalKeyboardKey], the values of this enum is opaque. It should
 /// not be unpacked to derive information from it, as the representation of the
 /// code could change at any time.
-public enum LogicalKeyboardKey: UInt, CaseIterable {
+public enum LogicalKeyboardKey: UInt64, CaseIterable {
     /// Represents the logical "Space" key on the keyboard.
     ///
     /// See the function [RawKeyEvent.logicalKey] for more information.

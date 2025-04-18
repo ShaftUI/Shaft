@@ -42,7 +42,7 @@ struct Math {
 
 extension Comparable {
     /// Returns a value clamped to a given range.
-    func clamped(to limits: ClosedRange<Self>) -> Self {
+    public func clamped(to limits: ClosedRange<Self>) -> Self {
         return min(max(self, limits.lowerBound), limits.upperBound)
     }
 }

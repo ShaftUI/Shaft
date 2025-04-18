@@ -6,12 +6,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import Fetch
 import Foundation
-
-/// For non-Apple platforms
-#if canImport(FoundationNetworking)
-    import FoundationNetworking
-#endif
 
 /// Configuration information passed to the [ImageProvider.resolve] method to
 /// select a specific image.
@@ -107,7 +103,7 @@ public struct NetworkImage: Equatable, ImageProvider {
     public func resolve(configuration: ImageConfiguration) -> AsyncStream<NativeImage> {
         AsyncStream { continuation in
             Task {
-                let (data, _) = try await URLSession.shared.data(from: self.url)
+                let data = try await fetch(self.url)
                 let animatedImage = backend.renderer.decodeImageFromData(data)
                 guard let animatedImage else {
                     return

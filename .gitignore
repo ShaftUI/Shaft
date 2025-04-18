@@ -9,3 +9,7 @@ DerivedData/
 .netrc
 .vscode
 .shaft
+.history
+.cursor
+
+.reference

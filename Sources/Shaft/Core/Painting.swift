@@ -1031,17 +1031,17 @@ public struct Shadow: Equatable {
     ///
     /// The shadows are shapes composited directly over the base canvas, and do not
     /// represent optical occlusion.
-    let color: Color
+    public let color: Color
 
     /// The displacement of the shadow from the casting element.
     ///
     /// Positive x/y offsets will shift the shadow to the right and down, while
     /// negative offsets shift the shadow to the left and up. The offsets are
     /// relative to the position of the element that is casting it.
-    let offset: Offset
+    public let offset: Offset
 
     /// The standard deviation of the Gaussian to convolve with the shadow's shape.
-    let blurRadius: Double
+    public let blurRadius: Double
 
     /// Converts a blur radius in pixels to sigmas.
     ///
@@ -1056,7 +1056,7 @@ public struct Shadow: Equatable {
     /// The [blurRadius] in sigmas instead of logical pixels.
     ///
     /// See the sigma argument to [MaskFilter.blur].
-    var blurSigma: Double { Self.convertRadiusToSigma(radius: blurRadius) }
+    public var blurSigma: Double { Self.convertRadiusToSigma(radius: blurRadius) }
 }
 
 /// Styles to use for line endings.

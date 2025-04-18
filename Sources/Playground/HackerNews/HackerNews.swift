@@ -1,9 +1,6 @@
+import Fetch
 import Foundation
 import Observation
-
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 struct HackerNewsItem: Codable {
     let id: Int
@@ -22,15 +19,15 @@ struct HackerNewsItem: Codable {
 
 struct HackerNews {
     func getTopStories() async throws -> [Int] {
-        let (data, _) = try await URLSession.shared.data(
-            from: URL(string: "https://hacker-news.firebaseio.com/v0/topstories.json")!
+        let data = try await fetch(
+            URL(string: "https://hacker-news.firebaseio.com/v0/topstories.json")!
         )
         return try JSONDecoder().decode([Int].self, from: data)
     }
 
     func getItem(id: Int) async throws -> HackerNewsItem {
-        let (data, _) = try await URLSession.shared.data(
-            from: URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json")!
+        let data = try await fetch(
+            URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json")!
         )
         return try JSONDecoder().decode(HackerNewsItem.self, from: data)
     }

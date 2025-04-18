@@ -18,7 +18,6 @@ public class RenderColoredBox: RenderBox {
     public var color: Color {
         didSet {
             if color != oldValue {
-                mark("markNeedsPaint")
                 markNeedsPaint()
             }
         }

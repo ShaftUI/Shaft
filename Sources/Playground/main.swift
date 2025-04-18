@@ -5,7 +5,7 @@ import ShaftSetup
 
 ShaftSetup.useDefault()
 
-#if DEBUG && !os(Windows)
+#if DEBUG && canImport(SwiftReload)
     import SwiftReload
     LocalSwiftReloader(onReload: backend.scheduleReassemble).start()
 #endif
@@ -39,7 +39,7 @@ final class PlaygroundState: State<Playground> {
             // "Text Field": TextFieldPage.init,
     ]
 
-    lazy var selectedPage = ValueNotifier("Button")
+    lazy var selectedPage = ValueNotifier("3D Cube")
 
     override func initState() {
         super.initState()

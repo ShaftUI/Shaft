@@ -4,16 +4,19 @@
 
 /// A convenience class for building strings.
 public class StringBuilder {
-    private var buffer: String = ""
+    public private(set) var buffer: String = ""
+
+    /// Creates a new string builder.
+    public init() {}
 
     /// Appends the given string to the buffer.
-    func append(_ string: String) {
+    public func append(_ string: String) {
         buffer.append(string)
     }
 
     /// Takes the current contents of the buffer and returns them as a string.
     /// After calling this method, the buffer is reset to empty.
-    func build() -> String {
+    public func build() -> String {
         let result = buffer
         buffer = ""
         return result

@@ -183,8 +183,6 @@ public class VelocityTracker {
         if sinceLastSample.elapsedMilliseconds
             > Self.assumePointerMoveStoppedMilliseconds
         {
-            mark(sinceLastSample.elapsedMilliseconds)
-
             return VelocityEstimate(
                 pixelsPerSecond: .zero,
                 confidence: 1.0,

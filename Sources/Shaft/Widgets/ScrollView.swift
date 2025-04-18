@@ -769,7 +769,9 @@ public class BoxScrollView: ScrollViewBase {
         }
 
         if let effectivePadding {
-            sliver = SliverPadding(padding: effectivePadding, sliver: sliver)
+            sliver = SliverPadding(padding: effectivePadding) {
+                sliver
+            }
         }
         return [sliver]
     }
