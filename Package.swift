@@ -17,7 +17,7 @@ let package = Package(
         // Shaft playground app
         .executable(name: "Playground", targets: ["Playground"]),
 
-        .executable(name: "WebDemo", targets: ["WebDemo"]),
+        // .executable(name: "WebDemo", targets: ["WebDemo"]),
 
         // The Shaft framework, is platform-independent and requires a backend
         // to run.
@@ -36,7 +36,7 @@ let package = Package(
         .library(name: "ShaftSkia", targets: ["ShaftSkia"]),
 
         // The Web backend and renderer for Shaft
-        .library(name: "ShaftWeb", targets: ["ShaftWeb"]),
+        // .library(name: "ShaftWeb", targets: ["ShaftWeb"]),
 
         // Companion tool for downloading Skia binaries. Will be removed in the
         // future when BuilderPlugin is more mature.
@@ -110,15 +110,15 @@ let package = Package(
             ]
         ),
 
-        .executableTarget(
-            name: "WebDemo",
-            dependencies: [
-                "SwiftMath",
-                "Shaft",
-                "ShaftWeb",
-                .product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
-            ]
-        ),
+        // .executableTarget(
+        //     name: "WebDemo",
+        //     dependencies: [
+        //         "SwiftMath",
+        //         "Shaft",
+        //         "ShaftWeb",
+        //         .product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
+        //     ]
+        // ),
 
         .target(
             name: "CSkia",
@@ -202,13 +202,13 @@ let package = Package(
 
         .target(
             name: "Fetch",
-            dependencies: [
-                .product(
-                    name: "JavaScriptKit",
-                    package: "JavaScriptKit",
-                    condition: .when(platforms: [.wasi])
-                )
-            ]
+            // dependencies: [
+            //     .product(
+            //         name: "JavaScriptKit",
+            //         package: "JavaScriptKit",
+            //         condition: .when(platforms: [.wasi])
+            //     )
+            // ]
         ),
 
         .target(
@@ -233,15 +233,15 @@ let package = Package(
                     name: "ShaftSDL3",
                     condition: .when(platforms: [.linux, .windows, .macOS])
                 ),
-                .target(
-                    name: "ShaftWeb",
-                    condition: .when(platforms: [.wasi])
-                ),
-                .product(
-                    name: "JavaScriptEventLoop",
-                    package: "JavaScriptKit",
-                    condition: .when(platforms: [.wasi])
-                ),
+                // .target(
+                //     name: "ShaftWeb",
+                //     condition: .when(platforms: [.wasi])
+                // ),
+                // .product(
+                //     name: "JavaScriptEventLoop",
+                //     package: "JavaScriptKit",
+                //     condition: .when(platforms: [.wasi])
+                // ),
             ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx, .when(platforms: [.linux, .windows, .macOS]))
@@ -269,14 +269,14 @@ let package = Package(
             swiftSettings: [.interoperabilityMode(.Cxx)]
         ),
 
-        .target(
-            name: "ShaftWeb",
-            dependencies: [
-                "SwiftMath",
-                "Shaft",
-                "JavaScriptKit",
-            ]
-        ),
+        // .target(
+        //     name: "ShaftWeb",
+        //     dependencies: [
+        //         "SwiftMath",
+        //         "Shaft",
+        //         "JavaScriptKit",
+        //     ]
+        // ),
 
         .target(
             name: "ShaftCodeHighlight",

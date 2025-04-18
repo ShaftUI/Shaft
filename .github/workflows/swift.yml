@@ -38,8 +38,8 @@ jobs:
 
       - uses: SwiftyLab/setup-swift@latest
         with:
-          swift-version: https://download.swift.org/development/windows10/swift-DEVELOPMENT-SNAPSHOT-2024-10-25-a/swift-DEVELOPMENT-SNAPSHOT-2024-10-25-a-windows10.exe
-          development: true
+          swift-version: https://download.swift.org/swift-6.1-release/windows10/swift-6.1-RELEASE/swift-6.1-RELEASE-windows10.exe
+          # development: true
 
       - name: Get swift version
         run: swift --version
