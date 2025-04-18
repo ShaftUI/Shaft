@@ -538,6 +538,11 @@ extension TextIndex: Comparable {
         return lhs.utf16Offset >= rhs.utf16Offset
     }
 
+    /// Creates a TextRange from this TextIndex to another TextIndex.
+    public static func ..< (lhs: TextIndex, rhs: TextIndex) -> TextRange {
+        return TextRange(start: lhs, end: rhs)
+    }
+
 }
 
 extension TextIndex {
@@ -554,6 +559,21 @@ extension TextIndex {
     /// Converts this TextIndex to a String.Index.
     public func index(in text: String) -> String.UTF16View.Index {
         return text.utf16.index(text.utf16.startIndex, offsetBy: utf16Offset)
+    }
+
+    /// Get the utf16 code unit at this TextIndex.
+    public func codeUnit(in text: String) -> UInt16 {
+        return text.utf16[index(in: text)]
+    }
+
+    /// Gets the code point at this TextIndex.
+    public func codePoint(in text: String) -> Int {
+        return Int(text.unicodeScalars[index(in: text)].value)
+    }
+
+    /// Gets the character at this TextIndex.
+    public func character(in text: String) -> Character {
+        return text[index(in: text)]
     }
 }
 
@@ -629,6 +649,10 @@ public struct TextRange: Equatable {
     /// The [offset] argument must be non-null and greater than or equal to -1.
     public static func collapsed(_ offset: TextIndex) -> Self {
         return Self(start: offset, end: offset)
+    }
+
+    public static var empty: Self {
+        return .collapsed(.zero)
     }
 
     /// The index of the first character in the range.
@@ -950,7 +974,7 @@ public protocol ParagraphBuilder: AnyObject {
 ///
 /// The only constraint that can be specified is the [width]. See the discussion
 /// at [width] for more details.
-public enum ParagraphConstraints {
+public enum ParagraphConstraints: Equatable {
     /// The width the paragraph should use whey computing the positions of glyphs.
     ///
     /// If possible, the paragraph will select a soft line break prior to reaching

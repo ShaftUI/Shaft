@@ -368,7 +368,6 @@ public class ColoredBox: LeafRenderObjectWidget {
     }
 
     public func updateRenderObject(context: BuildContext, renderObject: RenderColoredBox) {
-        mark("updateRenderObject", renderObject)
         renderObject.color = color
     }
 }
@@ -1098,7 +1097,7 @@ public class Align: SingleChildRenderObjectWidget {
 extension Widget {
     /// Aligns the child within it's parent.
     public func align(
-        alignment: any AlignmentGeometry = Alignment.center,
+        _ alignment: any AlignmentGeometry = Alignment.center,
         widthFactor: Float? = nil,
         heightFactor: Float? = nil
     ) -> Align {
@@ -1988,11 +1987,11 @@ public class SliverPadding: SingleChildRenderObjectWidget {
     public init(
         key: (any Key)? = nil,
         padding: EdgeInsetsGeometry,
-        sliver: Widget? = nil
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
     ) {
         self.key = key
         self.padding = padding
-        self.child = sliver
+        self.child = child()
     }
 
     public let key: (any Key)?

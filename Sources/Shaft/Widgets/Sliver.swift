@@ -305,7 +305,7 @@ public class SliverList: SliverMultiBoxAdaptorWidget {
         addAutomaticKeepAlives: Bool = true,
         addRepaintBoundaries: Bool = true,
         addSemanticIndexes: Bool = true,
-        @WidgetBuilder children: () -> [Widget]
+        @WidgetListBuilder children: () -> [Widget]
     ) -> SliverList {
         .init(
             key: key,

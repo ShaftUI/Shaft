@@ -6,6 +6,11 @@ import Shaft
     import ShaftSkia
 #endif
 
+#if canImport(ShaftWeb)
+    import ShaftWeb
+    import JavaScriptKit
+#endif
+
 /// Sets up the default backend and renderer for the Shaft framework. Use this
 /// when you just want to build regular applications with Shaft.
 ///
@@ -26,6 +31,13 @@ public func useDefault() {
 public func createDefaultBackend() -> Backend {
     #if os(macOS) || os(Linux) || os(Windows)
         return SDLBackend(renderer: defaultSkiaRenderer())
+    #endif
+
+    #if canImport(ShaftWeb)
+        return ShaftWebBackend(onCreateElement: { viewID in
+            let document = JSObject.global.document
+            return document.querySelector("canvas")
+        })
     #endif
 
     preconditionFailure("No backend available for this platform")

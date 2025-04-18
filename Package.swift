@@ -17,6 +17,8 @@ let package = Package(
         // Shaft playground app
         .executable(name: "Playground", targets: ["Playground"]),
 
+        // .executable(name: "WebDemo", targets: ["WebDemo"]),
+
         // The Shaft framework, is platform-independent and requires a backend
         // to run.
         .library(name: "Shaft", targets: ["Shaft"]),
@@ -33,6 +35,9 @@ let package = Package(
         // The Skia renderer for Shaft
         .library(name: "ShaftSkia", targets: ["ShaftSkia"]),
 
+        // The Web backend and renderer for Shaft
+        // .library(name: "ShaftWeb", targets: ["ShaftWeb"]),
+
         // Companion tool for downloading Skia binaries. Will be removed in the
         // future when BuilderPlugin is more mature.
         .plugin(name: "CSkiaSetupPlugin", targets: ["CSkiaSetupPlugin"]),
@@ -44,7 +49,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/ShaftUI/SwiftMath",
-            .upToNextMajor(from: "3.3.2")
+            .upToNextMajor(from: "3.4.0")
         ),
         .package(
             url: "https://github.com/ShaftUI/SwiftSDL3",
@@ -67,23 +72,33 @@ let package = Package(
             url: "https://github.com/ShaftUI/Splash",
             branch: "master"
         ),
-        .package(url: "https://github.com/ShaftUI/SwiftReload.git", branch: "main"),
-
+        .package(
+            url: "https://github.com/ShaftUI/SwiftReload.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swiftwasm/JavaScriptKit",
+            from: "0.22.3"
+        ),
     ],
 
     targets: [
         .executableTarget(
             name: "Playground",
             dependencies: [
-                "CSkia",
+                "Fetch",
                 "SwiftMath",
                 "Shaft",
                 "ShaftSetup",
                 "ShaftCodeHighlight",
-                "SwiftReload",
+                .product(
+                    name: "SwiftReload",
+                    package: "SwiftReload",
+                    condition: .when(platforms: [.linux, .macOS])
+                ),
             ],
             swiftSettings: [
-                .interoperabilityMode(.Cxx),
+                .interoperabilityMode(.Cxx, .when(platforms: [.windows, .linux, .macOS])),
                 .unsafeFlags(["-Xfrontend", "-enable-private-imports"]),
                 .unsafeFlags(["-Xfrontend", "-enable-implicit-dynamic"]),
             ],
@@ -94,6 +109,16 @@ let package = Package(
                 )
             ]
         ),
+
+        // .executableTarget(
+        //     name: "WebDemo",
+        //     dependencies: [
+        //         "SwiftMath",
+        //         "Shaft",
+        //         "ShaftWeb",
+        //         .product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
+        //     ]
+        // ),
 
         .target(
             name: "CSkia",
@@ -176,14 +201,24 @@ let package = Package(
         ),
 
         .target(
+            name: "Fetch",
+            // dependencies: [
+            //     .product(
+            //         name: "JavaScriptKit",
+            //         package: "JavaScriptKit",
+            //         condition: .when(platforms: [.wasi])
+            //     )
+            // ]
+        ),
+
+        .target(
             name: "Shaft",
             dependencies: [
                 "SwiftMath",
                 "Rainbow",
-                "SwiftSDL3",
+                "Fetch",
                 .product(name: "Collections", package: "swift-collections"),
-            ],
-            swiftSettings: [.interoperabilityMode(.Cxx)]
+            ]
         ),
 
         .target(
@@ -198,8 +233,19 @@ let package = Package(
                     name: "ShaftSDL3",
                     condition: .when(platforms: [.linux, .windows, .macOS])
                 ),
+                // .target(
+                //     name: "ShaftWeb",
+                //     condition: .when(platforms: [.wasi])
+                // ),
+                // .product(
+                //     name: "JavaScriptEventLoop",
+                //     package: "JavaScriptKit",
+                //     condition: .when(platforms: [.wasi])
+                // ),
             ],
-            swiftSettings: [.interoperabilityMode(.Cxx)]
+            swiftSettings: [
+                .interoperabilityMode(.Cxx, .when(platforms: [.linux, .windows, .macOS]))
+            ]
         ),
 
         .target(
@@ -223,13 +269,21 @@ let package = Package(
             swiftSettings: [.interoperabilityMode(.Cxx)]
         ),
 
+        // .target(
+        //     name: "ShaftWeb",
+        //     dependencies: [
+        //         "SwiftMath",
+        //         "Shaft",
+        //         "JavaScriptKit",
+        //     ]
+        // ),
+
         .target(
             name: "ShaftCodeHighlight",
             dependencies: [
                 "Splash",
                 "Shaft",
-            ],
-            swiftSettings: [.interoperabilityMode(.Cxx)]
+            ]
         ),
 
         .testTarget(

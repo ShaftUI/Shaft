@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import SwiftSDL3
-
 /// A single fixed-height row that typically contains some text as well as a
 /// leading or trailing icon.
 public final class ListTile<T: Hashable>: StatefulWidget {
