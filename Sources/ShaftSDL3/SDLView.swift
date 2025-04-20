@@ -182,6 +182,35 @@ public class SDLView: NativeView {
     }
 }
 
+extension SDLView: DesktopView {
+    public var position: Offset {
+        get {
+            var x: Int32 = 0
+            var y: Int32 = 0
+            SDL_GetWindowPosition(sdlWindow, &x, &y)
+            return Offset(Float(x), Float(y))
+        }
+        set {
+            SDL_SetWindowPosition(sdlWindow, Int32(newValue.dx), Int32(newValue.dy))
+        }
+    }
+
+    public var displayID: DisplayID {
+        return DisplayID(SDL_GetDisplayForWindow(sdlWindow))
+    }
+
+    public var alwaysOnTop: Bool {
+        get {
+            let SDL_WINDOW_ALWAYS_ON_TOP: Uint64 = 0x0000_0000_0001_0000
+            let flags = SDL_GetWindowFlags(sdlWindow)
+            return (flags & SDL_WINDOW_ALWAYS_ON_TOP) != 0
+        }
+        set {
+            SDL_SetWindowAlwaysOnTop(sdlWindow, newValue)
+        }
+    }
+}
+
 // typedef bool (SDLCALL * SDL_EventFilter) (void *userdata, SDL_Event * event);
 private func sdlEventWatcher(
     userdata: UnsafeMutableRawPointer?,

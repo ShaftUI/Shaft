@@ -78,6 +78,21 @@ extension NativeView {
     public var rawView: UnsafeMutableRawPointer? { nil }
 }
 
+/// An identifier for a display (monitor).
+public typealias DisplayID = UInt32
+
+/// A protocol that represents a native view on desktop platforms.
+public protocol DesktopView: NativeView {
+    /// The position of the view's top-left corner in screen coordinates.
+    var position: Offset { get set }
+
+    /// The display ID of the display that the view is on.
+    var displayID: DisplayID { get }
+
+    /// Whether the view is always on top of other views.
+    var alwaysOnTop: Bool { get set }
+}
+
 #if canImport(AppKit)
     import AppKit
 
