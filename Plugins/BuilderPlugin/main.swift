@@ -28,8 +28,8 @@ struct BuilderPlugin: CommandPlugin {
             switch step {
             case .macOSBundle(let input):
                 executeMacOSBundleStep(input, context: context)
-            // case .move(let input):
-            //     executeMoveStep(input, context: context)
+            case .copy(let input):
+                executeCopyStep(input, context: context)
             default:
                 print("Unknown step type: \(step)")
             }

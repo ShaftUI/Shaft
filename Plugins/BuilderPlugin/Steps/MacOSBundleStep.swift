@@ -1,6 +1,15 @@
 import Foundation
 import PackagePlugin
 
+struct MacOSBundleInput: Codable {
+    let name: String
+    let identifier: String
+    let version: String
+    let product: String
+    let output: String
+    let additionalInfoPlistEntries: [String: String]?
+}
+
 func executeMacOSBundleStep(_ input: MacOSBundleInput, context: StepContext) {
     // Ensure the product exists in the package
     guard let product = context.findProduct(input.product) else {
@@ -66,25 +75,33 @@ private func createBundle(
         copyFile(from: artifect.path.string + ".dSYM", to: structure.mainExecutableDSYM.path)
     }
 
-    // Write the Info.plist
-    let infoPlist = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-        <plist version="1.0">
-        <dict>
-            <key>CFBundleExecutable</key>
-            <string>\(input.product)</string>
-            <key>CFBundleIdentifier</key>
-            <string>\(input.identifier)</string>
-            <key>CFBundleName</key>
-            <string>\(input.name)</string>
-            <key>CFBundleVersion</key>
-            <string>\(input.version)</string>
-        </dict>
-        </plist>
-        """
+    // Create the Info.plist dictionary
+    var infoPlistDict: [String: Any] = [
+        "CFBundleExecutable": input.product,
+        "CFBundleIdentifier": input.identifier,
+        "CFBundleName": input.name,
+        "CFBundleVersion": input.version,
+    ]
 
-    try! infoPlist.write(to: structure.infoPlistFile, atomically: true, encoding: .utf8)
+    // Merge additional entries
+    if let additionalEntries = input.additionalInfoPlistEntries {
+        infoPlistDict.merge(additionalEntries) { _, new in new }  // Keep the new value in case of key collision
+    }
+
+    // Serialize the dictionary to XML data
+    do {
+        let plistData = try PropertyListSerialization.data(
+            fromPropertyList: infoPlistDict,
+            format: .xml,
+            options: 0
+        )
+        // Write the data to the Info.plist file
+        try plistData.write(to: structure.infoPlistFile)
+    } catch {
+        print("Error serializing or writing Info.plist: \(error)")
+        // Decide how to handle the error, e.g., exit(1)
+        exit(1)
+    }
 
     print("Bundle created at \(outputDirectory)")
 }

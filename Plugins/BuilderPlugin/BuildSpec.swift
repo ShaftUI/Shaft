@@ -23,8 +23,8 @@
 //             }
 //         },
 //         {
-//             "name": "Move ShaftBrowser Helper.app to ShaftBrowser.app/Contents/Frameworks",
-//             "type": "move",
+//             "name": "Copy ShaftBrowser Helper.app to ShaftBrowser.app/Contents/Frameworks",
+//             "type": "copy",
 //             "with": {
 //                 "source": ".build/ShaftBrowser Helper.app",
 //                 "destination": ".build/ShaftBrowser.app/Contents/Frameworks"
@@ -39,12 +39,12 @@ struct BuildSpec: Codable {
 
 enum BuildStepType: String, Codable {
     case macOSBundle = "macos-bundle"
-    case move = "move"
+    case copy = "copy"
 }
 
 enum BuildStep: Codable {
     case macOSBundle(MacOSBundleInput)
-    case move(MoveInput)
+    case copy(CopyInput)
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -52,8 +52,8 @@ enum BuildStep: Codable {
         switch type {
         case .macOSBundle:
             self = .macOSBundle(try container.decode(MacOSBundleInput.self, forKey: .with))
-        case .move:
-            self = .move(try container.decode(MoveInput.self, forKey: .with))
+        case .copy:
+            self = .copy(try container.decode(CopyInput.self, forKey: .with))
         }
     }
 
@@ -63,9 +63,9 @@ enum BuildStep: Codable {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(BuildStepType.macOSBundle, forKey: .type)
             try container.encode(input, forKey: .with)
-        case .move(let input):
+        case .copy(let input):
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(BuildStepType.move, forKey: .type)
+            try container.encode(BuildStepType.copy, forKey: .type)
             try container.encode(input, forKey: .with)
         }
     }
@@ -74,17 +74,4 @@ enum BuildStep: Codable {
         case type
         case with
     }
-}
-
-struct MacOSBundleInput: Codable {
-    let name: String
-    let identifier: String
-    let version: String
-    let product: String
-    let output: String
-}
-
-struct MoveInput: Codable {
-    let source: String
-    let destination: String
 }
