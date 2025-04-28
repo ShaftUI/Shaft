@@ -66,6 +66,7 @@
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphBuilder.h"
 #include "modules/skparagraph/include/FontCollection.h"
+#include "modules/skparagraph/include/TypefaceFontProvider.h"
 
 #include "src/core/SkYUVAInfoLocation.h"
 
@@ -138,6 +139,7 @@ void paragraph_unref(Paragraph *paragraph);
 // MARK: - Font
 
 FontCollection_sp sk_fontcollection_new();
+void sk_fontcollection_register_typeface(FontCollection_sp &collection, SkTypeface_sp &typeface);
 SkTypeface_sp sk_typeface_create_from_data(const FontCollection_sp &collection, const char *data, size_t length);
 std::vector<SkTypeface_sp> sk_fontcollection_find_typefaces(const FontCollection_sp &collection, const std::vector<SkString> &families, SkFontStyle style);
 SkTypeface_sp sk_fontcollection_default_fallback(const FontCollection_sp &collection, SkUnichar unicode, SkFontStyle style, const SkString &locale);

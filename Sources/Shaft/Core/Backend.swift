@@ -75,6 +75,18 @@ public protocol NativeView: AnyObject {
 }
 
 extension NativeView {
+    /// Returns the logical size of the view, which is the physical size divided
+    /// by the device pixel ratio.
+    ///
+    /// This is a convenience property that calculates the logical size from the
+    /// physical size and device pixel ratio, which are required properties of
+    /// the NativeView protocol.
+    public var logicalSize: Size {
+        physicalSize / devicePixelRatio
+    }
+}
+
+extension NativeView {
     public var rawView: UnsafeMutableRawPointer? { nil }
 }
 

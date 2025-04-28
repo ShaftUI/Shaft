@@ -1902,7 +1902,6 @@ public class GridView: BoxScrollView {
         shrinkWrap: Bool = false,
         padding: EdgeInsetsGeometry? = nil,
         gridDelegate: any SliverGridDelegate,
-        itemBuilder: @escaping NullableIndexedWidgetBuilder,
         findChildIndexCallback: ChildIndexGetter? = nil,
         itemCount: Int? = nil,
         addAutomaticKeepAlives: Bool = true,
@@ -1914,7 +1913,8 @@ public class GridView: BoxScrollView {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior = .manual,
         restorationId: String? = nil,
         clipBehavior: Clip = .hardEdge,
-        hitTestBehavior: HitTestBehavior = .opaque
+        hitTestBehavior: HitTestBehavior = .opaque,
+        itemBuilder: @escaping NullableIndexedWidgetBuilder,
     ) -> GridView {
         let delegate = SliverChildBuilderDelegate(
             itemBuilder,

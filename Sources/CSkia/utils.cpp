@@ -18,6 +18,8 @@ auto fontMgr = SkFontMgr_New_DirectWrite(nullptr);
 auto fontMgr = SkFontMgr_New_FontConfig(nullptr);
 #endif
 
+auto typefaceProvider = sk_make_sp<TypefaceFontProvider>();
+
 ParagraphBuilder *paragraph_builder_new(ParagraphStyle &style, const FontCollection_sp &fontCollection)
 {
     auto result = ParagraphBuilder::make(style, fontCollection);
@@ -158,8 +160,14 @@ SkCanvas *sk_surface_get_canvas(const sk_sp<SkSurface> &surface)
 FontCollection_sp sk_fontcollection_new()
 {
     auto collection = sk_make_sp<FontCollection>();
+    collection->setDynamicFontManager(typefaceProvider);
     collection->setDefaultFontManager(fontMgr);
     return collection;
+}
+
+void sk_fontcollection_register_typeface(FontCollection_sp &collection, SkTypeface_sp &typeface)
+{
+    typefaceProvider->registerTypeface(typeface);
 }
 
 SkTypeface_sp sk_typeface_create_from_data(const FontCollection_sp &collection, const char *data, size_t length)
