@@ -17,6 +17,11 @@ public class SkiaFontCollection: FontCollection {
         return SkiaTypeface(typeface)
     }
 
+    public func registerTypeface(_ typeface: any Typeface) {
+        let typeface = typeface as! SkiaTypeface
+        sk_fontcollection_register_typeface(&collection, &typeface.typeface)
+    }
+
     public func findTypeface(_ family: [String], style: FontStyle, weight: FontWeight)
         -> [any Typeface]
     {

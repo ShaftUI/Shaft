@@ -29,6 +29,7 @@ final class PlaygroundState: State<Playground> {
         "Button": Kit_Button(),
         "Divider": Kit_Divider(),
         "Image": Kit_Image(),
+        "Icons": Kit_Icons(),
         "ListView": Kit_ListView(),
         "NavigationSplitView": Kit_NavigationSplitView(),
         "Resizable": Kit_Resizable(),
@@ -39,7 +40,7 @@ final class PlaygroundState: State<Playground> {
             // "Text Field": TextFieldPage.init,
     ]
 
-    lazy var selectedPage = ValueNotifier("3D Cube")
+    lazy var selectedPage = ValueNotifier("Observation")
 
     override func initState() {
         super.initState()
@@ -78,6 +79,7 @@ final class PlaygroundState: State<Playground> {
                     MenuTile("Button")
                     MenuTile("Divider")
                     MenuTile("Image")
+                    MenuTile("Icons")
                     MenuTile("ListView")
                     MenuTile("NavigationSplitView")
                     MenuTile("Resizable")

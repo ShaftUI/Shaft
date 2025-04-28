@@ -1276,14 +1276,14 @@ extension Widget {
 public class RichText: MultiChildRenderObjectWidget {
     public init(
         text: InlineSpan,
-        textAlign: TextAlign,
+        textAlign: TextAlign = .start,
         textDirection: TextDirection? = nil,
-        softWrap: Bool,
-        overflow: TextOverflow,
-        textScaler: any TextScaler,
+        softWrap: Bool = true,
+        overflow: TextOverflow = .clip,
+        textScaler: any TextScaler = .noScaling,
         maxLines: Int? = nil,
         strutStyle: StrutStyle? = nil,
-        textWidthBasis: TextWidthBasis,
+        textWidthBasis: TextWidthBasis = .parent,
         textHeightBehavior: TextHeightBehavior? = nil,
         selectionColor: Color? = nil
     ) {

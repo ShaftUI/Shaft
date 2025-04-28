@@ -29,6 +29,9 @@ let package = Package(
         // Code highlighting library for Shaft
         .library(name: "ShaftCodeHighlight", targets: ["ShaftCodeHighlight"]),
 
+        // The Lucide icons for Shaft
+        .library(name: "ShaftLucide", targets: ["ShaftLucide"]),
+
         // The SDL3 backend for Shaft
         .library(name: "ShaftSDL3", targets: ["ShaftSDL3"]),
 
@@ -90,6 +93,7 @@ let package = Package(
                 "SwiftMath",
                 "Shaft",
                 "ShaftSetup",
+                "ShaftLucide",
                 "ShaftCodeHighlight",
                 .product(
                     name: "SwiftReload",
@@ -283,6 +287,17 @@ let package = Package(
             dependencies: [
                 "Splash",
                 "Shaft",
+            ]
+        ),
+
+        .target(
+            name: "ShaftLucide",
+            dependencies: [
+                "Shaft"
+            ],
+            resources: [
+                .embedInCode("Resource/lucide.json"),
+                .embedInCode("Resource/lucide.woff2"),
             ]
         ),
 

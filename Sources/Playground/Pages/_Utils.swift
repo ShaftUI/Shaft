@@ -9,14 +9,18 @@ final class PageContent: StatelessWidget {
     let content: [Widget]
 
     func build(context: BuildContext) -> Widget {
-        SingleChildScrollView {
-            Column(crossAxisAlignment: .start, spacing: 16) {
-                content
+        CustomScrollView {
+            SliverPadding(padding: .all(20)) {
+                SliverList.list {
+                    for widget in content {
+                        widget
+                            .align(.topLeft)
+                            .padding(.only(bottom: 16))
+                    }
+                }
             }
-            .textStyle(.init(height: 1.5))
-            .padding(.all(20))
         }
-
+        .textStyle(.init(height: 1.5))
     }
 }
 

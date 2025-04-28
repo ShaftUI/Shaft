@@ -1408,6 +1408,11 @@ public protocol FontCollection {
     /// Creates a typeface from the provided font file data.
     func makeTypefaceFrom(_ data: Data) -> Typeface
 
+    /// Registers a typeface with the font collection. After registering a
+    /// typeface, it becomes available for use in text rendering and can be
+    /// found by family name when specifying text styles.
+    func registerTypeface(_ typeface: Typeface)
+
     /// Finds the closest matching typeface to the specified family name and
     /// style.
     func findTypeface(_ family: [String], style: FontStyle, weight: FontWeight) -> [Typeface]

@@ -8,6 +8,10 @@ public class ShaftWebFontCollection: Shaft.FontCollection {
         shouldImplement()
     }
 
+    public func registerTypeface(_ typeface: any Typeface) {
+        shouldImplement()
+    }
+
     public func findTypeface(_ family: [String], style: FontStyle, weight: FontWeight)
         -> [any Typeface]
     {
