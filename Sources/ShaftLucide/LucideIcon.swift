@@ -72,7 +72,7 @@ private func getIconData(name: String) -> IconData? {
 ///
 /// Example usage:
 /// ```swift
-/// LucideIcon(name: "heart", size: 24.0, color: .red)
+/// LucideIcon("heart", size: 24.0, color: .red)
 /// ```
 ///
 /// You can find all available icon names using the `LucideIcon.allIcons`
@@ -82,7 +82,7 @@ public class LucideIcon: StatelessWidget {
     public static let allIcons: [String] = iconData.keys.sorted()
 
     /// Creates a new Lucide icon widget.
-    public init(name: String, size: Float = 14.0, weight: Float? = nil, color: Color? = nil) {
+    public init(_ name: String, size: Float = 14.0, weight: Float? = nil, color: Color? = nil) {
         self.name = name
         self.size = size
         self.weight = weight

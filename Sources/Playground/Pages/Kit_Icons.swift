@@ -20,7 +20,7 @@ final class Kit_IconsState: State<Kit_Icons> {
             itemBuilder: { context, index in
                 Column(mainAxisAlignment: .spaceEvenly) {
                     LucideIcon(
-                        name: LucideIcon.allIcons[index],
+                        LucideIcon.allIcons[index],
                         size: 32,
                         color: .init(0xFF_696969)
                     )
