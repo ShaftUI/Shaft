@@ -24,10 +24,12 @@ public enum ButtonRole {
 public final class Button: StatefulWidget {
     public init(
         role: ButtonRole = .primary,
+        isSelected: Bool = false,
         onPressed: VoidCallback? = nil,
         @WidgetBuilder child: () -> Widget
     ) {
         self.role = role
+        self.isSelected = isSelected
         self.onPressed = onPressed
         self.child = child()
     }
@@ -40,6 +42,12 @@ public final class Button: StatefulWidget {
     ///
     /// If this is set to null, the button will be disabled.
     public let onPressed: VoidCallback?
+
+    /// Whether the button is in a selected state.
+    ///
+    /// This property can be used to indicate that the button represents a
+    /// selected option or state in the user interface.
+    public let isSelected: Bool
 
     public let child: Widget
 
@@ -71,6 +79,9 @@ public final class Button: StatefulWidget {
         /// Whether the button is currently enabled.
         var isEnabled: Bool { get }
 
+        /// Whether the button is currently in a selected state.
+        var isSelected: Bool { get }
+
         /// The role of the button.
         var role: ButtonRole { get }
 
@@ -89,6 +100,8 @@ private final class ButtonState: State<Button>, Button.StyleContext {
     public var isFocused: Bool { false }
 
     public var isEnabled: Bool { widget.onPressed != nil }
+
+    public var isSelected: Bool { widget.isSelected }
 
     public var role: ButtonRole { widget.role }
 
