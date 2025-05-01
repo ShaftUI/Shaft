@@ -19,6 +19,8 @@ extension Paint {
         paint.setStrokeMiter(strokeMiterLimit)
         if let maskFilter {
             sk_paint_set_maskfilter_blur(&paint, maskFilter.style.toSkia(), maskFilter.sigma)
+        } else {
+            sk_paint_clear_maskfilter(&paint)
         }
         // filterQuality
     }
