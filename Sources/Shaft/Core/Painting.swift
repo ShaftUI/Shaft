@@ -564,6 +564,22 @@ public struct Color: Hashable {
         )
     }
 
+    /// Create a color from red, green, blue values, with a fully opaque alpha channel.
+    ///
+    /// * `r` is red, from 0 to 255.
+    /// * `g` is green, from 0 to 255.
+    /// * `b` is blue, from 0 to 255.
+    ///
+    /// Out of range values are brought into range using modulo 255.
+    public static func rgb(_ r: UInt8, _ g: UInt8, _ b: UInt8) -> Color {
+        Color.argb(255, r, g, b)
+    }
+
+    /// A completely transparent color. Equivalent to `Color.argb(0, 0, 0, 0)`.
+    public static var transparent: Color {
+        .init(0x0000_0000)
+    }
+
     /// Create a color from red, green, blue, and opacity, similar to `rgba()` in CSS.
     ///
     /// * `r` is [red], from 0 to 255.
