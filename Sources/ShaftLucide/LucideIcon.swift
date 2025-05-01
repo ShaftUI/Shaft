@@ -106,8 +106,10 @@ public class LucideIcon: StatelessWidget {
             return Text("Icon '\(name)' not found")
         }
 
+        let effectiveColor = color ?? DefaultTextStyle.of(context).style.color
+
         let textStyle = TextStyle(
-            color: color,
+            color: effectiveColor,
             fontFamily: "lucide",
             fontSize: size,
         )
