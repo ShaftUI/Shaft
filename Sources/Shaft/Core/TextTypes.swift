@@ -209,7 +209,8 @@ public class SpanStyle {
         leadingDistribution: TextLeadingDistribution? = nil,
         background: Paint? = nil,
         foreground: Paint? = nil,
-        shadows: [Shadow]? = nil
+        shadows: [Shadow]? = nil,
+        fontVariations: [FontVariation]? = nil
     ) {
         self.color = color
         self.decoration = decoration
@@ -228,6 +229,7 @@ public class SpanStyle {
         self.background = background
         self.foreground = foreground
         self.shadows = shadows
+        self.fontVariations = fontVariations
     }
 
     public var color: Color?
@@ -249,7 +251,216 @@ public class SpanStyle {
     public var foreground: Paint?
     public var shadows: [Shadow]?
     // public var fontFeatures: [FontFeature]?
-    // public var fontVariations: [FontVariation]?
+    public var fontVariations: [FontVariation]?
+}
+
+/// An axis tag and value that can be used to customize variable fonts.
+///
+/// Some fonts are variable fonts that can generate a range of different
+/// font faces by altering the values of the font's design axes.
+///
+/// For example:
+///
+/// ```swift
+/// TextStyle(fontVariations: [FontVariation("wght", 800.0)])
+/// ```
+///
+/// Font variations are distinct from font features, as exposed by the
+/// `FontFeature` class. Where features can be enabled or disabled in a discrete
+/// manner, font variations provide a continuous axis of control.
+///
+/// See also:
+///
+///  * <https://learn.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg#registered-axis-tags>,
+///    which lists registered axis tags.
+///
+///  * <https://docs.microsoft.com/en-us/typography/opentype/spec/otvaroverview>,
+///    an overview of the font variations technology.
+public struct FontVariation: Hashable {
+    /// Creates a FontVariation object, which can be added to a TextStyle to
+    /// change the variable attributes of a font.
+    ///
+    /// `axis` is the four-character tag that identifies the design axis.
+    /// OpenType lists the [currently registered axis
+    /// tags](https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg).
+    ///
+    /// `value` is the value that the axis will be set to. The behavior
+    /// depends on how the font implements the axis.
+    public init(_ axis: String, _ value: Float) {
+        assert(axis.count == 4, "Axis tag must be exactly four characters long.")
+        assert(
+            value >= -32768.0 && value < 32768.0,
+            "Value must be representable as a signed 16.16 fixed-point number, i.e. it must be in this range: -32768.0 ≤ value < 32768.0"
+        )
+        self.axis = axis
+        self.value = value
+    }
+
+    // Constructors below should be alphabetic by axis tag. This makes it easier
+    // to determine when an axis is missing so that we avoid adding duplicates.
+
+    // Start of axis tag list.
+    // ------------------------------------------------------------------------
+
+    /// Variable font style. (`ital`)
+    ///
+    /// Varies the style of glyphs in the font between normal and italic.
+    ///
+    /// Values must in the range 0.0 (meaning normal, or Roman, as in
+    /// `FontStyle.normal`) to 1.0 (meaning fully italic, as in
+    /// `FontStyle.italic`).
+    ///
+    /// This is distinct from `FontVariation.slant`, which leans the characters
+    /// without changing the font style.
+    ///
+    /// See also:
+    ///
+    ///  * <https://learn.microsoft.com/en-us/typography/opentype/spec/dvaraxistag_ital>
+    public static func italic(_ value: Float) -> FontVariation {
+        assert(value >= 0.0 && value <= 1.0)
+        return FontVariation("ital", value)
+    }
+
+    /// Optical size optimization. (`opsz`)
+    ///
+    /// Changes the rendering of the font to be optimized for the given text size.
+    /// Normally, the optical size of the font will be derived from the font size.
+    ///
+    /// This feature could be used when the text represents a particular physical
+    /// font size, for example text in the representation of a hardcopy magazine,
+    /// which does not correspond to the actual font size being used to render the
+    /// text. By setting the optical size explicitly, font variations that might
+    /// be applied as the text is zoomed will be fixed at the size being
+    /// represented by the text.
+    ///
+    /// This feature could also be used to smooth animations. If a font varies its
+    /// rendering as the font size is adjusted, it may appear to "quiver" (or, one
+    /// might even say, "flutter") if the font size is animated. By setting a
+    /// fixed optical size, the rendering can be fixed to one particular style as
+    /// the text size animates.
+    ///
+    /// Values must be greater than zero, and are interpreted as points. A point
+    /// is 1/72 of an inch, or 1.333 logical pixels (96/72).
+    ///
+    /// See also:
+    ///
+    ///  * <https://learn.microsoft.com/en-us/typography/opentype/spec/dvaraxistag_opsz>
+    public static func opticalSize(_ value: Float) -> FontVariation {
+        assert(value > 0.0)
+        return FontVariation("opsz", value)
+    }
+
+    /// Variable font slant. (`slnt`)
+    ///
+    /// Varies the slant of glyphs in the font.
+    ///
+    /// Values must be greater than -90.0 and less than +90.0, and represents the
+    /// angle in _counter-clockwise_ degrees relative to "normal", at 0.0.
+    ///
+    /// For example, to lean the glyphs forward by 45 degrees, one would use
+    /// `FontVariation.slant(-45.0)`.
+    ///
+    /// This is distinct from `FontVariation.italic`, in that slant leans the
+    /// characters without changing the font style.
+    ///
+    /// See also:
+    ///
+    ///  * <https://learn.microsoft.com/en-us/typography/opentype/spec/dvaraxistag_slnt>
+    public static func slant(_ value: Float) -> FontVariation {
+        assert(value > -90.0 && value < 90.0)
+        return FontVariation("slnt", value)
+    }
+
+    /// Variable font width. (`wdth`)
+    ///
+    /// Varies the width of glyphs in the font.
+    ///
+    /// Values must be greater than zero, with no upper limit. 100.0 represents
+    /// the "normal" width. Smaller values are "condensed", greater values are
+    /// "extended".
+    ///
+    /// See also:
+    ///
+    ///  * <https://learn.microsoft.com/en-us/typography/opentype/spec/dvaraxistag_wdth>
+    public static func width(_ value: Float) -> FontVariation {
+        assert(value >= 0.0)
+        return FontVariation("wdth", value)
+    }
+
+    /// Variable font weight. (`wght`)
+    ///
+    /// Varies the stroke thickness of the font, similar to FontWeight but on a
+    /// continuous axis.
+    ///
+    /// Values must be in the range 1..1000, and are to be interpreted in a manner
+    /// consistent with the values of FontWeight. For instance, `400` is the
+    /// "normal" weight, and `700` is "bold".
+    ///
+    /// See also:
+    ///
+    ///  * <https://learn.microsoft.com/en-us/typography/opentype/spec/dvaraxistag_wght>
+    public static func weight(_ value: Float) -> FontVariation {
+        assert(value >= 1 && value <= 1000)
+        return FontVariation("wght", value)
+    }
+
+    // ------------------------------------------------------------------------
+    // End of axis tags list.
+
+    /// The tag that identifies the design axis.
+    ///
+    /// An axis tag must consist of 4 ASCII characters.
+    public let axis: String
+
+    /// The value assigned to this design axis.
+    ///
+    /// The range of usable values depends on the specification of the axis.
+    ///
+    /// While this property is represented as a Float in this API
+    /// ([binary32](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)),
+    /// fonts use the fixed-point 16.16 format to represent the value of font
+    /// variations. This means that the actual range is -32768.0 to approximately
+    /// 32767.999985 and in principle the smallest increment between two values is
+    /// approximately 0.000015 (1/65536).
+    ///
+    /// The binary32 floating point format has 24 bits of precision, which means
+    /// that for values outside the range -256.0 to 256.0, the smallest increment
+    /// is larger than what is technically supported by OpenType. At the extreme
+    /// edge of the range, the smallest increment is only approximately ±0.002.
+    public let value: Float
+
+    /// Linearly interpolates between two font variations.
+    ///
+    /// If the two variations have different axis tags, the interpolation switches
+    /// abruptly from one to the other at t=0.5. Otherwise, the value is
+    /// interpolated (see lerpDouble).
+    ///
+    /// The value is not clamped to the valid values of the axis tag, but it is
+    /// clamped to the valid range of font variations values in general (the range
+    /// of signed 16.16 fixed point numbers).
+    ///
+    /// The `t` argument represents position on the timeline, with 0.0 meaning
+    /// that the interpolation has not started, returning `a` (or something
+    /// equivalent to `a`), 1.0 meaning that the interpolation has finished,
+    /// returning `b` (or something equivalent to `b`), and values in between
+    /// meaning that the interpolation is at the relevant point on the timeline
+    /// between `a` and `b`. The interpolation can be extrapolated beyond 0.0 and
+    /// 1.0, so negative values and values greater than 1.0 are valid.
+    public static func lerp(_ a: FontVariation?, _ b: FontVariation?, _ t: Float) -> FontVariation?
+    {
+        if a?.axis != b?.axis || (a == nil && b == nil) {
+            return t < 0.5 ? a : b
+        }
+
+        let lerpedValue = a!.value + (b!.value - a!.value) * t
+        let clampedValue = min(max(lerpedValue, -32768.0), 32768.0 - 1.0 / 65536.0)
+
+        return FontVariation(a!.axis, clampedValue)
+    }
+
+    public var description: String {
+        return "FontVariation('\(axis)', \(value))"
+    }
 }
 
 /// A way to disambiguate a [TextPosition] when its offset could match two
@@ -1420,6 +1631,12 @@ public protocol FontCollection {
     /// Finds any font in the available font managers that resolves the
     /// specified Unicode codepoint.
     func findTypefaceFor(_ codepoint: UInt32) -> Typeface?
+
+    /// Returns the number of families in the font collection.
+    var familyCount: Int { get }
+
+    /// Returns the name of the family at the specified index.
+    func familyName(at index: Int) -> String
 }
 
 /// A typeface in Shaft is typically a loaded font file. It can be used to

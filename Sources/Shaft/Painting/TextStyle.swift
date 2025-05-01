@@ -30,6 +30,7 @@ public struct TextStyle: Equatable {
         decorationThickness: Float? = nil,
         debugLabel: String? = nil,
         shadows: [Shadow]? = nil,
+        fontVariations: [FontVariation]? = nil,
         overflow: TextOverflow? = nil
     ) {
         self.inherit = inherit
@@ -53,6 +54,7 @@ public struct TextStyle: Equatable {
         self.decorationThickness = decorationThickness
         self.debugLabel = debugLabel
         self.shadows = shadows
+        self.fontVariations = fontVariations
         self.overflow = overflow
     }
 
@@ -315,7 +317,7 @@ public struct TextStyle: Equatable {
     ///   fontVariations: [FontVariation("wght", 900.0)]
     /// )
     /// ```
-    // var fontVariations: [ui.FontVariation]?
+    public let fontVariations: [FontVariation]?
 
     /// How visual text overflow should be handled.
     public let overflow: TextOverflow?
@@ -378,6 +380,7 @@ public struct TextStyle: Equatable {
             decorationThickness: other.decorationThickness,
             debugLabel: mergedDebugLabel,
             shadows: other.shadows,
+            fontVariations: other.fontVariations,
             overflow: other.overflow
         )
     }
@@ -404,6 +407,7 @@ public struct TextStyle: Equatable {
         decorationThickness: Float? = nil,
         debugLabel: String? = nil,
         shadows: [Shadow]? = nil,
+        fontVariations: [FontVariation]? = nil,
         overflow: TextOverflow? = nil
     ) -> TextStyle {
         TextStyle(
@@ -428,6 +432,7 @@ public struct TextStyle: Equatable {
             decorationThickness: decorationThickness ?? self.decorationThickness,
             debugLabel: debugLabel ?? self.debugLabel,
             shadows: shadows ?? self.shadows,
+            fontVariations: fontVariations ?? self.fontVariations,
             overflow: overflow ?? self.overflow
         )
     }
@@ -463,7 +468,8 @@ extension TextStyle {
             leadingDistribution: leadingDistribution,
             background: background,
             foreground: foreground,
-            shadows: shadows
+            shadows: shadows,
+            fontVariations: fontVariations
         )
     }
 

@@ -245,10 +245,10 @@ public final class DefaultTextStyle: InheritedWidget {
     }
 
     /// The text style to apply.
-    let style: TextStyle
+    public let style: TextStyle
 
     /// How each line of text in the Text widget should be aligned horizontally.
-    let textAlign: TextAlign?
+    public let textAlign: TextAlign?
 
     /// Whether the text should break at soft line breaks.
     ///
@@ -256,13 +256,13 @@ public final class DefaultTextStyle: InheritedWidget {
     ///
     /// This also decides the [overflow] property's behavior. If this is true or null,
     /// the glyph causing overflow, and those that follow, will not be rendered.
-    let softWrap: Bool
+    public let softWrap: Bool
 
     /// How visual overflow should be handled.
     ///
     /// If [softWrap] is true or null, the glyph causing overflow, and those that follow,
     /// will not be rendered. Otherwise, it will be shown with the given overflow option.
-    let overflow: TextOverflow
+    public let overflow: TextOverflow
 
     /// An optional maximum number of lines for the text to span, wrapping if necessary.
     /// If the text exceeds the given number of lines, it will be truncated according
@@ -273,15 +273,15 @@ public final class DefaultTextStyle: InheritedWidget {
     ///
     /// If this is non-null, it will override even explicit null values of
     /// [Text.maxLines].
-    let maxLines: Int?
+    public let maxLines: Int?
 
     /// The strategy to use when calculating the width of the Text.
     ///
     /// See [TextWidthBasis] for possible values and their implications.
-    let textWidthBasis: TextWidthBasis
+    public let textWidthBasis: TextWidthBasis
 
     /// Defines how to apply [TextStyle.height] over and under text.
-    let textHeightBehavior: TextHeightBehavior?
+    public let textHeightBehavior: TextHeightBehavior?
 
     public var child: any Widget
 

@@ -295,6 +295,7 @@ extension SpanStyle {
             foreground.copyToSkia(paint: &paint)
             style.setForegroundPaint(paint)
         }
+
         // if let shadows {
         //     var vector = skshadows_new()
         //     for shadow in shadows {
@@ -303,6 +304,35 @@ extension SpanStyle {
         //     style.setShadows(vector)
         // }
 
+        if let fontVariations {
+            var coordinates = [SkFontArguments.VariationPosition.Coordinate]()
+            for fontVariation in fontVariations {
+                coordinates.append(
+                    SkFontArguments.VariationPosition.Coordinate(
+                        axis: fontVariation.axis.toFourByteTag(),
+                        value: fontVariation.value
+                    )
+                )
+            }
+            coordinates.withUnsafeBufferPointer { buffer in
+                let variationPosition = SkFontArguments.VariationPosition(
+                    coordinates: buffer.baseAddress,
+                    coordinateCount: Int32(buffer.count)
+                )
+                var fontArguments = SkFontArguments()
+                fontArguments.setVariationDesignPosition(variationPosition)
+                sk_textstyle_set_font_arguments(&style, fontArguments)
+            }
+        }
+
+    }
+}
+
+extension String {
+    func toFourByteTag() -> SkFourByteTag {
+        assert(self.count == 4)
+        let utf8 = self.utf8CString
+        return SkSetFourByteTag(utf8[0], utf8[1], utf8[2], utf8[3])
     }
 }
 
