@@ -66,4 +66,24 @@ extension Widget {
     public func background(_ color: Color) -> DecoratedBox {
         decoration(.box(color: color))
     }
+
+    /// Wraps this widget with a box decoration. This is a shorthand for
+    /// `decoration(.box(...))` with the specified parameters.
+    ///
+    /// - Parameters:
+    ///   - color: The color to fill the box with.
+    ///   - border: The border to draw around the box.
+    ///   - borderRadius: The radii for each corner of the box.
+    ///   - boxShadow: The shadows to paint behind the box.
+    /// - Returns: A decorated box containing this widget.
+    public func boxDecoration(
+        color: Color? = nil,
+        border: BoxBorder? = nil,
+        borderRadius: (any BorderRadiusGeometry)? = nil,
+        boxShadow: [BoxShadow]? = nil
+    ) -> DecoratedBox {
+        decoration(
+            .box(color: color, border: border, borderRadius: borderRadius, boxShadow: boxShadow)
+        )
+    }
 }
