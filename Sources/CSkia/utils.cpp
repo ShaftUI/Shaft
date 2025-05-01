@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "utils_macos.h"
 
 using namespace skia::textlayout;
 
@@ -11,6 +12,7 @@ template void SkSafeUnref<FontCollection>(FontCollection *obj);
 // MARK: - ParagraphBuilder
 
 #if defined(SK_BUILD_FOR_MAC)
+#include "utils_macos.cpp"
 auto fontMgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_BUILD_FOR_WIN)
 auto fontMgr = SkFontMgr_New_DirectWrite(nullptr);
@@ -162,6 +164,11 @@ FontCollection_sp sk_fontcollection_new()
     auto collection = sk_make_sp<FontCollection>();
     collection->setDynamicFontManager(typefaceProvider);
     collection->setDefaultFontManager(fontMgr);
+
+#if defined(SK_BUILD_FOR_MAC)
+    RegisterSystemFonts(*typefaceProvider);
+#endif
+
     return collection;
 }
 
@@ -226,6 +233,15 @@ SkTextBlob_sp sk_text_blob_make_from_glyphs(const SkGlyphID *glyphs, const SkPoi
     memcpy(buffer.glyphs, glyphs, length * sizeof(SkGlyphID));
     memcpy(buffer.points(), positions, length * sizeof(SkPoint));
     return builder.make();
+}
+
+// MARK: - TextStyle
+
+void sk_textstyle_set_font_arguments(TextStyle *style, SkFontArguments fontArguments)
+{
+    std::optional<SkFontArguments> args;
+    args = fontArguments;
+    style->setFontArguments(args);
 }
 
 // MARK: - Canvas
@@ -337,6 +353,11 @@ void sk_paint_set_maskfilter_blur(SkPaint *paint, SkBlurStyle style, SkScalar si
     // Setting the mask filter involves sk_sp. To avoid memory leaks, we need to
     // do this in c rather than swift.
     paint->setMaskFilter(SkMaskFilter::MakeBlur(style, sigma));
+}
+
+void sk_paint_clear_maskfilter(SkPaint *paint)
+{
+    paint->setMaskFilter(nullptr);
 }
 
 // MARK: - Path

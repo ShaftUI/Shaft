@@ -151,6 +151,10 @@ SkFont sk_font_new(SkTypeface_sp &typeface, float size);
 float sk_font_get_size(SkFont &font);
 SkTextBlob_sp sk_text_blob_make_from_glyphs(const SkGlyphID *glyphs, const SkPoint *positions, size_t length, const SkFont &font);
 
+// MARK: - TextStyle
+
+void sk_textstyle_set_font_arguments(TextStyle *style, SkFontArguments fontArguments);
+
 // MARK: - Canvas
 
 void sk_canvas_concat(SkCanvas *canvas, const SkM44 &matrix);
@@ -177,6 +181,7 @@ void sk_canvas_scale(SkCanvas *canvas, float sx, float sy);
 // MARK: - Paint
 
 void sk_paint_set_maskfilter_blur(SkPaint *paint, SkBlurStyle style, SkScalar sigma);
+void sk_paint_clear_maskfilter(SkPaint *paint);
 
 // MARK: - Path
 
