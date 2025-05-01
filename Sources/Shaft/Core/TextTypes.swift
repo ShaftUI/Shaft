@@ -1631,12 +1631,6 @@ public protocol FontCollection {
     /// Finds any font in the available font managers that resolves the
     /// specified Unicode codepoint.
     func findTypefaceFor(_ codepoint: UInt32) -> Typeface?
-
-    /// Returns the number of families in the font collection.
-    var familyCount: Int { get }
-
-    /// Returns the name of the family at the specified index.
-    func familyName(at index: Int) -> String
 }
 
 /// A typeface in Shaft is typically a loaded font file. It can be used to
