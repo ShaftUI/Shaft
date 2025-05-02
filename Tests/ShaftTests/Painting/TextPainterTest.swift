@@ -70,11 +70,11 @@ class TextPainterTest: XCTestCase {
 
         XCTAssertEqual(
             painter.getPositionForOffset(.init(10, 20)),
-            .init(offset: .init(utf16Offset: 5), affinity: .downstream)
+            .init(offset: .init(utf16Offset: 6), affinity: .upstream)
         )
         XCTAssertEqual(
             painter.getPositionForOffset(.init(10, 25)),
-            .init(offset: .init(utf16Offset: 5), affinity: .downstream)
+            .init(offset: .init(utf16Offset: 6), affinity: .upstream)
         )
     }
 
@@ -158,7 +158,7 @@ class TextPainterTest: XCTestCase {
         let painter = TextPainter(
             text: TextSpan(
                 text: "X",
-                style: TextStyle(fontSize: 123.0)
+                style: TextStyle(fontSize: 123.0, height: 1.0)
             )
         )
         painter.textDirection = .ltr
@@ -171,7 +171,7 @@ class TextPainterTest: XCTestCase {
         let painter = TextPainter(
             text: TextSpan(
                 text: "X",
-                style: TextStyle(fontSize: 10.0)
+                style: TextStyle(fontSize: 10.0, height: 1.0)
             )
         )
         painter.textDirection = .ltr
@@ -190,7 +190,7 @@ class TextPainterTest: XCTestCase {
         painter.textDirection = .ltr
         painter.textScaler = .linear(2.0)
         painter.layout()
-        XCTAssertEqual(painter.size.height, 28.0)
+        XCTAssertEqual(painter.size.height, 33.0)
     }
 
     func testTextPainterDefaultTextHeight() {
@@ -199,8 +199,8 @@ class TextPainterTest: XCTestCase {
         )
         painter.textDirection = .ltr
         painter.layout()
-        XCTAssertEqual(painter.preferredLineHeight, 14.0)
-        XCTAssertEqual(painter.size.height, 14)
+        XCTAssertEqual(painter.preferredLineHeight, 16.0)
+        XCTAssertEqual(painter.size.height, 16)
     }
 
     func testTextPainterLineMetrics() {
@@ -214,7 +214,7 @@ class TextPainterTest: XCTestCase {
 
         painter.layout(maxWidth: 200)
 
-        XCTAssertEqual(painter.preferredLineHeight, 14)
+        XCTAssertEqual(painter.preferredLineHeight, 16)
 
         let lines = painter.computeLineMetrics()
 
@@ -245,10 +245,10 @@ class TextPainterTest: XCTestCase {
         // XCTAssertEqual(lines[2].baseline, 38.5)
         // XCTAssertEqual(lines[3].baseline, 52.5)
 
-        XCTAssertEqual(lines[0].height, 14)
-        XCTAssertEqual(lines[1].height, 14)
-        XCTAssertEqual(lines[2].height, 14)
-        XCTAssertEqual(lines[3].height, 14)
+        XCTAssertEqual(lines[0].height, 16)
+        XCTAssertEqual(lines[1].height, 16)
+        XCTAssertEqual(lines[2].height, 16)
+        XCTAssertEqual(lines[3].height, 16)
 
         // XCTAssertEqual(lines[0].width, 70)
         // XCTAssertEqual(lines[1].width, 294)
