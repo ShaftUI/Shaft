@@ -23,16 +23,21 @@ public enum ButtonRole {
 /// A control that initiates an action.
 public final class Button: StatefulWidget {
     public init(
+        icon: Widget? = nil,
         role: ButtonRole = .primary,
         isSelected: Bool = false,
         onPressed: VoidCallback? = nil,
         @WidgetBuilder child: () -> Widget
     ) {
+        self.icon = icon
         self.role = role
         self.isSelected = isSelected
         self.onPressed = onPressed
         self.child = child()
     }
+
+    /// An optional icon to display alongside the button's label.
+    public let icon: Widget?
 
     /// The role of the button.
     public let role: ButtonRole
@@ -88,6 +93,9 @@ public final class Button: StatefulWidget {
         /// The control size that should be used for the button.
         var controlSize: ControlSize { get }
 
+        /// The icon of the button.
+        var icon: Widget? { get }
+
         ///  The child of the button.
         var child: Widget { get }
     }
@@ -106,6 +114,8 @@ private final class ButtonState: State<Button>, Button.StyleContext {
     public var role: ButtonRole { widget.role }
 
     public var controlSize: ControlSize { Inherited.valueOf(context) ?? .regular }
+
+    public var icon: Widget? { widget.icon }
 
     public var child: any Widget { widget.child }
 
