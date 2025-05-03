@@ -70,6 +70,18 @@ public class SDLBackend: Backend {
         switch SDL_EventType(event.type.cast()) {
         case SDL_EVENT_QUIT:
             shouldStop = true
+        case SDL_EVENT_DID_ENTER_FOREGROUND:
+            updateAppLifecycleState()
+        case SDL_EVENT_DID_ENTER_BACKGROUND:
+            updateAppLifecycleState()
+        case SDL_EVENT_WINDOW_FOCUS_GAINED:
+            onWindowFocusGained(event.window)
+        case SDL_EVENT_WINDOW_FOCUS_LOST:
+            onWindowFocusLost(event.window)
+        case SDL_EVENT_WINDOW_HIDDEN:
+            onWindowHidden(event.window)
+        case SDL_EVENT_WINDOW_SHOWN:
+            onWindowShown(event.window)
         case SDL_EVENT_MOUSE_MOTION:
             onMouseMotion(event.motion)
         case SDL_EVENT_MOUSE_BUTTON_UP:
@@ -124,7 +136,7 @@ public class SDLBackend: Backend {
             onKeyEvent(event)
         default:
             ()
-        // mark("unknown event type:", event.type)
+        // mark("unknown event:", SDL_EventType(event.type.cast()))
         }
     }
 
@@ -144,6 +156,31 @@ public class SDLBackend: Backend {
         var event = SDL_Event()
         event.type = Self.wakeEvent
         SDL_PushEvent(&event)
+    }
+
+    // MARK: - App Lifecycle
+
+    public var onAppLifecycleStateChanged: AppLifecycleStateCallback?
+
+    public private(set) var lifecycleState: AppLifecycleState = .detached
+
+    private func updateAppLifecycleState() {
+        let state: AppLifecycleState =
+            if viewByID.values.allSatisfy({ $0.isHidden }) {
+                // If all views are hidden, the app is considered hidden.
+                .hidden
+            } else if viewByID.values.allSatisfy({ !$0.hasFocus }) {
+                // If all views are inactive, the app is considered inactive.
+                .inactive
+            } else {
+                // Otherwise, the app is considered resumed.
+                .resumed
+            }
+
+        if state != lifecycleState {
+            lifecycleState = state
+            onAppLifecycleStateChanged?(state)
+        }
     }
 
     // MARK: - View Management
@@ -405,6 +442,42 @@ public class SDLBackend: Backend {
             view.onTextEditing?(delta)
             view.onTextComposed?(text)
         }
+    }
+
+    private func onWindowFocusGained(_ event: SDL_WindowEvent) {
+        let view = viewByID[Int(event.windowID)]
+        guard let view else {
+            return
+        }
+        view.hasFocus = true
+        updateAppLifecycleState()
+    }
+
+    private func onWindowFocusLost(_ event: SDL_WindowEvent) {
+        let view = viewByID[Int(event.windowID)]
+        guard let view else {
+            return
+        }
+        view.hasFocus = false
+        updateAppLifecycleState()
+    }
+
+    private func onWindowHidden(_ event: SDL_WindowEvent) {
+        let view = viewByID[Int(event.windowID)]
+        guard let view else {
+            return
+        }
+        view.isHidden = true
+        updateAppLifecycleState()
+    }
+
+    private func onWindowShown(_ event: SDL_WindowEvent) {
+        let view = viewByID[Int(event.windowID)]
+        guard let view else {
+            return
+        }
+        view.isHidden = false
+        updateAppLifecycleState()
     }
 
     public var targetPlatform: TargetPlatform? {

@@ -916,7 +916,7 @@ open class State<WidgetType: StatefulWidget>: StateProtocol {
     open func dispose() {
         assert(debugLifecycleState == .ready)
         assert {
-            debugLifecycleState = StateLifecycle.defunct
+            debugLifecycleState = .defunct
             return true
         }
         for mixin in mixins {

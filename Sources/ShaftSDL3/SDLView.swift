@@ -168,6 +168,10 @@ public class SDLView: NativeView {
         }
     }
 
+    public internal(set) var hasFocus: Bool = false
+
+    public internal(set) var isHidden: Bool = false
+
     public var title: String {
         get {
             return String(cString: SDL_GetWindowTitle(sdlWindow))
