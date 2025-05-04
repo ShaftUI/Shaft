@@ -52,11 +52,7 @@ private var iconData: IconsData = loadIcons()
 private func loadIcons() -> IconsData {
     let fontData = Data(PackageResources.lucide_woff2)
     let typeface = backend.renderer.fontCollection.makeTypefaceFrom(fontData)
-    mark(typeface.familyName)
-    mark(typeface.glyphCount)
-
     backend.renderer.fontCollection.registerTypeface(typeface)
-    mark(backend.renderer.fontCollection.findTypeface(["lucide"], style: .normal, weight: .normal))
 
     let jsonData = Data(PackageResources.lucide_json)
     let decoder = JSONDecoder()
