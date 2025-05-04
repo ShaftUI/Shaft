@@ -24,6 +24,21 @@ public struct BoxShadow {
         self.blurStyle = blurStyle
     }
 
+    /// A shorter initializer with default values
+    public init(
+        _ color: Color,
+        _ offset: Offset = .zero,
+        _ blurRadius: Float = 0,
+        _ spreadRadius: Float = 0,
+        _ blurStyle: BlurStyle = .normal
+    ) {
+        self.color = color
+        self.offset = offset
+        self.blurRadius = blurRadius
+        self.spreadRadius = spreadRadius
+        self.blurStyle = blurStyle
+    }
+
     public let color: Color
 
     public let offset: Offset
