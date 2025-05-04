@@ -19,7 +19,7 @@ public class DecoratedBox: SingleChildRenderObjectWidget {
     public init(
         decoration: Decoration,
         position: DecorationPosition = .background,
-        @WidgetBuilder child: () -> Widget
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
     ) {
         self.decoration = decoration
         self.position = position
