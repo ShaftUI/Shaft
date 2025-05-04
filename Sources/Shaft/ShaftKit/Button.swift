@@ -36,6 +36,20 @@ public final class Button: StatefulWidget {
         self.child = child()
     }
 
+    public static func empty(
+        isSelected: Bool = false,
+        onPressed: VoidCallback? = nil
+    ) -> Self {
+        Self(
+            icon: nil,
+            role: .primary,
+            isSelected: isSelected,
+            onPressed: onPressed
+        ) {
+            SizedBox()
+        }
+    }
+
     /// An optional icon to display alongside the button's label.
     public let icon: Widget?
 
