@@ -1255,6 +1255,120 @@ extension Widget {
     }
 }
 
+/// A widget that sizes its child to a fraction of the total available space.
+/// For more details about the layout algorithm, see
+/// [RenderFractionallySizedOverflowBox].
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=PEsY654EGZ0}
+///
+/// {@tool dartpad}
+/// This sample shows a [FractionallySizedBox] whose one child is 50% of
+/// the box's size per the width and height factor parameters, and centered
+/// within that box by the alignment parameter.
+///
+/// ** See code in examples/api/lib/widgets/basic/fractionally_sized_box.0.dart **
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [Align], which sizes itself based on its child's size and positions
+///    the child according to an [Alignment] value.
+///  * [OverflowBox], a widget that imposes different constraints on its child
+///    than it gets from its parent, possibly allowing the child to overflow the
+///    parent.
+///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
+public class FractionallySizedBox: SingleChildRenderObjectWidget {
+    /// Creates a widget that sizes its child to a fraction of the total available space.
+    ///
+    /// If non-null, the [widthFactor] and [heightFactor] arguments must be
+    /// non-negative.
+    public init(
+        key: (any Key)? = nil,
+        alignment: any AlignmentGeometry = Alignment.center,
+        widthFactor: Float? = nil,
+        heightFactor: Float? = nil,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        assert(widthFactor == nil || widthFactor! >= 0.0)
+        assert(heightFactor == nil || heightFactor! >= 0.0)
+        self.key = key
+        self.alignment = alignment
+        self.widthFactor = widthFactor
+        self.heightFactor = heightFactor
+        self.child = child()
+    }
+
+    public let key: (any Key)?
+
+    /// If non-null, the fraction of the incoming width given to the child.
+    ///
+    /// If non-null, the child is given a tight width constraint that is the max
+    /// incoming width constraint multiplied by this factor.
+    ///
+    /// If null, the incoming width constraints are passed to the child
+    /// unmodified.
+    public let widthFactor: Float?
+
+    /// If non-null, the fraction of the incoming height given to the child.
+    ///
+    /// If non-null, the child is given a tight height constraint that is the max
+    /// incoming height constraint multiplied by this factor.
+    ///
+    /// If null, the incoming height constraints are passed to the child
+    /// unmodified.
+    public let heightFactor: Float?
+
+    /// How to align the child.
+    ///
+    /// The x and y values of the alignment control the horizontal and vertical
+    /// alignment, respectively. An x value of -1.0 means that the left edge of
+    /// the child is aligned with the left edge of the parent whereas an x value
+    /// of 1.0 means that the right edge of the child is aligned with the right
+    /// edge of the parent. Other values interpolate (and extrapolate) linearly.
+    /// For example, a value of 0.0 means that the center of the child is aligned
+    /// with the center of the parent.
+    ///
+    /// Defaults to [Alignment.center].
+    ///
+    /// See also:
+    ///
+    ///  * [Alignment], a class with convenient constants typically used to
+    ///    specify an [AlignmentGeometry].
+    ///  * [AlignmentDirectional], like [Alignment] for specifying alignments
+    ///    relative to text direction.
+    public let alignment: any AlignmentGeometry
+
+    public var child: Widget?
+
+    public func createRenderObject(context: BuildContext) -> RenderFractionallySizedOverflowBox {
+        return RenderFractionallySizedOverflowBox(
+            widthFactor: widthFactor,
+            heightFactor: heightFactor,
+            alignment: alignment,
+            // textDirection: Directionality.maybeOf(context)
+        )
+    }
+
+    public func updateRenderObject(
+        context: BuildContext,
+        renderObject: RenderFractionallySizedOverflowBox
+    ) {
+        renderObject.alignment = alignment
+        renderObject.widthFactor = widthFactor
+        renderObject.heightFactor = heightFactor
+        // renderObject.textDirection = Directionality.maybeOf(context)
+    }
+}
+
+extension Widget {
+    public func fractionallySized(
+        widthFactor: Float? = nil,
+        heightFactor: Float? = nil
+    ) -> FractionallySizedBox {
+        FractionallySizedBox(widthFactor: widthFactor, heightFactor: heightFactor) { self }
+    }
+}
+
 /// A paragraph of rich text.
 ///
 /// The [RichText] widget displays text that uses multiple different styles. The

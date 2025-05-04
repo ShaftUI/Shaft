@@ -329,3 +329,168 @@ public class RenderPositionedBox: RenderAligningShiftedBox {
         }
     }
 }
+
+/// Sizes its child to a fraction of the total available space.
+///
+/// For both its width and height, this render object imposes a tight constraint
+/// on its child that is a multiple (typically less than 1.0) of the maximum
+/// constraint it received from its parent on that axis. If the factor for a
+/// given axis is nil, then the constraints from the parent are just passed
+/// through instead.
+///
+/// It then tries to size itself to the size of its child. Where this is not
+/// possible (e.g. if the constraints from the parent are themselves tight), the
+/// child is aligned according to alignment.
+public class RenderFractionallySizedOverflowBox: RenderAligningShiftedBox {
+    /// Creates a render box that sizes its child to a fraction of the total
+    /// available space.
+    ///
+    /// If non-nil, the widthFactor and heightFactor arguments must be
+    /// non-negative.
+    ///
+    /// The textDirection must be non-nil if the alignment is
+    /// direction-sensitive.
+    public init(
+        child: RenderBox? = nil,
+        widthFactor: Float? = nil,
+        heightFactor: Float? = nil,
+        alignment: any AlignmentGeometry = Alignment.center,
+        textDirection: TextDirection = .ltr
+    ) {
+        self.widthFactor = widthFactor
+        self.heightFactor = heightFactor
+        super.init(alignment: alignment, textDirection: textDirection, child: child)
+        assert(widthFactor == nil || widthFactor! >= 0.0)
+        assert(heightFactor == nil || heightFactor! >= 0.0)
+    }
+
+    /// If non-nil, the factor of the incoming width to use.
+    ///
+    /// If non-nil, the child is given a tight width constraint that is the max
+    /// incoming width constraint multiplied by this factor. If nil, the child is
+    /// given the incoming width constraints.
+    public var widthFactor: Float? {
+        didSet {
+            assert(widthFactor == nil || widthFactor! >= 0.0)
+            if widthFactor == oldValue {
+                return
+            }
+            markNeedsLayout()
+        }
+    }
+
+    /// If non-nil, the factor of the incoming height to use.
+    ///
+    /// If non-nil, the child is given a tight height constraint that is the max
+    /// incoming width constraint multiplied by this factor. If nil, the child is
+    /// given the incoming width constraints.
+    public var heightFactor: Float? {
+        didSet {
+            assert(heightFactor == nil || heightFactor! >= 0.0)
+            if heightFactor == oldValue {
+                return
+            }
+            markNeedsLayout()
+        }
+    }
+
+    private func getInnerConstraints(_ constraints: BoxConstraints) -> BoxConstraints {
+        var minWidth = constraints.minWidth
+        var maxWidth = constraints.maxWidth
+        if let widthFactor = widthFactor {
+            let width = maxWidth * widthFactor
+            minWidth = width
+            maxWidth = width
+        }
+        var minHeight = constraints.minHeight
+        var maxHeight = constraints.maxHeight
+        if let heightFactor = heightFactor {
+            let height = maxHeight * heightFactor
+            minHeight = height
+            maxHeight = height
+        }
+        return BoxConstraints(
+            minWidth: minWidth,
+            maxWidth: maxWidth,
+            minHeight: minHeight,
+            maxHeight: maxHeight
+        )
+    }
+
+    public override func computeMinIntrinsicWidth(_ height: Float) -> Float {
+        let result: Float
+        if let child = child {
+            result = child.getMinIntrinsicWidth(height * (heightFactor ?? 1.0))
+        } else {
+            result = super.computeMinIntrinsicWidth(height)
+        }
+        assert(result.isFinite)
+        return result / (widthFactor ?? 1.0)
+    }
+
+    public override func computeMaxIntrinsicWidth(_ height: Float) -> Float {
+        let result: Float
+        if let child = child {
+            result = child.getMaxIntrinsicWidth(height * (heightFactor ?? 1.0))
+        } else {
+            result = super.computeMaxIntrinsicWidth(height)
+        }
+        assert(result.isFinite)
+        return result / (widthFactor ?? 1.0)
+    }
+
+    public override func computeMinIntrinsicHeight(_ width: Float) -> Float {
+        let result: Float
+        if let child = child {
+            result = child.getMinIntrinsicHeight(width * (widthFactor ?? 1.0))
+        } else {
+            result = super.computeMinIntrinsicHeight(width)
+        }
+        assert(result.isFinite)
+        return result / (heightFactor ?? 1.0)
+    }
+
+    public override func computeMaxIntrinsicHeight(_ width: Float) -> Float {
+        let result: Float
+        if let child = child {
+            result = child.getMaxIntrinsicHeight(width * (widthFactor ?? 1.0))
+        } else {
+            result = super.computeMaxIntrinsicHeight(width)
+        }
+        assert(result.isFinite)
+        return result / (heightFactor ?? 1.0)
+    }
+
+    // public override func computeDryLayout(_ constraints: BoxConstraints) -> Size {
+    //     if let child = child {
+    //         let childSize = child.getDryLayout(_getInnerConstraints(constraints))
+    //         return constraints.constrain(childSize)
+    //     }
+    //     return constraints.constrain(_getInnerConstraints(constraints).constrain(Size.zero))
+    // }
+
+    // public override func computeDryBaseline(_ constraints: BoxConstraints, baseline: TextBaseline)
+    //     -> Float?
+    // {
+    //     guard let child = child else {
+    //         return nil
+    //     }
+    //     let childConstraints = _getInnerConstraints(constraints)
+    //     guard let result = child.getDryBaseline(childConstraints, baseline: baseline) else {
+    //         return nil
+    //     }
+    //     let childSize = child.getDryLayout(childConstraints)
+    //     let size = getDryLayout(constraints)
+    //     return result + resolvedAlignment.alongOffset(size - childSize as Offset).dy
+    // }
+
+    public override func performLayout() {
+        if let child = child {
+            child.layout(getInnerConstraints(boxConstraint), parentUsesSize: true)
+            size = boxConstraint.constrain(child.size)
+            alignChild()
+        } else {
+            size = boxConstraint.constrain(getInnerConstraints(boxConstraint).constrain(Size.zero))
+        }
+    }
+}
