@@ -181,6 +181,19 @@ public class SDLView: NativeView {
         }
     }
 
+    public var visible: Bool {
+        get {
+            return !isHidden
+        }
+        set {
+            if newValue == true {
+                SDL_ShowWindow(sdlWindow)
+            } else {
+                SDL_HideWindow(sdlWindow)
+            }
+        }
+    }
+
     public var rawView: UnsafeMutableRawPointer? {
         nil
     }

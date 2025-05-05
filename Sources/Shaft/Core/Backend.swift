@@ -103,6 +103,9 @@ public protocol DesktopView: NativeView {
 
     /// Whether the view is always on top of other views.
     var alwaysOnTop: Bool { get set }
+
+    /// Whether the view is visible.
+    var visible: Bool { get set }
 }
 
 #if canImport(AppKit)
