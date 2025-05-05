@@ -1121,3 +1121,29 @@ public final class GestureDetector: StatelessWidget {
         }
     }
 }
+
+extension Widget {
+    public func gesture(
+        onTapDown: GestureTapDownCallback? = nil,
+        onTapUp: GestureTapUpCallback? = nil,
+        onTap: GestureTapCallback? = nil,
+        onTapCancel: GestureTapCancelCallback? = nil,
+        onSecondaryTap: GestureTapCallback? = nil,
+        onSecondaryTapDown: GestureTapDownCallback? = nil,
+        onSecondaryTapUp: GestureTapUpCallback? = nil,
+        onSecondaryTapCancel: GestureTapCancelCallback? = nil
+    ) -> GestureDetector {
+        GestureDetector(
+            onTapDown: onTapDown,
+            onTapUp: onTapUp,
+            onTap: onTap,
+            onTapCancel: onTapCancel,
+            onSecondaryTap: onSecondaryTap,
+            onSecondaryTapDown: onSecondaryTapDown,
+            onSecondaryTapUp: onSecondaryTapUp,
+            onSecondaryTapCancel: onSecondaryTapCancel,
+        ) {
+            self
+        }
+    }
+}

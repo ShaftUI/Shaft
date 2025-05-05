@@ -640,6 +640,17 @@ public class MouseRegion: SingleChildRenderObjectWidget {
     }
 }
 
+extension Widget {
+    /// Sets the mouse cursor for this widget.
+    ///
+    /// When the mouse hovers over this widget, the cursor will change to the
+    /// specified cursor. This is a convenience method that wraps this widget in
+    /// a [MouseRegion] with the given cursor.
+    public func cursor(_ cursor: MouseCursor) -> Widget {
+        MouseRegion(cursor: cursor) { self }
+    }
+}
+
 /// A widget that displays its children in a one-dimensional array.
 ///
 /// The [Flex] widget allows you to control the axis along which the children are
