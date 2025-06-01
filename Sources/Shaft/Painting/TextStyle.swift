@@ -451,6 +451,17 @@ extension TextStyle {
             effectFontSize = textScaler.scale(fontSize)
         }
 
+        func getEffectPaint(color: Color?, paint: Paint?) -> Paint? {
+            if let paint {
+                return paint
+            } else if let color {
+                var paint = Paint()
+                paint.color = color
+                return paint
+            }
+            return nil
+        }
+
         return SpanStyle(
             color: color,
             decoration: decoration,
@@ -466,8 +477,8 @@ extension TextStyle {
             wordSpacing: wordSpacing,
             height: height,
             leadingDistribution: leadingDistribution,
-            background: background,
-            foreground: foreground,
+            background: getEffectPaint(color: backgroundColor, paint: background),
+            foreground: getEffectPaint(color: color, paint: foreground),
             shadows: shadows,
             fontVariations: fontVariations
         )
