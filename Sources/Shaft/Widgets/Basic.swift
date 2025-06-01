@@ -1380,6 +1380,70 @@ extension Widget {
     }
 }
 
+/// A widget that lays the child out as if it was in the tree, but without
+/// painting anything, without making the child available for hit testing, and
+/// without taking any room in the parent.
+///
+/// Offstage children are still active: they can receive focus and have keyboard
+/// input directed to them.
+///
+/// Animations continue to run in offstage children, and therefore use battery
+/// and CPU time, regardless of whether the animations end up being visible.
+///
+/// [Offstage] can be used to measure the dimensions of a widget without
+/// bringing it on screen (yet). To hide a widget from view while it is not
+/// needed, prefer removing the widget from the tree entirely rather than
+/// keeping it alive in an [Offstage] subtree.
+///
+/// {@tool dartpad}
+/// This example shows a [FlutterLogo] widget when the `_offstage` member field
+/// is false, and hides it without any room in the parent when it is true. When
+/// offstage, this app displays a button to get the logo size, which will be
+/// displayed in a [SnackBar].
+///
+/// ** See code in examples/api/lib/widgets/basic/offstage.0.dart **
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [Visibility], which can hide a child more efficiently (albeit less
+///    subtly).
+///  * [TickerMode], which can be used to disable animations in a subtree.
+///  * [SliverOffstage], the sliver version of this widget.
+///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
+public class Offstage: SingleChildRenderObjectWidget {
+    /// Creates a widget that visually hides its child.
+    public init(offstage: Bool = true, @WidgetBuilder child: () -> Widget) {
+        self.offstage = offstage
+        self.child = child()
+    }
+
+    /// Whether the child is hidden from the rest of the tree.
+    ///
+    /// If true, the child is laid out as if it was in the tree, but without
+    /// painting anything, without making the child available for hit testing, and
+    /// without taking any room in the parent.
+    ///
+    /// Offstage children are still active: they can receive focus and have keyboard
+    /// input directed to them.
+    ///
+    /// Animations continue to run in offstage children, and therefore use battery
+    /// and CPU time, regardless of whether the animations end up being visible.
+    ///
+    /// If false, the child is included in the tree as normal.
+    public let offstage: Bool
+
+    public var child: Widget?
+
+    public func createRenderObject(context: BuildContext) -> RenderOffstage {
+        RenderOffstage(offstage: offstage)
+    }
+
+    public func updateRenderObject(context: BuildContext, renderObject: RenderOffstage) {
+        renderObject.offstage = offstage
+    }
+}
+
 /// A paragraph of rich text.
 ///
 /// The [RichText] widget displays text that uses multiple different styles. The

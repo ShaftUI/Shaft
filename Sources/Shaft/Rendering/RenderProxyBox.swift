@@ -272,6 +272,94 @@ public class RenderDecoratedBox: RenderProxyBox {
     }
 }
 
+/// Lays the child out as if it was in the tree, but without painting anything,
+/// without making the child available for hit testing, and without taking any
+/// room in the parent.
+public class RenderOffstage: RenderProxyBox {
+    /// Creates an offstage render object.
+    public init(
+        offstage: Bool = true,
+        child: RenderBox? = nil
+    ) {
+        self.offstage = offstage
+        super.init(child: child)
+    }
+
+    /// Whether the child is hidden from the rest of the tree.
+    ///
+    /// If true, the child is laid out as if it was in the tree, but without
+    /// painting anything, without making the child available for hit testing, and
+    /// without taking any room in the parent.
+    ///
+    /// If false, the child is included in the tree as normal.
+    public var offstage: Bool {
+        didSet {
+            if offstage == oldValue {
+                return
+            }
+            markNeedsLayout()
+        }
+    }
+
+    public override func computeMinIntrinsicWidth(_ height: Float) -> Float {
+        if offstage {
+            return 0.0
+        }
+        return super.computeMinIntrinsicWidth(height)
+    }
+
+    public override func computeMaxIntrinsicWidth(_ height: Float) -> Float {
+        if offstage {
+            return 0.0
+        }
+        return super.computeMaxIntrinsicWidth(height)
+    }
+
+    public override func computeMinIntrinsicHeight(_ width: Float) -> Float {
+        if offstage {
+            return 0.0
+        }
+        return super.computeMinIntrinsicHeight(width)
+    }
+
+    public override func computeMaxIntrinsicHeight(_ width: Float) -> Float {
+        if offstage {
+            return 0.0
+        }
+        return super.computeMaxIntrinsicHeight(width)
+    }
+
+    public override var sizedByParent: Bool {
+        return offstage
+    }
+
+    public override func computeDryLayout(_ constraints: BoxConstraints) -> Size {
+        if offstage {
+            return constraints.smallest
+        }
+        return super.computeDryLayout(constraints)
+    }
+
+    public override func performLayout() {
+        if offstage {
+            child?.layout(constraints)
+        } else {
+            super.performLayout()
+        }
+    }
+
+    public override func hitTest(_ result: HitTestResult, position: Offset) -> Bool {
+        return !offstage && super.hitTest(result, position: position)
+    }
+
+    public override func paint(context: PaintingContext, offset: Offset) {
+        if offstage {
+            return
+        }
+        super.paint(context: context, offset: offset)
+    }
+}
+
 /// Applies a transformation before painting its child.
 public class RenderTransform: RenderProxyBox {
     /// Creates a render object that transforms its child.
