@@ -102,12 +102,13 @@ public class SDLView: NativeView {
         backend?.onMetricsChanged?(viewID)
     }
 
-    internal func onDpiChanged(xscale: Float, yscale: Float) {
-        // assert(Thread.isMainThread)
-        // backend?.onMetricsChanged?(viewID)
-        // mark("dpi: \(xscale), \(yscale)")
-        // onMetricsChanged?()
-        // backend?.forceFrame()
+    internal func handleDpiChanged(_ event: SDL_WindowEvent) {
+        let viewID = Int(event.windowID)
+        if viewID != self.viewID {
+            return
+        }
+
+        backend?.onMetricsChanged?(viewID)
     }
 
     internal func startResizeListener() {
@@ -162,6 +163,9 @@ public class SDLView: NativeView {
         switch SDL_EventType(event.type.cast()) {
         case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
             handleWindowResize(event.window)
+            return false
+        case SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED, SDL_EVENT_WINDOW_DISPLAY_CHANGED:
+            handleDpiChanged(event.window)
             return false
         default:
             return true
