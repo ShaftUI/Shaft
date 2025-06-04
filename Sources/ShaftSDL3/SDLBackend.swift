@@ -178,6 +178,16 @@ public class SDLBackend: Backend {
             }
 
         if state != lifecycleState {
+            // The state transition from resumed to hidden requires inactive
+            // state in between.
+            if lifecycleState == .resumed && state == .hidden {
+                onAppLifecycleStateChanged?(.inactive)
+            }
+
+            if lifecycleState == .hidden && state == .resumed {
+                onAppLifecycleStateChanged?(.inactive)
+            }
+
             lifecycleState = state
             onAppLifecycleStateChanged?(state)
         }
