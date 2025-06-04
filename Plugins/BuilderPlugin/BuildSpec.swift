@@ -12,6 +12,19 @@
 //             }
 //         },
 //         {
+//             "name": "Run custom script",
+//             "type": "execute",
+//             "with": {
+//                 "command": "echo",
+//                 "arguments": ["Hello, World!"],
+//                 "workingDirectory": ".",
+//                 "environment": {
+//                     "MY_VAR": "my_value"
+//                 },
+//                 "continueOnFailure": false
+//             }
+//         },
+//         {
 //             "name": "Build ShaftBrowser Helper.app",
 //             "type": "macos-bundle",
 //             "with": {
@@ -40,11 +53,13 @@ struct BuildSpec: Codable {
 enum BuildStepType: String, Codable {
     case macOSBundle = "macos-bundle"
     case copy = "copy"
+    case runCommand = "execute"
 }
 
 enum BuildStep: Codable {
     case macOSBundle(MacOSBundleInput)
     case copy(CopyInput)
+    case runCommand(RunCommandInput)
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -54,6 +69,8 @@ enum BuildStep: Codable {
             self = .macOSBundle(try container.decode(MacOSBundleInput.self, forKey: .with))
         case .copy:
             self = .copy(try container.decode(CopyInput.self, forKey: .with))
+        case .runCommand:
+            self = .runCommand(try container.decode(RunCommandInput.self, forKey: .with))
         }
     }
 
@@ -66,6 +83,10 @@ enum BuildStep: Codable {
         case .copy(let input):
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(BuildStepType.copy, forKey: .type)
+            try container.encode(input, forKey: .with)
+        case .runCommand(let input):
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(BuildStepType.runCommand, forKey: .type)
             try container.encode(input, forKey: .with)
         }
     }

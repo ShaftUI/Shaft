@@ -30,8 +30,8 @@ struct BuilderPlugin: CommandPlugin {
                 executeMacOSBundleStep(input, context: context)
             case .copy(let input):
                 executeCopyStep(input, context: context)
-            default:
-                print("Unknown step type: \(step)")
+            case .runCommand(let input):
+                executeRunCommandStep(input, context: context)
             }
         }
     }
