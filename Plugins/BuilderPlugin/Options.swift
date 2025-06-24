@@ -20,7 +20,7 @@ func extractOptions(from arguments: [String]) -> BuilderOptions {
     //     printAndExit("Target name not provided")
     // }
 
-    let configurationString = extractor.extractOption(named: "--configuration").last ?? "debug"
+    let configurationString = extractor.extractOption(named: "--mode").last ?? "release"
     guard let configuration = BuilderConfiguration(rawValue: configurationString) else {
         printAndExit("Invalid configuration: \(configurationString)")
     }

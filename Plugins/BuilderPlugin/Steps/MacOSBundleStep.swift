@@ -24,6 +24,10 @@ func executeMacOSBundleStep(_ input: MacOSBundleInput, context: StepContext) {
 
     var buildParameters = PackageManager.BuildParameters(echoLogs: true)
     buildParameters.otherLinkerFlags = ["-L.shaft/skia"]
+    buildParameters.configuration = switch(context.configuration) {
+    case .debug: .debug
+    case .release: .release
+    }
 
     let buildResult = try! context.packageManager.build(
         .product(input.product),
