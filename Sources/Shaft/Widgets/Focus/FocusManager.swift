@@ -37,6 +37,7 @@ public class FocusNode: ChangeNotifier, HashableObject {
         self._canRequestFocus = canRequestFocus
         self.descendantsAreFocusable = descendantsAreFocusable
         self.descendantsAreTraversable = descendantsAreTraversable
+        self.debugLabel = debugLabel
     }
 
     /// If true, tells the focus traversal policy to skip over this node for
