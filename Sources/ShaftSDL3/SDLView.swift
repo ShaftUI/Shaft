@@ -204,6 +204,18 @@ public class SDLView: NativeView {
 }
 
 extension SDLView: DesktopView {
+    public var size: Shaft.Size {
+        get {
+            var width: Int32 = 0
+            var height: Int32 = 0
+            SDL_GetWindowSize(sdlWindow, &width, &height)
+            return Size(Float(width), Float(height))
+        }
+        set {
+            SDL_SetWindowSize(sdlWindow, Int32(newValue.width), Int32(newValue.height))
+        }
+    }
+
     public var position: Offset {
         get {
             var x: Int32 = 0
