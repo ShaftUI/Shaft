@@ -106,17 +106,20 @@ public protocol DesktopView: NativeView {
 
     /// Whether the view is visible.
     var visible: Bool { get set }
+
+    /// Whether the view has focus.
+    var hasFocus: Bool { get }
 }
 
 #if canImport(AppKit)
     import AppKit
 
-    public protocol MacOSView: NativeView {
+    public protocol MacOSView: DesktopView {
         var nsWindow: NSWindow? { get }
     }
 #else
 
-    public protocol MacOSView: NativeView {}
+    public protocol MacOSView: DesktopView {}
 
 #endif
 
