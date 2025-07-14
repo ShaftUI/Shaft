@@ -262,7 +262,7 @@ private final class AppLifecycleListenerWidgetState: State<AppLifecycleListenerW
             onShow: widget.onShow,
             onPause: widget.onPause,
             onRestart: widget.onRestart,
-            onDetach: widget.onDetach,
+            onDetach: widget.onDetach
         )
     }
 
@@ -308,7 +308,7 @@ extension Widget {
         onShow: VoidCallback? = nil,
         onPause: VoidCallback? = nil,
         onRestart: VoidCallback? = nil,
-        onDetach: VoidCallback? = nil,
+        onDetach: VoidCallback? = nil
     ) -> Widget {
         return AppLifecycleListenerWidget(
             onResume: onResume,

@@ -206,13 +206,13 @@ let package = Package(
 
         .target(
             name: "Fetch",
-            // dependencies: [
-            //     .product(
-            //         name: "JavaScriptKit",
-            //         package: "JavaScriptKit",
-            //         condition: .when(platforms: [.wasi])
-            //     )
-            // ]
+            dependencies: [
+                .product(
+                    name: "JavaScriptKit",
+                    package: "JavaScriptKit",
+                    condition: .when(platforms: [.wasi])
+                )
+            ]
         ),
 
         .target(

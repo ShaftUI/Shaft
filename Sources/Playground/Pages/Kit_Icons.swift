@@ -14,7 +14,7 @@ final class Kit_IconsState: State<Kit_Icons> {
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 120,
                 mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
+                crossAxisSpacing: 10
             ),
             itemCount: LucideIcon.allIcons.count,
             itemBuilder: { context, index in
