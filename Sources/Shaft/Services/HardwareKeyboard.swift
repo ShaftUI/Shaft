@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -221,7 +221,7 @@ public class HardwareKeyboard {
     /// This provides access to the shared instance of the `HardwareKeyboard`
     /// class, which manages the state of the hardware keyboard and dispatches
     /// key events.
-    static let shared = HardwareKeyboard()
+    public static let shared = HardwareKeyboard()
 
     private init() {
         backend.onKeyEvent = handleKeyEvent
