@@ -370,6 +370,10 @@ class TestTimer: Shaft.Timer {
 
 class TestBackend: Backend {
 
+    var lifecycleState: AppLifecycleState { .resumed }
+
+    var onAppLifecycleStateChanged: AppLifecycleStateCallback?
+
     func createCursor(_ cursor: Shaft.SystemMouseCursor) -> (any Shaft.NativeMouseCursor)? {
         return nil
     }
