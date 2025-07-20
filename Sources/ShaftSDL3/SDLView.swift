@@ -256,6 +256,15 @@ private func sdlEventWatcher(
 #if canImport(AppKit)
     import AppKit
 
+    private class MenuHandler {
+        public static let shared = MenuHandler()
+
+        @objc func handleMenuItemClick(_ sender: NSMenuItem) {
+            let action = sender.representedObject as? () -> Void
+            action?()
+        }
+    }
+
     extension SDLView: MacOSView {
         public var nsWindow: NSWindow? {
             let ptr = SDL_GetPointerProperty(
@@ -267,6 +276,32 @@ private func sdlEventWatcher(
                 return nil
             }
             return Unmanaged<NSWindow>.fromOpaque(ptr).takeUnretainedValue()
+        }
+
+        public func openMenu(_ menu: [MenuEntry], at point: Offset) {
+            let nsMenu = NSMenu()
+
+            for item in menu {
+                switch item {
+                case .item(let title, let isSelected, let action):
+                    let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+                    item.state = isSelected ? .on : .off
+                    item.target = MenuHandler.shared
+                    item.action = #selector(MenuHandler.handleMenuItemClick(_:))
+                    item.representedObject = action
+                    nsMenu.addItem(item)
+                case .separator:
+                    nsMenu.addItem(NSMenuItem.separator())
+                }
+            }
+
+            let nsView = unsafeBitCast(rawView, to: NSView.self)
+            let offset = CGPoint(x: Double(point.dx), y: nsView.frame.height - Double(point.dy))
+
+            let positioning = nsMenu.items.first { $0.state == .on } ?? nsMenu.items.first
+            if let positioning {
+                nsMenu.popUp(positioning: positioning, at: offset, in: nsView)
+            }
         }
     }
 
