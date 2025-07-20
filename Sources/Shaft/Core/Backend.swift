@@ -114,10 +114,21 @@ public protocol DesktopView: NativeView {
     var hasFocus: Bool { get }
 }
 
+public enum MenuEntry {
+    case item(title: String, isSelected: Bool = false, action: () -> Void)
+
+    /// A separator line.
+    case separator
+}
+
+public protocol NativeViewWithMenu: NativeView {
+    func openMenu(_ menu: [MenuEntry], at point: Offset)
+}
+
 #if canImport(AppKit)
     import AppKit
 
-    public protocol MacOSView: DesktopView {
+    public protocol MacOSView: DesktopView, NativeViewWithMenu {
         var nsWindow: NSWindow? { get }
     }
 #else
