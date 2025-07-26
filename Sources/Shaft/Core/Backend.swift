@@ -307,6 +307,16 @@ public protocol Backend: AnyObject {
     /// Not all system cursors types are supported on all platforms. If the
     /// given cursor type is not supported, this method will return nil.
     func createCursor(_ cursor: SystemMouseCursor) -> NativeMouseCursor?
+
+    /// The full system-reported supported locales of the device.
+    ///
+    /// This establishes the language and formatting conventions that application
+    /// should, if possible, use to render their user interface.
+    ///
+    /// The list is ordered in order of priority, with lower-indexed locales being
+    /// preferred over higher-indexed ones. The first element is the primary
+    /// [locale].
+    var locales: [Locale] { get }
 }
 
 extension Backend {

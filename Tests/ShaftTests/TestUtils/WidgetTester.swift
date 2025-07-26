@@ -521,6 +521,8 @@ class TestBackend: Backend {
     var renderer: Renderer {
         inner.renderer
     }
+
+    var locales: [Shaft.Locale] = []
 }
 
 func testWidgets(_ callback: @escaping (WidgetTester) -> Void) {

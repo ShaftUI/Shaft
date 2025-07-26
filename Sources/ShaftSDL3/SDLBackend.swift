@@ -506,6 +506,24 @@ public class SDLBackend: Backend {
     public func createCursor(_ cursor: SystemMouseCursor) -> (any NativeMouseCursor)? {
         return SDLCursor(fromSystem: cursor)
     }
+
+    public var locales: [Shaft.Locale] {
+        var count: Int32 = 0
+        let locales = SDL_GetPreferredLocales(&count)
+        guard let locales else {
+            return []
+        }
+        // return (0..<count).map { Locale(languageCode: String(cString: locales[$0].language)) }
+        var result = [Shaft.Locale]()
+        for i in 0..<Int(count) {
+            let locale = locales[i]
+            let language = String(cString: locale.pointee.language)
+            let country =
+                locale.pointee.country != nil ? String(cString: locale.pointee.country) : nil
+            result.append(Shaft.Locale(language, countryCode: country))
+        }
+        return result
+    }
 }
 
 /// A timer-based vsync implementation with fixed frame rate.
