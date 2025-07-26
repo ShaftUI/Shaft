@@ -136,6 +136,46 @@ public final class Image: StatefulWidget {
         )
     }
 
+    public static func memory(
+        data: Data,
+        frameBuilder: ImageFrameBuilder? = nil,
+        width: Float? = nil,
+        height: Float? = nil,
+        color: Color? = nil,
+        opacity: (any Animation<Double>)? = nil,
+        filterQuality: FilterQuality = .low,
+        colorBlendMode: BlendMode = .srcIn,
+        fit: BoxFit? = nil,
+        alignment: any AlignmentGeometry = .center,
+        `repeat`: ImageRepeat = .noRepeat,
+        centerSlice: Rect? = nil,
+        matchTextDirection: Bool = false,
+        gaplessPlayback: Bool = false,
+        // semanticLabel: String? = nil,
+        // excludeFromSemantics: Bool,
+        isAntiAlias: Bool = false
+    ) -> Image {
+        Image(
+            image: MemoryImage(data: data),
+            frameBuilder: frameBuilder,
+            width: width,
+            height: height,
+            color: color,
+            opacity: opacity,
+            filterQuality: filterQuality,
+            colorBlendMode: colorBlendMode,
+            fit: fit,
+            alignment: alignment,
+            repeat: `repeat`,
+            centerSlice: centerSlice,
+            matchTextDirection: matchTextDirection,
+            gaplessPlayback: gaplessPlayback,
+            // semanticLabel: semanticLabel,
+            // excludeFromSemantics: excludeFromSemantics,
+            isAntiAlias: isAntiAlias
+        )
+    }
+
     /// The image to display.
     public let image: any ImageProvider
 

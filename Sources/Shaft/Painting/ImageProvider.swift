@@ -93,6 +93,35 @@ extension ImageProvider {
     }
 }
 
+// Decode and stream an image from a data provider.
+private func decodeAndStreamImage(from dataProvider: @escaping () async throws -> Data)
+    -> AsyncStream<NativeImage>
+{
+    AsyncStream { continuation in
+        Task {
+            let data: Data
+            do {
+                data = try await dataProvider()
+            } catch {
+                // Optionally handle error (e.g., log or yield a placeholder image)
+                return
+            }
+            let animatedImage = backend.renderer.decodeImageFromData(data)
+            guard let animatedImage else {
+                return
+            }
+            while let frame = animatedImage.getNextFrame() {
+                continuation.yield(frame.image)
+                if let duration = frame.duration {
+                    try? await Task.sleep(for: duration)
+                } else {
+                    break
+                }
+            }
+        }
+    }
+}
+
 public struct NetworkImage: Equatable, ImageProvider {
     public init(url: URL) {
         self.url = url
@@ -101,23 +130,18 @@ public struct NetworkImage: Equatable, ImageProvider {
     public let url: URL
 
     public func resolve(configuration: ImageConfiguration) -> AsyncStream<NativeImage> {
-        AsyncStream { continuation in
-            Task {
-                let data = try await fetch(self.url)
-                let animatedImage = backend.renderer.decodeImageFromData(data)
-                guard let animatedImage else {
-                    return
-                }
-                while let frame = animatedImage.getNextFrame() {
-                    continuation.yield(frame.image)
+        decodeAndStreamImage(from: { try await fetch(self.url) })
+    }
+}
 
-                    if let duration = frame.duration {
-                        try await Task.sleep(for: duration)
-                    } else {
-                        break
-                    }
-                }
-            }
-        }
+public struct MemoryImage: Equatable, ImageProvider {
+    public init(data: Data) {
+        self.data = data
+    }
+
+    public let data: Data
+
+    public func resolve(configuration: ImageConfiguration) -> AsyncStream<NativeImage> {
+        decodeAndStreamImage(from: { self.data })
     }
 }
