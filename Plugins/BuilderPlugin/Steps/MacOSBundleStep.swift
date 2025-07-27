@@ -79,13 +79,23 @@ private func createBundle(
         copyFile(from: artifect.path.string + ".dSYM", to: structure.mainExecutableDSYM.path)
     }
 
+    let (buildName, buildNumber) = getBuildNameAndNumber(from: input.version)
+
     // Create the Info.plist dictionary
     var infoPlistDict: [String: Any] = [
         "CFBundleExecutable": input.product,
         "CFBundleIdentifier": input.identifier,
         "CFBundleName": input.name,
-        "CFBundleVersion": input.version,
     ]
+
+    // Set the build name and number if they are set
+    if buildName != nil && buildNumber != nil {
+        infoPlistDict["CFBundleShortVersionString"] = buildName
+        infoPlistDict["CFBundleVersion"] = buildNumber
+    } else {
+        // Fallback to the input version
+        infoPlistDict["CFBundleVersion"] = input.version
+    }
 
     // Merge additional entries
     if let additionalEntries = input.additionalInfoPlistEntries {
@@ -117,4 +127,18 @@ private func copyFile(from source: String, to destination: String) {
     }
     print("Copying \(source) to \(destination)")
     try! FileManager.default.copyItem(atPath: source, toPath: destination)
+}
+
+private func getBuildNameAndNumber(from version: String) -> (String?, String?) {
+    var buildName = ProcessInfo.processInfo.environment["SHAFT_BUILD_NAME"]
+    var buildNumber = ProcessInfo.processInfo.environment["SHAFT_BUILD_NUMBER"]
+
+    if buildName == nil || buildNumber == nil {
+        let versionComponents = version.split(separator: "+")
+        buildName = String(versionComponents[0])
+        if versionComponents.count > 1 {
+            buildNumber = String(versionComponents[1])
+        }
+    }
+    return (buildName, buildNumber)
 }
