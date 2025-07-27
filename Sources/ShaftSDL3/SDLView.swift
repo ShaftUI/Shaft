@@ -17,6 +17,15 @@ public class SDLView: NativeView {
         SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN, true)
         SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN, true)
 
+        if let createRawView = backend.createRawView {
+            let rawView = createRawView()
+            #if canImport(AppKit)
+                SDL_SetPointerProperty(props, SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER, rawView)
+            #else
+                mark("SDLView: createRawView is not supported on this platform")
+            #endif
+        }
+
         guard
             let window = SDL_CreateWindowWithProperties(props)
         else {
