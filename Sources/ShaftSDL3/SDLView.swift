@@ -41,6 +41,9 @@ public class SDLView: NativeView {
 
         self.backend = backend
         self.rasterThread = DispatchQueue(label: "raster-\(viewID)")
+
+        // Center the window on the screen by default.
+        centerWindow()
     }
 
     deinit {
@@ -67,6 +70,20 @@ public class SDLView: NativeView {
     /// The actual rendering logic that runs on the raster thread.
     internal func performRender(_ layerTree: LayerTree) {
         shouldImplement()
+    }
+
+    // A helper method to center the window on the screen.
+    public func centerWindow() {
+        let display = SDL_GetDisplayForWindow(sdlWindow)
+        var displayBounds = SDL_Rect()
+        SDL_GetDisplayBounds(display, &displayBounds)
+        var windowSize = SDL_Point()
+        SDL_GetWindowSize(sdlWindow, &windowSize.x, &windowSize.y)
+        SDL_SetWindowPosition(
+            sdlWindow,
+            displayBounds.x + (displayBounds.w - windowSize.x) / 2,
+            displayBounds.y + (displayBounds.h - windowSize.y) / 2
+        )
     }
 
     public var logicalSize: ISize {
