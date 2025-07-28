@@ -7,7 +7,61 @@ struct MacOSBundleInput: Codable {
     let version: String
     let product: String
     let output: String
-    let additionalInfoPlistEntries: [String: String]?
+    let additionalInfoPlistEntries: [String: PlistEntry]?
+}
+
+enum PlistEntry: Codable {
+    case string(String)
+    case array([PlistEntry])
+    case dictionary([String: PlistEntry])
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if let string = try? container.decode(String.self) {
+            self = .string(string)
+        } else if let array = try? container.decode([PlistEntry].self) {
+            self = .array(array)
+        } else if let dictionary = try? container.decode([String: PlistEntry].self) {
+            self = .dictionary(dictionary)
+        } else {
+            throw DecodingError.typeMismatch(
+                PlistEntry.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Invalid PlistEntry type"
+                )
+            )
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .string(let string):
+            try container.encode(string)
+        case .array(let array):
+            try container.encode(array)
+        case .dictionary(let dictionary):
+            try container.encode(dictionary)
+        }
+    }
+
+    // Convert to property list compatible type
+    func originalValue() -> Any {
+        switch self {
+        case .string(let string):
+            return string
+        case .array(let array):
+            return array.map { $0.originalValue() }
+        case .dictionary(let dictionary):
+            var result: [String: Any] = [:]
+            for (key, value) in dictionary {
+                result[key] = value.originalValue()
+            }
+            return result
+        }
+    }
 }
 
 func executeMacOSBundleStep(_ input: MacOSBundleInput, context: StepContext) {
@@ -24,10 +78,11 @@ func executeMacOSBundleStep(_ input: MacOSBundleInput, context: StepContext) {
 
     var buildParameters = PackageManager.BuildParameters(echoLogs: true)
     buildParameters.otherLinkerFlags = ["-L.shaft/skia"]
-    buildParameters.configuration = switch(context.configuration) {
-    case .debug: .debug
-    case .release: .release
-    }
+    buildParameters.configuration =
+        switch context.configuration {
+        case .debug: .debug
+        case .release: .release
+        }
 
     let buildResult = try! context.packageManager.build(
         .product(input.product),
@@ -99,7 +154,11 @@ private func createBundle(
 
     // Merge additional entries
     if let additionalEntries = input.additionalInfoPlistEntries {
-        infoPlistDict.merge(additionalEntries) { _, new in new }  // Keep the new value in case of key collision
+        infoPlistDict.merge(
+            additionalEntries.reduce(into: [:]) { result, pair in
+                result[pair.key] = pair.value.originalValue()
+            }
+        ) { _, new in new }  // Keep the new value in case of key collision
     }
 
     // Serialize the dictionary to XML data

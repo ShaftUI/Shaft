@@ -8,7 +8,17 @@
         "identifier": "dev.shaftui.playground",
         "version": "1.0.0",
         "product": "Playground",
-        "output": ".build/Playground.app"
+        "output": ".build/Playground.app",
+        "additionalInfoPlistEntries": {
+          "CFBundleInfoDictionaryVersion": "6.0",
+          "CFBundleURLTypes": [
+            {
+              "CFBundleTypeRole": "Editor",
+              "CFBundleURLName": "",
+              "CFBundleURLSchemes": ["myshaftapp"]
+            }
+          ]
+        }
       }
     }
   ]
