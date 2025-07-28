@@ -24,7 +24,7 @@ import SwiftMath
 ///
 ///  * [RenderProxySliver], a base class for render slivers that resemble their
 ///    children.
-public class RenderProxyBox: RenderBox, RenderObjectWithSingleChild {
+open class RenderProxyBox: RenderBox, RenderObjectWithSingleChild {
     public init(child: RenderBox? = nil) {
         super.init()
         self.child = child
@@ -42,19 +42,19 @@ public class RenderProxyBox: RenderBox, RenderObjectWithSingleChild {
         }
     }
 
-    public override func computeMinIntrinsicWidth(_ height: Float) -> Float {
+    open override func computeMinIntrinsicWidth(_ height: Float) -> Float {
         return child?.getMinIntrinsicWidth(height) ?? 0.0
     }
 
-    public override func computeMaxIntrinsicWidth(_ height: Float) -> Float {
+    open override func computeMaxIntrinsicWidth(_ height: Float) -> Float {
         return child?.getMaxIntrinsicWidth(height) ?? 0.0
     }
 
-    public override func computeMinIntrinsicHeight(_ width: Float) -> Float {
+    open override func computeMinIntrinsicHeight(_ width: Float) -> Float {
         return child?.getMinIntrinsicHeight(width) ?? 0.0
     }
 
-    public override func computeMaxIntrinsicHeight(_ width: Float) -> Float {
+    open override func computeMaxIntrinsicHeight(_ width: Float) -> Float {
         return child?.getMaxIntrinsicHeight(width) ?? 0.0
     }
 
@@ -67,7 +67,7 @@ public class RenderProxyBox: RenderBox, RenderObjectWithSingleChild {
     //   return child?.getDryLayout(constraints) ?? computeSizeForNoChild(constraints);
     // }
 
-    public override func performLayout() {
+    open override func performLayout() {
         if let child {
             child.layout(constraints, parentUsesSize: true)
             size = child.size
@@ -82,13 +82,13 @@ public class RenderProxyBox: RenderBox, RenderObjectWithSingleChild {
         return constraints.smallest
     }
 
-    public override func hitTestChildren(_ result: HitTestResult, position: Offset) -> Bool {
+    open override func hitTestChildren(_ result: HitTestResult, position: Offset) -> Bool {
         return child?.hitTest(result, position: position) ?? false
     }
 
-    public override func applyPaintTransform(_ child: RenderObject, transform: inout Matrix4x4f) {}
+    open override func applyPaintTransform(_ child: RenderObject, transform: inout Matrix4x4f) {}
 
-    public override func paint(context: PaintingContext, offset: Offset) {
+    open override func paint(context: PaintingContext, offset: Offset) {
         if let child {
             context.paintChild(child, offset: offset)
         }

@@ -32,7 +32,7 @@ public class ContainerBoxParentData<ChildType: RenderBox>: BoxParentData, Contai
 /// * [minHeight] <= [Size.height] <= [maxHeight]
 public struct BoxConstraints: Constraints, Equatable {
     /// Creates box constraints with the given constraints.
-    init(
+    public init(
         minWidth: Float = 0.0,
         maxWidth: Float = Float.infinity,
         minHeight: Float = 0.0,
@@ -45,7 +45,7 @@ public struct BoxConstraints: Constraints, Equatable {
     }
 
     /// Creates box constraints that is respected only by the given size.
-    static func tight(_ size: Size) -> BoxConstraints {
+    public static func tight(_ size: Size) -> BoxConstraints {
         BoxConstraints(
             minWidth: Float(size.width),
             maxWidth: Float(size.width),
@@ -55,7 +55,7 @@ public struct BoxConstraints: Constraints, Equatable {
     }
 
     /// Creates box constraints that require the given width or height.
-    static func tightFor(width: Float? = nil, height: Float? = nil) -> BoxConstraints {
+    public static func tightFor(width: Float? = nil, height: Float? = nil) -> BoxConstraints {
         BoxConstraints(
             minWidth: width ?? 0.0,
             maxWidth: width ?? Float.infinity,
@@ -64,10 +64,10 @@ public struct BoxConstraints: Constraints, Equatable {
         )
     }
 
-    let minWidth: Float
-    let maxWidth: Float
-    let minHeight: Float
-    let maxHeight: Float
+    public let minWidth: Float
+    public let maxWidth: Float
+    public let minHeight: Float
+    public let maxHeight: Float
 
     public var isTight: Bool {
         minWidth == maxWidth && minHeight == maxHeight
