@@ -10,9 +10,12 @@ struct BuilderPlugin: CommandPlugin {
     ) async throws {
         let options = extractOptions(from: arguments)
 
-        let buildSpec = loadBuildSpec(directory: context.package.directory)
+        let buildSpec = loadBuildSpec(
+            directory: context.package.directory,
+            configFile: options.configFile
+        )
         guard let buildSpec else {
-            print("No Build.json found in \(context.package.directory). Skipped.")
+            print("No \(options.configFile) found in \(context.package.directory). Skipped.")
             return
         }
 
@@ -38,8 +41,8 @@ struct BuilderPlugin: CommandPlugin {
 }
 
 /// Try read the Build.json file in the package directory
-func loadBuildSpec(directory: Path) -> BuildSpec? {
-    let path = directory.appending(subpath: "Build.json").string
+func loadBuildSpec(directory: Path, configFile: String) -> BuildSpec? {
+    let path = directory.appending(subpath: configFile).string
 
     guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
         return nil

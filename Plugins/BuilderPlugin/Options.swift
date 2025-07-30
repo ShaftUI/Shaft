@@ -5,6 +5,7 @@ struct BuilderOptions {
     // var targetName: String
 
     var configuration: BuilderConfiguration
+    var configFile: String
 }
 
 enum BuilderConfiguration: String {
@@ -20,13 +21,22 @@ func extractOptions(from arguments: [String]) -> BuilderOptions {
     //     printAndExit("Target name not provided")
     // }
 
-    let configurationString = extractor.extractOption(named: "--mode").last ?? "release"
+    let configurationString = extractor.extractOption(named: "mode").last ?? "release"
     guard let configuration = BuilderConfiguration(rawValue: configurationString) else {
         printAndExit("Invalid configuration: \(configurationString)")
     }
 
+    let configName = extractor.extractOption(named: "config").last
+    let configFile =
+        if let configName = configName {
+            "Build.\(configName).json"
+        } else {
+            "Build.json"
+        }
+
     return BuilderOptions(
         // targetName: targetName,
-        configuration: configuration
+        configuration: configuration,
+        configFile: configFile
     )
 }
