@@ -2223,7 +2223,16 @@ public class Element: BuildContext, HashableObject, DiagnosticableTree {
     /// subclasses that have multiple children, when child moves from one position
     /// to another in this element's child list.
     func updateSlotForChild(_ child: Element, _ newSlot: Slot) {
-        // TODO: multi-child
+        assert(lifecycleState == .active)
+        assert(child.parent == self)
+
+        func visit(_ element: Element) {
+            element.slot = newSlot
+            if let descendant = element.renderObjectAttachingChild {
+                visit(descendant)
+            }
+        }
+        visit(child)
     }
 
     /// Create an element for the given widget and add it as a child of this
