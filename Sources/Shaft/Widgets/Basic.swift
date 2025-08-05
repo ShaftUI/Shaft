@@ -1355,7 +1355,7 @@ public class FractionallySizedBox: SingleChildRenderObjectWidget {
         return RenderFractionallySizedOverflowBox(
             widthFactor: widthFactor,
             heightFactor: heightFactor,
-            alignment: alignment,
+            alignment: alignment
             // textDirection: Directionality.maybeOf(context)
         )
     }
