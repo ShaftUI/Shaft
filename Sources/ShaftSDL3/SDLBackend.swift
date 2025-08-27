@@ -82,6 +82,8 @@ public class SDLBackend: Backend {
             onWindowHidden(event.window)
         case SDL_EVENT_WINDOW_SHOWN:
             onWindowShown(event.window)
+        case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+            onWindowCloseRequested(event.window)
         case SDL_EVENT_MOUSE_MOTION:
             onMouseMotion(event.motion)
         case SDL_EVENT_MOUSE_BUTTON_UP:
@@ -224,12 +226,33 @@ public class SDLBackend: Backend {
         }
 
         viewByID[view.viewID] = view
+        return view
+    }
 
+    /// Create a view from a raw view pointer.
+    ///
+    /// This method is used to create a view by wrapping an existing native view
+    /// object. The raw view pointer should be a valid native view object for
+    /// the target platform.
+    public func createView(rawView: UnsafeMutableRawPointer) -> NativeView? {
+        assert(Thread.isMainThread)
+
+        guard let view = SDLView(backend: self, rawView: rawView) else {
+            return nil
+        }
+
+        viewByID[view.viewID] = view
         return view
     }
 
     public func view(_ id: Int) -> NativeView? {
         return viewByID[id]
+    }
+
+    public func destroyView(_ view: NativeView) {
+        if let view = viewByID.removeValue(forKey: view.viewID) {
+            view.destroy()
+        }
     }
 
     // MARK: - Vsync
@@ -431,6 +454,10 @@ public class SDLBackend: Backend {
         return pressedKeys
     }
 
+    /// The id of the view that is currently editing text, updated by the view
+    /// when it requests text input.
+    internal var textEditingView: Int?
+
     /// Fires ``onTextEditing``
     private func handleTextEditing(_ event: SDL_TextEditingEvent) {
         let text = String(cString: event.text)
@@ -495,6 +522,10 @@ public class SDLBackend: Backend {
         }
         view.isHidden = false
         updateAppLifecycleState()
+    }
+
+    private func onWindowCloseRequested(_ event: SDL_WindowEvent) {
+        destroyView(viewByID[Int(event.windowID)]!)
     }
 
     public var targetPlatform: TargetPlatform? {

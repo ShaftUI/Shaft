@@ -81,6 +81,10 @@ public class RendererBinding {
         renderViewById[view.nativeView.viewID] = view
     }
 
+    public func removeRenderView(_ view: RenderView) {
+        renderViewById.removeValue(forKey: view.nativeView.viewID)
+    }
+
     var sendFramesToEngine: Bool { true }
 
     var beforeFrameCallbacks = CallbackList()

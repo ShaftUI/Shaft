@@ -14,8 +14,8 @@ import Shaft
     /// rendering.
     public class SDLMetalView: SDLView {
 
-        internal required init?(backend: SDLBackend) {
-            super.init(backend: backend)
+        internal required init?(backend: SDLBackend, rawView: UnsafeMutableRawPointer? = nil) {
+            super.init(backend: backend, rawView: rawView)
 
             self.sdlMetalView = SDL_Metal_CreateView(sdlWindow)
 

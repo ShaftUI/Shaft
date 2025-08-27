@@ -602,7 +602,7 @@ public func runPlainApp(_ app: Widget, view: NativeView? = nil) {
     WidgetsBinding.shared.attachRootWidget(
         View(
             view: view,
-            renderingOwner: RendererBinding.shared.rootRenderOwner,
+            renderOwner: RendererBinding.shared.rootRenderOwner,
             child: app
         )
     )
