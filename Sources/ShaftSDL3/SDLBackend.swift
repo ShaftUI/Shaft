@@ -190,6 +190,15 @@ public class SDLBackend: Backend {
                 onAppLifecycleStateChanged?(.inactive)
             }
 
+            if lifecycleState == .detached {
+                if state == .inactive {
+                    onAppLifecycleStateChanged?(.resumed)
+                } else if state == .hidden {
+                    onAppLifecycleStateChanged?(.resumed)
+                    onAppLifecycleStateChanged?(.inactive)
+                }
+            }
+
             lifecycleState = state
             onAppLifecycleStateChanged?(state)
         }
