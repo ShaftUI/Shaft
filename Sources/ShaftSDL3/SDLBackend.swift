@@ -211,13 +211,6 @@ public class SDLBackend: Backend {
 
     private var viewByID: [Int: SDLView] = [:]
 
-    /// Optional callback to provide a custom underlying view.
-    ///
-    /// When provided, this callback will be used to create the raw native view
-    /// instead of the default SDL view creation process. The returned pointer
-    /// should be a valid native view object for the target platform.
-    public var createRawView: (() -> UnsafeMutableRawPointer)?
-
     public func createView() -> NativeView? {
         assert(Thread.isMainThread)
 
@@ -237,7 +230,8 @@ public class SDLBackend: Backend {
     public func createView(rawView: UnsafeMutableRawPointer) -> NativeView? {
         assert(Thread.isMainThread)
 
-        guard let view = SDLView(backend: self, rawView: rawView) else {
+        guard let view = Self.viewTypes[targetPlatform!]!.init(backend: self, rawView: rawView)
+        else {
             return nil
         }
 
