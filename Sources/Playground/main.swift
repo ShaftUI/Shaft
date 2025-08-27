@@ -37,6 +37,7 @@ final class PlaygroundState: State<Playground> {
         "Typography": Kit_Typography(),
         "Hacker News": HackerNewsApp(),
         "3D Cube": Demo_Cube(),
+        "Multi Window": Demo_MultiWindow(),
             // "Text Field": TextFieldPage.init,
     ]
 
@@ -91,6 +92,7 @@ final class PlaygroundState: State<Playground> {
                 } content: {
                     MenuTile("Hacker News")
                     MenuTile("3D Cube")
+                    MenuTile("Multi Window")
                     MenuTile("Video Codec")
                 }
             }

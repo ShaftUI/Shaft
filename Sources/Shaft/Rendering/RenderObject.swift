@@ -385,7 +385,7 @@ public class PaintingContext: ClipContext {
 /// and stores the state about which render objects have requested to be visited
 /// in each stage of the pipeline. To flush the pipeline, call the following
 /// functions in order:
-public class RenderOwner {
+public class RenderOwner: HashableObject {
     private let onNeedVisualUpdate: () -> Void
 
     init(onNeedVisualUpdate: @escaping () -> Void) {
@@ -458,9 +458,9 @@ public class RenderOwner {
             return true
         }
 
-        // for (final PipelineOwner child in _children) {
-        //     child.flushLayout();
-        // }
+        for child in children {
+            child.flushLayout()
+        }
 
         assert {
             debugDoingLayout = false
@@ -486,9 +486,10 @@ public class RenderOwner {
             }
         }
         nodesNeedingCompositingBitsUpdate.removeAll()
-        // for (final PipelineOwner child in _children) {
-        //     child.flushCompositingBits();
-        // }
+
+        for child in children {
+            child.flushCompositingBits()
+        }
     }
 
     // MARK: - Painting
@@ -515,11 +516,28 @@ public class RenderOwner {
 
         }
 
-        // for (final PipelineOwner child in _children) {
-        //     child.flushPaint();
-        // }
+        for child in children {
+            child.flushPaint()
+        }
     }
 
+    // MARK: - Child Management
+
+    private var children: Set<RenderOwner> = []
+
+    public func adoptChild(_ child: RenderOwner) {
+        children.insert(child)
+    }
+
+    public func dropChild(_ child: RenderOwner) {
+        children.remove(child)
+    }
+
+    public func visitChildren(_ visitor: (RenderOwner) -> Void) {
+        for child in children {
+            visitor(child)
+        }
+    }
 }
 
 /// An object in the render tree.

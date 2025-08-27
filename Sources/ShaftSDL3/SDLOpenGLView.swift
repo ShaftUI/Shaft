@@ -8,12 +8,12 @@ import SwiftSDL3
 
 /// A NativeView implementation that uses SDL window as backend.
 public class SDLOpenGLView: SDLView {
-    internal required init?(backend: SDLBackend) {
+    internal required init?(backend: SDLBackend, rawView: UnsafeMutableRawPointer? = nil) {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3)
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0)
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES)
 
-        super.init(backend: backend)
+        super.init(backend: backend, rawView: rawView)
 
         sdlGLContext = SDL_GL_CreateContext(sdlWindow)!
 

@@ -10,15 +10,14 @@ import SwiftSDL3
 /// A NativeView implementation that uses SDL window as backend and Metal for
 /// rendering.
 public class SDLView: NativeView {
-    internal required init?(backend: SDLBackend) {
+    internal required init?(backend: SDLBackend, rawView: UnsafeMutableRawPointer? = nil) {
         let props = SDL_CreateProperties()
         defer { SDL_DestroyProperties(props) }
         SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN, true)
         SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN, true)
         SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN, true)
 
-        if let createRawView = backend.createRawView {
-            let rawView = createRawView()
+        if let rawView {
             #if canImport(AppKit)
                 SDL_SetPointerProperty(props, SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER, rawView)
             #else
@@ -62,9 +61,23 @@ public class SDLView: NativeView {
     internal let rasterThread: DispatchQueue
 
     public func render(_ layerTree: LayerTree) {
+        if isDestroyed {
+            return
+        }
+
         rasterThread.sync {
             self.performRender(layerTree)
         }
+    }
+
+    public private(set) var isDestroyed: Bool = false
+
+    internal func destroy() {
+        if isDestroyed {
+            return
+        }
+        isDestroyed = true
+        SDL_DestroyWindow(sdlWindow)
     }
 
     /// The actual rendering logic that runs on the raster thread.
@@ -142,17 +155,44 @@ public class SDLView: NativeView {
     }
 
     public func startTextInput() {
-        SDL_StartTextInput(sdlWindow)
+        if isDestroyed {
+            return
+        }
+        if SDL_StartTextInput(sdlWindow) {
+            backend?.textEditingView = viewID
+        } else {
+            mark("SDL_StartTextInput failed")
+        }
     }
 
     public func stopTextInput() {
-        SDL_StopTextInput(sdlWindow)
+        if isDestroyed {
+            return
+        }
+
+        // Another view is already editing text. SDL has a flaw that calling
+        // SDL_StopTextInput will stop text input for all views. So we skip
+        // stopping text input for this view if another view is currently
+        // editing text.
+        if backend?.textEditingView != viewID {
+            return
+        }
+
+        if SDL_StopTextInput(sdlWindow) {
+            backend?.textEditingView = nil
+        } else {
+            mark("SDL_StopTextInput failed")
+        }
     }
 
     private var _lastEditableSize: Shaft.Size?
     private var _lastEditableTransform: Matrix4x4f?
 
     public func setComposingRect(_ rect: Shaft.Rect) {
+        if isDestroyed {
+            return
+        }
+
         guard let editableTransform = _lastEditableTransform else {
             return
         }
@@ -169,12 +209,26 @@ public class SDLView: NativeView {
     }
 
     public func setEditableSizeAndTransform(_ size: Shaft.Size, _ transform: Matrix4x4f) {
+        if isDestroyed {
+            return
+        }
+
         _lastEditableSize = size
         _lastEditableTransform = transform
     }
 
     public var textInputActive: Bool {
-        SDL_TextInputActive(sdlWindow)
+        if isDestroyed {
+            return false
+        }
+
+        // If another view is currently editing text, we should not return true
+        // even if SDL thinks so.
+        if backend?.textEditingView != viewID {
+            return false
+        }
+
+        return SDL_TextInputActive(sdlWindow)
     }
 
     /// It's the backend's responsibility to call this method when text editing

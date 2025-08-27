@@ -72,6 +72,16 @@ public protocol NativeView: AnyObject {
     /// This is an optional property, and it is not guaranteed to be implemented
     /// on all platforms.
     var rawView: UnsafeMutableRawPointer? { get }
+
+    /// Whether the view is destroyed.
+    ///
+    /// Once a view is destroyed, it can no longer be used. A view is destroyed
+    /// when 1. the view's window is closed by the user, 2. the view is
+    /// programmatically destroyed by calling ``Backend/destroyView(_:)``.
+    ///
+    /// A view can only be destroyed once. Destroying a view that is already
+    /// destroyed is a no-op.
+    var isDestroyed: Bool { get }
 }
 
 extension NativeView {
@@ -211,6 +221,9 @@ public typealias TextComposedCallback = (String) -> Void
 public protocol Backend: AnyObject {
     /// Creates a new view to render the scene on.
     func createView() -> NativeView?
+
+    /// Destroys the view.
+    func destroyView(_ view: NativeView)
 
     /// Returns the view with the given ID, or nil if no such view exists.
     func view(_ viewId: Int) -> NativeView?
