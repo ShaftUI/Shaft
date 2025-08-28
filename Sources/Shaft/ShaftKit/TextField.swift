@@ -423,6 +423,13 @@ public final class TextFieldState: State<TextField>, TextSelectionGestureDetecto
         effectiveFocusNode.canRequestFocus = widget.enabled
     }
 
+    public override func dispose() {
+        effectiveFocusNode.removeListener(self)
+        localFocusNode.dispose()
+        localTextEditingController.dispose()
+        super.dispose()
+    }
+
     private func handleFocusChanged() {
         setState {}
     }
