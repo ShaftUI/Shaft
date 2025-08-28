@@ -387,20 +387,19 @@ public final class TextField: StatefulWidget {
     }
 }
 
-final class TextFieldState: State<TextField>, TextSelectionGestureDetectorBuilder.Delegate {
+public final class TextFieldState: State<TextField>, TextSelectionGestureDetectorBuilder.Delegate {
+    public var editableTextKey = StateGlobalKey<EditableTextState>()
 
-    var editableTextKey = StateGlobalKey<EditableTextState>()
+    public var forcePressEnabled: Bool { true }
 
-    var forcePressEnabled: Bool { true }
-
-    var selectionEnabled: Bool { true }
+    public var selectionEnabled: Bool { true }
 
     private lazy var localFocusNode = FocusNode()
     private var effectiveFocusNode: FocusNode {
         widget.focusNode ?? localFocusNode
     }
 
-    var hasFocus: Bool {
+    public var hasFocus: Bool {
         effectiveFocusNode.hasFocus
     }
 
@@ -409,13 +408,13 @@ final class TextFieldState: State<TextField>, TextSelectionGestureDetectorBuilde
         widget.controller ?? localTextEditingController
     }
 
-    override func initState() {
+    public override func initState() {
         super.initState()
         effectiveFocusNode.canRequestFocus = widget.enabled
         effectiveFocusNode.addListener(self, callback: handleFocusChanged)
     }
 
-    override func didUpdateWidget(_ oldWidget: TextField) {
+    public override func didUpdateWidget(_ oldWidget: TextField) {
         super.didUpdateWidget(oldWidget)
         if widget.focusNode != oldWidget.focusNode {
             oldWidget.focusNode?.removeListener(self)
@@ -441,7 +440,7 @@ final class TextFieldState: State<TextField>, TextSelectionGestureDetectorBuilde
         height: 1.25
     )
 
-    override func build(context: BuildContext) -> Widget {
+    public override func build(context: BuildContext) -> Widget {
         let gestureBuilder = TextSelectionGestureDetectorBuilder(delegate: self)
         let selectionColor: Color? = effectiveFocusNode.hasFocus ? .argb(100, 0, 122, 255) : nil
         let defaultTextStyle = style
@@ -551,7 +550,7 @@ public struct DefaultTextFieldStyle: TextField.Style {
 }
 
 extension TextField.Style where Self == DefaultTextFieldStyle {
-    static var `default`: DefaultTextFieldStyle {
+    public static var `default`: DefaultTextFieldStyle {
         DefaultTextFieldStyle()
     }
 }
