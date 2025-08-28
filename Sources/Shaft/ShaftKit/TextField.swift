@@ -1,5 +1,6 @@
 public final class TextField: StatefulWidget {
     public init(
+        key: (any Key)? = nil,
         autocorrect: Bool = false,
         autofocus: Bool = false,
         clearButtonSemanticLabel: String? = nil,
@@ -47,6 +48,7 @@ public final class TextField: StatefulWidget {
         textAlignVertical: TextAlignVertical? = nil,
         textDirection: TextDirection? = nil
     ) {
+        self.key = key
         self.controller = controller
         self.focusNode = focusNode
         self.decoration = decoration
@@ -96,6 +98,8 @@ public final class TextField: StatefulWidget {
     }
 
     //   public let groupId: Object
+
+    public let key: (any Key)?
 
     /// Controls the text being edited.
     ///
