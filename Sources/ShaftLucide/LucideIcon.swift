@@ -107,7 +107,7 @@ public class LucideIcon: StatelessWidget {
         let textStyle = TextStyle(
             color: effectiveColor,
             fontFamily: "lucide",
-            fontSize: size,
+            fontSize: size
         )
 
         var result: Widget = RichText(
