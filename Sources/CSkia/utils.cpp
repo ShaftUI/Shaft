@@ -346,6 +346,11 @@ void sk_canvas_scale(SkCanvas *canvas, float sx, float sy)
     canvas->scale(sx, sy);
 }
 
+void sk_canvas_rotate(SkCanvas *canvas, float radians)
+{
+    canvas->rotate(radians);
+}
+
 // MARK: - Paint
 
 void sk_paint_set_maskfilter_blur(SkPaint *paint, SkBlurStyle style, SkScalar sigma)

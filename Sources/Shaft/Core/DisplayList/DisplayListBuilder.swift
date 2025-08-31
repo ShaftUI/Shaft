@@ -21,6 +21,7 @@ internal enum DisplayListOp {
     case transform(transform: Matrix4x4f)
     case translate(dx: Float, dy: Float)
     case scale(sx: Float, sy: Float)
+    case rotate(radians: Float)
     case clipRect(rect: Rect, clipOp: ClipOp, doAntiAlias: Bool)
     case clipRRect(rrect: RRect, doAntiAlias: Bool)
     case save
@@ -101,6 +102,10 @@ public class DisplayListBuilder: DlOpReceiver {
 
     public func scale(_ sx: Float, _ sy: Float) {
         push(.scale(sx: sx, sy: sy))
+    }
+
+    public func rotate(_ radians: Float) {
+        push(.rotate(radians: radians))
     }
 
     public func clipRect(_ rect: Rect, _ clipOp: ClipOp, _ doAntiAlias: Bool) {

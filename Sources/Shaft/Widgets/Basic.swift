@@ -2417,3 +2417,143 @@ extension Widget {
         )
     }
 }
+
+/// A widget that provides a canvas on which to draw during the paint phase.
+///
+/// When asked to paint, [CustomPaint] first asks its [painter] to paint on the
+/// current canvas, then it paints its child, and then, after painting its
+/// child, it asks its [foregroundPainter] to paint. The coordinate system of the
+/// canvas matches the coordinate system of the [CustomPaint] object. The
+/// painters are expected to paint within a rectangle starting at the origin and
+/// encompassing a region of the given size. (If the painters paint outside
+/// those bounds, there might be insufficient memory allocated to rasterize the
+/// painting commands and the resulting behavior is undefined.) To enforce
+/// painting within those bounds, consider wrapping this [CustomPaint] with a
+/// [ClipRect] widget.
+///
+/// Painters are implemented by subclassing [CustomPainter].
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=kp14Y4uHpHs}
+///
+/// Because custom paint calls its painters during paint, you cannot call
+/// `setState` or `markNeedsLayout` during the callback (the layout for this
+/// frame has already happened).
+///
+/// Custom painters normally size themselves to their [child]. If they do not
+/// have a child, they attempt to size themselves to the specified [size], which
+/// defaults to [Size.zero]. The parent [may enforce constraints on this
+/// size](https://docs.flutter.dev/ui/layout/constraints).
+///
+/// The [isComplex] and [willChange] properties are hints to the compositor's
+/// raster cache.
+///
+/// {@tool snippet}
+///
+/// This example shows how the sample custom painter shown at [CustomPainter]
+/// could be used in a [CustomPaint] widget to display a background to some
+/// text.
+///
+/// ```dart
+/// CustomPaint(
+///   painter: Sky(),
+///   child: const Center(
+///     child: Text(
+///       'Once upon a time...',
+///       style: TextStyle(
+///         fontSize: 40.0,
+///         fontWeight: FontWeight.w900,
+///         color: Color(0xFFFFFFFF),
+///       ),
+///     ),
+///   ),
+/// )
+/// ```
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [CustomPainter], the class to extend when creating custom painters.
+///  * [Canvas], the class that a custom painter uses to paint.
+public class CustomPaint: SingleChildRenderObjectWidget {
+    /// Creates a widget that delegates its painting.
+    public init(
+        painter: (any CustomPainter)? = nil,
+        foregroundPainter: (any CustomPainter)? = nil,
+        size: Size = .zero,
+        isComplex: Bool = false,
+        willChange: Bool = false,
+        @OptionalWidgetBuilder child: () -> Widget? = voidBuilder
+    ) {
+        assert(painter != nil || foregroundPainter != nil || (!isComplex && !willChange))
+        self.painter = painter
+        self.foregroundPainter = foregroundPainter
+        self.size = size
+        self.isComplex = isComplex
+        self.willChange = willChange
+        self.child = child()
+    }
+
+    /// The painter that paints before the children.
+    public let painter: (any CustomPainter)?
+
+    /// The painter that paints after the children.
+    public let foregroundPainter: (any CustomPainter)?
+
+    /// The size that this [CustomPaint] should aim for, given the layout
+    /// constraints, if there is no child.
+    ///
+    /// Defaults to [Size.zero].
+    ///
+    /// If there's a child, this is ignored, and the size of the child is used
+    /// instead.
+    public let size: Size
+
+    /// Whether the painting is complex enough to benefit from caching.
+    ///
+    /// The compositor contains a raster cache that holds bitmaps of layers in
+    /// order to avoid the cost of repeatedly rendering those layers on each
+    /// frame. If this flag is not set, then the compositor will apply its own
+    /// heuristics to decide whether the layer containing this widget is complex
+    /// enough to benefit from caching.
+    ///
+    /// This flag can't be set to true if both [painter] and [foregroundPainter]
+    /// are null because this flag will be ignored in such case.
+    public let isComplex: Bool
+
+    /// Whether the raster cache should be told that this painting is likely
+    /// to change in the next frame.
+    ///
+    /// This hint tells the compositor not to cache the layer containing this
+    /// widget because the cache will not be used in the future. If this hint is
+    /// not set, the compositor will apply its own heuristics to decide whether
+    /// the layer is likely to be reused in the future.
+    ///
+    /// This flag can't be set to true if both [painter] and [foregroundPainter]
+    /// are null because this flag will be ignored in such case.
+    public let willChange: Bool
+
+    public var child: Widget?
+
+    public func createRenderObject(context: BuildContext) -> RenderCustomPaint {
+        return RenderCustomPaint(
+            painter: painter,
+            foregroundPainter: foregroundPainter,
+            preferredSize: size,
+            isComplex: isComplex,
+            willChange: willChange
+        )
+    }
+
+    public func updateRenderObject(context: BuildContext, renderObject: RenderCustomPaint) {
+        renderObject.painter = painter
+        renderObject.foregroundPainter = foregroundPainter
+        renderObject.preferredSize = size
+        renderObject.isComplex = isComplex
+        renderObject.willChange = willChange
+    }
+
+    public func didUnmountRenderObject(_ renderObject: RenderCustomPaint) {
+        renderObject.painter = nil
+        renderObject.foregroundPainter = nil
+    }
+}

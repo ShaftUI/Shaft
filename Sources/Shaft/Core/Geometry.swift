@@ -350,6 +350,10 @@ public struct TRect<T: Numeric>: Equatable {
         self.size = size
     }
 
+    public init(x: T, y: T, width: T, height: T) {
+        self.init(origin: TOffset(x, y), size: TSize(width, height))
+    }
+
     /// Construct a rectangle from its left and top edges, its width, and its
     /// height.
     ///
@@ -746,6 +750,34 @@ public struct TRRect<T: Numeric>: Equatable {
             blRadiusY: bottomLeft.y,
             brRadiusX: bottomRight.x,
             brRadiusY: bottomRight.y
+        )
+    }
+
+    /// Construct a rounded rectangle from its left, top, right, and bottom edges,
+    /// and the same radii along its horizontal axis and its vertical axis.
+    ///
+    /// Will assert in debug mode if `radiusX` or `radiusY` are negative.
+    public static func fromLTRBXY(
+        _ left: T,
+        _ top: T,
+        _ right: T,
+        _ bottom: T,
+        _ radiusX: T,
+        _ radiusY: T
+    ) -> Self {
+        Self(
+            left: left,
+            top: top,
+            right: right,
+            bottom: bottom,
+            tlRadiusX: radiusX,
+            tlRadiusY: radiusY,
+            trRadiusX: radiusX,
+            trRadiusY: radiusY,
+            blRadiusX: radiusX,
+            blRadiusY: radiusY,
+            brRadiusX: radiusX,
+            brRadiusY: radiusY
         )
     }
 

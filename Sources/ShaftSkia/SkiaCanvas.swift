@@ -193,6 +193,11 @@ public class SkiaCanvas: DirectCanvas {
         sk_canvas_scale(skCanvas, sx, sy)
     }
 
+    public func rotate(_ radians: Float) {
+        let degrees = Float(radians * 180.0 / .pi)
+        sk_canvas_rotate(skCanvas, degrees)
+    }
+
     public func clipRect(_ rect: Shaft.Rect, _ clipOp: ClipOp, _ doAntiAlias: Bool) {
         var skRect = SkRect()
         skRect.setLTRB(rect.left, rect.top, rect.right, rect.bottom)

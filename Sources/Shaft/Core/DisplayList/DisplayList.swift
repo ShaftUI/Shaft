@@ -45,6 +45,8 @@ public struct DisplayList {
                 receiver.translate(dx, dy)
             case let .scale(sx, sy):
                 receiver.scale(sx, sy)
+            case let .rotate(radians):
+                receiver.rotate(radians)
             case .save:
                 receiver.save()
             case let .saveLayer(bounds, paint):

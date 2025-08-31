@@ -116,7 +116,7 @@ public protocol DlOpReceiver {
     func scale(_ sx: Float, _ sy: Float)
 
     /// Add a rotation to the current transform. The argument is in radians clockwise.
-    // void rotate(double radians);
+    func rotate(_ radians: Float)
 
     /// Add an axis-aligned skew to the current transform, with the first argument
     /// being the horizontal skew in rise over run units clockwise around the
