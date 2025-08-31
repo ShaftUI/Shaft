@@ -147,8 +147,12 @@ public class SDLBackend: Backend {
         wake()
     }
 
-    public func createTimer(_ delay: Duration, _ f: @escaping () -> Void) -> any Shaft.Timer {
-        return SDLTimerManager.shared.createTimer(delay, f)
+    public func createTimer(
+        _ delay: Duration,
+        repeat shouldRepeat: Bool = false,
+        callback: @escaping () -> Void
+    ) -> any Shaft.Timer {
+        return SDLTimerManager.shared.createTimer(delay, repeat: shouldRepeat, callback: callback)
     }
 
     // const Uint32 myEventType = SDL_RegisterEvents(1);
@@ -636,13 +640,27 @@ private class TaskQueue {
 private class SDLTimerManager {
     public static let shared = SDLTimerManager()
 
-    private var callbackByTimerID: [SDL_TimerID: VoidCallback] = [:]
+    private struct TimerEntry {
+        let delay: Duration
+        let callback: VoidCallback
+        let shouldRepeat: Bool
+    }
 
-    public func createTimer(_ delay: Duration, _ callback: @escaping VoidCallback) -> SDLTimer {
+    private var callbackByTimerID: [SDL_TimerID: TimerEntry] = [:]
+
+    public func createTimer(
+        _ delay: Duration,
+        repeat shouldRepeat: Bool = false,
+        callback: @escaping VoidCallback
+    ) -> SDLTimer {
         assert(backend.isMainThread)
         let timerID = SDL_AddTimer(Uint32(delay.inMilliseconds), sdlTimerCallback, nil)
         let timer = SDLTimer(timerID)
-        callbackByTimerID[timer.timerID] = callback
+        callbackByTimerID[timer.timerID] = TimerEntry(
+            delay: delay,
+            callback: callback,
+            shouldRepeat: shouldRepeat
+        )
         return timer
     }
 
@@ -656,19 +674,26 @@ private class SDLTimerManager {
         return callbackByTimerID[timerID] != nil
     }
 
-    fileprivate func fireTimer(_ timerID: SDL_TimerID) {
-        backend.runOnMainThread {
-            self.fireTimerInner(timerID)
+    fileprivate func fireTimer(_ timerID: SDL_TimerID) -> Uint32 {
+        guard let entry = callbackByTimerID[timerID] else {
+            return 0
         }
+
+        if !entry.shouldRepeat {
+            callbackByTimerID.removeValue(forKey: timerID)
+        }
+
+        backend.runOnMainThread {
+            entry.callback()
+        }
+
+        // return
+        if entry.shouldRepeat {
+            return Uint32(entry.delay.inMilliseconds)
+        }
+        return 0
     }
 
-    private func fireTimerInner(_ timerID: SDL_TimerID) {
-        assert(backend.isMainThread)
-        if let callback = callbackByTimerID[timerID] {
-            callbackByTimerID.removeValue(forKey: timerID)
-            callback()
-        }
-    }
 }
 
 private func sdlTimerCallback(
@@ -679,8 +704,7 @@ private func sdlTimerCallback(
     -> Uint32
 {
     let manager = SDLTimerManager.shared
-    manager.fireTimer(timerID)
-    return 0
+    return manager.fireTimer(timerID)
 }
 
 private class SDLTimer: Shaft.Timer {

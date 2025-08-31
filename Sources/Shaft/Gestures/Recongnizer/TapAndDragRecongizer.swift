@@ -554,7 +554,7 @@ private struct TapStatusTrackerMixin {
             consecutiveTapTimer
             ?? backend.createTimer(
                 kDoubleTapTimeout,
-                consecutiveTapTimerTimeout
+                callback: consecutiveTapTimerTimeout
             )
     }
 
@@ -1253,7 +1253,7 @@ public class BaseTapAndDragGestureRecognizer: OneSequenceGestureRecognizer {
                 dragUpdateThrottleTimer
                 ?? backend.createTimer(
                     dragUpdateThrottleFrequency!,
-                    _handleDragUpdateThrottled
+                    callback: _handleDragUpdateThrottled
                 )
         } else {
             if onDragUpdate != nil {

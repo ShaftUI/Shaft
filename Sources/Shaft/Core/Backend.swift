@@ -307,7 +307,11 @@ public protocol Backend: AnyObject {
     ///
     /// The returned `Timer` object can be used to cancel the timer before it
     /// executes.
-    func createTimer(_ delay: Duration, _ f: @escaping () -> Void) -> Timer
+    func createTimer(
+        _ delay: Duration,
+        repeat: Bool,
+        callback: @escaping () -> Void
+    ) -> Timer
 
     /// Get the platform that the application is running on.
     var targetPlatform: TargetPlatform? { get }
@@ -330,6 +334,16 @@ public protocol Backend: AnyObject {
     /// preferred over higher-indexed ones. The first element is the primary
     /// [locale].
     var locales: [Locale] { get }
+}
+
+extension Backend {
+    public func createTimer(
+        _ delay: Duration,
+        repeat shouldRepeat: Bool = false,
+        callback: @escaping () -> Void
+    ) -> any Timer {
+        createTimer(delay, repeat: shouldRepeat, callback: callback)
+    }
 }
 
 extension Backend {
