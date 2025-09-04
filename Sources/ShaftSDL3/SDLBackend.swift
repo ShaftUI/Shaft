@@ -33,6 +33,15 @@ public class SDLBackend: Backend {
         return Thread.isMainThread
     }
 
+    public var quitOnLastWindowClose: Bool {
+        get {
+            return SDL_GetHintBoolean(SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE, true)
+        }
+        set {
+            SDL_SetHint(SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE, newValue ? "1" : "0")
+        }
+    }
+
     /// Whether a runloop exit has been requested but not yet processed.
     private var shouldStop = false
 
