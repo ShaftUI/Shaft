@@ -227,7 +227,8 @@ public class SDLBackend: Backend {
     public func createView() -> NativeView? {
         assert(Thread.isMainThread)
 
-        guard let view = Self.viewTypes[targetPlatform!]!.init(backend: self) else {
+        guard let view = Self.viewTypes[targetPlatform!]!.init(backend: self)
+        else {
             return nil
         }
 
@@ -240,10 +241,17 @@ public class SDLBackend: Backend {
     /// This method is used to create a view by wrapping an existing native view
     /// object. The raw view pointer should be a valid native view object for
     /// the target platform.
-    public func createView(rawView: UnsafeMutableRawPointer) -> NativeView? {
+    public func createView(rawView: UnsafeMutableRawPointer? = nil, onClose: VoidCallback? = nil)
+        -> NativeView?
+    {
         assert(Thread.isMainThread)
 
-        guard let view = Self.viewTypes[targetPlatform!]!.init(backend: self, rawView: rawView)
+        guard
+            let view = Self.viewTypes[targetPlatform!]!.init(
+                backend: self,
+                rawView: rawView,
+                onClose: onClose
+            )
         else {
             return nil
         }
@@ -532,7 +540,15 @@ public class SDLBackend: Backend {
     }
 
     private func onWindowCloseRequested(_ event: SDL_WindowEvent) {
-        destroyView(viewByID[Int(event.windowID)]!)
+        let view = viewByID[Int(event.windowID)]
+        guard let view else {
+            return
+        }
+        if let onClose = view.onClose {
+            onClose()
+        } else {
+            destroyView(view)
+        }
     }
 
     public var targetPlatform: TargetPlatform? {

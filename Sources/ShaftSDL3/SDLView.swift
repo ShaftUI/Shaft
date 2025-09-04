@@ -10,7 +10,11 @@ import SwiftSDL3
 /// A NativeView implementation that uses SDL window as backend and Metal for
 /// rendering.
 public class SDLView: NativeView {
-    internal required init?(backend: SDLBackend, rawView: UnsafeMutableRawPointer? = nil) {
+    internal required init?(
+        backend: SDLBackend,
+        rawView: UnsafeMutableRawPointer? = nil,
+        onClose: VoidCallback? = nil
+    ) {
         let props = SDL_CreateProperties()
         defer { SDL_DestroyProperties(props) }
         SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN, true)
@@ -34,6 +38,7 @@ public class SDLView: NativeView {
         }
         self.sdlWindow = window
         self.viewID = Int(SDL_GetWindowID(window))
+        self.onClose = onClose
 
         let contentScale = SDL_GetDisplayContentScale(SDL_GetDisplayForWindow(window))
         SDL_SetWindowSize(window, Int32(800 * contentScale), Int32(600 * contentScale))
@@ -50,6 +55,8 @@ public class SDLView: NativeView {
     }
 
     public let viewID: Int
+
+    public let onClose: VoidCallback?
 
     /// The backend that owns this view.
     internal weak var backend: SDLBackend?
