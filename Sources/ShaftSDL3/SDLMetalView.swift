@@ -13,9 +13,12 @@ import Shaft
     /// A NativeView implementation that uses SDL window as backend and Metal for
     /// rendering.
     public class SDLMetalView: SDLView {
-
-        internal required init?(backend: SDLBackend, rawView: UnsafeMutableRawPointer? = nil) {
-            super.init(backend: backend, rawView: rawView)
+        internal required init?(
+            backend: SDLBackend,
+            rawView: UnsafeMutableRawPointer? = nil,
+            onClose: VoidCallback? = nil
+        ) {
+            super.init(backend: backend, rawView: rawView, onClose: onClose)
 
             self.sdlMetalView = SDL_Metal_CreateView(sdlWindow)
 
