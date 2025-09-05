@@ -329,6 +329,10 @@ extension SDLView: DesktopView {
             SDL_SetWindowAlwaysOnTop(sdlWindow, newValue)
         }
     }
+
+    public func requestFocus() {
+        SDL_RaiseWindow(sdlWindow)
+    }
 }
 
 // typedef bool (SDLCALL * SDL_EventFilter) (void *userdata, SDL_Event * event);

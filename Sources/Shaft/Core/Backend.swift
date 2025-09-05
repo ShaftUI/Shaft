@@ -122,6 +122,9 @@ public protocol DesktopView: NativeView {
 
     /// Whether the view has focus.
     var hasFocus: Bool { get }
+
+    /// Requests the view to be focused.
+    func requestFocus()
 }
 
 public enum MenuEntry {
