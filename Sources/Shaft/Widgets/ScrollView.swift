@@ -1914,7 +1914,7 @@ public class GridView: BoxScrollView {
         restorationId: String? = nil,
         clipBehavior: Clip = .hardEdge,
         hitTestBehavior: HitTestBehavior = .opaque,
-        itemBuilder: @escaping NullableIndexedWidgetBuilder,
+        itemBuilder: @escaping NullableIndexedWidgetBuilder
     ) -> GridView {
         let delegate = SliverChildBuilderDelegate(
             itemBuilder,
