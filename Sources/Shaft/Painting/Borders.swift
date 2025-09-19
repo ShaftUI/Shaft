@@ -32,7 +32,7 @@ public struct BorderSide: Hashable {
         color: Color = Color(0xFF00_0000),
         width: Float = 1.0,
         style: BorderStyle = .solid,
-        strokeAlign: Float = 0.0
+        strokeAlign: Float = BorderSide.strokeAlignInside
     ) {
         self.color = color
         self.width = width

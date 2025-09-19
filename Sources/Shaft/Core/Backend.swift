@@ -247,6 +247,10 @@ public protocol Backend: AnyObject {
     /// if the backend does not support this.
     func getKeyboardState() -> [PhysicalKeyboardKey: LogicalKeyboardKey]?
 
+    /// Launches the given URL using the system's default URL handler.
+    /// Returns true if the URL was successfully launched, false otherwise.
+    func launchUrl(_ url: String) -> Bool
+
     /// A callback that is invoked whenever the [ViewConfiguration] of the view
     /// with the given ID changes.
     ///

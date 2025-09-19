@@ -478,6 +478,10 @@ public class SDLBackend: Backend {
         return pressedKeys
     }
 
+    public func launchUrl(_ url: String) -> Bool {
+        return SDL_OpenURL(url)
+    }
+
     /// The id of the view that is currently editing text, updated by the view
     /// when it requests text input.
     internal var textEditingView: Int?

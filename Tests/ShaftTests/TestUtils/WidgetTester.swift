@@ -59,7 +59,7 @@ class WidgetTester {
         WidgetsBinding.shared.attachRootWidget(
             View(
                 view: implicitView,
-                renderingOwner: RendererBinding.shared.rootRenderOwner,
+                renderOwner: RendererBinding.shared.rootRenderOwner,
                 child: widget
             )
         )
@@ -369,6 +369,9 @@ class TestTimer: Shaft.Timer {
 }
 
 class TestBackend: Backend {
+    func destroyView(_ view: any Shaft.NativeView) {
+
+    }
 
     var lifecycleState: AppLifecycleState { .resumed }
 
@@ -523,6 +526,10 @@ class TestBackend: Backend {
     }
 
     var locales: [Shaft.Locale] = []
+
+    func launchUrl(_ url: String) -> Bool {
+        return false
+    }
 }
 
 func testWidgets(_ callback: @escaping (WidgetTester) -> Void) {

@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -113,6 +113,17 @@ public protocol InlineSpan: AnyObject {
     ///
     /// This method should not be directly called. Use [codeUnitAt] instead.
     func codeUnitAtVisitor(_ index: TextIndex, _ offset: inout TextIndex) -> Int?
+
+    /// Returns the span that contains the given text position, or nil if no span contains it.
+    ///
+    /// This method is used during hit testing to determine which span should handle
+    /// a pointer event at a specific text position.
+    ///
+    /// The `position` parameter specifies the text position to search for.
+    /// The `offset` parameter tracks the current character offset in the flattened text.
+    ///
+    /// This method should not be called directly. Use the extension method [getSpanForPosition] instead.
+    func getSpanForPositionVisitor(_ position: TextPosition, _ offset: inout Int) -> InlineSpan?
 }
 
 extension InlineSpan {
@@ -151,6 +162,31 @@ extension InlineSpan {
         _ = visitChildren { span in
             result = span.codeUnitAtVisitor(index, &offset)
             return result == nil
+        }
+        return result
+    }
+
+    /// Returns the span that contains the given text position.
+    ///
+    /// This method walks the [InlineSpan] tree and returns the deepest span that
+    /// contains the specified text position. If multiple spans contain the position,
+    /// this returns the one that would handle hit testing (typically the one with
+    /// a gesture recognizer).
+    ///
+    /// Returns nil if no span contains the given position.
+    ///
+    /// This method is used by [RenderParagraph] during hit testing to determine
+    /// which span should receive pointer events.
+    public func getSpanForPosition(_ position: TextPosition) -> InlineSpan? {
+        var offset = 0
+        var result: InlineSpan?
+        _ = visitChildren { span in
+            let found = span.getSpanForPositionVisitor(position, &offset)
+            if found != nil {
+                result = found
+                return false  // Stop searching
+            }
+            return true  // Continue searching
         }
         return result
     }

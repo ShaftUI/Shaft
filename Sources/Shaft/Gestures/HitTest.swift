@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -19,12 +19,12 @@ public protocol HitTestTarget {
 /// Subclass this object to pass additional information from the hit test phase
 /// to the event propagation phase.
 public class HitTestEntry {
-    init(_ target: HitTestTarget) {
+    public init(_ target: HitTestTarget) {
         self.target = target
     }
 
     /// The [HitTestTarget] encountered during the hit test.
-    let target: HitTestTarget
+    public let target: HitTestTarget
 
     /// Returns a matrix describing how [PointerEvent]s delivered to this
     /// [HitTestEntry] should be transformed from the global coordinate space of

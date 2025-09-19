@@ -83,6 +83,10 @@ let package = Package(
             url: "https://github.com/swiftwasm/JavaScriptKit",
             from: "0.22.3"
         ),
+        .package(
+            url: "https://github.com/swiftlang/swift-markdown.git",
+            branch: "main"
+        ),
     ],
 
     targets: [
@@ -92,6 +96,7 @@ let package = Package(
                 "Fetch",
                 "SwiftMath",
                 "Shaft",
+                "ShaftMarkdown",
                 "ShaftSetup",
                 "ShaftLucide",
                 "ShaftCodeHighlight",
@@ -298,6 +303,14 @@ let package = Package(
             resources: [
                 .embedInCode("Resource/lucide.json"),
                 .embedInCode("Resource/lucide.woff2"),
+            ]
+        ),
+
+        .target(
+            name: "ShaftMarkdown",
+            dependencies: [
+                "Shaft",
+                .product(name: "Markdown", package: "swift-markdown"),
             ]
         ),
 

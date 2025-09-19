@@ -45,7 +45,7 @@ public class ShaftWebBackend: Backend {
             "pointerdown",
             JSClosure { args in
                 let event = args[0]
-                let data = pointerEventToPointerData(event, viewID: viewID, change: .down) 
+                let data = pointerEventToPointerData(event, viewID: viewID, change: .down)
                 self.onPointerData?(data)
                 return .undefined
             }
@@ -54,7 +54,7 @@ public class ShaftWebBackend: Backend {
             "pointermove",
             JSClosure { args in
                 let event = args[0]
-                let data = pointerEventToPointerData(event, viewID: viewID, change: .hover) 
+                let data = pointerEventToPointerData(event, viewID: viewID, change: .hover)
                 self.onPointerData?(data)
                 return .undefined
             }
@@ -63,12 +63,12 @@ public class ShaftWebBackend: Backend {
             "pointerup",
             JSClosure { args in
                 let event = args[0]
-                let data = pointerEventToPointerData(event, viewID: viewID, change: .up) 
+                let data = pointerEventToPointerData(event, viewID: viewID, change: .up)
                 self.onPointerData?(data)
                 return .undefined
             }
         )
-        
+
         let passiveClause = JSObject.global.Object.function!.new()
         passiveClause.passive = .boolean(true)
         let _ = element.addEventListener(
@@ -95,6 +95,11 @@ public class ShaftWebBackend: Backend {
 
     public func getKeyboardState() -> [Shaft.PhysicalKeyboardKey: Shaft.LogicalKeyboardKey]? {
         nil
+    }
+
+    public func launchUrl(_ url: String) -> Bool {
+        let _ = JSObject.global.window.open!(url, "_blank")
+        return true
     }
 
     public var onMetricsChanged: Shaft.MetricsChangedCallback?
@@ -194,7 +199,8 @@ private func pointerEventToPointerData(
         case "touch": .touch
         default: .mouse
         }
-    let button: PointerButtons = switch event.button.number! {
+    let button: PointerButtons =
+        switch event.button.number! {
         case 0: .primaryButton
         case 1: .middleMouseButton
         case 2: .secondaryButton
@@ -205,7 +211,7 @@ private func pointerEventToPointerData(
         timeStamp: Duration.milliseconds(event.timeStamp.number!),
         change: change,
         kind: kind,
-        device: Int(event.persistentDeviceId.number ?? 0) ,
+        device: Int(event.persistentDeviceId.number ?? 0),
         pointerIdentifier: Int(event.pointerId.number!),
         physicalX: Int(x * dpi),
         physicalY: Int(y * dpi),
@@ -222,7 +228,7 @@ private func scrollEventToPointerData(
     let y = event.offsetY.number!
     let deltaX = event.deltaX.number!
     let deltaY = event.deltaY.number!
-    
+
     return Shaft.PointerData(
         viewId: viewID,
         timeStamp: Duration.milliseconds(event.timeStamp.number!),

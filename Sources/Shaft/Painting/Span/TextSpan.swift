@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,17 +22,25 @@
 /// To paint a [TextSpan] on a [Canvas], use a [TextPainter]. To display a text
 /// span in a widget, use a [RichText]. For text with a single style, consider
 /// using the [Text] widget.
-public class TextSpan: InlineSpan {
+public class TextSpan: InlineSpan, HitTestTarget, MouseTrackerAnnotation {
     public init(
         text: String? = nil,
         children: [InlineSpan]? = nil,
         style: TextStyle? = nil,
+        recognizer: GestureRecognizer? = nil,
+        mouseCursor: MouseCursor? = nil,
+        onEnter: PointerEnterEventListener? = nil,
+        onExit: PointerExitEventListener? = nil,
         semanticsLabel: String? = nil,
         spellOut: Bool? = nil
     ) {
         self.text = text
         self.children = children
         self.style = style
+        self.recognizer = recognizer
+        self.cursor = mouseCursor ?? (recognizer != nil ? .system(.click) : .defer)
+        self.onEnter = onEnter
+        self.onExit = onExit
         self.semanticsLabel = semanticsLabel
         self.spellOut = spellOut
     }
@@ -72,7 +80,7 @@ public class TextSpan: InlineSpan {
     /// The code that owns the [GestureRecognizer] object must call
     /// [GestureRecognizer.dispose] when the [InlineSpan] object is no longer
     /// used.
-    // public let recognizer: GestureRecognizer?
+    public let recognizer: GestureRecognizer?
 
     /// Mouse cursor when the mouse hovers over this span.
     ///
@@ -84,13 +92,13 @@ public class TextSpan: InlineSpan {
     /// to return the [TextSpan] in its hit test, as well as providing the
     /// correct mouse cursor when the [TextSpan]'s mouse cursor is
     /// [MouseCursor.defer].
-    // public let mouseCursor: MouseCursor
+    public let cursor: MouseCursor
 
-    /// Returns the value of [mouseCursor].
-    ///
-    /// This field, required by [MouseTrackerAnnotation], is hidden publicly to
-    /// avoid the confusion as a text cursor.
-    //   MouseCursor get cursor => mouseCursor;
+    public let onEnter: PointerEnterEventListener?
+
+    public let onExit: PointerExitEventListener?
+
+    public var validForMouseTracker: Bool { true }
 
     /// An alternative semantics label for this [TextSpan].
     ///
@@ -219,4 +227,53 @@ public class TextSpan: InlineSpan {
         }
     }
 
+    /// Returns the span that contains the given text position.
+    ///
+    /// This method should not be directly called. Use [getSpanForPosition] instead.
+    public func getSpanForPositionVisitor(_ position: TextPosition, _ offset: inout Int)
+        -> InlineSpan?
+    {
+        // First check if this span's text contains the position
+        if let text = self.text, !text.isEmpty {
+            let textLength = text.utf16.count
+            let endOffset = offset + textLength
+            let targetOffset = position.offset.utf16Offset
+
+            // Check if the position falls within this span's text range
+            let isWithinRange =
+                (offset <= targetOffset && targetOffset < endOffset)
+                || (offset == targetOffset && position.affinity == .downstream)
+                || (endOffset == targetOffset && position.affinity == .upstream)
+
+            if isWithinRange {
+                return self
+            }
+
+            offset += textLength
+        }
+
+        // Search children
+        if let children {
+            for child in children {
+                if let result = child.getSpanForPositionVisitor(position, &offset) {
+                    return result
+                }
+            }
+        }
+
+        return nil
+    }
+
+    // MARK: - HitTestTarget
+
+    /// Handles pointer events for this text span.
+    ///
+    /// This method delegates to the gesture recognizer if one is attached.
+    /// The gesture recognizer is responsible for determining if it should
+    /// handle the event based on the event type and gesture state.
+    public func handleEvent(_ event: PointerEvent, entry: HitTestEntry) {
+        if let event = event as? PointerDownEvent {
+            recognizer?.addPointer(event: event)
+        }
+    }
 }
