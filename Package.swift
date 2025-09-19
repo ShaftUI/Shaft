@@ -96,6 +96,7 @@ let package = Package(
                 "Fetch",
                 "SwiftMath",
                 "Shaft",
+                "ShaftMarkdown",
                 "ShaftSetup",
                 "ShaftLucide",
                 "ShaftCodeHighlight",

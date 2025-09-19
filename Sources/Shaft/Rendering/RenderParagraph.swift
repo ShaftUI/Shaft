@@ -426,16 +426,52 @@ public class RenderParagraph: RenderBox, RenderObjectWithChildren {
         true
     }
 
-    //       @override
-    //   bool hitTestChildren(BoxHitTestResult result, { required Offset position }) {
-    //     final TextPosition textPosition = _textPainter.getPositionForOffset(position);
-    //     switch (_textPainter.text!.getSpanForPosition(textPosition)) {
-    //       case final HitTestTarget span:
-    //         result.add(HitTestEntry(span));
-    //         return true;
-    //       case _:
-    //         return hitTestInlineChildren(result, position);
-    //     }
-    //   }
+    public override func hitTestChildren(_ result: HitTestResult, position: Offset) -> Bool {
+        // Convert to BoxHitTestResult for type safety
+        guard let boxResult = result as? BoxHitTestResult else {
+            return false
+        }
+
+        // Get the text position for the hit point
+        let textPosition = textPainter.getPositionForOffset(position)
+
+        // Find which span contains this position
+        if let span = textPainter.text?.getSpanForPosition(textPosition) {
+            // If the span is a hit test target (has a recognizer), add it to results
+            if let hitTestTarget = span as? HitTestTarget {
+                result.add(HitTestEntry(hitTestTarget))
+                return true
+            }
+        }
+
+        // Fall back to testing inline children (widgets embedded in text)
+        return hitTestInlineChildren(boxResult, position: position)
+    }
+
+    /// Performs a hit test on each inline child widget.
+    ///
+    /// Inline children are widgets embedded within the text using WidgetSpan.
+    /// This method tests each child widget to see if it was hit.
+    @discardableResult
+    private func hitTestInlineChildren(_ result: BoxHitTestResult, position: Offset) -> Bool {
+        var child: RenderBox? = firstChild
+        while let currentChild = child {
+            let childParentData = currentChild.parentData! as! TextParentData
+            if let childOffset = childParentData.offset {
+                let isHit = result.addWithPaintOffset(
+                    offset: childOffset,
+                    position: position,
+                    hitTest: { result, transformed in
+                        return currentChild.hitTest(result, position: transformed)
+                    }
+                )
+                if isHit {
+                    return true
+                }
+            }
+            child = childAfter(currentChild)
+        }
+        return false
+    }
 
 }
