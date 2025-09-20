@@ -363,3 +363,10 @@ public class MarkdownViewState: State<MarkdownView>, MarkdownView.StyleContext {
         }
     }
 }
+
+extension Widget {
+    /// Sets the style for markdown views within this view.
+    public func markdownViewStyle(_ style: MarkdownView.Style) -> some Widget {
+        Inherited(style) { self }
+    }
+}
