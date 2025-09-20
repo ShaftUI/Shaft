@@ -22,7 +22,7 @@
 /// To paint a [TextSpan] on a [Canvas], use a [TextPainter]. To display a text
 /// span in a widget, use a [RichText]. For text with a single style, consider
 /// using the [Text] widget.
-public class TextSpan: InlineSpan, HitTestTarget, MouseTrackerAnnotation {
+open class TextSpan: InlineSpan, HitTestTarget, MouseTrackerAnnotation {
     public init(
         text: String? = nil,
         children: [InlineSpan]? = nil,
