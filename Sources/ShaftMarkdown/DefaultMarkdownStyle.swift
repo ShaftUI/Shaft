@@ -3,7 +3,7 @@ import Shaft
 /// The default implementation of the `MarkdownView.Style` protocol. Users can
 /// override this to customize the styling of the markdown content.
 open class DefaultMarkdownStyle: MarkdownView.Style {
-    public func buildDocument(
+    open func buildDocument(
         context: any MarkdownView.StyleContext,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.Widget]
     ) -> any Shaft.Widget {
@@ -12,7 +12,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildHeading(
+    open func buildHeading(
         context: any MarkdownView.StyleContext,
         level: Int,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.InlineSpan]
@@ -26,7 +26,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildParagraph(
+    open func buildParagraph(
         context: any MarkdownView.StyleContext,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.InlineSpan]
     ) -> any Shaft.Widget {
@@ -37,7 +37,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildCodeBlock(
+    open func buildCodeBlock(
         context: any MarkdownView.StyleContext,
         code: String,
         language: String?
@@ -60,7 +60,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildBlockQuote(
+    open func buildBlockQuote(
         context: any MarkdownView.StyleContext,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.Widget]
     ) -> any Shaft.Widget {
@@ -83,7 +83,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildUnorderedList(
+    open func buildUnorderedList(
         context: any MarkdownView.StyleContext,
         buildItems: (any MarkdownView.StyleContext) -> [any Shaft.Widget]
     ) -> any Shaft.Widget {
@@ -94,7 +94,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildOrderedList(
+    open func buildOrderedList(
         context: any MarkdownView.StyleContext,
         buildItems: (any MarkdownView.StyleContext) -> [any Shaft.Widget]
     ) -> any Shaft.Widget {
@@ -105,7 +105,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildListItem(
+    open func buildListItem(
         context: any MarkdownView.StyleContext,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.Widget],
         index: Int?,
@@ -131,7 +131,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         }
     }
 
-    public func buildThematicBreak(context: any MarkdownView.StyleContext) -> any Shaft.Widget {
+    open func buildThematicBreak(context: any MarkdownView.StyleContext) -> any Shaft.Widget {
         Padding(.symmetric(vertical: 12)) {
             SizedBox(height: 1) {
                 DecoratedBox(
@@ -142,14 +142,14 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
     }
 
     // Inline elements
-    public func buildText(
+    open func buildText(
         context: any MarkdownView.StyleContext,
         text: String
     ) -> any Shaft.InlineSpan {
         TextSpan(text: text, style: context.currentStyle, recognizer: context.currentRecognizer)
     }
 
-    public func buildEmphasis(
+    open func buildEmphasis(
         context: any MarkdownView.StyleContext,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.InlineSpan]
     ) -> any Shaft.InlineSpan {
@@ -162,7 +162,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         )
     }
 
-    public func buildStrong(
+    open func buildStrong(
         context: any MarkdownView.StyleContext,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.InlineSpan]
     ) -> any Shaft.InlineSpan {
@@ -175,7 +175,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         )
     }
 
-    public func buildCode(
+    open func buildCode(
         context: any MarkdownView.StyleContext,
         code: String
     ) -> any Shaft.InlineSpan {
@@ -188,7 +188,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         )
     }
 
-    public func buildLink(
+    open func buildLink(
         context: any MarkdownView.StyleContext,
         destination: String?,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.InlineSpan]
@@ -214,7 +214,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         )
     }
 
-    public func buildSoftBreak(context: any MarkdownView.StyleContext) -> any Shaft.InlineSpan {
+    open func buildSoftBreak(context: any MarkdownView.StyleContext) -> any Shaft.InlineSpan {
         TextSpan(
             text: " ",
             style: context.currentStyle,
@@ -222,7 +222,7 @@ open class DefaultMarkdownStyle: MarkdownView.Style {
         )
     }
 
-    public func buildLineBreak(context: any MarkdownView.StyleContext) -> any Shaft.InlineSpan {
+    open func buildLineBreak(context: any MarkdownView.StyleContext) -> any Shaft.InlineSpan {
         TextSpan(
             text: "\n",
             style: context.currentStyle,
