@@ -6,18 +6,41 @@ import Shaft
 /// A callback type for handling link taps in markdown content.
 public typealias MarkdownLinkHandler = (String) -> Void
 
-/// A widget that displays markdown content with customizable styling.
+/// A widget that renders markdown content with customizable styling and themes.
+///
+/// `MarkdownView` supports standard markdown elements including headings, lists,
+/// links, emphasis, code blocks, and more. It provides interactive links with
+/// tap handling and customizable themes.
+///
+/// Example usage:
+/// ```swift
+/// MarkdownView("# Hello **World**!")
+///
+/// MarkdownView(
+///     myMarkdown,
+///     theme: .compact,
+///     onLinkTap: { url in print("Tapped: \(url)") }
+/// )
+/// ```
 public final class MarkdownView: StatefulWidget {
+    /// The type of content to render.
     public enum Content {
+        /// Raw markdown text that will be parsed.
         case text(String)
+        /// Pre-parsed markdown document.
         case document(Document)
     }
 
+    /// The markdown content to render.
     public let content: Content
 
+    /// The visual theme controlling colors, fonts, and spacing.
     public let theme: MarkdownTheme
+
+    /// Optional callback for handling link taps.
     public let onLinkTap: MarkdownLinkHandler?
 
+    /// Creates a markdown view with content, theme, and optional link handling.
     public init(
         _ content: Content,
         theme: MarkdownTheme = .init(),
@@ -28,6 +51,7 @@ public final class MarkdownView: StatefulWidget {
         self.onLinkTap = onLinkTap
     }
 
+    /// Creates a markdown view from a text string.
     public init(
         _ text: String,
         theme: MarkdownTheme = .init(),
@@ -38,6 +62,7 @@ public final class MarkdownView: StatefulWidget {
         self.onLinkTap = onLinkTap
     }
 
+    /// Creates a markdown view from a pre-parsed document.
     public init(
         _ document: Document,
         theme: MarkdownTheme = .init(),
@@ -50,22 +75,34 @@ public final class MarkdownView: StatefulWidget {
 
     public func createState() -> State<MarkdownView> { MarkdownViewState() }
 
+    /// Context passed to style implementations containing theme and style state.
     public protocol StyleContext {
+        /// The active theme providing colors, fonts, and styling.
         var theme: MarkdownTheme { get }
 
+        /// Push a text style onto the style stack for nested elements.
         func pushStyle(_ style: TextStyle)
 
+        /// Pop the most recent style from the stack.
         func popStyle()
 
+        /// The current effective text style from the style stack.
         var currentStyle: TextStyle { get }
 
+        /// Push a gesture recognizer onto the recognizer stack.
         func pushRecognizer(_ recognizer: GestureRecognizer)
 
+        /// Pop the most recent gesture recognizer from the stack.
         func popRecognizer()
 
+        /// The current active gesture recognizer, if any.
         var currentRecognizer: GestureRecognizer? { get }
 
+        /// Handle a link tap with the given URL.
         func handleLinkTap(_ url: String)
+
+        /// Mark that the view needs to be re-rendered.
+        func markNeedsRender()
     }
 
     public protocol Style {
@@ -177,6 +214,10 @@ public class MarkdownViewState: State<MarkdownView>, MarkdownView.StyleContext {
         } else {
             let _ = backend.launchUrl(url)
         }
+    }
+
+    public func markNeedsRender() {
+        setState {}
     }
 
     public override func initState() {
