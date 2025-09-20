@@ -289,7 +289,7 @@ final class Kit_MarkdownState: State<Kit_Markdown> {
                 // Use built-in themes
                 MarkdownView(content, theme: .default)
                 MarkdownView(content, theme: .compact)
-                
+
                 // Create custom theme
                 let customTheme = MarkdownTheme(
                     heading1: TextStyle(fontSize: 20, fontWeight: .bold, color: .purple),
