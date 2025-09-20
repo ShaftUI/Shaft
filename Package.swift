@@ -38,6 +38,9 @@ let package = Package(
         // The Skia renderer for Shaft
         .library(name: "ShaftSkia", targets: ["ShaftSkia"]),
 
+        // The Markdown support for Shaft
+        .library(name: "ShaftMarkdown", targets: ["ShaftMarkdown"]),
+
         // The Web backend and renderer for Shaft
         // .library(name: "ShaftWeb", targets: ["ShaftWeb"]),
 

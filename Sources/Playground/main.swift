@@ -31,6 +31,7 @@ final class PlaygroundState: State<Playground> {
         "Image": Kit_Image(),
         "Icons": Kit_Icons(),
         "ListView": Kit_ListView(),
+        "Markdown": Kit_Markdown(),
         "NavigationSplitView": Kit_NavigationSplitView(),
         "Resizable": Kit_Resizable(),
         "TextField": Kit_TextField(),
@@ -86,6 +87,7 @@ final class PlaygroundState: State<Playground> {
                     MenuTile("Resizable")
                     MenuTile("TextField")
                     MenuTile("Typography")
+                    MenuTile("Markdown")
                 }
                 Section {
                     Text("Demos")

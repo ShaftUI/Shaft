@@ -3,15 +3,18 @@ import Shaft
 /// Internal style stack used by Markdown inline rendering to support inheritance.
 /// Applies style transformations on push and restores on pop.
 struct StyleStack {
-    private var stack: [TextStyle]
+    private var stack: [TextStyle] = []
     private var linkContextStack: [Bool] = [false]
 
-    init(base: TextStyle) {
-        self.stack = [base]
-    }
+    init() {}
 
     var current: TextStyle { stack.last! }
     var isInLinkContext: Bool { linkContextStack.last! }
+
+    mutating func setBase(_ base: TextStyle) {
+        stack = [base]
+        linkContextStack = [false]
+    }
 
     mutating func push(_ transform: (TextStyle) -> TextStyle) {
         let next = transform(current)
