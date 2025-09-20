@@ -3,6 +3,8 @@ import Shaft
 /// The default implementation of the `MarkdownView.Style` protocol. Users can
 /// override this to customize the styling of the markdown content.
 open class DefaultMarkdownStyle: MarkdownView.Style {
+    public init() {}
+
     open func buildDocument(
         context: any MarkdownView.StyleContext,
         buildChildren: (any MarkdownView.StyleContext) -> [any Shaft.Widget]
