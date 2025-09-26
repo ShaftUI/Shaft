@@ -173,8 +173,8 @@ let package = Package(
         .binaryTarget(
             name: "skia",
             url:
-                "https://github.com/ShaftUI/skia-bundle/releases/download/build-126-0/skia-m126-6bfb13368b.artifactbundle.zip",
-            checksum: "3a6e87a66b7392d3ba601c451e6246b636b0e47a2cd6e00b86d37b48b6ec8747"
+                "https://github.com/ShaftUI/skia-bundle/releases/download/build-126-1/skia-m126-6bfb13368b.artifactbundle.zip",
+            checksum: "acb257df36341eee82fb776d1c58440fca79551208107414e6176404f4970c15"
         ),
 
         .target(
