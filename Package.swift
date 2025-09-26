@@ -84,7 +84,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/swiftwasm/JavaScriptKit",
-            from: "0.22.3"
+            from: "0.36.0"
         ),
         .package(
             url: "https://github.com/swiftlang/swift-markdown.git",
@@ -134,6 +134,9 @@ let package = Package(
 
         .target(
             name: "CSkia",
+            dependencies: [
+                "skia"
+            ],
             sources: [
                 "utils.cpp"
             ],
@@ -163,8 +166,13 @@ let package = Package(
                 .linkedLibrary("GLX", .when(platforms: [.linux])),
                 .linkedLibrary("wayland-client", .when(platforms: [.linux])),
 
-                .unsafeFlags(["-L.shaft/skia"]),
+                // .unsafeFlags(["-L.shaft/skia"]),
             ]
+        ),
+
+        .binaryTarget(
+            name: "skia",
+            path: "./test_all_libs.artifactbundle"
         ),
 
         .target(
