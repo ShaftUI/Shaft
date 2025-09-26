@@ -44,10 +44,6 @@ let package = Package(
         // The Web backend and renderer for Shaft
         // .library(name: "ShaftWeb", targets: ["ShaftWeb"]),
 
-        // Companion tool for downloading Skia binaries. Will be removed in the
-        // future when BuilderPlugin is more mature.
-        .plugin(name: "CSkiaSetupPlugin", targets: ["CSkiaSetupPlugin"]),
-
         // (experimental) Tool to build application bundles
         .plugin(name: "BuilderPlugin", targets: ["BuilderPlugin"]),
     ],
@@ -165,8 +161,6 @@ let package = Package(
                 .linkedLibrary("GL", .when(platforms: [.linux])),
                 .linkedLibrary("GLX", .when(platforms: [.linux])),
                 .linkedLibrary("wayland-client", .when(platforms: [.linux])),
-
-                // .unsafeFlags(["-L.shaft/skia"]),
             ]
         ),
 
@@ -185,23 +179,6 @@ let package = Package(
         ),
 
         .plugin(
-            name: "CSkiaSetupPlugin",
-            capability: .command(
-                intent: .custom(verb: "setup-skia", description: "Download prebuilt Skia binaries"),
-                permissions: [
-                    .allowNetworkConnections(
-                        scope: .all(),
-                        reason: "To download the Skia binaries"
-                    ),
-                    .writeToPackageDirectory(reason: "To extract the Skia binaries"),
-                ]
-            ),
-            dependencies: [
-                "CSkiaSetup"
-            ]
-        ),
-
-        .plugin(
             name: "BuilderPlugin",
             capability: .command(
                 intent: .custom(verb: "build", description: "Build application bundle"),
@@ -213,13 +190,6 @@ let package = Package(
                     .writeToPackageDirectory(reason: "To read configuration files"),
                 ]
             )
-        ),
-
-        .executableTarget(
-            name: "CSkiaSetup",
-            dependencies: [
-                .product(name: "ZIPFoundation", package: "zipfoundationmodern")
-            ]
         ),
 
         .target(

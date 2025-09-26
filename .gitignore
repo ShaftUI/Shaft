@@ -13,3 +13,5 @@ DerivedData/
 .cursor
 
 .reference
+*.artifactbundle
+*.zip

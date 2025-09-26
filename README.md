@@ -31,20 +31,19 @@ A blog post introducing Shaft in details has been posted [here](https://medium.c
 
 - **Windows**: Install Swift following the [official guide](https://www.swift.org/install/windows/) shoube be enough. However, the stable release of Swift for Windows have a few issues that may prevent Shaft from running. It's **highly recommended** to use development snapshots instead. You can find the latest snapshot [here](https://www.swift.org/install/windows/#development-snapshots).
 
+
+> **Note:** Shaft requires Swift **6.2 or later**.
+
 ## Get Stared
 ```sh
 git clone https://github.com/ShaftUI/Shaft.git
 
 cd Shaft
 
-swift package plugin setup-skia
-
 swift run Playground
 ```
 
 These commands will launch the built-in [Playground](/Sources/Playground/main.swift) application, which serves as both an interactive demonstration and comprehensive documentation for the Shaft framework.
-
-> The `setup-skia` command downloads prebuilt Skia binaries to the `./.shaft` directory for the package to use. In the future we may get rid of this when [swift-package-manager#7035](https://github.com/swiftlang/swift-package-manager/issues/7035) has made progress.
 
 To create a new project with Shaft, the [CounterTemplate](https://github.com/ShaftUI/CounterTemplate) is a good starting point.
 
