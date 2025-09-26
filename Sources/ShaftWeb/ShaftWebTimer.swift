@@ -2,43 +2,75 @@ import JavaScriptKit
 import Shaft
 
 public class ShaftWebTimer: Shaft.Timer {
-    public init(delay: Duration, f: @escaping () -> Void) {
-        self.callback = f
-        self.timeoutID = .number(0)
-        self.timeoutID = JSObject.global.setTimeout!(
-            JSClosure { _ in
-                self.onTimeout()
-                return .undefined
-            },
-            Int(delay.inMilliseconds)
-        )
+    public init(delay: Duration, repeats: Bool, callback: @escaping () -> Void) {
+        self.callback = callback
+        self.repeats = repeats
+
+        let closure = JSClosure { [weak self] _ in
+            guard let self else { return .undefined }
+            self.handleFire()
+            return .undefined
+        }
+        self.jsClosure = closure
+
+        let milliseconds = max(0, Int(delay.inMilliseconds))
+        if repeats {
+            timerID = JSObject.global.setInterval!(closure, milliseconds)
+        } else {
+            timerID = JSObject.global.setTimeout!(closure, milliseconds)
+        }
+    }
+
+    deinit {
+        cancel()
     }
 
     public let callback: () -> Void
 
-    /// The ID of the timeout used to cancel the timer.
-    private var timeoutID: JSValue
-
-    /// Whether the timer has been cancelled.
+    private let repeats: Bool
+    private var timerID: JSValue?
+    private var jsClosure: JSClosure?
     private var isCancelled = false
-
-    /// Whether the timer has fired.
     private var hasFired = false
 
-    private func onTimeout() {
-        if isCancelled {
-            return
-        }
+    private func handleFire() {
+        if isCancelled { return }
 
         hasFired = true
         callback()
+
+        if !repeats {
+            clearScheduledTimer()
+            releaseClosure()
+        }
     }
 
     public func cancel() {
-        let _ = JSObject.global.clearTimeout!(timeoutID)
+        guard !isCancelled else { return }
+        isCancelled = true
+
+        clearScheduledTimer()
+        releaseClosure()
     }
 
     public var isActive: Bool {
-        !hasFired && !isCancelled
+        if isCancelled { return false }
+        return repeats || !hasFired
+    }
+
+    private func clearScheduledTimer() {
+        guard let timerID else { return }
+
+        if repeats {
+            let _ = JSObject.global.clearInterval!(timerID)
+        } else {
+            let _ = JSObject.global.clearTimeout!(timerID)
+        }
+
+        self.timerID = nil
+    }
+
+    private func releaseClosure() {
+        jsClosure = nil
     }
 }
