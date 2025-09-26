@@ -342,15 +342,25 @@ extension Finder where Self == _TextWidgetFinder {
 /// It keeps track of when the timer should fire and provides a way to cancel
 /// the timer. When the timer fires, it calls the provided callback function.
 class TestTimer: Shaft.Timer {
-    init(backend: TestBackend, fireTime: Duration, callback: @escaping () -> Void) {
+    init(
+        backend: TestBackend,
+        fireTime: Duration,
+        shouldRepeat: Bool,
+        delay: Duration,
+        callback: @escaping () -> Void
+    ) {
         self.backend = backend
         self.fireTime = fireTime
+        self.shouldRepeat = shouldRepeat
+        self.delay = delay
         self.callback = callback
     }
 
     weak var backend: TestBackend?
 
-    let fireTime: Duration
+    var fireTime: Duration
+    let shouldRepeat: Bool
+    let delay: Duration
 
     let callback: () -> Void
 
@@ -364,7 +374,12 @@ class TestTimer: Shaft.Timer {
 
     func fire() {
         callback()
-        cancel()
+        if shouldRepeat {
+            // Reschedule the timer for the next interval
+            fireTime = (backend?.elapsed ?? .zero) + delay
+        } else {
+            cancel()
+        }
     }
 }
 
@@ -388,7 +403,7 @@ class TestBackend: Backend {
     }
 
     /// The amount of fake time that's elapsed since this backend was created.
-    private var elapsed = Duration.zero
+    fileprivate var elapsed = Duration.zero
 
     /// This list keeps track of all the timers that have been created and are
     /// currently active. When the `elapse` function is called, it iterates
@@ -440,8 +455,16 @@ class TestBackend: Backend {
         }
     }
 
-    func createTimer(_ delay: Duration, _ f: @escaping () -> Void) -> any Shaft.Timer {
-        let timer = TestTimer(backend: self, fireTime: elapsed + delay, callback: f)
+    func createTimer(_ delay: Duration, repeat: Bool, callback: @escaping () -> Void) -> any Shaft
+        .Timer
+    {
+        let timer = TestTimer(
+            backend: self,
+            fireTime: elapsed + delay,
+            shouldRepeat: `repeat`,
+            delay: delay,
+            callback: callback
+        )
         activeTimers.append(timer)
         return timer
     }
