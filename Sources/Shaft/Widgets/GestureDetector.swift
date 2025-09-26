@@ -1141,7 +1141,7 @@ extension Widget {
             onSecondaryTap: onSecondaryTap,
             onSecondaryTapDown: onSecondaryTapDown,
             onSecondaryTapUp: onSecondaryTapUp,
-            onSecondaryTapCancel: onSecondaryTapCancel,
+            onSecondaryTapCancel: onSecondaryTapCancel
         ) {
             self
         }
