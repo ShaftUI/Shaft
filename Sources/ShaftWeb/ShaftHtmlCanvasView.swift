@@ -10,6 +10,8 @@ public class ShaftCanvasView: Shaft.NativeView {
 
     public let viewID: Int
 
+    private var destroyed = false
+
     public var devicePixelRatio: Float {
         Float(JSObject.global.window.devicePixelRatio.number!)
     }
@@ -17,6 +19,9 @@ public class ShaftCanvasView: Shaft.NativeView {
     public var canvasElement: JSValue
 
     public var physicalSize: Shaft.ISize {
+        if isDestroyed {
+            return .zero
+        }
         let width = canvasElement.width.number!
         let height = canvasElement.height.number!
         return Shaft.ISize(Int(width), Int(height))
@@ -26,6 +31,9 @@ public class ShaftCanvasView: Shaft.NativeView {
     lazy private var canvas = Canvas2DCanvas(context)
 
     public func render(_ layerTree: Shaft.LayerTree) {
+        if isDestroyed {
+            return
+        }
         // dump(layerTree)
 
         let _ = context.setTransform(1, 0, 0, 1, 0, 0)
@@ -54,6 +62,12 @@ public class ShaftCanvasView: Shaft.NativeView {
 
     public var textInputActive: Bool { false }
 
+    public var isDestroyed: Bool { destroyed }
+
+    func markDestroyed() {
+        destroyed = true
+    }
+
     public var onTextEditing: Shaft.TextEditingCallback?
 
     public var onTextComposed: Shaft.TextComposedCallback?
@@ -65,6 +79,10 @@ public class ShaftCanvasView: Shaft.NativeView {
 }
 
 class Canvas2DCanvas: Canvas {
+    func rotate(_ radians: Float) {
+        let _ = renderingContext2D.rotate(Double(radians))
+    }
+
     public init(_ renderingContext2D: JSValue) {
         self.renderingContext2D = renderingContext2D
         JSObject.global.console.log(renderingContext2D)

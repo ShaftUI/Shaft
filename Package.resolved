@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "javascriptkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftwasm/JavaScriptKit",
-      "state" : {
-        "revision" : "a069e3af73ab950220d054d2488120b8f54585cf",
-        "version" : "0.36.0"
-      }
-    },
-    {
       "identity" : "rainbow",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Rainbow",
