@@ -82,10 +82,10 @@ let package = Package(
             url: "https://github.com/ShaftUI/SwiftReload.git",
             branch: "main"
         ),
-        .package(
-            url: "https://github.com/swiftwasm/JavaScriptKit",
-            from: "0.36.0"
-        ),
+        // .package(
+        //     url: "https://github.com/swiftwasm/JavaScriptKit",
+        //     from: "0.36.0"
+        // ),
         .package(
             url: "https://github.com/swiftlang/swift-markdown.git",
             branch: "main"
