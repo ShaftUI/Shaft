@@ -411,26 +411,26 @@ public class BoxToViewAdapter: SingleChildRenderObjectWidget {
 
     public let child: Widget?
 
-    public func createRenderObject(context: BuildContext) -> some RenderObject {
+    public func createRenderObject(context: BuildContext) -> RenderBoxToViewAdapter {
         RenderBoxToViewAdapter()
     }
 }
 
 /// The render object for `BoxToViewAdapter` that handles the layout adaptation.
-class RenderBoxToViewAdapter: RenderBox, RenderObjectWithSingleChild {
+public class RenderBoxToViewAdapter: RenderBox, RenderObjectWithSingleChild {
     public var childMixin = RenderSingleChildMixin<RenderView>()
 
-    func visitChildren(visitor: (RenderView) -> Void) {
+    public func visitChildren(visitor: (RenderView) -> Void) {
         if let child {
             visitor(child)
         }
     }
 
-    override func performLayout() {
+    public override func performLayout() {
         size = boxConstraint.smallest
     }
 
-    func attachChild(_ owner: RenderOwner) {}
+    public func attachChild(_ owner: RenderOwner) {}
 
-    func detachChild() {}
+    public func detachChild() {}
 }

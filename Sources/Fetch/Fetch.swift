@@ -8,7 +8,7 @@ import Foundation
 
 /// Fetches data from a URL.
 public func fetch(_ url: URL) async throws -> Data {
-    #if canImport(JavaScriptKit)
+    #if os(WASI)
         //     let jsFetch = JSObject.global.fetch.function!
         //     let response = try await JSPromise(jsFetch(url.absoluteString).object!)!.jsValue
         //     let buffer = try await JSPromise(response.arrayBuffer().object!)!.jsValue
