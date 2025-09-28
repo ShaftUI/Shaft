@@ -10,6 +10,7 @@ public class TextInput {
         self.view = view
         view.onTextEditing = handleTextEditing
         view.onTextComposed = handleTextComposed
+        view.onTextInputClosed = handleTextInputClosed
     }
 
     public weak var view: NativeView!
@@ -32,6 +33,11 @@ public class TextInput {
 
     private func handleTextComposed(text: String) {
         currentConnection?.client?.onTextComposed(text: text)
+    }
+
+    private func handleTextInputClosed() {
+        currentConnection?.client?.onTextInputClosed()
+        currentConnection = nil
     }
 
     fileprivate func setComposingRect(_ rect: Rect) {
@@ -75,6 +81,9 @@ public protocol TextInputClient: AnyObject {
 
     /// Called when the text has been composed and committed.
     func onTextComposed(text: String)
+
+    /// Called when the text input connection is closed.
+    func onTextInputClosed()
 }
 
 /// An interface for interacting with a text input control.
