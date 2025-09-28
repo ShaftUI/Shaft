@@ -491,6 +491,8 @@ class TestBackend: Backend {
 
     var onTextComposed: TextComposedCallback?
 
+    var onTextInputClosed: VoidCallback?
+
     var onKeyEvent: KeyEventCallback?
 
     var targetPlatform: TargetPlatform? {

@@ -187,6 +187,7 @@ public class SDLView: NativeView {
 
         if SDL_StopTextInput(sdlWindow) {
             backend?.textEditingView = nil
+            onTextInputClosed?()
         } else {
             mark("SDL_StopTextInput failed")
         }
@@ -245,6 +246,10 @@ public class SDLView: NativeView {
     /// It's the backend's responsibility to call this method when text composed
     /// events are received.
     public var onTextComposed: TextComposedCallback?
+
+    /// It's the backend's responsibility to call this method when the text input
+    /// connection is closed.
+    public var onTextInputClosed: VoidCallback?
 
     fileprivate func handleEventSync(_ event: inout SDL_Event) -> Bool {
         switch SDL_EventType(event.type.cast()) {

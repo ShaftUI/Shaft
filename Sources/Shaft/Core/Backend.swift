@@ -61,6 +61,9 @@ public protocol NativeView: AnyObject {
     /// and begin receiving these events.
     var onTextComposed: TextComposedCallback? { get set }
 
+    /// A callback that is invoked when the text input connection is closed.
+    var onTextInputClosed: VoidCallback? { get set }
+
     /// Getting/Setting the title of the view if possible.
     var title: String { get set }
 

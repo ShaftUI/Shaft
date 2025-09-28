@@ -1296,6 +1296,13 @@ public final class EditableTextState: State<EditableText>, TextSelectionDelegate
         // no-op
     }
 
+    public func onTextInputClosed() {
+        if hasInputConnection {
+            textInputConnection = nil
+            widget.focusNode.unfocus()
+        }
+    }
+
     /// Sends the current composing rect to the embedder's text input plugin.
     ///
     /// In cases where the composing rect hasn't been updated in the embedder due
@@ -1752,7 +1759,7 @@ public final class EditableTextState: State<EditableText>, TextSelectionDelegate
     }
 
     private var textInputConnection: TextInputConnection?
-    private var hasInputConnection: Bool { textInputConnection != nil }
+    private var hasInputConnection: Bool { textInputConnection?.isActive ?? false }
 
     private func openOrCloseInputConnectionIfNeeded() {
         if hasFocus && widget.focusNode.consumeKeyboardToken() {
