@@ -14,8 +14,8 @@ private let kDefaultFontSize = Float(14.0)
 
 /// How overflowing text should be handled.
 ///
-/// A [TextOverflow] can be passed to [Text] and [RichText] via their
-/// [Text.overflow] and [RichText.overflow] properties respectively.
+/// A ``TextOverflow`` can be passed to ``Text`` and ``RichText`` via their
+/// ``Text/overflow`` and ``RichText/overflow`` properties respectively.
 public enum TextOverflow {
     /// Clip the overflowing text to fix its container.
     case clip
@@ -32,7 +32,7 @@ public enum TextOverflow {
 
 /// The different ways of measuring the width of one or more lines of text.
 ///
-/// See [Text.textWidthBasis], for example.
+/// See ``Text/textWidthBasis``, for example.
 public enum TextWidthBasis {
     /// multiline text will take up the full width given by the parent. For single
     /// line text, only the minimum amount of width needed to contain the text
@@ -45,18 +45,18 @@ public enum TextWidthBasis {
     case longestLine
 }
 
-/// Holds the [Size] and baseline required to represent the dimensions of
+/// Holds the ``Size`` and baseline required to represent the dimensions of
 /// a placeholder in text.
 ///
 /// Placeholders specify an empty space in the text layout, which is used
-/// to later render arbitrary inline widgets into defined by a [WidgetSpan].
+/// to later render arbitrary inline widgets into defined by a ``WidgetSpan``.
 ///
 /// See also:
 ///
-///  * [WidgetSpan], a subclass of [InlineSpan] and [PlaceholderSpan] that
+///  * ``WidgetSpan``, a subclass of ``InlineSpan`` and ``PlaceholderSpan`` that
 ///    represents an inline widget embedded within text. The space this
 ///    widget takes is indicated by a placeholder.
-///  * [RichText], a text widget that supports text inline widgets.
+///  * ``RichText``, a text widget that supports text inline widgets.
 public struct PlaceholderDimensions {
     /// A constant representing an empty placeholder.
     static var empty = PlaceholderDimensions(size: .zero, alignment: .bottom)
@@ -68,22 +68,22 @@ public struct PlaceholderDimensions {
     ///
     /// See also:
     ///
-    ///  * [baseline], the baseline to align to when using
-    ///    [PlaceholderAlignment.baseline],
+    ///  * ``baseline``, the baseline to align to when using
+    ///    ``PlaceholderAlignment/baseline``,
     ///    [PlaceholderAlignment.aboveBaseline], or
     ///    [PlaceholderAlignment.belowBaseline].
     ///  * [baselineOffset], the distance of the alphabetic baseline from the
     ///    upper edge of the placeholder.
     var alignment: PlaceholderAlignment
 
-    /// Distance of the [baseline] from the upper edge of the placeholder.
+    /// Distance of the ``baseline`` from the upper edge of the placeholder.
     ///
     /// Only used when [alignment] is [ui.PlaceholderAlignment.baseline].
     var baselineOffset: Double?
 
     /// The [TextBaseline] to align to. Used with:
     ///
-    ///  * [PlaceholderAlignment.baseline]
+    ///  * ``PlaceholderAlignment/baseline``
     ///  * [PlaceholderAlignment.aboveBaseline]
     ///  * [PlaceholderAlignment.belowBaseline]
     ///  * [PlaceholderAlignment.middle]
@@ -157,8 +157,8 @@ public final class TextPainter {
     /// After this is set, you must call [layout] before the next call to [paint].
     /// This and [textDirection] must be non-null before you call [layout].
     ///
-    /// The [InlineSpan] this provides is in the form of a tree that may contain
-    /// multiple instances of [TextSpan]s and [WidgetSpan]s. To obtain a plain text
+    /// The ``InlineSpan`` this provides is in the form of a tree that may contain
+    /// multiple instances of [TextSpan]s and ``WidgetSpan``s. To obtain a plain text
     /// representation of the contents of this [TextPainter], use [plainText].
     public var text: InlineSpan? {
         didSet {
@@ -256,8 +256,8 @@ public final class TextPainter {
     ///
     /// After this is set, you must call [layout] before the next call to [paint].
     ///
-    /// The higher layers of the system, such as the [Text] widget, represent
-    /// overflow effects using the [TextOverflow] enum. The
+    /// The higher layers of the system, such as the ``Text`` widget, represent
+    /// overflow effects using the ``TextOverflow`` enum. The
     /// [TextOverflow.ellipsis] value corresponds to setting this property to
     /// U+2026 HORIZONTAL ELLIPSIS (…).
     public var ellipsis: String? {

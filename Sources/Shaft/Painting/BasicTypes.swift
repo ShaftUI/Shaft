@@ -9,11 +9,11 @@
 /// The description of the difference between two objects, in the context of how
 /// it will affect the rendering.
 ///
-/// Used by [TextSpan.compareTo] and [TextStyle.compareTo].
+/// Used by ``TextSpan/compareTo`` and ``TextStyle/compareTo``.
 ///
 /// The values in this enum are ordered such that they are in increasing order
 /// of cost. A value with index N implies all the values with index less than N.
-/// For example, [layout] (index 3) implies [paint] (2).
+/// For example, ``layout`` (index 3) implies ``paint`` (2).
 public enum RenderComparison: Comparable {
     /// The two objects are identical (meaning deeply equal, not necessarily
     /// ===).
@@ -29,7 +29,7 @@ public enum RenderComparison: Comparable {
     ///
     /// For example, only the color is changed.
     ///
-    /// [RenderObject.markNeedsPaint] would be necessary to handle this kind of
+    /// ``RenderObject/markNeedsPaint`` would be necessary to handle this kind of
     /// change in a render object.
     case paint
 
@@ -39,7 +39,7 @@ public enum RenderComparison: Comparable {
     ///
     /// This is the most drastic level of change possible.
     ///
-    /// [RenderObject.markNeedsLayout] would be necessary to handle this kind of
+    /// ``RenderObject/markNeedsLayout`` would be necessary to handle this kind of
     /// change in a render object.
     case layout
 }
@@ -47,21 +47,21 @@ public enum RenderComparison: Comparable {
 /// The two cardinal directions in two dimensions.
 ///
 /// The axis is always relative to the current coordinate space. This means, for
-/// example, that a [horizontal] axis might actually be diagonally from top
-/// right to bottom left, due to some local [Transform] applied to the scene.
+/// example, that a ``horizontal`` axis might actually be diagonally from top
+/// right to bottom left, due to some local ``Transform`` applied to the scene.
 ///
 /// See also:
 ///
-///  * [AxisDirection], which is a directional version of this enum (with values
+///  * ``AxisDirection``, which is a directional version of this enum (with values
 ///    like left and right, rather than just horizontal).
-///  * [TextDirection], which disambiguates between left-to-right horizontal
+///  * ``TextDirection``, which disambiguates between left-to-right horizontal
 ///    content and right-to-left horizontal content.
 public enum Axis {
     /// Left and right.
     ///
     /// See also:
     ///
-    ///  * [TextDirection], which disambiguates between left-to-right horizontal
+    ///  * ``TextDirection``, which disambiguates between left-to-right horizontal
     ///    content and right-to-left horizontal content.
     case horizontal
 
@@ -94,7 +94,7 @@ extension Axis {
 ///
 /// See also:
 ///
-///  * [TextDirection], which controls the same thing but horizontally.
+///  * ``TextDirection``, which controls the same thing but horizontally.
 public enum VerticalDirection {
     /// Boxes should start at the bottom and be stacked vertically towards the top.
     ///
@@ -162,7 +162,7 @@ public enum AxisDirection {
 }
 
 extension AxisDirection {
-    /// Returns the [Axis] that contains the given [AxisDirection].
+    /// Returns the [Axis] that contains the given ``AxisDirection``.
     ///
     /// Specifically, returns [Axis.vertical] for [AxisDirection.up] and
     /// [AxisDirection.down] and returns [Axis.horizontal] for
@@ -192,7 +192,7 @@ extension AxisDirection {
     }
 }
 
-/// Returns the [Axis] that contains the given [AxisDirection].
+/// Returns the [Axis] that contains the given ``AxisDirection``.
 ///
 /// Specifically, returns [Axis.vertical] for [AxisDirection.up] and
 /// [AxisDirection.down] and returns [Axis.horizontal] for [AxisDirection.left]
@@ -206,7 +206,7 @@ public func axisDirectionToAxis(_ axisDirection: AxisDirection) -> Axis {
     }
 }
 
-/// Returns the [AxisDirection] in which reading occurs in the given [TextDirection].
+/// Returns the ``AxisDirection`` in which reading occurs in the given ``TextDirection``.
 ///
 /// Specifically, returns [AxisDirection.left] for [TextDirection.rtl] and
 /// [AxisDirection.right] for [TextDirection.ltr].
@@ -219,7 +219,7 @@ public func textDirectionToAxisDirection(_ textDirection: TextDirection) -> Axis
     }
 }
 
-/// Returns the opposite of the given [AxisDirection].
+/// Returns the opposite of the given ``AxisDirection``.
 ///
 /// Specifically, returns [AxisDirection.up] for [AxisDirection.down] (and
 /// vice versa), as well as [AxisDirection.left] for [AxisDirection.right] (and

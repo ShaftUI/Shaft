@@ -6,10 +6,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// The various phases that a [SchedulerBinding] goes through during
-/// [SchedulerBinding.handleBeginFrame].
+/// The various phases that a ``SchedulerBinding`` goes through during
+/// ``SchedulerBinding/handleBeginFrame``.
 ///
-/// This is exposed by [SchedulerBinding.schedulerPhase].
+/// This is exposed by ``SchedulerBinding/schedulerPhase``.
 ///
 /// The values of this enum are ordered in the same order as the phases occur,
 /// so their relative index values can be compared to each other.
@@ -41,12 +41,12 @@ public class SchedulerBinding {
     /// The phase that the scheduler is currently operating under.
     public private(set) var schedulerPhase = SchedulerPhase.idle
 
-    /// Whether this scheduler has requested that [handleBeginFrame] be called soon.
+    /// Whether this scheduler has requested that ``handleBeginFrame`` be called soon.
     public private(set) var hasScheduledFrame = false
 
-    /// Whether frames are currently being scheduled when [scheduleFrame] is called.
+    /// Whether frames are currently being scheduled when ``scheduleFrame`` is called.
     ///
-    /// This value depends on the value of the [lifecycleState].
+    /// This value depends on the value of the ``lifecycleState``.
     public private(set) var framesEnabled = true
 
     private var warmUpFrame = false
@@ -61,10 +61,10 @@ public class SchedulerBinding {
     // engine frame.
     private var rescheduleAfterWarmUpFrame = false
 
-    /// Schedules a new frame using [scheduleFrame] if this object is not
+    /// Schedules a new frame using ``scheduleFrame`` if this object is not
     /// currently producing a frame.
     ///
-    /// Calling this method ensures that [handleDrawFrame] will eventually be
+    /// Calling this method ensures that ``handleDrawFrame`` will eventually be
     /// called, unless it's already in progress.
     public func ensureVisualUpdate() {
         switch schedulerPhase {
@@ -85,7 +85,7 @@ public class SchedulerBinding {
         hasScheduledFrame = true
     }
 
-    /// Ensures callbacks for [PlatformDispatcher.onBeginFrame] and
+    /// Ensures callbacks for ``PlatformDispatcher/onBeginFrame`` and
     /// [PlatformDispatcher.onDrawFrame] are registered.
     private func ensureFrameCallbacksRegistered() {
         backend.onBeginFrame = handleBeginFrame
@@ -123,8 +123,8 @@ public class SchedulerBinding {
 
     /// The time stamp for the frame currently being processed.
     ///
-    /// This is only valid while between the start of [handleBeginFrame] and the
-    /// end of the corresponding [handleDrawFrame], i.e. while a frame is being
+    /// This is only valid while between the start of ``handleBeginFrame`` and the
+    /// end of the corresponding ``handleDrawFrame``, i.e. while a frame is being
     /// produced.
     public private(set) var currentFrameTimeStamp: Duration!
 
@@ -136,7 +136,7 @@ public class SchedulerBinding {
     /// calculated.
     ///
     /// Callbacks received from the scheduler assume that their time stamps are
-    /// monotonically increasing. The raw time stamp passed to [handleBeginFrame]
+    /// monotonically increasing. The raw time stamp passed to ``handleBeginFrame``
     /// is monotonic, but the scheduler might adjust those time stamps to provide
     /// [timeDilation]. Without careful handling, these adjusts could cause time
     /// to appear to run backwards.
@@ -205,7 +205,7 @@ public class SchedulerBinding {
 
     /// Called by the engine to produce a new frame.
     ///
-    /// This method is called immediately after [handleBeginFrame]. It calls all
+    /// This method is called immediately after ``handleBeginFrame``. It calls all
     /// the callbacks registered by [addPersistentFrameCallback], which typically
     /// drive the rendering pipeline, and then calls the callbacks registered by
     /// [addPostFrameCallback].

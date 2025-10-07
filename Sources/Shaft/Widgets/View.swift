@@ -6,18 +6,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// Bootstraps a render tree that is rendered into the provided [FlutterView].
+/// Bootstraps a render tree that is rendered into the provided ``FlutterView``.
 ///
-/// The content rendered into that view is determined by the provided [child].
-/// Descendants within the same [LookupBoundary] can look up the view they are
-/// rendered into via [View.of] and [View.maybeOf].
+/// The content rendered into that view is determined by the provided ``child``.
+/// Descendants within the same ``LookupBoundary`` can look up the view they are
+/// rendered into via ``View/of`` and ``View/maybeOf``.
 ///
-/// The provided [child] is wrapped in a [MediaQuery] constructed from the given
-/// [view].
+/// The provided ``child`` is wrapped in a ``MediaQuery`` constructed from the given
+/// ``view``.
 ///
-/// For most use cases, using [MediaQuery.of], or its associated "...Of" methods
-/// are a more appropriate way of obtaining the information that a [FlutterView]
-/// exposes. For example, using [MediaQuery.sizeOf] will expose the _logical_
+/// For most use cases, using ``MediaQuery/of``, or its associated "...Of" methods
+/// are a more appropriate way of obtaining the information that a ``FlutterView``
+/// exposes. For example, using ``MediaQuery/sizeOf`` will expose the _logical_
 /// device size ([MediaQueryData.size]) rather than the physical size
 /// ([FlutterView.physicalSize]). Similarly, while [FlutterView.padding] conveys
 /// the information from the operating system, the [MediaQueryData.padding]
@@ -25,11 +25,11 @@
 /// information to be aware of the context of the widget; e.g. the [Scaffold]
 /// widget adjusts the values for its various children.
 ///
-/// Each [FlutterView] can be associated with at most one [View] widget in the
+/// Each ``FlutterView`` can be associated with at most one [View] widget in the
 /// widget tree. Two or more [View] widgets configured with the same
-/// [FlutterView] must never exist within the same widget tree at the same time.
+/// ``FlutterView`` must never exist within the same widget tree at the same time.
 /// This limitation is enforced by a [GlobalObjectKey] that derives its identity
-/// from the [view] provided to this widget.
+/// from the ``view`` provided to this widget.
 ///
 /// Since the [View] widget bootstraps its own independent render tree, neither
 /// it nor any of its descendants will insert a [RenderObject] into an existing

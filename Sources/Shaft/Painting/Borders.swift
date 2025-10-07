@@ -6,7 +6,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// The style of line to draw for a [BorderSide] in a [Border].
+/// The style of line to draw for a ``BorderSide`` in a ``Border``.
 public enum BorderStyle {
     /// Skip the border.
     case none
@@ -19,11 +19,11 @@ public enum BorderStyle {
 
 /// A side of a border of a box.
 ///
-/// A [Border] consists of four [BorderSide] objects: [Border.top],
-/// [Border.left], [Border.right], and [Border.bottom].
+/// A ``Border`` consists of four ``BorderSide`` objects: ``Border/top``,
+/// ``Border/left``, ``Border/right``, and ``Border/bottom``.
 ///
-/// Setting [BorderSide.width] to 0.0 will result in hairline rendering; see
-/// [BorderSide.width] for a more involved explanation.
+/// Setting ``BorderSide/width`` to 0.0 will result in hairline rendering; see
+/// ``BorderSide/width`` for a more involved explanation.
 public struct BorderSide: Hashable {
     /// Creates the side of a border.
     ///
@@ -40,15 +40,15 @@ public struct BorderSide: Hashable {
         self.strokeAlign = strokeAlign
     }
 
-    /// Creates a [BorderSide] that represents the addition of the two given
-    /// [BorderSide]s.
+    /// Creates a ``BorderSide`` that represents the addition of the two given
+    /// ``BorderSide``s.
     ///
-    /// It is only valid to call this if [canMerge] returns true for the two
+    /// It is only valid to call this if ``canMerge`` returns true for the two
     /// sides.
     ///
-    /// If one of the sides is zero-width with [BorderStyle.none], then the other
+    /// If one of the sides is zero-width with ``BorderStyle/none``, then the other
     /// side is return as-is. If both of the sides are zero-width with
-    /// [BorderStyle.none], then [BorderSide.none] is returned.
+    /// ``BorderStyle/none``, then [BorderSide.none] is returned.
     public static func merge(_ a: BorderSide, _ b: BorderSide) -> BorderSide {
         assert(canMerge(a, b))
         let aIsNone = a.style == .none && a.width == 0.0
@@ -83,17 +83,17 @@ public struct BorderSide: Hashable {
     /// This means that it will render faster than otherwise, but it might
     /// double-hit pixels, giving it a slightly darker/lighter result.
     ///
-    /// To omit the border entirely, set the [style] to [BorderStyle.none].
+    /// To omit the border entirely, set the [style] to ``BorderStyle/none``.
     public let width: Float
 
     /// The style of this side of the border.
     ///
-    /// To omit a side, set [style] to [BorderStyle.none]. This skips
+    /// To omit a side, set [style] to ``BorderStyle/none``. This skips
     /// painting the border, but the border still has a [width].
     public let style: BorderStyle
 
-    /// The relative position of the stroke on a [BorderSide] in an
-    /// [OutlinedBorder] or [Border].
+    /// The relative position of the stroke on a ``BorderSide`` in an
+    /// [OutlinedBorder] or ``Border``.
     ///
     /// Values typically range from -1.0 ([strokeAlignInside], inside border,
     /// default) to 1.0 ([strokeAlignOutside], outside border), without any
@@ -111,7 +111,7 @@ public struct BorderSide: Hashable {
     /// - [strokeAlignOutside] provides zero padding, as stroke is drawn entirely outside.
     ///
     /// This property is not honored by [toPaint] (because the [Paint] object
-    /// cannot represent it); it is intended that classes that use [BorderSide]
+    /// cannot represent it); it is intended that classes that use ``BorderSide``
     /// objects implement this property when painting borders by suitably
     /// inflating or deflating their regions.
     public let strokeAlign: Float
@@ -124,7 +124,7 @@ public struct BorderSide: Hashable {
     public static let strokeAlignInside: Float = -1.0
 
     /// The border is drawn on the center of the border path, with half of the
-    /// [BorderSide.width] on the inside, and the other half on the outside of
+    /// ``BorderSide/width`` on the inside, and the other half on the outside of
     /// the path.
     ///
     /// This is a constant for use with [strokeAlign].
@@ -167,7 +167,7 @@ public struct BorderSide: Hashable {
     ///
     /// Since a zero width is normally painted as a hairline width rather than no
     /// border at all, the zero factor is special-cased to instead change the
-    /// style to [BorderStyle.none].
+    /// style to ``BorderStyle/none``.
     ///
     /// Values for `t` are usually obtained from an [Animation<double>], such as
     /// an [AnimationController].
@@ -186,7 +186,7 @@ public struct BorderSide: Hashable {
     /// implement that directly by inflating or deflating their region appropriately.
     ///
     /// Not all borders use this method to paint their border sides. For example,
-    /// non-uniform rectangular [Border]s have beveled edges and so paint their
+    /// non-uniform rectangular ``Border``s have beveled edges and so paint their
     /// border sides as filled shapes rather than using a stroke.
     public func toPaint() -> Paint {
         switch style {
@@ -205,11 +205,11 @@ public struct BorderSide: Hashable {
         }
     }
 
-    /// Whether the two given [BorderSide]s can be merged using
+    /// Whether the two given ``BorderSide``s can be merged using
     /// [BorderSide.merge].
     ///
     /// Two sides can be merged if one or both are zero-width with
-    /// [BorderStyle.none], or if they both have the same color and style.
+    /// ``BorderStyle/none``, or if they both have the same color and style.
     public static func canMerge(_ a: BorderSide, _ b: BorderSide) -> Bool {
         if (a.style == .none && a.width == 0.0) || (b.style == .none && b.width == 0.0) {
             return true
@@ -264,7 +264,7 @@ public struct BorderSide: Hashable {
         )
     }
 
-    /// Get the amount of the stroke width that lies inside of the [BorderSide].
+    /// Get the amount of the stroke width that lies inside of the ``BorderSide``.
     ///
     /// For example, this will return the [width] for a [strokeAlign] of -1, half
     /// the [width] for a [strokeAlign] of 0, and 0 for a [strokeAlign] of 1.
@@ -272,7 +272,7 @@ public struct BorderSide: Hashable {
         return width * (1 - (1 + strokeAlign) / 2)
     }
 
-    /// Get the amount of the stroke width that lies outside of the [BorderSide].
+    /// Get the amount of the stroke width that lies outside of the ``BorderSide``.
     ///
     /// For example, this will return 0 for a [strokeAlign] of -1, half the
     /// [width] for a [strokeAlign] of 0, and the [width] for a [strokeAlign]
@@ -301,7 +301,7 @@ public struct BorderSide: Hashable {
 public protocol ShapeBorder {
     //       /// The top side of this border.
     //   ///
-    //   /// This getter is available on both [Border] and [BorderDirectional]. If
+    //   /// This getter is available on both ``Border`` and [BorderDirectional]. If
     //   /// [isUniform] is true, then this is the same style as all the other sides.
     //   BorderSide get top;
 
@@ -312,7 +312,7 @@ public protocol ShapeBorder {
     //   /// typically more efficient to paint.
     //   ///
     //   /// A uniform border by definition has no text direction dependency and
-    //   /// therefore could be expressed as a [Border], even if it is currently a
+    //   /// therefore could be expressed as a ``Border``, even if it is currently a
     //   /// [BorderDirectional]. A uniform border can also be expressed as a
     //   /// [RoundedRectangleBorder].
     //   bool get isUniform;
@@ -360,9 +360,9 @@ public protocol ShapeBorder {
 /// See also:
 ///
 ///  * [paintImage], which paints an image in a rectangle on a canvas.
-///  * [Border], which uses this function to paint its border when the border is
+///  * ``Border``, which uses this function to paint its border when the border is
 ///    not uniform.
-///  * [BoxDecoration], which describes its border using the [Border] class.
+///  * [BoxDecoration], which describes its border using the ``Border`` class.
 public func paintBorder(
     _ canvas: Canvas,
     _ rect: Rect,

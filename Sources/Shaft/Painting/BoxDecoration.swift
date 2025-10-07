@@ -8,19 +8,19 @@
 
 /// An immutable description of how to paint a box.
 ///
-/// The [BoxDecoration] class provides a variety of ways to draw a box.
+/// The ``BoxDecoration`` class provides a variety of ways to draw a box.
 ///
-/// The box has a [border], a body, and may cast a [boxShadow].
+/// The box has a ``border``, a body, and may cast a ``boxShadow``.
 ///
-/// The [shape] of the box can be a circle or a rectangle. If it is a rectangle,
-/// then the [borderRadius] property controls the roundness of the corners.
+/// The ``shape`` of the box can be a circle or a rectangle. If it is a rectangle,
+/// then the ``borderRadius`` property controls the roundness of the corners.
 ///
 /// The body of the box is painted in layers. The bottom-most layer is the
-/// [color], which fills the box. Above that is the [gradient], which also fills
-/// the box. Finally there is the [image], the precise alignment of which is
-/// controlled by the [DecorationImage] class.
+/// ``color``, which fills the box. Above that is the ``gradient``, which also fills
+/// the box. Finally there is the ``image``, the precise alignment of which is
+/// controlled by the ``DecorationImage`` class.
 ///
-/// The [border] paints over the body; the [boxShadow], naturally, paints below it.
+/// The ``border`` paints over the body; the ``boxShadow``, naturally, paints below it.
 public class BoxDecoration: Decoration {
     public init(
         color: Color? = nil,
@@ -40,24 +40,24 @@ public class BoxDecoration: Decoration {
 
     /// The color to fill in the background of the box.
     ///
-    /// The color is filled into the [shape] of the box (e.g., either a rectangle,
-    /// potentially with a [borderRadius], or a circle).
+    /// The color is filled into the ``shape`` of the box (e.g., either a rectangle,
+    /// potentially with a ``borderRadius``, or a circle).
     ///
-    /// This is ignored if [gradient] is non-null.
+    /// This is ignored if ``gradient`` is non-null.
     ///
-    /// The [color] is drawn under the [image].
+    /// The ``color`` is drawn under the ``image``.
     let color: Color?
 
-    /// An image to paint above the background [color] or [gradient].
+    /// An image to paint above the background ``color`` or ``gradient``.
     ///
-    /// If [shape] is [BoxShape.circle] then the image is clipped to the circle's
-    /// boundary; if [borderRadius] is non-null then the image is clipped to the
+    /// If ``shape`` is [BoxShape.circle] then the image is clipped to the circle's
+    /// boundary; if ``borderRadius`` is non-null then the image is clipped to the
     /// given radii.
     // let image: DecorationImage?
 
-    /// A border to draw above the background [color], [gradient], or [image].
+    /// A border to draw above the background ``color``, ``gradient``, or ``image``.
     ///
-    /// Follows the [shape] and [borderRadius].
+    /// Follows the ``shape`` and ``borderRadius``.
     ///
     /// Use [Border] objects to describe borders that do not depend on the reading
     /// direction.
@@ -69,13 +69,13 @@ public class BoxDecoration: Decoration {
 
     /// If non-null, the corners of this box are rounded by this [BorderRadius].
     ///
-    /// Applies only to boxes with rectangular shapes; ignored if [shape] is not
+    /// Applies only to boxes with rectangular shapes; ignored if ``shape`` is not
     /// [BoxShape.rectangle].
     let borderRadius: (any BorderRadiusGeometry)?
 
     /// A list of shadows cast by this box behind the box.
     ///
-    /// The shadow follows the [shape] of the box.
+    /// The shadow follows the ``shape`` of the box.
     ///
     /// See also:
     ///
@@ -86,27 +86,27 @@ public class BoxDecoration: Decoration {
 
     /// A gradient to use when filling the box.
     ///
-    /// If this is specified, [color] has no effect.
+    /// If this is specified, ``color`` has no effect.
     ///
-    /// The [gradient] is drawn under the [image].
+    /// The ``gradient`` is drawn under the ``image``.
     // let gradient: Gradient?
     let gradient: Int? = nil
 
-    /// The blend mode applied to the [color] or [gradient] background of the box.
+    /// The blend mode applied to the ``color`` or ``gradient`` background of the box.
     ///
     /// If no [backgroundBlendMode] is provided then the default painting blend
     /// mode is used.
     ///
-    /// If no [color] or [gradient] is provided then the blend mode has no impact.
+    /// If no ``color`` or ``gradient`` is provided then the blend mode has no impact.
     let backgroundBlendMode: BlendMode?
 
-    /// The shape to fill the background [color], [gradient], and [image] into and
-    /// to cast as the [boxShadow].
+    /// The shape to fill the background ``color``, ``gradient``, and ``image`` into and
+    /// to cast as the ``boxShadow``.
     ///
-    /// If this is [BoxShape.circle] then [borderRadius] is ignored.
+    /// If this is [BoxShape.circle] then ``borderRadius`` is ignored.
     ///
-    /// The [shape] cannot be interpolated; animating between two [BoxDecoration]s
-    /// with different [shape]s will result in a discontinuity in the rendering.
+    /// The ``shape`` cannot be interpolated; animating between two ``BoxDecoration``s
+    /// with different ``shape``s will result in a discontinuity in the rendering.
     /// To interpolate between two shapes, consider using [ShapeDecoration] and
     /// different [ShapeBorder]s; in particular, [CircleBorder] instead of
     /// [BoxShape.circle] and [RoundedRectangleBorder] instead of

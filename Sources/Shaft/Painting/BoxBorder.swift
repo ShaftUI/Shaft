@@ -6,30 +6,30 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// The shape to use when rendering a [Border] or [BoxDecoration].
+/// The shape to use when rendering a ``Border`` or ``BoxDecoration``.
 ///
-/// Consider using [ShapeBorder] subclasses directly (with [ShapeDecoration]),
-/// instead of using [BoxShape] and [Border], if the shapes will need to be
-/// interpolated or animated. The [Border] class cannot interpolate between
+/// Consider using ``ShapeBorder`` subclasses directly (with ``ShapeDecoration``),
+/// instead of using ``BoxShape`` and ``Border``, if the shapes will need to be
+/// interpolated or animated. The ``Border`` class cannot interpolate between
 /// different shapes.
 public enum BoxShape {
     /// An axis-aligned, 2D rectangle. May have rounded corners (described by a
-    /// [BorderRadius]). The edges of the rectangle will match the edges of the box
-    /// into which the [Border] or [BoxDecoration] is painted.
+    /// ``BorderRadius``). The edges of the rectangle will match the edges of the box
+    /// into which the ``Border`` or ``BoxDecoration`` is painted.
     ///
     /// See also:
     ///
-    ///  * [RoundedRectangleBorder], the equivalent [ShapeBorder].
+    ///  * ``RoundedRectangleBorder``, the equivalent ``ShapeBorder``.
     case rectangle
 
-    /// A circle centered in the middle of the box into which the [Border] or
-    /// [BoxDecoration] is painted. The diameter of the circle is the shortest
+    /// A circle centered in the middle of the box into which the ``Border`` or
+    /// ``BoxDecoration`` is painted. The diameter of the circle is the shortest
     /// dimension of the box, either the width or the height, such that the circle
     /// touches the edges of the box.
     ///
     /// See also:
     ///
-    ///  * [CircleBorder], the equivalent [ShapeBorder].
+    ///  * [CircleBorder], the equivalent ``ShapeBorder``.
     case circle
 
     // Don't add more, instead create a new ShapeBorder.
@@ -38,21 +38,21 @@ public enum BoxShape {
 /// Base class for box borders that can paint as rectangles, circles, or rounded
 /// rectangles.
 ///
-/// This class is extended by [Border] and [BorderDirectional] to provide
+/// This class is extended by ``Border`` and [BorderDirectional] to provide
 /// concrete versions of four-sided borders using different conventions for
 /// specifying the sides.
 ///
-/// The only API difference that this class introduces over [ShapeBorder] is
+/// The only API difference that this class introduces over ``ShapeBorder`` is
 /// that its [paint] method takes additional arguments.
 public protocol BoxBorder: ShapeBorder {
     /// Paints the border within the given [Rect] on the given [Canvas].
     ///
     /// This is an extension of the [ShapeBorder.paint] method. It allows
-    /// [BoxBorder] borders to be applied to different [BoxShape]s and with
+    /// [BoxBorder] borders to be applied to different ``BoxShape``s and with
     /// different [borderRadius] parameters, without changing the [BoxBorder]
     /// object itself.
     ///
-    /// The `shape` argument specifies the [BoxShape] to draw the border on.
+    /// The `shape` argument specifies the ``BoxShape`` to draw the border on.
     ///
     /// If the `shape` is specifies a rectangular box shape
     /// ([BoxShape.rectangle]), then the `borderRadius` argument describes the
@@ -228,11 +228,11 @@ func _paintUniformBorderWithRectangle(_ canvas: Canvas, _ rect: Rect, _ side: Bo
 ///
 /// See also:
 ///
-///  * [BoxDecoration], which uses this class to describe its edge decoration.
+///  * ``BoxDecoration``, which uses this class to describe its edge decoration.
 ///  * [BorderSide], which is used to describe each side of the box.
 ///  * [Theme], from the material layer, which can be queried to obtain appropriate colors
 ///    to use for borders in a [MaterialApp], as shown in the "divider" sample above.
-///  * [paint], which explains the behavior of [BoxDecoration] parameters.
+///  * [paint], which explains the behavior of ``BoxDecoration`` parameters.
 ///  * <https://pub.dev/packages/non_uniform_border>, a package that implements
 ///    a Non-Uniform Border on ShapeBorder, which is used by Material Design
 ///    buttons and other widgets, under the "shape" field.
@@ -293,11 +293,11 @@ public struct Border: BoxBorder, Hashable {
         return fromBorderSide(side)
     }
 
-    /// Creates a [Border] that represents the addition of the two given
-    /// [Border]s.
+    /// Creates a ``Border`` that represents the addition of the two given
+    /// ``Border``s.
     ///
     /// It is only valid to call this if [BorderSide.canMerge] returns true for
-    /// the pairwise combination of each side on both [Border]s.
+    /// the pairwise combination of each side on both ``Border``s.
     public static func merge(_ a: Border, _ b: Border) -> Border {
         assert(BorderSide.canMerge(a.top, b.top))
         assert(BorderSide.canMerge(a.right, b.right))
@@ -441,12 +441,12 @@ public struct Border: BoxBorder, Hashable {
     /// Uniform borders and non-uniform borders with similar colors and styles
     /// are more efficient to paint than more complex borders.
     ///
-    /// You can provide a [BoxShape] to draw the border on. If the `shape` in
+    /// You can provide a ``BoxShape`` to draw the border on. If the `shape` in
     /// [BoxShape.circle], there is the requirement that the border has uniform
     /// color and style.
     ///
     /// If you specify a rectangular box shape ([BoxShape.rectangle]), then you
-    /// may specify a [BorderRadius]. If a `borderRadius` is specified, there is
+    /// may specify a ``BorderRadius``. If a `borderRadius` is specified, there is
     /// the requirement that the border has uniform color and style.
     ///
     /// The [getInnerPath] and [getOuterPath] methods do not know about the

@@ -6,13 +6,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// Interface for [Alignment] that allows for text-direction aware resolution.
+/// Interface for ``Alignment`` that allows for text-direction aware resolution.
 ///
 /// A property or argument of this type accepts classes created either with [
-/// Alignment] and its variants, or [AlignmentDirectional.new].
+/// Alignment] and its variants, or ``AlignmentDirectional/new``.
 ///
-/// To convert an [AlignmentGeometry] object of indeterminate type into an
-/// [Alignment] object, call the [resolve] method.
+/// To convert an ``AlignmentGeometry`` object of indeterminate type into an
+/// ``Alignment`` object, call the ``resolve`` method.
 public protocol AlignmentGeometry: Equatable {
     func resolve(_ direction: TextDirection) -> Alignment
 
@@ -42,9 +42,9 @@ public protocol AlignmentGeometry: Equatable {
 /// point (x * w/2 + w/2, y * h/2 + h/2) in the coordinate system of the
 /// rectangle.
 ///
-/// [Alignment] uses visual coordinates, which means increasing [x] moves the
+/// ``Alignment`` uses visual coordinates, which means increasing ``x`` moves the
 /// point from left to right. To support layouts with a right-to-left
-/// [TextDirection], consider using [AlignmentDirectional], in which the
+/// [TextDirection], consider using ``AlignmentDirectional``, in which the
 /// direction the point moves when increasing the horizontal value depends on
 /// the [TextDirection].
 public struct Alignment: AlignmentGeometry {
@@ -110,7 +110,7 @@ public struct Alignment: AlignmentGeometry {
     /// by this alignment.
     ///
     /// For example, a 100×100 size inscribed on a 200×200 rect using
-    /// [Alignment.topLeft] would be the 100×100 rect at the top left of
+    /// ``Alignment/topLeft`` would be the 100×100 rect at the top left of
     /// the 200×200 rect.
     public func inscribe(size: Size, rect: Rect) -> Rect {
         let halfWidthDelta = (rect.width - size.width) / 2
@@ -155,7 +155,7 @@ extension AlignmentGeometry where Self == Alignment {
 
 /// The vertical alignment of text within an input box.
 ///
-/// A single [y] value that can range from -1.0 to 1.0. -1.0 aligns to the top
+/// A single ``y`` value that can range from -1.0 to 1.0. -1.0 aligns to the top
 /// of an input box so that the top of the first line of text fits within the
 /// box and its padding. 0.0 aligns to the center of the box. 1.0 aligns so that
 /// the bottom of the last line of text aligns with the bottom interior edge of

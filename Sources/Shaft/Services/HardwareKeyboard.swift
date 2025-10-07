@@ -118,34 +118,34 @@ public enum KeyboardLockMode {
 
 /// Manages key events from hardware keyboards.
 ///
-/// [HardwareKeyboard] manages all key events of the Flutter application from
+/// ``HardwareKeyboard`` manages all key events of the Flutter application from
 /// hardware keyboards (in contrast to on-screen keyboards). It receives key
 /// data from the native platform, dispatches key events to registered
 /// handlers, and records the keyboard state.
 ///
 /// To stay notified whenever keys are pressed, held, or released, add a
-/// handler with [addHandler]. To only be notified when a specific part of the
-/// app is focused, use a [Focus] widget's `onFocusChanged` attribute instead
-/// of [addHandler]. Handlers should be removed with [removeHandler] when
+/// handler with ``addHandler``. To only be notified when a specific part of the
+/// app is focused, use a ``Focus`` widget's `onFocusChanged` attribute instead
+/// of ``addHandler``. Handlers should be removed with ``removeHandler`` when
 /// notification is no longer necessary, or when the handler is being disposed.
 ///
 /// To query whether a key is being held, or a lock mode is enabled, use
-/// [physicalKeysPressed], [logicalKeysPressed], or [lockModesEnabled].
+/// ``physicalKeysPressed``, ``logicalKeysPressed``, or ``lockModesEnabled``.
 /// These states will have been updated with the event when used during a key
 /// event handler.
 ///
-/// The singleton [HardwareKeyboard] instance is held by the [ServicesBinding]
-/// as [ServicesBinding.keyboard], and can be conveniently accessed using the
-/// [HardwareKeyboard.instance] static accessor.
+/// The singleton ``HardwareKeyboard`` instance is held by the ``ServicesBinding``
+/// as ``ServicesBinding/keyboard``, and can be conveniently accessed using the
+/// ``HardwareKeyboard/instance`` static accessor.
 ///
 /// ## Event model
 ///
-/// Flutter uses a universal event model ([KeyEvent]) and key options
+/// Flutter uses a universal event model (``KeyEvent``) and key options
 /// ([LogicalKeyboardKey] and [PhysicalKeyboardKey]) regardless of the native
 /// platform, while preserving platform-specific features as much as
 /// possible.
 ///
-/// [HardwareKeyboard] guarantees that the key model is "regularized": The key
+/// ``HardwareKeyboard`` guarantees that the key model is "regularized": The key
 /// event stream consists of "key tap sequences", where a key tap sequence is
 /// defined as one [KeyDownEvent], zero or more [KeyRepeatEvent]s, and one
 /// [KeyUpEvent] in order, all with the same physical key and logical key.
@@ -170,7 +170,7 @@ public enum KeyboardLockMode {
 ///     * KeyUpEvent(physicalKey: capsLock, logicalKey: capsLock)
 ///
 /// When the Flutter application starts, all keys are released, and all lock
-/// modes are disabled. Upon key events, [HardwareKeyboard] will update its
+/// modes are disabled. Upon key events, ``HardwareKeyboard`` will update its
 /// states, then dispatch callbacks: [KeyDownEvent]s and [KeyUpEvent]s set
 /// or reset the pressing state, while [KeyDownEvent]s also toggle lock modes.
 ///
@@ -236,7 +236,7 @@ public class HardwareKeyboard {
     ///
     /// See also:
     ///
-    ///  * [logicalKeysPressed], which tells if a logical key is being pressed.
+    ///  * ``logicalKeysPressed``, which tells if a logical key is being pressed.
     public var physicalKeysPressed: Set<PhysicalKeyboardKey> {
         return Set(pressedKeys.keys)
     }
@@ -248,7 +248,7 @@ public class HardwareKeyboard {
     ///
     /// See also:
     ///
-    ///  * [physicalKeysPressed], which tells if a physical key is being pressed.
+    ///  * ``physicalKeysPressed``, which tells if a physical key is being pressed.
     public var logicalKeysPressed: Set<LogicalKeyboardKey> {
         return Set(pressedKeys.values)
     }
@@ -274,13 +274,13 @@ public class HardwareKeyboard {
     }
 
     /// Returns true if the given [LogicalKeyboardKey] is pressed, according to
-    /// the [HardwareKeyboard].
+    /// the ``HardwareKeyboard``.
     public func isLogicalKeyPressed(_ key: LogicalKeyboardKey) -> Bool {
         return pressedKeys.values.contains(key)
     }
 
     /// Returns true if the given [PhysicalKeyboardKey] is pressed, according to
-    /// the [HardwareKeyboard].
+    /// the ``HardwareKeyboard``.
     public func isPhysicalKeyPressed(_ key: PhysicalKeyboardKey) -> Bool {
         return pressedKeys.keys.contains(key)
     }
@@ -381,7 +381,7 @@ public class HardwareKeyboard {
     ///
     /// See also:
     ///
-    ///  * [removeHandler], which removes the handler.
+    ///  * ``removeHandler``, which removes the handler.
     public func addHandler(_ handler: Handler) {
         if _duringDispatch {
             _modifiedHandlers = _modifiedHandlers ?? _handlers
@@ -395,7 +395,7 @@ public class HardwareKeyboard {
     /// occurs.
     ///
     /// The `handler` argument must be [identical] to the one used in
-    /// [addHandler]. If multiple exist, the first one will be removed.
+    /// ``addHandler``. If multiple exist, the first one will be removed.
     /// If none is found, then this method is a no-op.
     ///
     /// If used during event dispatching, the removal will not take effect
@@ -450,7 +450,7 @@ public class HardwareKeyboard {
         }
     }
 
-    /// Process a new [KeyEvent] by recording the state changes and dispatching
+    /// Process a new ``KeyEvent`` by recording the state changes and dispatching
     /// to handlers.
     func handleKeyEvent(_ event: KeyEvent) -> Bool {
         assert(keyboardDebug { "Key event received: \(event)" })
@@ -489,7 +489,7 @@ public class HardwareKeyboard {
     /// Clear all keyboard states and additional handlers.
     ///
     /// All handlers are removed except for the first one, which is added by
-    /// [ServicesBinding].
+    /// ``ServicesBinding``.
     ///
     /// This is used by the testing framework to make sure that tests are hermetic.
     package func clearState() {

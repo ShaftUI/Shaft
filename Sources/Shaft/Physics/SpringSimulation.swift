@@ -2,11 +2,11 @@ import Foundation
 
 /// Structure that describes a spring's constants.
 ///
-/// Used to configure a [SpringSimulation].
+/// Used to configure a ``SpringSimulation``.
 public struct SpringDescription {
     /// Creates a spring given the mass, stiffness, and the damping coefficient.
     ///
-    /// See [mass], [stiffness], and [damping] for the units of the arguments.
+    /// See ``mass``, ``stiffness``, and ``damping`` for the units of the arguments.
     public init(mass: Double, stiffness: Double, damping: Double) {
         self.mass = mass
         self.stiffness = stiffness
@@ -22,7 +22,7 @@ public struct SpringDescription {
     /// of spring to create. A ratio of 1.0 creates a critically damped
     /// spring, > 1.0 creates an overdamped spring and < 1.0 an underdamped one.
     ///
-    /// See [mass] and [stiffness] for the units for those arguments. The damping
+    /// See ``mass`` and ``stiffness`` for the units for those arguments. The damping
     /// ratio is unitless.
     public static func withDampingRatio(mass: Double, stiffness: Double, ratio: Double = 1.0)
         -> SpringDescription
@@ -46,8 +46,8 @@ public struct SpringDescription {
     /// The spring constant (k).
     ///
     /// The units of stiffness are M/T², where M is the mass unit used for the
-    /// value of the [mass] property, and T is the time unit used for driving
-    /// the [SpringSimulation].
+    /// value of the ``mass`` property, and T is the time unit used for driving
+    /// the ``SpringSimulation``.
     ///
     /// Stiffness defines the spring constant, which measures the strength of
     /// the spring. A stiff spring applies more force to the object that is
@@ -61,18 +61,18 @@ public struct SpringDescription {
     /// the fewer oscillations and smaller the amplitude of the elastic motion.
     ///
     /// Do not confuse the damping _coefficient_ (c) with the damping _ratio_ (ζ).
-    /// To create a [SpringDescription] with a damping ratio, use the [
+    /// To create a ``SpringDescription`` with a damping ratio, use the [
     /// SpringDescription.withDampingRatio] constructor.
     ///
     /// The units of the damping coefficient are M/T, where M is the mass unit
-    /// used for the value of the [mass] property, and T is the time unit used for
-    /// driving the [SpringSimulation].
+    /// used for the value of the ``mass`` property, and T is the time unit used for
+    /// driving the ``SpringSimulation``.
     public let damping: Double
 }
 
-/// The kind of spring solution that the [SpringSimulation] is using to simulate the spring.
+/// The kind of spring solution that the ``SpringSimulation`` is using to simulate the spring.
 ///
-/// See [SpringSimulation.type].
+/// See ``SpringSimulation/type``.
 public enum SpringType {
     /// A spring that does not bounce and returns to its rest position in the
     /// shortest possible time.
@@ -82,7 +82,7 @@ public enum SpringType {
     case underDamped
 
     /// A spring that does not bounce but takes longer to return to its rest
-    /// position than a [criticallyDamped] one.
+    /// position than a ``criticallyDamped`` one.
     case overDamped
 }
 
@@ -90,7 +90,7 @@ public enum SpringType {
 ///
 /// Models a particle attached to a spring that follows Hooke's law.
 ///
-/// This [AnimationController] could be used with an [AnimatedBuilder] to
+/// This ``AnimationController`` could be used with an ``AnimatedBuilder`` to
 /// animate the position of a child as if it were attached to a spring.
 public struct SpringSimulation: Simulation {
     /// Creates a spring simulation from the provided spring description, start
@@ -101,7 +101,7 @@ public struct SpringSimulation: Simulation {
     ///
     /// The units for the velocity are L/T, where L is the aforementioned
     /// arbitrary unit of length, and T is the time unit used for driving the
-    /// [SpringSimulation].
+    /// ``SpringSimulation``.
     public init(
         spring: SpringDescription,
         start: Double,
@@ -123,7 +123,7 @@ public struct SpringSimulation: Simulation {
 
     /// The kind of spring being simulated, for debugging purposes.
     ///
-    /// This is derived from the [SpringDescription] provided to the [
+    /// This is derived from the ``SpringDescription`` provided to the [
     /// SpringSimulation] constructor.
     public var type: SpringType { _solution.type }
 
@@ -143,13 +143,13 @@ public struct SpringSimulation: Simulation {
     }
 }
 
-// /// A [SpringSimulation] where the value of [x] is guaranteed to have exactly the
-// /// end value when the simulation [isDone].
+// /// A ``SpringSimulation`` where the value of ``x`` is guaranteed to have exactly the
+// /// end value when the simulation ``isDone``.
 // class ScrollSpringSimulation: SpringSimulation {
 //     /// Creates a spring simulation from the provided spring description, start
 //     /// distance, end distance, and initial velocity.
 //     ///
-//     /// See the [SpringSimulation.new] constructor on the superclass for a
+//     /// See the ``SpringSimulation/new`` constructor on the superclass for a
 //     /// discussion of the arguments' units.
 //     init(
 //         spring: SpringDescription,

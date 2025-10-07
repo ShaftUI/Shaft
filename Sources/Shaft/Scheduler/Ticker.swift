@@ -1,22 +1,22 @@
-/// Signature for the callback passed to the [Ticker] class's constructor.
+/// Signature for the callback passed to the ``Ticker`` class's constructor.
 ///
 /// The argument is the time that the object had spent enabled so far
 /// at the time of the callback being called.
 public typealias TickerCallback = (Duration) -> Void
 
-/// An interface implemented by classes that can vend [Ticker] objects.
+/// An interface implemented by classes that can vend ``Ticker`` objects.
 ///
 /// Tickers can be used by any object that wants to be notified whenever a frame
 /// triggers, but are most commonly used indirectly via an
-/// [AnimationController]. [AnimationController]s need a [TickerProvider] to
-/// obtain their [Ticker]. If you are creating an [AnimationController] from a
-/// [State], then you can use the [TickerProviderStateMixin] and
-/// [SingleTickerProviderStateMixin] classes to obtain a suitable
-/// [TickerProvider]. The widget test framework [WidgetTester] object can be
+/// ``AnimationController``. ``AnimationController``s need a ``TickerProvider`` to
+/// obtain their ``Ticker``. If you are creating an ``AnimationController`` from a
+/// ``State``, then you can use the ``TickerProviderStateMixin`` and
+/// ``SingleTickerProviderStateMixin`` classes to obtain a suitable
+/// ``TickerProvider``. The widget test framework ``WidgetTester`` object can be
 /// used as a ticker provider in the context of tests. In other contexts, you
-/// will have to either pass a [TickerProvider] from a higher level (e.g.
-/// indirectly from a [State] that mixes in [TickerProviderStateMixin]), or
-/// create a custom [TickerProvider] subclass.
+/// will have to either pass a ``TickerProvider`` from a higher level (e.g.
+/// indirectly from a ``State`` that mixes in ``TickerProviderStateMixin``), or
+/// create a custom ``TickerProvider`` subclass.
 public protocol TickerProvider {
     /// Creates a ticker with the given callback.
     ///
@@ -29,12 +29,12 @@ public protocol TickerProvider {
 /// When created, a ticker is initially disabled. Call [start] to
 /// enable the ticker.
 ///
-/// A [Ticker] can be silenced by setting [muted] to true. While silenced, time
+/// A ``Ticker`` can be silenced by setting [muted] to true. While silenced, time
 /// still elapses, and [start] and [stop] can still be called, but no callbacks
 /// are called.
 ///
 /// By convention, the [start] and [stop] methods are used by the ticker's
-/// consumer, and the [muted] property is controlled by the [TickerProvider]
+/// consumer, and the [muted] property is controlled by the ``TickerProvider``
 /// that created the ticker.
 ///
 /// Tickers are driven by the [SchedulerBinding]. See
@@ -66,7 +66,7 @@ public class Ticker {
         }
     }
 
-    /// Whether this [Ticker] has scheduled a call to call its callback
+    /// Whether this ``Ticker`` has scheduled a call to call its callback
     /// on the next frame.
     ///
     /// A ticker that is [muted] can be active (see [isActive]) yet not be
@@ -91,7 +91,7 @@ public class Ticker {
 
     private var _future: TickerFuture?
 
-    /// Whether time is elapsing for this [Ticker]. Becomes true when [start] is
+    /// Whether time is elapsing for this ``Ticker``. Becomes true when [start] is
     /// called and false when [stop] is called.
     ///
     /// A ticker can be active yet not be actually ticking (i.e. not be calling
@@ -104,7 +104,7 @@ public class Ticker {
 
     private var _startTime: Duration?
 
-    /// Starts the clock for this [Ticker]. If the ticker is not [muted], then this
+    /// Starts the clock for this ``Ticker``. If the ticker is not [muted], then this
     /// also starts calling the ticker's callback once per animation frame.
     ///
     /// The returned future resolves once the ticker [stop]s ticking. If the
@@ -118,7 +118,7 @@ public class Ticker {
     /// ticker, first [stop] it.
     ///
     /// By convention, this method is used by the object that receives the ticks
-    /// (as opposed to the [TickerProvider] which created the ticker).
+    /// (as opposed to the ``TickerProvider`` which created the ticker).
     public func start() -> TickerFuture {
         assert(!isActive, "A ticker cannot be started twice.")
         assert(_startTime == nil)
@@ -134,7 +134,7 @@ public class Ticker {
         return _future!
     }
 
-    /// Stops calling this [Ticker]'s callback.
+    /// Stops calling this ``Ticker``'s callback.
     ///
     /// If called with the `canceled` argument set to false (the default), causes
     /// the future returned by [start] to resolve. If called with the `canceled`
@@ -147,7 +147,7 @@ public class Ticker {
     /// This method does nothing if called when the ticker is inactive.
     ///
     /// By convention, this method is used by the object that receives the ticks
-    /// (as opposed to the [TickerProvider] which created the ticker).
+    /// (as opposed to the ``TickerProvider`` which created the ticker).
     public func stop(canceled: Bool = false) {
         if !isActive {
             return
@@ -173,7 +173,7 @@ public class Ticker {
 
     private var _animationId: Int?
 
-    /// Whether this [Ticker] has already scheduled a frame callback.
+    /// Whether this ``Ticker`` has already scheduled a frame callback.
     var scheduled: Bool {
         _animationId != nil
     }
@@ -231,13 +231,13 @@ public class Ticker {
         assert(!shouldScheduleTick)
     }
 
-    /// Makes this [Ticker] take the state of another ticker, and disposes the
+    /// Makes this ``Ticker`` take the state of another ticker, and disposes the
     /// other ticker.
     ///
-    /// This is useful if an object with a [Ticker] is given a new
-    /// [TickerProvider] but needs to maintain continuity. In particular, this
+    /// This is useful if an object with a ``Ticker`` is given a new
+    /// ``TickerProvider`` but needs to maintain continuity. In particular, this
     /// maintains the identity of the [TickerFuture] returned by the [start]
-    /// function of the original [Ticker] if the original ticker is active.
+    /// function of the original ``Ticker`` if the original ticker is active.
     ///
     /// This ticker must not be active when this method is called.
     public func absorbTicker(_ originalTicker: Ticker) {
@@ -288,18 +288,18 @@ public class Ticker {
     }
 }
 
-/// An object representing an ongoing [Ticker] sequence.
+/// An object representing an ongoing ``Ticker`` sequence.
 ///
 /// The [Ticker.start] method returns a [TickerFuture]. The [TickerFuture] will
-/// complete successfully if the [Ticker] is stopped using [Ticker.stop] with
+/// complete successfully if the ``Ticker`` is stopped using [Ticker.stop] with
 /// the `canceled` argument set to false (the default).
 ///
-/// If the [Ticker] is disposed without being stopped, or if it is stopped with
+/// If the ``Ticker`` is disposed without being stopped, or if it is stopped with
 /// `canceled` set to true, then this Future will never complete.
 ///
 /// This class works like a normal [Future], but has an additional property,
 /// [orCancel], which returns a derivative [Future] that completes with an error
-/// if the [Ticker] that returned the [TickerFuture] was stopped with `canceled`
+/// if the ``Ticker`` that returned the [TickerFuture] was stopped with `canceled`
 /// set to true, or if it was disposed without being stopped.
 ///
 /// To run a callback when either this future resolves or when the ticker is

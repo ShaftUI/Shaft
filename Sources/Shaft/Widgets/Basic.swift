@@ -10,7 +10,7 @@ import SwiftMath
 
 /// A widget that applies a transformation before painting its child.
 ///
-/// Unlike [RotatedBox], which applies a rotation prior to layout, this object
+/// Unlike ``RotatedBox``, which applies a rotation prior to layout, this object
 /// applies its transformation just prior to painting, which means the
 /// transformation is not taken into account when calculating how much space
 /// this widget's child (and thus this widget) consumes.
@@ -19,12 +19,12 @@ import SwiftMath
 ///
 /// See also:
 ///
-///  * [RotatedBox], which rotates the child widget during layout, not just
+///  * ``RotatedBox``, which rotates the child widget during layout, not just
 ///    during painting.
-///  * [FractionalTranslation], which applies a translation to the child
+///  * ``FractionalTranslation``, which applies a translation to the child
 ///    that is relative to the child's size.
-///  * [FittedBox], which sizes and positions its child widget to fit the parent
-///    according to a given [BoxFit] discipline.
+///  * ``FittedBox``, which sizes and positions its child widget to fit the parent
+///    according to a given ``BoxFit`` discipline.
 ///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
 public class Transform: SingleChildRenderObjectWidget {
     /// Creates a widget that transforms its child.
@@ -51,7 +51,7 @@ public class Transform: SingleChildRenderObjectWidget {
     ///
     /// See also:
     ///
-    ///  * [RotationTransition], which animates changes in rotation smoothly
+    ///  * ``RotationTransition``, which animates changes in rotation smoothly
     ///    over a given duration.
     public init(
         angle: Angle,
@@ -100,12 +100,12 @@ public class Transform: SingleChildRenderObjectWidget {
     /// `scale` is provided, the other two must be null; similarly, if it is not
     /// provided, one of the other two must be provided.
     ///
-    /// The [alignment] controls the origin of the scale; by default, this is the
+    /// The ``alignment`` controls the origin of the scale; by default, this is the
     /// center of the box.
     ///
     /// See also:
     ///
-    /// * [ScaleTransition], which animates changes in scale smoothly over a given
+    /// * ``ScaleTransition``, which animates changes in scale smoothly over a given
     ///   duration.
     public init(
         scale: Float? = nil,
@@ -1020,18 +1020,18 @@ public func voidBuilder() -> Widget? {
 ///
 /// ## How it works
 ///
-/// The [alignment] property describes a point in the `child`'s coordinate system
+/// The ``alignment`` property describes a point in the `child`'s coordinate system
 /// and a different point in the coordinate system of this widget. The [Align]
 /// widget positions the `child` such that both points are lined up on top of
 /// each other.
 ///
 /// See also:
 ///
-///  * [AnimatedAlign], which animates changes in [alignment] smoothly over a
+///  * [AnimatedAlign], which animates changes in ``alignment`` smoothly over a
 ///    given duration.
 ///  * [CustomSingleChildLayout], which uses a delegate to control the layout of
 ///    a single child.
-///  * [Center], which is the same as [Align] but with the [alignment] always
+///  * [Center], which is the same as [Align] but with the ``alignment`` always
 ///    set to [Alignment.center].
 ///  * [FractionallySizedBox], which sizes its child based on a fraction of its
 ///    own size and positions the child according to an [Alignment] value.
@@ -1713,7 +1713,7 @@ public class RawImage: LeafRenderObjectWidget {
     /// To display a subpart of an image, consider using a [CustomPainter] and
     /// [Canvas.drawImageRect].
     ///
-    /// If the [alignment] is [TextDirection]-dependent (i.e. if it is a
+    /// If the ``alignment`` is [TextDirection]-dependent (i.e. if it is a
     /// [AlignmentDirectional]), then an ambient [Directionality] widget
     /// must be in scope.
     ///
@@ -1850,7 +1850,7 @@ public func getAxisDirectionFromAxisReverseAndDirectionality(
 /// Each child of a [Stack] widget is either _positioned_ or _non-positioned_.
 /// Positioned children are those wrapped in a [Positioned] widget that has at
 /// least one non-null property. The stack sizes itself to contain all the
-/// non-positioned children, which are positioned according to [alignment]
+/// non-positioned children, which are positioned according to ``alignment``
 /// (which defaults to the top-left corner in left-to-right environments and the
 /// top-right corner in right-to-left environments). The positioned children are
 /// then placed relative to the stack according to their top, right, bottom, and
@@ -1891,8 +1891,8 @@ public class Stack: MultiChildRenderObjectWidget {
     /// stack.
     ///
     /// The non-positioned children are placed relative to each other such that
-    /// the points determined by [alignment] are co-located. For example, if the
-    /// [alignment] is [Alignment.topLeft], then the top left corner of
+    /// the points determined by ``alignment`` are co-located. For example, if the
+    /// ``alignment`` is [Alignment.topLeft], then the top left corner of
     /// each non-positioned child will be located at the same global coordinate.
     ///
     /// Partially-positioned children, those that do not specify an alignment in a
@@ -1903,7 +1903,7 @@ public class Stack: MultiChildRenderObjectWidget {
     /// Defaults to [AlignmentDirectional.topStart].
     public var alignment: any AlignmentGeometry
 
-    /// The text direction with which to resolve [alignment].
+    /// The text direction with which to resolve ``alignment``.
     ///
     /// Defaults to the ambient [Directionality].
     public var textDirection: TextDirection
@@ -2328,7 +2328,7 @@ extension Widget {
 ///
 /// When a [ClipRRect] is bigger than the child it contains, its rounded corners
 /// could be drawn in unexpected positions. Make sure that [ClipRRect] and its child
-/// have the same bounds (by shrinking the [ClipRRect] with a [FittedBox] or by
+/// have the same bounds (by shrinking the [ClipRRect] with a ``FittedBox`` or by
 /// growing the child).
 ///
 /// {@tool dartpad}

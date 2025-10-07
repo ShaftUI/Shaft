@@ -9,12 +9,12 @@
 /// Maintains the state of mouse cursors and manages how cursors are searched
 /// for.
 ///
-/// This is typically created as a global singleton and owned by [MouseTracker].
+/// This is typically created as a global singleton and owned by ``MouseTracker``.
 public class MouseCursorManager {
-    /// Create a [MouseCursorManager] by specifying the fallback cursor.
+    /// Create a ``MouseCursorManager`` by specifying the fallback cursor.
     ///
-    /// The `fallbackMouseCursor` must not be [MouseCursor.defer] (typically
-    /// [SystemMouseCursors.basic]).
+    /// The `fallbackMouseCursor` must not be ``MouseCursor/defer`` (typically
+    /// ``SystemMouseCursors/basic``).
     public init(fallbackMouseCursor: MouseCursor) {
         precondition(fallbackMouseCursor != MouseCursor.defer)
         self.fallbackMouseCursor = fallbackMouseCursor
@@ -24,7 +24,7 @@ public class MouseCursorManager {
     ///
     /// See also:
     ///
-    ///  * [MouseCursor.defer], the mouse cursor object to use to defer.
+    ///  * ``MouseCursor/defer``, the mouse cursor object to use to defer.
     public let fallbackMouseCursor: MouseCursor
 
     private var _lastSession: [Int: MouseCursorSession] = [:]
@@ -84,16 +84,16 @@ public class MouseCursorManager {
 /// An interface for mouse cursor definitions.
 ///
 /// A mouse cursor is a graphical image on the screen that echoes the movement
-/// of a pointing device, such as a mouse or a stylus. A [MouseCursor] object
+/// of a pointing device, such as a mouse or a stylus. A ``MouseCursor`` object
 /// defines a kind of mouse cursor, such as an arrow, a pointing hand, or an
 /// I-beam.
 ///
-/// During the painting phase, [MouseCursor] objects are assigned to regions on
+/// During the painting phase, ``MouseCursor`` objects are assigned to regions on
 /// the screen via annotations. Later during a device update (e.g. when a mouse
-/// moves), [MouseTracker] finds the _active cursor_ of each mouse device, which
+/// moves), ``MouseTracker`` finds the _active cursor_ of each mouse device, which
 /// is the front-most region associated with the position of each mouse cursor,
-/// or defaults to [SystemMouseCursors.basic] if no cursors are associated with
-/// the position. [MouseTracker] changes the cursor of the pointer if the new
+/// or defaults to ``SystemMouseCursors/basic`` if no cursors are associated with
+/// the position. ``MouseTracker`` changes the cursor of the pointer if the new
 /// active cursor is different from the previous active cursor, whose effect is
 /// defined by the session created by [createSession].
 public enum MouseCursor: Equatable {
@@ -105,10 +105,10 @@ public enum MouseCursor: Equatable {
     /// A special value that indicates that the region with this cursor defers
     /// the choice of cursor to the next region behind it.
     ///
-    /// When an event occurs, [MouseTracker] will update each pointer's cursor
+    /// When an event occurs, ``MouseTracker`` will update each pointer's cursor
     /// by finding the list of regions that contain the pointer's location, from
     /// front to back in hit-test order. The pointer's cursor will be the first
-    /// cursor in the list that is not a [MouseCursor.defer].
+    /// cursor in the list that is not a ``MouseCursor/defer``.
     case `defer`
 
     /// A special value that doesn't change cursor by itself, but make a region
@@ -131,7 +131,7 @@ public enum MouseCursor: Equatable {
 /// Manages the duration that a pointing device should display a specific mouse
 /// cursor.
 ///
-/// While [MouseCursor] classes describe the kind of cursors,
+/// While ``MouseCursor`` classes describe the kind of cursors,
 /// [MouseCursorSession] classes represents a continuous use of the cursor on a
 /// pointing device. The [MouseCursorSession] classes can be stateful. For
 /// example, a cursor that needs to load resources might want to set a temporary

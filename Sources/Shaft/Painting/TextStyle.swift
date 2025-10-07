@@ -58,19 +58,19 @@ public struct TextStyle: Equatable {
         self.overflow = overflow
     }
 
-    /// Whether null values in this [TextStyle] can be replaced with their value
-    /// in another [TextStyle] using [merge].
+    /// Whether null values in this ``TextStyle`` can be replaced with their value
+    /// in another ``TextStyle`` using ``merge``.
     ///
-    /// The [merge] operation is not commutative: the [inherit] value of the
-    /// method argument decides whether the two [TextStyle]s can be combined
-    /// together. If it is false, the method argument [TextStyle] will be returned.
-    /// Otherwise, the combining is allowed, and the returned [TextStyle] inherits
-    /// the [inherit] value from the method receiver.
+    /// The ``merge`` operation is not commutative: the ``inherit`` value of the
+    /// method argument decides whether the two ``TextStyle``s can be combined
+    /// together. If it is false, the method argument ``TextStyle`` will be returned.
+    /// Otherwise, the combining is allowed, and the returned ``TextStyle`` inherits
+    /// the ``inherit`` value from the method receiver.
     ///
-    /// This property has no effect on [TextSpan]'s text style cascading: in a
-    /// [TextSpan] tree, a [TextSpan]'s text style can be combined with that of an
-    /// ancestor [TextSpan] if it has unspecified fields, regardless of its
-    /// [inherit] value.
+    /// This property has no effect on ``TextSpan``'s text style cascading: in a
+    /// ``TextSpan`` tree, a ``TextSpan``'s text style can be combined with that of an
+    /// ancestor ``TextSpan`` if it has unspecified fields, regardless of its
+    /// ``inherit`` value.
     ///
     /// Properties that don't have explicit values or other default values to fall
     /// back to will revert to the defaults: white in color, a font size of 14
@@ -78,7 +78,7 @@ public struct TextStyle: Equatable {
     ///
     /// See also:
     ///  * [TextStyle.merge], which can be used to combine properties from two
-    ///    [TextStyle]s.
+    ///    ``TextStyle``s.
     public let inherit: Bool
 
     /// The color to use when painting the text.
@@ -86,7 +86,7 @@ public struct TextStyle: Equatable {
     /// If [foreground] is specified, this value must be null. The [color] property
     /// is shorthand for `Paint()..color = color`.
     ///
-    /// In [merge], [apply], and [lerp], conflicts between [color] and [foreground]
+    /// In ``merge``, [apply], and [lerp], conflicts between [color] and [foreground]
     /// specification are resolved in [foreground]'s favor - i.e. if [foreground] is
     /// specified in one place, it will dominate [color] in another.
     public let color: Color?
@@ -97,7 +97,7 @@ public struct TextStyle: Equatable {
     /// [backgroundColor] property is shorthand for
     /// `background: Paint()..color = backgroundColor`.
     ///
-    /// In [merge], [apply], and [lerp], conflicts between [backgroundColor] and [background]
+    /// In ``merge``, [apply], and [lerp], conflicts between [backgroundColor] and [background]
     /// specification are resolved in [background]'s favor - i.e. if [background] is
     /// specified in one place, it will dominate [color] in another.
     public let backgroundColor: Color?
@@ -195,7 +195,7 @@ public struct TextStyle: Equatable {
     /// When a non-null [height] is specified, after accommodating the glyphs of
     /// the text, the remaining vertical space from the allotted line height will
     /// be distributed over and under the text, according to the
-    /// [leadingDistribution] property. See the [TextStyle] class's documentation
+    /// [leadingDistribution] property. See the ``TextStyle`` class's documentation
     /// for an example.
     ///
     /// When [height] is null, [leadingDistribution] does not affect the text
@@ -210,7 +210,7 @@ public struct TextStyle: Equatable {
     /// This property is rarely set. Typically the locale used to select
     /// region-specific glyphs is defined by the text widget's [BuildContext]
     /// using `Localizations.localeOf(context)`. For example [RichText] defines
-    /// its locale this way. However, a rich text widget's [TextSpan]s could
+    /// its locale this way. However, a rich text widget's ``TextSpan``s could
     /// specify text styles with different explicit locales in order to select
     /// different region-specific glyphs for each text span.
     // var locale: Locale?
@@ -225,7 +225,7 @@ public struct TextStyle: Equatable {
     /// If [color] is specified, this value must be null. The [color] property
     /// is shorthand for `Paint()..color = color`.
     ///
-    /// In [merge], [apply], and [lerp], conflicts between [color] and [foreground]
+    /// In ``merge``, [apply], and [lerp], conflicts between [color] and [foreground]
     /// specification are resolved in [foreground]'s favor - i.e. if [foreground] is
     /// specified in one place, it will dominate [color] in another.
     public let foreground: Paint?
@@ -241,7 +241,7 @@ public struct TextStyle: Equatable {
     /// [backgroundColor] property is shorthand for
     /// `background: Paint()..color = backgroundColor`.
     ///
-    /// In [merge], [apply], and [lerp], conflicts between [backgroundColor] and
+    /// In ``merge``, [apply], and [lerp], conflicts between [backgroundColor] and
     /// [background] specification are resolved in [background]'s favor - i.e. if
     /// [background] is specified in one place, it will dominate [backgroundColor]
     /// in another.
@@ -275,7 +275,7 @@ public struct TextStyle: Equatable {
     ///
     /// This property is maintained only in debug builds.
     ///
-    /// When merging ([merge]), copying ([copyWith]), modifying using [apply], or
+    /// When merging (``merge``), copying ([copyWith]), modifying using [apply], or
     /// interpolating ([lerp]), the label of the resulting style is marked with
     /// the debug labels of the original styles. This helps figuring out where a
     /// particular text style came from.
@@ -289,7 +289,7 @@ public struct TextStyle: Equatable {
     /// Multiple shadows are supported to replicate lighting from multiple light
     /// sources.
     ///
-    /// Shadows must be in the same order for [TextStyle] to be considered as
+    /// Shadows must be in the same order for ``TextStyle`` to be considered as
     /// equivalent as order produces differing transparency.
     public let shadows: [Shadow]?
 
