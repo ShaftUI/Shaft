@@ -17,7 +17,7 @@ public typealias VoidCallback = () -> Void
 ///
 /// See also:
 ///
-///  * [ValueSetter], for callbacks that report that a value has been set.
+///  * ``ValueSetter``, for callbacks that report that a value has been set.
 public typealias ValueChanged<T> = (T) -> Void
 
 struct CallbackList {

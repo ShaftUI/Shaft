@@ -18,11 +18,11 @@ public enum GestureDisposition {
 /// Represents an object participating in an arena.
 ///
 /// Receives callbacks from the GestureArena to notify the object when it wins
-/// or loses a gesture negotiation. Exactly one of [acceptGesture] or
-/// [rejectGesture] will be called for each arena this member was added to,
+/// or loses a gesture negotiation. Exactly one of ``acceptGesture`` or
+/// ``rejectGesture`` will be called for each arena this member was added to,
 /// regardless of what caused the arena to be resolved. For example, if a
 /// member resolves the arena itself, that member still receives an
-/// [acceptGesture] callback.
+/// ``acceptGesture`` callback.
 public protocol GestureArenaMember: AnyObject {
     /// Called when this member wins the arena for the given pointer id.
     func acceptGesture(pointer: Int)
@@ -33,7 +33,7 @@ public protocol GestureArenaMember: AnyObject {
 
 /// An interface to pass information to an arena.
 ///
-/// A given [GestureArenaMember] can have multiple entries in multiple arenas
+/// A given ``GestureArenaMember`` can have multiple entries in multiple arenas
 /// with different pointer ids.
 public struct GestureArenaEntry {
     let arena: GestureArenaManager
@@ -104,17 +104,17 @@ public final class GestureArenaManager {
 
     /// Forces resolution of the arena, giving the win to the first member.
     ///
-    /// Sweep is typically after all the other processing for a [PointerUpEvent]
+    /// Sweep is typically after all the other processing for a ``PointerUpEvent``
     /// have taken place. It ensures that multiple passive gestures do not cause a
     /// stalemate that prevents the user from interacting with the app.
     ///
-    /// Recognizers that wish to delay resolving an arena past [PointerUpEvent]
-    /// should call [hold] to delay sweep until [release] is called.
+    /// Recognizers that wish to delay resolving an arena past ``PointerUpEvent``
+    /// should call ``hold`` to delay sweep until ``release`` is called.
     ///
     /// See also:
     ///
-    ///  * [hold]
-    ///  * [release]
+    ///  * ``hold``
+    ///  * ``release``
     public func sweep(_ pointer: Int) {
         guard let state = arenas[pointer] else {
             return  // This arena either never existed or has been resolved.
@@ -138,15 +138,15 @@ public final class GestureArenaManager {
     /// Prevents the arena from being swept.
     ///
     /// Typically, a winner is chosen in an arena after all the other
-    /// [PointerUpEvent] processing by [sweep]. If a recognizer wishes to delay
-    /// resolving an arena past [PointerUpEvent], the recognizer can [hold] the
+    /// ``PointerUpEvent`` processing by [sweep]. If a recognizer wishes to delay
+    /// resolving an arena past ``PointerUpEvent``, the recognizer can ``hold`` the
     /// arena open using this function. To release such a hold and let the arena
-    /// resolve, call [release].
+    /// resolve, call ``release``.
     ///
     /// See also:
     ///
     ///  * [sweep]
-    ///  * [release]
+    ///  * ``release``
     public func hold(_ pointer: Int) {
         guard let state = arenas[pointer] else {
             return  // This arena either never existed or has been resolved.
@@ -162,7 +162,7 @@ public final class GestureArenaManager {
     /// See also:
     ///
     ///  * [sweep]
-    ///  * [hold]
+    ///  * ``hold``
     public func release(_ pointer: Int) {
         guard let state = arenas[pointer] else {
             return  // This arena either never existed or has been resolved.

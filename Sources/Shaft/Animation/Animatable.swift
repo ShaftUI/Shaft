@@ -1,14 +1,14 @@
-/// A typedef used by [Animatable.fromCallback] to create an [Animatable]
+/// A typedef used by ``Animatable/fromCallback`` to create an ``Animatable``
 /// from a callback.
 public typealias AnimatableCallback<T> = (Double) -> T
 
-/// An object that can produce a value of type `T` given an [Animation<double>]
+/// An object that can produce a value of type `T` given an ``Animation<Double>``
 /// as input.
 ///
 /// Typically, the values of the input animation are nominally in the range 0.0
 /// to 1.0. In principle, however, any value could be provided.
 ///
-/// The main subclass of [Animatable] is [Tween].
+/// The main subclass of ``Animatable`` is ``Tween``.
 public protocol Animatable<Value> {
     associatedtype Value
 
@@ -19,7 +19,7 @@ public protocol Animatable<Value> {
     ///
     /// See also:
     ///
-    ///  * [evaluate], which is a shorthand for applying [transform] to the value
+    ///  * ``evaluate``, which is a shorthand for applying [transform] to the value
     ///    of an [Animation].
     ///  * [Curve.transform], a similar method for easing curves.
     func transform(_ t: Double) -> Value
@@ -28,19 +28,19 @@ public protocol Animatable<Value> {
     ///
     /// This function is implemented by deferring to [transform]. Subclasses that
     /// want to provide custom behavior should override [transform], not
-    /// [evaluate].
+    /// ``evaluate``.
     ///
     /// See also:
     ///
     ///  * [transform], which is similar but takes a `t` value directly instead of
     ///    an [Animation].
     ///  * [animate], which creates an [Animation] out of this object, continually
-    ///    applying [evaluate].
+    ///    applying ``evaluate``.
     func evaluate(_ animation: any Animation<Double>) -> Value
 }
 
 // extension Animatable {
-//     /// Create a new [Animatable] from the provided [callback].
+//     /// Create a new ``Animatable`` from the provided [callback].
 //     ///
 //     /// See also:
 //     ///
@@ -54,7 +54,7 @@ public protocol Animatable<Value> {
 //     /// takes on values determined by this object.
 //     ///
 //     /// Essentially this returns an [Animation] that automatically applies the
-//     /// [evaluate] method to the parent's value.
+//     /// ``evaluate`` method to the parent's value.
 //     ///
 //     /// See also:
 //     ///
@@ -64,10 +64,10 @@ public protocol Animatable<Value> {
 
 //     }
 
-//     /// Returns a new [Animatable] whose value is determined by first evaluating
+//     /// Returns a new ``Animatable`` whose value is determined by first evaluating
 //     /// the given parent and then evaluating this object.
 //     ///
-//     /// This allows [Tween]s to be chained before obtaining an [Animation].
+//     /// This allows ``Tween``s to be chained before obtaining an [Animation].
 //     func chain(_ parent: Animatable<Double>) -> Animatable<T> {
 
 //     }

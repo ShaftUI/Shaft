@@ -59,7 +59,7 @@ public class PointerEvent {
         )
     }
 
-    /// The ID of the [NativeView] which this event originated from.
+    /// The ID of the ``NativeView`` which this event originated from.
     public let viewId: Int
 
     /// Time of event dispatch, relative to an arbitrary timeline.
@@ -80,7 +80,7 @@ public class PointerEvent {
     public let position: Offset
 
     /// Distance in logical pixels that the pointer moved since the last
-    /// [PointerMoveEvent] or [PointerHoverEvent].
+    /// ``PointerMoveEvent`` or ``PointerHoverEvent``.
     ///
     /// This value is always 0.0 for down, up, and cancel events.
     public let delta: Offset
@@ -88,8 +88,8 @@ public class PointerEvent {
     /// Bit field containing the buttons that are currently pressed when this
     /// event was generated.
     ///
-    /// For example, if this has the value 6 and the [kind] is
-    /// [PointerDeviceKind.invertedStylus], then this indicates an upside-down
+    /// For example, if this has the value 6 and the ``kind`` is
+    /// ``PointerDeviceKind/invertedStylus``, then this indicates an upside-down
     /// stylus with both its primary and secondary buttons pressed.
     public let buttons: PointerButtons
 
@@ -102,21 +102,21 @@ public class PointerEvent {
     /// The transformation used to transform this event from the global coordinate
     /// space into the coordinate space of the event receiver.
     ///
-    /// This value affects what is returned by [localPosition] and [localDelta].
+    /// This value affects what is returned by ``localPosition`` and ``localDelta``.
     /// If this value is null, it is treated as the identity transformation.
     public let transform: Matrix4x4f?
 
-    /// The [position] transformed into the event receiver's local coordinate
-    /// system according to [transform].
+    /// The ``position`` transformed into the event receiver's local coordinate
+    /// system according to ``transform``.
     ///
-    /// If this event has not been transformed, [position] is returned as-is.
+    /// If this event has not been transformed, ``position`` is returned as-is.
     /// See also:
     public private(set) lazy var localPosition: Offset = Self.transformPosition(transform, position)
 
-    /// The [delta] transformed into the event receiver's local coordinate
-    /// system according to [transform].
+    /// The ``delta`` transformed into the event receiver's local coordinate
+    /// system according to ``transform``.
     ///
-    /// If this event has not been transformed, [delta] is returned as-is.
+    /// If this event has not been transformed, ``delta`` is returned as-is.
     lazy var localDelta: Offset = {
         return delta
     }()
@@ -430,7 +430,7 @@ public final class PointerPanZoomUpdateEvent: PointerEvent {
     public let rotation: Float = 0.0
 }
 
-/// Determine the appropriate hit slop pixels based on the [kind] of pointer.
+/// Determine the appropriate hit slop pixels based on the ``kind`` of pointer.
 func computeHitSlop(_ kind: PointerDeviceKind, _ settings: DeviceGestureSettings?) -> Float {
     switch kind {
     case .mouse:
@@ -440,7 +440,7 @@ func computeHitSlop(_ kind: PointerDeviceKind, _ settings: DeviceGestureSettings
     }
 }
 
-/// Determine the appropriate pan slop pixels based on the [kind] of pointer.
+/// Determine the appropriate pan slop pixels based on the ``kind`` of pointer.
 func computePanSlop(_ kind: PointerDeviceKind, _ settings: DeviceGestureSettings?) -> Float {
     switch kind {
     case .mouse:
@@ -450,7 +450,7 @@ func computePanSlop(_ kind: PointerDeviceKind, _ settings: DeviceGestureSettings
     }
 }
 
-/// Determine the appropriate scale slop pixels based on the [kind] of pointer.
+/// Determine the appropriate scale slop pixels based on the ``kind`` of pointer.
 func computeScaleSlop(_ kind: PointerDeviceKind) -> Float {
     switch kind {
     case .mouse:

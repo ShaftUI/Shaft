@@ -14,7 +14,7 @@ public protocol HitTestTarget {
     func handleEvent(_ event: PointerEvent, entry: HitTestEntry)
 }
 
-/// Data collected during a hit test about a specific [HitTestTarget].
+/// Data collected during a hit test about a specific ``HitTestTarget``.
 ///
 /// Subclass this object to pass additional information from the hit test phase
 /// to the event propagation phase.
@@ -23,12 +23,12 @@ public class HitTestEntry {
         self.target = target
     }
 
-    /// The [HitTestTarget] encountered during the hit test.
+    /// The ``HitTestTarget`` encountered during the hit test.
     public let target: HitTestTarget
 
-    /// Returns a matrix describing how [PointerEvent]s delivered to this
-    /// [HitTestEntry] should be transformed from the global coordinate space of
-    /// the screen to the local coordinate space of [target].
+    /// Returns a matrix describing how ``PointerEvent``s delivered to this
+    /// ``HitTestEntry`` should be transformed from the global coordinate space of
+    /// the screen to the local coordinate space of ``target``.
     public fileprivate(set) var transform: Matrix4x4f?
 }
 
@@ -63,12 +63,12 @@ public class HitTestResult {
         self.storage = Storage()
     }
 
-    /// Wraps `result` (usually a subtype of [HitTestResult]) to create a
-    /// generic [HitTestResult].
+    /// Wraps `result` (usually a subtype of ``HitTestResult``) to create a
+    /// generic ``HitTestResult``.
     ///
-    /// The [HitTestEntry]s added to the returned [HitTestResult] are also
+    /// The ``HitTestEntry``s added to the returned ``HitTestResult`` are also
     /// added to the wrapped `result` (both share the same underlying data
-    /// structure to store [HitTestEntry]s).
+    /// structure to store ``HitTestEntry``s).
     public init(wrap: HitTestResult) {
         self.storage = wrap.storage
     }
@@ -94,11 +94,11 @@ public class HitTestResult {
         var localTransforms: [TransformPart] = []
     }
 
-    /// The underlying data structure to store [HitTestEntry]s. Might be shared
-    /// by multiple [HitTestResult]s.
+    /// The underlying data structure to store ``HitTestEntry``s. Might be shared
+    /// by multiple ``HitTestResult``s.
     private var storage: Storage
 
-    /// An list of [HitTestEntry] objects recorded during the hit test.
+    /// An list of ``HitTestEntry`` objects recorded during the hit test.
     ///
     /// The first entry in the path is the most specific, typically the one at
     /// the leaf of tree being hit tested. Event propagation starts with the
@@ -125,7 +125,7 @@ public class HitTestResult {
         return storage.transforms.last!
     }
 
-    /// Add a [HitTestEntry] to the path.
+    /// Add a ``HitTestEntry`` to the path.
     ///
     /// The new entry is added at the end of the path, which means entries should
     /// be added in order from most specific to least specific, typically during an
@@ -137,14 +137,14 @@ public class HitTestResult {
     }
 
     /// Pushes a new transform matrix that is to be applied to all future
-    /// [HitTestEntry]s added via [add] until it is removed via [popTransform].
+    /// ``HitTestEntry``s added via [add] until it is removed via [popTransform].
     ///
     /// This method is only to be used by subclasses, which must provide
     /// coordinate space specific public wrappers around this function for their
     /// users (see [BoxHitTestResult.addWithPaintTransform] for such an example).
     ///
     /// The provided `transform` matrix should describe how to transform
-    /// [PointerEvent]s from the coordinate space of the method caller to the
+    /// ``PointerEvent``s from the coordinate space of the method caller to the
     /// coordinate space of its children. In most cases `transform` is derived
     /// from running the inverted result of [RenderObject.applyPaintTransform]
     /// through [PointerEvent.removePerspectiveTransform] to remove
@@ -171,13 +171,13 @@ public class HitTestResult {
     }
 
     /// Pushes a new translation offset that is to be applied to all future
-    /// [HitTestEntry]s added via [add] until it is removed via [popTransform].
+    /// ``HitTestEntry``s added via [add] until it is removed via [popTransform].
     ///
     /// This method is only to be used by subclasses, which must provide
     /// coordinate space specific public wrappers around this function for their
     /// users (see [BoxHitTestResult.addWithPaintOffset] for such an example).
     ///
-    /// The provided `offset` should describe how to transform [PointerEvent]s from
+    /// The provided `offset` should describe how to transform ``PointerEvent``s from
     /// the coordinate space of the method caller to the coordinate space of its
     /// children. Usually `offset` is the inverse of the offset of the child
     /// relative to the parent.

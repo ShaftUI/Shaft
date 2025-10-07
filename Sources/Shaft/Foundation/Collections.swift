@@ -64,7 +64,7 @@ extension String {
     }
 }
 
-/// A wrapper around a type that makes it conform to [Hashable].
+/// A wrapper around a type that makes it conform to ``Hashable``.
 struct HashableType: Hashable {
     init(_ base: AnyObject.Type) {
         self.base = base

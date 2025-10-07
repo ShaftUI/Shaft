@@ -8,10 +8,10 @@
 
 /// The platform that user interaction should adapt to target.
 ///
-/// The [defaultTargetPlatform] getter returns the current platform.
+/// The ``defaultTargetPlatform`` getter returns the current platform.
 ///
 /// When using the "flutter run" command, the "o" key will toggle between
-/// values of this enum when updating [debugDefaultTargetPlatformOverride].
+/// values of this enum when updating ``debugDefaultTargetPlatformOverride``.
 /// This lets one test how the application will work on various platforms
 /// without having to switch emulators or physical devices.
 //

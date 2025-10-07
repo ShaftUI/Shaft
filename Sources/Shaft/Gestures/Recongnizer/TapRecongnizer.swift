@@ -1,19 +1,19 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import SwiftMath
 
-/// Details for [GestureTapDownCallback], such as position.
+/// Details for ``GestureTapDownCallback``, such as position.
 ///
 /// See also:
 ///
-///  * [GestureDetector.onTapDown], which receives this information.
-///  * [TapGestureRecognizer], which passes this information to one of its callbacks.
+///  * ``GestureDetector/onTapDown``, which receives this information.
+///  * ``TapGestureRecognizer``, which passes this information to one of its callbacks.
 public struct TapDownDetails {
     public init(
         globalPosition: Offset,
@@ -43,16 +43,16 @@ public struct TapDownDetails {
 ///
 /// See also:
 ///
-///  * [GestureDetector.onTapDown], which matches this signature.
-///  * [TapGestureRecognizer], which uses this signature in one of its callbacks.
+///  * ``GestureDetector/onTapDown``, which matches this signature.
+///  * ``TapGestureRecognizer``, which uses this signature in one of its callbacks.
 public typealias GestureTapDownCallback = (TapDownDetails) -> Void
 
-/// Details for [GestureTapUpCallback], such as position.
+/// Details for ``GestureTapUpCallback``, such as position.
 ///
 /// See also:
 ///
-///  * [GestureDetector.onTapUp], which receives this information.
-///  * [TapGestureRecognizer], which passes this information to one of its callbacks.
+///  * ``GestureDetector/onTapUp``, which receives this information.
+///  * ``TapGestureRecognizer``, which passes this information to one of its callbacks.
 public struct TapUpDetails {
     /// The global position at which the pointer contacted the screen.
     public var globalPosition: Offset
@@ -72,32 +72,32 @@ public struct TapUpDetails {
 ///
 /// See also:
 ///
-///  * [GestureDetector.onTapUp], which matches this signature.
-///  * [TapGestureRecognizer], which uses this signature in one of its callbacks.
+///  * ``GestureDetector/onTapUp``, which matches this signature.
+///  * ``TapGestureRecognizer``, which uses this signature in one of its callbacks.
 public typealias GestureTapUpCallback = (TapUpDetails) -> Void
 
 /// Signature for when a tap has occurred.
 ///
 /// See also:
 ///
-///  * [GestureDetector.onTap], which matches this signature.
-///  * [TapGestureRecognizer], which uses this signature in one of its callbacks.
+///  * ``GestureDetector/onTap``, which matches this signature.
+///  * ``TapGestureRecognizer``, which uses this signature in one of its callbacks.
 public typealias GestureTapCallback = () -> Void
 
 /// Signature for when the pointer that previously triggered a
-/// [GestureTapDownCallback] will not end up causing a tap.
+/// ``GestureTapDownCallback`` will not end up causing a tap.
 ///
 /// See also:
 ///
-///  * [GestureDetector.onTapCancel], which matches this signature.
-///  * [TapGestureRecognizer], which uses this signature in one of its callbacks.
+///  * ``GestureDetector/onTapCancel``, which matches this signature.
+///  * ``TapGestureRecognizer``, which uses this signature in one of its callbacks.
 public typealias GestureTapCancelCallback = () -> Void
 
 /// A base class for gesture recognizers that recognize taps.
 ///
 /// Gesture recognizers take part in gesture arenas to enable potential gestures
 /// to be disambiguated from each other. This process is managed by a
-/// [GestureArenaManager].
+/// ``GestureArenaManager``.
 ///
 /// A tap is defined as a sequence of events that starts with a down, followed
 /// by optional moves, then ends with an up. All move events must contain the
@@ -106,20 +106,20 @@ public typealias GestureTapCancelCallback = () -> Void
 /// if any other recognizers wins the arena. It is accepted only when it is the
 /// last member of the arena.
 ///
-/// The [BaseTapGestureRecognizer] considers all the pointers involved in the
+/// The ``BaseTapGestureRecognizer`` considers all the pointers involved in the
 /// pointer event sequence as contributing to one gesture. For this reason,
 /// extra pointer interactions during a tap sequence are not recognized as
 /// additional taps. For example, down-1, down-2, up-1, up-2 produces only one
 /// tap on up-1.
 ///
-/// The [BaseTapGestureRecognizer] can not be directly used, since it does not
+/// The ``BaseTapGestureRecognizer`` can not be directly used, since it does not
 /// define which buttons to accept, or what to do when a tap happens. If you
 /// want to build a custom tap recognizer, extend this class by overriding
-/// [isPointerAllowed] and the handler methods.
+/// ``isPointerAllowed`` and the handler methods.
 ///
 /// See also:
 ///
-///  * [TapGestureRecognizer], a ready-to-use tap recognizer that recognizes
+///  * ``TapGestureRecognizer``, a ready-to-use tap recognizer that recognizes
 ///    taps of the primary button and taps of the secondary button.
 ///  * [ModalBarrier], a widget that uses a custom tap recognizer that accepts
 ///    any buttons.
@@ -301,14 +301,14 @@ open class BaseTapGestureRecognizer: PrimaryPointerGestureRecognizer {
 ///
 /// Gesture recognizers take part in gesture arenas to enable potential gestures
 /// to be disambiguated from each other. This process is managed by a
-/// [GestureArenaManager].
+/// ``GestureArenaManager``.
 ///
-/// [TapGestureRecognizer] considers all the pointers involved in the pointer
+/// ``TapGestureRecognizer`` considers all the pointers involved in the pointer
 /// event sequence as contributing to one gesture. For this reason, extra
 /// pointer interactions during a tap sequence are not recognized as additional
 /// taps. For example, down-1, down-2, up-1, up-2 produces only one tap on up-1.
 ///
-/// [TapGestureRecognizer] competes on pointer events of [kPrimaryButton] only
+/// ``TapGestureRecognizer`` competes on pointer events of [kPrimaryButton] only
 /// when it has at least one non-null `onTap*` callback, on events of
 /// [kSecondaryButton] only when it has at least one non-null `onSecondaryTap*`
 /// callback, and on events of [kTertiaryButton] only when it has at least
@@ -350,7 +350,7 @@ public class TapGestureRecognizer: BaseTapGestureRecognizer {
     ///  * [onSecondaryTapDown], a similar callback but for a secondary button.
     ///  * [onTertiaryTapDown], a similar callback but for a tertiary button.
     ///  * [TapDownDetails], which is passed as an argument to this callback.
-    ///  * [GestureDetector.onTapDown], which exposes this callback.
+    ///  * ``GestureDetector/onTapDown``, which exposes this callback.
     public var onTapDown: GestureTapDownCallback?
 
     /// A pointer has stopped contacting the screen at a particular location,
@@ -367,7 +367,7 @@ public class TapGestureRecognizer: BaseTapGestureRecognizer {
     ///  * [onSecondaryTapUp], a similar callback but for a secondary button.
     ///  * [onTertiaryTapUp], a similar callback but for a tertiary button.
     ///  * [TapUpDetails], which is passed as an argument to this callback.
-    ///  * [GestureDetector.onTapUp], which exposes this callback.
+    ///  * ``GestureDetector/onTapUp``, which exposes this callback.
     public var onTapUp: GestureTapUpCallback?
 
     /// A pointer has stopped contacting the screen, which is recognized as a tap
@@ -383,7 +383,7 @@ public class TapGestureRecognizer: BaseTapGestureRecognizer {
     ///  * [kPrimaryButton], the button this callback responds to.
     ///  * [onSecondaryTap], a similar callback but for a secondary button.
     ///  * [onTapUp], which has the same timing but with details.
-    ///  * [GestureDetector.onTap], which exposes this callback.
+    ///  * ``GestureDetector/onTap``, which exposes this callback.
     public var onTap: GestureTapCallback?
 
     /// A pointer that previously triggered [onTapDown] will not end up causing
@@ -400,7 +400,7 @@ public class TapGestureRecognizer: BaseTapGestureRecognizer {
     ///  * [kPrimaryButton], the button this callback responds to.
     ///  * [onSecondaryTapCancel], a similar callback but for a secondary button.
     ///  * [onTertiaryTapCancel], a similar callback but for a tertiary button.
-    ///  * [GestureDetector.onTapCancel], which exposes this callback.
+    ///  * ``GestureDetector/onTapCancel``, which exposes this callback.
     public var onTapCancel: GestureTapCancelCallback?
 
     /// A pointer has stopped contacting the screen, which is recognized as a tap

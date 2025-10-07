@@ -9,7 +9,7 @@
 /// The device specific gesture settings scaled into logical pixels.
 ///
 /// This configuration can be retrieved from the window, or more commonly from a
-/// [MediaQuery] widget.
+/// ``MediaQuery`` widget.
 public struct DeviceGestureSettings: Equatable {
     public init(touchSlop: Float?) {
         self.touchSlop = touchSlop

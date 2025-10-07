@@ -24,10 +24,10 @@ struct Math {
     /// exact mathematical value.
     static let ln2 = 0.6931471805599453
 
-    /// Base-2 logarithm of [e].
+    /// Base-2 logarithm of ``e``.
     static let log2e = 1.4426950408889634
 
-    /// Base-10 logarithm of [e].
+    /// Base-10 logarithm of ``e``.
     static let log10e = 0.4342944819032518
 
     /// The PI constant.
@@ -112,12 +112,12 @@ internal func lerpFloat(_ a: Float, _ b: Float, t: Float) -> Float {
 
 /// Linearly interpolate between two integers.
 ///
-/// Same as [lerpDouble] but specialized for non-null `int` type.
+/// Same as ``lerpDouble`` but specialized for non-null `int` type.
 internal func lerpInt<T: FixedWidthInteger>(_ a: T, _ b: T, t: Float) -> Float {
     return Float(a) + Float(b - a) * t
 }
 
-/// Same as [num.clamp] but specialized for non-null [int].
+/// Same as ``num/clamp`` but specialized for non-null ``int``.
 internal func clampInt<T: FixedWidthInteger>(_ value: T, _ min: T, _ max: T) -> T {
     assert(min <= max)
     if value < min {

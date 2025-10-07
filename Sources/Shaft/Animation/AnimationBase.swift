@@ -12,10 +12,10 @@ public class AnimationBase: Listenable {
         _listeners.removeValue(forKey: id)
     }
 
-    /// Removes all listeners added with [addListener].
+    /// Removes all listeners added with ``addListener``.
     ///
     /// This method is typically called from the `dispose` method of the class
-    /// using this mixin if the class also uses the [AnimationEagerListenerMixin].
+    /// using this mixin if the class also uses the ``AnimationEagerListenerMixin``.
     func clearListeners() {
         _listeners.removeAll()
     }
@@ -35,7 +35,7 @@ public class AnimationBase: Listenable {
 
     /// Calls listener every time the status of the animation changes.
     ///
-    /// Listeners can be removed with [removeStatusListener].
+    /// Listeners can be removed with ``removeStatusListener``.
     public func addStatusListener(
         _ listener: AnyObject,
         callback: @escaping AnimationStatusListener
@@ -47,16 +47,16 @@ public class AnimationBase: Listenable {
 
     /// Stops calling the listener every time the status of the animation changes.
     ///
-    /// Listeners can be added with [addStatusListener].
+    /// Listeners can be added with ``addStatusListener``.
     public func removeStatusListener(_ listener: AnyObject) {
         let id = ObjectIdentifier(listener)
         _statusListeners.removeValue(forKey: id)
     }
 
-    /// Removes all listeners added with [addStatusListener].
+    /// Removes all listeners added with ``addStatusListener``.
     ///
     /// This method is typically called from the `dispose` method of the class
-    /// using this mixin if the class also uses the [AnimationEagerListenerMixin].
+    /// using this mixin if the class also uses the ``AnimationEagerListenerMixin``.
     func clearStatusListeners() {
         _statusListeners.removeAll()
     }

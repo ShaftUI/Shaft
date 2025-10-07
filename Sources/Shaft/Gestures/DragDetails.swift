@@ -6,16 +6,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// Details object for callbacks that use [GestureDragDownCallback].
+/// Details object for callbacks that use ``GestureDragDownCallback``.
 ///
 /// See also:
 ///
-///  * [DragGestureRecognizer.onDown], which uses [GestureDragDownCallback].
-///  * [DragStartDetails], the details for [GestureDragStartCallback].
-///  * [DragUpdateDetails], the details for [GestureDragUpdateCallback].
-///  * [DragEndDetails], the details for [GestureDragEndCallback].
+///  * ``DragGestureRecognizer/onDown``, which uses ``GestureDragDownCallback``.
+///  * ``DragStartDetails``, the details for ``GestureDragStartCallback``.
+///  * ``DragUpdateDetails``, the details for ``GestureDragUpdateCallback``.
+///  * ``DragEndDetails``, the details for ``GestureDragEndCallback``.
 public struct DragDownDetails {
-    /// Creates details for a [GestureDragDownCallback].
+    /// Creates details for a ``GestureDragDownCallback``.
     public init(
         globalPosition: Offset = .zero,
         localPosition: Offset? = nil
@@ -30,14 +30,14 @@ public struct DragDownDetails {
     ///
     /// See also:
     ///
-    ///  * [localPosition], which is the [globalPosition] transformed to the
+    ///  * ``localPosition``, which is the ``globalPosition`` transformed to the
     ///    coordinate space of the event receiver.
     public let globalPosition: Offset
 
     /// The local position in the coordinate system of the event receiver at
     /// which the pointer contacted the screen.
     ///
-    /// Defaults to [globalPosition] if not specified in the constructor.
+    /// Defaults to ``globalPosition`` if not specified in the constructor.
     public let localPosition: Offset
 }
 
@@ -46,19 +46,19 @@ public struct DragDownDetails {
 ///
 /// The `details` object provides the position of the touch.
 ///
-/// See [DragGestureRecognizer.onDown].
+/// See ``DragGestureRecognizer/onDown``.
 public typealias GestureDragDownCallback = (DragDownDetails) -> Void
 
-/// Details object for callbacks that use [GestureDragStartCallback].
+/// Details object for callbacks that use ``GestureDragStartCallback``.
 ///
 /// See also:
 ///
-///  * [DragGestureRecognizer.onStart], which uses [GestureDragStartCallback].
-///  * [DragDownDetails], the details for [GestureDragDownCallback].
-///  * [DragUpdateDetails], the details for [GestureDragUpdateCallback].
-///  * [DragEndDetails], the details for [GestureDragEndCallback].
+///  * ``DragGestureRecognizer/onStart``, which uses ``GestureDragStartCallback``.
+///  * ``DragDownDetails``, the details for ``GestureDragDownCallback``.
+///  * ``DragUpdateDetails``, the details for ``GestureDragUpdateCallback``.
+///  * ``DragEndDetails``, the details for ``GestureDragEndCallback``.
 public struct DragStartDetails {
-    /// Creates details for a [GestureDragStartCallback].
+    /// Creates details for a ``GestureDragStartCallback``.
     public init(
         sourceTimeStamp: Duration? = nil,
         globalPosition: Offset = .zero,
@@ -83,14 +83,14 @@ public struct DragStartDetails {
     ///
     /// See also:
     ///
-    ///  * [localPosition], which is the [globalPosition] transformed to the
+    ///  * ``localPosition``, which is the ``globalPosition`` transformed to the
     ///    coordinate space of the event receiver.
     public let globalPosition: Offset
 
     /// The local position in the coordinate system of the event receiver at
     /// which the pointer contacted the screen.
     ///
-    /// Defaults to [globalPosition] if not specified in the constructor.
+    /// Defaults to ``globalPosition`` if not specified in the constructor.
     public let localPosition: Offset
 
     /// The kind of the device that initiated the event.
@@ -102,22 +102,22 @@ public struct DragStartDetails {
 /// The `details` object provides the position of the touch when it first
 /// touched the surface.
 ///
-/// See [DragGestureRecognizer.onStart].
+/// See ``DragGestureRecognizer/onStart``.
 public typealias GestureDragStartCallback = (DragStartDetails) -> Void
 
-/// Details object for callbacks that use [GestureDragUpdateCallback].
+/// Details object for callbacks that use ``GestureDragUpdateCallback``.
 ///
 /// See also:
 ///
-///  * [DragGestureRecognizer.onUpdate], which uses [GestureDragUpdateCallback].
-///  * [DragDownDetails], the details for [GestureDragDownCallback].
-///  * [DragStartDetails], the details for [GestureDragStartCallback].
-///  * [DragEndDetails], the details for [GestureDragEndCallback].
+///  * ``DragGestureRecognizer/onUpdate``, which uses ``GestureDragUpdateCallback``.
+///  * ``DragDownDetails``, the details for ``GestureDragDownCallback``.
+///  * ``DragStartDetails``, the details for ``GestureDragStartCallback``.
+///  * ``DragEndDetails``, the details for ``GestureDragEndCallback``.
 public struct DragUpdateDetails {
-    /// Creates details for a [GestureDragUpdateCallback].
+    /// Creates details for a ``GestureDragUpdateCallback``.
     ///
-    /// If [primaryDelta] is non-null, then its value must match one of the
-    /// coordinates of [delta] and the other coordinate must be zero.
+    /// If ``primaryDelta`` is non-null, then its value must match one of the
+    /// coordinates of ``delta`` and the other coordinate must be zero.
     public init(
         sourceTimeStamp: Duration? = nil,
         delta: Offset = .zero,
@@ -147,7 +147,7 @@ public struct DragUpdateDetails {
     /// The amount the pointer has moved in the coordinate space of the event
     /// receiver since the previous update.
     ///
-    /// If the [GestureDragUpdateCallback] is for a one-dimensional drag (e.g.,
+    /// If the ``GestureDragUpdateCallback`` is for a one-dimensional drag (e.g.,
     /// a horizontal or vertical drag), then this offset contains only the delta
     /// in that direction (i.e., the coordinate in the other direction is zero).
     ///
@@ -158,10 +158,10 @@ public struct DragUpdateDetails {
     /// space of the event receiver since the previous
     /// update.
     ///
-    /// If the [GestureDragUpdateCallback] is for a one-dimensional drag (e.g.,
+    /// If the ``GestureDragUpdateCallback`` is for a one-dimensional drag (e.g.,
     /// a horizontal or vertical drag), then this value contains the component of
-    /// [delta] along the primary axis (e.g., horizontal or vertical,
-    /// respectively). Otherwise, if the [GestureDragUpdateCallback] is for a
+    /// ``delta`` along the primary axis (e.g., horizontal or vertical,
+    /// respectively). Otherwise, if the ``GestureDragUpdateCallback`` is for a
     /// two-dimensional drag (e.g., a pan), then this value is null.
     ///
     /// Defaults to null if not specified in the constructor.
@@ -171,14 +171,14 @@ public struct DragUpdateDetails {
     ///
     /// See also:
     ///
-    ///  * [localPosition], which is the [globalPosition] transformed to the
+    ///  * ``localPosition``, which is the ``globalPosition`` transformed to the
     ///    coordinate space of the event receiver.
     public let globalPosition: Offset
 
     /// The local position in the coordinate system of the event receiver at
     /// which the pointer contacted the screen.
     ///
-    /// Defaults to [globalPosition] if not specified in the constructor.
+    /// Defaults to ``globalPosition`` if not specified in the constructor.
     public let localPosition: Offset
 }
 
@@ -188,21 +188,21 @@ public struct DragUpdateDetails {
 /// The `details` object provides the position of the touch and the distance it
 /// has traveled since the last update.
 ///
-/// See [DragGestureRecognizer.onUpdate].
+/// See ``DragGestureRecognizer/onUpdate``.
 public typealias GestureDragUpdateCallback = (DragUpdateDetails) -> Void
 
-/// Details object for callbacks that use [GestureDragEndCallback].
+/// Details object for callbacks that use ``GestureDragEndCallback``.
 ///
 /// See also:
 ///
-///  * [DragGestureRecognizer.onEnd], which uses [GestureDragEndCallback].
-///  * [DragDownDetails], the details for [GestureDragDownCallback].
-///  * [DragStartDetails], the details for [GestureDragStartCallback].
-///  * [DragUpdateDetails], the details for [GestureDragUpdateCallback].
+///  * ``DragGestureRecognizer/onEnd``, which uses ``GestureDragEndCallback``.
+///  * ``DragDownDetails``, the details for ``GestureDragDownCallback``.
+///  * ``DragStartDetails``, the details for ``GestureDragStartCallback``.
+///  * ``DragUpdateDetails``, the details for ``GestureDragUpdateCallback``.
 public struct DragEndDetails {
-    /// Creates details for a [GestureDragEndCallback].
+    /// Creates details for a ``GestureDragEndCallback``.
     ///
-    /// If [primaryVelocity] is non-null, its value must match one of the
+    /// If ``primaryVelocity`` is non-null, its value must match one of the
     /// coordinates of `velocity.pixelsPerSecond` and the other coordinate
     /// must be zero.
     public init(
@@ -233,10 +233,10 @@ public struct DragEndDetails {
     /// The velocity the pointer was moving along the primary axis when it stopped
     /// contacting the screen, in logical pixels per second.
     ///
-    /// If the [GestureDragEndCallback] is for a one-dimensional drag (e.g., a
+    /// If the ``GestureDragEndCallback`` is for a one-dimensional drag (e.g., a
     /// horizontal or vertical drag), then this value contains the component of
-    /// [velocity] along the primary axis (e.g., horizontal or vertical,
-    /// respectively). Otherwise, if the [GestureDragEndCallback] is for a
+    /// ``velocity`` along the primary axis (e.g., horizontal or vertical,
+    /// respectively). Otherwise, if the ``GestureDragEndCallback`` is for a
     /// two-dimensional drag (e.g., a pan), then this value is null.
     ///
     /// Defaults to null if not specified in the constructor.
@@ -249,13 +249,13 @@ public struct DragEndDetails {
     ///
     /// See also:
     ///
-    ///  * [localPosition], which is the [globalPosition] transformed to the
+    ///  * ``localPosition``, which is the ``globalPosition`` transformed to the
     ///    coordinate space of the event receiver.
     public let globalPosition: Offset
 
     /// The local position in the coordinate system of the event receiver when
     /// the drag gesture has been completed.
     ///
-    /// Defaults to [globalPosition] if not specified in the constructor.
+    /// Defaults to ``globalPosition`` if not specified in the constructor.
     public let localPosition: Offset
 }

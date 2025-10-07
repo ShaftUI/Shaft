@@ -1244,10 +1244,10 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
         //
         // [this, ...., commonAncestorRenderObject], or null if `this` is the common
         // ancestor.
-        var fromPath: ``RenderObject``?
+        var fromPath: [RenderObject]?
         // [target, ...., commonAncestorRenderObject], or null if `target` is the
         // common ancestor.
-        var toPath: ``RenderObject``?
+        var toPath: [RenderObject]?
 
         var from: RenderObject = self
         var to: RenderObject = target ?? owner!.rootNode!
@@ -1682,7 +1682,7 @@ extension RenderObjectWithChildren {
     }
 
     /// Add all the children to the end of this render object's child list.
-    public func addAll(_ children: ``RenderObject``) {
+    public func addAll(_ children: [RenderObject]) {
         for child in children {
             add(child)
         }
@@ -1766,7 +1766,7 @@ extension RenderObjectWithChildren {
     /// to already be in the child list at some position. Pass null for `after` to
     /// move the child to the start of the child list.
     public func move(_ child: RenderObject, after: RenderObject? = nil) {
-        _move (child, after: after)
+        _move(child, after: after)
     }
 
     /// Move the given `child` in the child list to be after another child.

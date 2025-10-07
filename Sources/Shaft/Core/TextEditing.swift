@@ -67,11 +67,11 @@ public struct TextEditingValue: Equatable {
 
     /// The range of text that is currently selected.
     ///
-    /// When [selection] is a [TextSelection] that has the same non-negative
-    /// `baseOffset` and `extentOffset`, the [selection] property represents the
+    /// When ``selection`` is a ``TextSelection`` that has the same non-negative
+    /// `baseOffset` and `extentOffset`, the ``selection`` property represents the
     /// caret position.
     ///
-    /// If the current [selection] is ``nil``, then the text currently does not
+    /// If the current ``selection`` is ``nil``, then the text currently does not
     /// have a selection or a caret location, and most text editing operations
     /// that rely on the current selection (for instance, insert a character at
     /// the caret location) will do nothing.
@@ -96,42 +96,42 @@ public struct TextEditingValue: Equatable {
     /// The composing region should typically only be changed by the IME, or the
     /// user via interacting with the IME.
     ///
-    /// If the range represented by this property is [TextRange.empty], then the
+    /// If the range represented by this property is ``TextRange/empty``, then the
     /// text is not currently being composed.
     public let composing: TextRange?
 
-    /// Whether the [composing] range is a valid range within [text].
+    /// Whether the ``composing`` range is a valid range within ``text``.
     ///
-    /// Returns true if and only if the [composing] range is normalized, its start
+    /// Returns true if and only if the ``composing`` range is normalized, its start
     /// is greater than or equal to 0, and its end is less than or equal to
-    /// [text]'s length.
+    /// ``text``'s length.
     ///
-    /// If this property is false while the [composing] range's `isValid` is true,
-    /// it usually indicates the current [composing] range is invalid because of a
+    /// If this property is false while the ``composing`` range's `isValid` is true,
+    /// it usually indicates the current ``composing`` range is invalid because of a
     /// programming error.
     var isComposingRangeValid: Bool {
         composing != nil && composing!.isNormalized
             && composing!.end.utf16Offset <= text.utf16.count
     }
 
-    /// Returns a new [TextEditingValue], which is this [TextEditingValue] with
-    /// its [text] partially replaced by the `replacementString`.
+    /// Returns a new ``TextEditingValue``, which is this ``TextEditingValue`` with
+    /// its ``text`` partially replaced by the `replacementString`.
     ///
     /// The `replacementRange` parameter specifies the range of the
-    /// [TextEditingValue.text] that needs to be replaced.
+    /// ``TextEditingValue/text`` that needs to be replaced.
     ///
     /// The `replacementString` parameter specifies the string to replace the
     /// given range of text with.
     ///
     /// This method also adjusts the selection range and the composing range of the
-    /// resulting [TextEditingValue], such that they point to the same substrings
-    /// as the corresponding ranges in the original [TextEditingValue]. For
-    /// example, if the original [TextEditingValue] is "Hello world" with the word
+    /// resulting ``TextEditingValue``, such that they point to the same substrings
+    /// as the corresponding ranges in the original ``TextEditingValue``. For
+    /// example, if the original ``TextEditingValue`` is "Hello world" with the word
     /// "world" selected, replacing "Hello" with a different string using this
     /// method will not change the selected word.
     ///
     /// This method does nothing if the given `replacementRange` is not
-    /// [TextRange.isValid].
+    /// ``TextRange/isValid``.
     public func replaced(_ replacementRange: TextRange, _ replacementString: String)
         -> TextEditingValue
     {
@@ -177,8 +177,8 @@ public struct TextEditingValue: Equatable {
         )
     }
 
-    /// Creates a new [TextEditingValue] with the given properties, or with the
-    /// properties of this [TextEditingValue] if the corresponding parameter is
+    /// Creates a new ``TextEditingValue`` with the given properties, or with the
+    /// properties of this ``TextEditingValue`` if the corresponding parameter is
     /// null.
     public func copyWith(
         text: String? = nil,
@@ -196,7 +196,7 @@ public struct TextEditingValue: Equatable {
 /// A structure representing a granular change that has occurred to the editing
 /// state as a result of text editing.
 public protocol TextEditingDelta {
-    /// Get a copy of the given [value] with the change applied to it.
+    /// Get a copy of the given ``value`` with the change applied to it.
     func apply(to value: TextEditingValue) -> TextEditingValue
 }
 
@@ -410,7 +410,7 @@ public struct TextSelection: Equatable {
         return TextPosition(offset: extentOffset, affinity: affinity)
     }
 
-    /// Creates a new [TextSelection] based on the current selection, with the
+    /// Creates a new ``TextSelection`` based on the current selection, with the
     /// provided parameters overridden.
     public func copyWith(
         baseOffset: TextIndex? = nil,
@@ -426,24 +426,24 @@ public struct TextSelection: Equatable {
         )
     }
 
-    /// Returns the smallest [TextSelection] that this could expand to in order to
-    /// include the given [TextPosition].
+    /// Returns the smallest ``TextSelection`` that this could expand to in order to
+    /// include the given ``TextPosition``.
     ///
-    /// If the given [TextPosition] is already inside of the selection, then
+    /// If the given ``TextPosition`` is already inside of the selection, then
     /// returns `self` without change.
     ///
     /// The returned selection will always be a strict superset of the current
     /// selection. In other words, the selection grows to include the given
-    /// [TextPosition].
+    /// ``TextPosition``.
     ///
-    /// If extentAtIndex is true, then the [TextSelection.extentOffset] will be
+    /// If extentAtIndex is true, then the ``TextSelection/extentOffset`` will be
     /// placed at the given index regardless of the original order of it and
-    /// [TextSelection.baseOffset]. Otherwise, their order will be preserved.
+    /// ``TextSelection/baseOffset``. Otherwise, their order will be preserved.
     ///
-    /// ## Difference with [extendTo]
-    /// In contrast with this method, [extendTo] is a pivot; it holds
-    /// [TextSelection.baseOffset] fixed while moving [TextSelection.extentOffset]
-    /// to the given [TextPosition]. It doesn't strictly grow the selection and
+    /// ## Difference with ``extendTo``
+    /// In contrast with this method, ``extendTo`` is a pivot; it holds
+    /// ``TextSelection/baseOffset`` fixed while moving ``TextSelection/extentOffset``
+    /// to the given ``TextPosition``. It doesn't strictly grow the selection and
     /// may collapse it or flip its order.
     public func expandTo(_ position: TextPosition, extentAtIndex: Bool = false) -> TextSelection {
         // If position is already within in the selection, there's nothing to do.
@@ -480,16 +480,16 @@ public struct TextSelection: Equatable {
         )
     }
 
-    /// Keeping the selection's [TextSelection.baseOffset] fixed, pivot the
-    /// [TextSelection.extentOffset] to the given [TextPosition].
+    /// Keeping the selection's ``TextSelection/baseOffset`` fixed, pivot the
+    /// ``TextSelection/extentOffset`` to the given ``TextPosition``.
     ///
-    /// In some cases, the [TextSelection.baseOffset] and
-    /// [TextSelection.extentOffset] may flip during this operation, and/or the
+    /// In some cases, the ``TextSelection/baseOffset`` and
+    /// ``TextSelection/extentOffset`` may flip during this operation, and/or the
     /// size of the selection may shrink.
     ///
-    /// ## Difference with [expandTo]
-    /// In contrast with this method, [expandTo] is strictly growth; the
-    /// selection is grown to include the given [TextPosition] and will never
+    /// ## Difference with ``expandTo``
+    /// In contrast with this method, ``expandTo`` is strictly growth; the
+    /// selection is grown to include the given ``TextPosition`` and will never
     /// shrink.
     public func extendTo(_ position: TextPosition) -> TextSelection {
         // If the selection's extent is at the position already, then nothing
@@ -512,15 +512,15 @@ public protocol TextSelectionDelegate {
     var textEditingValue: TextEditingValue { get }
 
     /// Indicates that the user has requested the delegate to replace its current
-    /// text editing state with [value].
+    /// text editing state with ``value``.
     ///
-    /// The new [value] is treated as user input and thus may subject to input
+    /// The new ``value`` is treated as user input and thus may subject to input
     /// formatting.
     ///
     /// See also:
     ///
-    /// * [EditableTextState.userUpdateTextEditingValue]: an implementation that
-    ///   applies additional pre-processing to the specified [value], before
+    /// * ``EditableTextState/userUpdateTextEditingValue``: an implementation that
+    ///   applies additional pre-processing to the specified ``value``, before
     ///   updating the text editing state.
     func userUpdateTextEditingValue(_ value: TextEditingValue, cause: SelectionChangedCause?)
 }

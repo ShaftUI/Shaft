@@ -63,7 +63,7 @@ public protocol ValueListenable<Value>: Listenable {
 }
 
 /// A class that can be extended that provides a change notification API using
-/// [VoidCallback] for notifications.
+/// ``VoidCallback`` for notifications.
 ///
 /// It is O(1) for adding listeners and O(N) for removing listeners and
 /// dispatching notifications (where N is the number of listeners).

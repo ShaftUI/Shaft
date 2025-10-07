@@ -27,7 +27,7 @@ extension Duration {
     ///
     /// Notice that some minutes of official clock time might
     /// differ in length because of leap seconds.
-    /// The [Duration] and [DateTime] classes ignore leap seconds
+    /// The ``Duration`` and ``DateTime`` classes ignore leap seconds
     /// and consider all minutes to have 60 seconds.
     public static var secondsPerMinute = 60
 
@@ -38,7 +38,7 @@ extension Duration {
     ///
     /// Notice that some days may differ in length because
     /// of time zone changes due to daylight saving.
-    /// The [Duration] class is time zone agnostic and
+    /// The ``Duration`` class is time zone agnostic and
     /// considers all days to have 24 hours.
     public static var hoursPerDay = 24
 

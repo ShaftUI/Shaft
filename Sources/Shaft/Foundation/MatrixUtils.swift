@@ -5,7 +5,7 @@
 import SwiftMath
 
 public struct MatrixUtils {
-    /// Returns the given [transform] matrix as an [Offset], if the matrix is
+    /// Returns the given ``transform`` matrix as an ``Offset``, if the matrix is
     /// nothing but a 2D translation.
     ///
     /// Otherwise, returns null.
@@ -31,7 +31,7 @@ public struct MatrixUtils {
         return nil
     }
 
-    /// Returns the given [transform] matrix as a [double] describing a uniform
+    /// Returns the given ``transform`` matrix as a ``double`` describing a uniform
     /// scale, if the matrix is nothing but a symmetric 2D scale transform.
     ///
     /// Otherwise, returns null.
@@ -116,7 +116,7 @@ public struct MatrixUtils {
     ///
     /// While not common, this method may return (NaN, NaN), iff the given `point`
     /// results in a "point at infinity" in homogeneous coordinates after applying
-    /// the `transform`. For example, a [RenderObject] may set its transform to
+    /// the `transform`. For example, a ``RenderObject`` may set its transform to
     /// the zero matrix to indicate its content is currently not visible. Trying
     /// to convert an `Offset` to its coordinate space always results in
     /// (NaN, NaN).
@@ -215,10 +215,10 @@ public struct MatrixUtils {
         // On top of all of those operations, using the vector_math package to
         // do the work for us involves allocating several objects in order to
         // communicate the values back and forth - 4 allocating getters to extract
-        // the [Offset] objects for the corners of the [Rect], 4 conversions to
-        // a [Vector3] to use [Matrix4.perspectiveTransform()], and then 4 new
-        // [Offset] objects allocated to hold those results, yielding 8 [Offset]
-        // and 4 [Vector3] object allocations per rectangle transformed.
+        // the ``Offset`` objects for the corners of the [Rect], 4 conversions to
+        // a ``Vector3`` to use [Matrix4.perspectiveTransform()], and then 4 new
+        // ``Offset`` objects allocated to hold those results, yielding 8 ``Offset``
+        // and 4 ``Vector3`` object allocations per rectangle transformed.
         //
         // But the math we really need to get our answer is actually much less
         // than that.
@@ -445,7 +445,7 @@ public struct MatrixUtils {
     // /// The `radius` simulates the radius of the cylinder the plane is being
     // /// wrapped onto. If the transformation is applied to a 0-dimensional dot
     // /// instead of a plane, the dot would translate by ± `radius` pixels
-    // /// along the `orientation` [Axis] when rotating from 0 to ±90 degrees.
+    // /// along the `orientation` ``Axis`` when rotating from 0 to ±90 degrees.
     // ///
     // /// A positive radius means the object is closest at 0 `angle` and a negative
     // /// radius means the object is closest at π `angle` or 180 degrees.
@@ -511,7 +511,7 @@ public struct MatrixUtils {
     //   return result;
     // }
 
-    // /// Returns a matrix that transforms every point to [offset].
+    // /// Returns a matrix that transforms every point to ``offset``.
     // public static Matrix4 forceToPoint(Offset offset) {
     //   return Matrix4.identity()
     //     ..setRow(0, Vector4(0, 0, 0, offset.dx))
@@ -541,7 +541,7 @@ extension Matrix4x4f {
         self[3, 3] = 0.0
     }
 
-    /// Rotate this [angle] radians around X
+    /// Rotate this ``angle`` radians around X
     public mutating func rotateX(_ angle: Angle) {
         let (sin:sinAngle, cos:cosAngle) = sincos(angle)
 
@@ -563,7 +563,7 @@ extension Matrix4x4f {
         self[2, 3] = t8
     }
 
-    /// Rotate this matrix [angle] radians around Y
+    /// Rotate this matrix ``angle`` radians around Y
     public mutating func rotateY(_ angle: Angle) {
         let (sin:sinAngle, cos:cosAngle) = sincos(angle)
 
@@ -585,7 +585,7 @@ extension Matrix4x4f {
         self[2, 3] = t8
     }
 
-    /// Rotate this matrix [angle] radians around Z
+    /// Rotate this matrix ``angle`` radians around Z
     public mutating func rotateZ(_ angle: Angle) {
         let (sin:sinAngle, cos:cosAngle) = sincos(angle)
 
@@ -633,7 +633,7 @@ extension Matrix4x4f {
         self[3, 3] *= sw
     }
 
-    /// Scale this matrix by a [Vector3]
+    /// Scale this matrix by a ``Vector3``
     public mutating func scale(_ vector: Vector3f) {
         scale(vector.x, vector.y, vector.z)
     }
@@ -643,7 +643,7 @@ extension Matrix4x4f {
         scale(vector.x, vector.y, vector.z, vector.w)
     }
 
-    /// Rotate this [angle] radians around [axis]
+    /// Rotate this ``angle`` radians around [axis]
     public mutating func rotate(_ axis: Vector3f, _ angle: Angle) {
         let len = axis.length
         let x = axis.x / len
@@ -705,7 +705,7 @@ extension Matrix4x4f {
         self[3, 3] = t4
     }
 
-    /// Translate this matrix by a [Vector3]
+    /// Translate this matrix by a ``Vector3``
     public mutating func translate(_ vector: Vector3f) {
         translate(vector.x, vector.y, vector.z)
     }
@@ -719,7 +719,7 @@ extension Matrix4x4f {
     ///
     /// When applying the resulting transform matrix to a point with a
     /// z-coordinate of zero (which is generally assumed for all points
-    /// represented by an [Offset]), the other coordinates will get transformed as
+    /// represented by an ``Offset``), the other coordinates will get transformed as
     /// before, but the new z-coordinate is going to be zero again. This is
     /// achieved by setting the third column and third row of the matrix to
     /// "0, 0, 1, 0".
@@ -727,7 +727,7 @@ extension Matrix4x4f {
     ///
     /// When applying the resulting transform matrix to a point with a
     /// z-coordinate of zero (which is generally assumed for all points
-    /// represented by an [Offset]), the other coordinates will get transformed as
+    /// represented by an ``Offset``), the other coordinates will get transformed as
     /// before, but the new z-coordinate is going to be zero again. This is
     /// achieved by setting the third column and third row of the matrix to
     /// "0, 0, 1, 0".

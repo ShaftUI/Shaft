@@ -13,7 +13,7 @@ public enum PointerDeviceKind {
     /// The most common case is a touch screen.
     ///
     /// When the user is operating with a trackpad on iOS, clicking will also
-    /// dispatch events with kind [touch] if
+    /// dispatch events with kind ``touch`` if
     /// `UIApplicationSupportsIndirectInputEvents` is not present in `Info.plist`
     /// or returns NO.
     ///
@@ -27,8 +27,8 @@ public enum PointerDeviceKind {
     /// The most common case is a mouse on the desktop or Web.
     ///
     /// When the user is operating with a trackpad on iOS, moving the pointing
-    /// cursor will also dispatch events with kind [mouse], and clicking will
-    /// dispatch events with kind [mouse] if
+    /// cursor will also dispatch events with kind ``mouse``, and clicking will
+    /// dispatch events with kind ``mouse`` if
     /// `UIApplicationSupportsIndirectInputEvents` is not present in `Info.plist`
     /// or returns NO.
     ///
@@ -50,20 +50,20 @@ public enum PointerDeviceKind {
     /// is not the screen).
     ///
     /// When the user makes zoom, pan, scroll or rotate gestures with a physical
-    /// trackpad, supporting platforms dispatch events with kind [trackpad].
+    /// trackpad, supporting platforms dispatch events with kind ``trackpad``.
     ///
-    /// Events with kind [trackpad] can only have a [PointerChange] of `add`,
+    /// Events with kind ``trackpad`` can only have a ``PointerChange`` of `add`,
     /// `remove`, and pan-zoom related values.
     ///
     /// Some platforms don't support (or don't fully support) trackpad
     /// gestures, and might convert trackpad gestures into fake pointer events
-    /// that simulate dragging. These events typically have kind [touch] or
-    /// [mouse] instead of [trackpad]. This includes (but is not limited to) Web,
+    /// that simulate dragging. These events typically have kind ``touch`` or
+    /// ``mouse`` instead of ``trackpad``. This includes (but is not limited to) Web,
     /// and iOS when `UIApplicationSupportsIndirectInputEvents` isn't present in
     /// `Info.plist` or returns NO.
     ///
     /// Moving the pointing cursor or clicking with a trackpad typically triggers
-    /// [touch] or [mouse] events, but never triggers [trackpad] events.
+    /// ``touch`` or ``mouse`` events, but never triggers ``trackpad`` events.
     ///
     /// See also:
     ///
@@ -119,17 +119,17 @@ public enum PointerChange {
 
     /// A pan/zoom has started on this pointer.
     ///
-    /// This type of event will always have kind [PointerDeviceKind.trackpad].
+    /// This type of event will always have kind ``PointerDeviceKind/trackpad``.
     case panZoomStart
 
     /// The pan/zoom on this pointer has updated.
     ///
-    /// This type of event will always have kind [PointerDeviceKind.trackpad].
+    /// This type of event will always have kind ``PointerDeviceKind/trackpad``.
     case panZoomUpdate
 
     /// The pan/zoom on this pointer has ended.
     ///
-    /// This type of event will always have kind [PointerDeviceKind.trackpad].
+    /// This type of event will always have kind ``PointerDeviceKind/trackpad``.
     case panZoomEnd
 
     /// No change has occurred since the last report.
@@ -143,7 +143,7 @@ public struct PointerButtons: OptionSet {
         self.rawValue = rawValue
     }
 
-    /// The bit of [PointerEvent.buttons] that corresponds to a cross-device
+    /// The bit of ``PointerEvent/buttons`` that corresponds to a cross-device
     /// behavior of "primary operation".
     ///
     /// More specifically, it includes:
@@ -153,7 +153,7 @@ public struct PointerButtons: OptionSet {
     ///  * [kPrimaryMouseButton]: The primary mouse button.
     public static let primaryButton = Self(rawValue: 1 << 0)
 
-    /// The bit of [PointerEvent.buttons] that corresponds to a cross-device
+    /// The bit of ``PointerEvent/buttons`` that corresponds to a cross-device
     /// behavior of "secondary operation".
     ///
     /// It is equivalent to:
@@ -162,32 +162,32 @@ public struct PointerButtons: OptionSet {
     ///  * [kSecondaryMouseButton]: The secondary mouse button.
     public static let secondaryButton = Self(rawValue: 1 << 1)
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the primary mouse
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the primary mouse
     /// button.
     ///
     /// The primary mouse button is typically the left button on the top of the
     /// mouse but can be reconfigured to be a different physical button.
     public static let primaryMouseButton = primaryButton
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the secondary
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the secondary
     /// mouse button.
     ///
     /// The secondary mouse button is typically the right button on the top of
     /// the mouse but can be reconfigured to be a different physical button.
     public static let secondaryMouseButton = secondaryButton
 
-    /// The bit of [PointerEvent.buttons] that corresponds to when a stylus
+    /// The bit of ``PointerEvent/buttons`` that corresponds to when a stylus
     /// contacting the screen.
     public static let stylusContact = primaryButton
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the primary stylus
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the primary stylus
     /// button.
     ///
     /// The primary stylus button is typically the top of the stylus and near
     /// the tip but can be reconfigured to be a different physical button.
     public static let primaryStylusButton = secondaryButton
 
-    /// The bit of [PointerEvent.buttons] that corresponds to a cross-device
+    /// The bit of ``PointerEvent/buttons`` that corresponds to a cross-device
     /// behavior of "tertiary operation".
     ///
     /// It is equivalent to:
@@ -199,7 +199,7 @@ public struct PointerButtons: OptionSet {
     ///    primary operation).
     public static let tertiaryButton = Self(rawValue: 1 << 2)
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the middle mouse
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the middle mouse
     /// button.
     ///
     /// The middle mouse button is typically between the left and right buttons
@@ -207,7 +207,7 @@ public struct PointerButtons: OptionSet {
     /// physical button.
     public static let middleMouseButton = tertiaryButton
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the secondary
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the secondary
     /// stylus button.
     ///
     /// The secondary stylus button is typically on the end of the stylus
@@ -215,21 +215,21 @@ public struct PointerButtons: OptionSet {
     /// button.
     public static let secondaryStylusButton = tertiaryButton
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the back mouse
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the back mouse
     /// button.
     ///
     /// The back mouse button is typically on the left side of the mouse but can
     /// be reconfigured to be a different physical button.
     public static let backMouseButton = Self(rawValue: 1 << 3)
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the forward mouse
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the forward mouse
     /// button.
     ///
     /// The forward mouse button is typically on the right side of the mouse but
     /// can be reconfigured to be a different physical button.
     public static let forwardMouseButton = Self(rawValue: 1 << 4)
 
-    /// The bit of [PointerEvent.buttons] that corresponds to the pointer
+    /// The bit of ``PointerEvent/buttons`` that corresponds to the pointer
     /// contacting a touch screen.
     public static let touchContact = primaryButton
 }
@@ -270,7 +270,7 @@ public struct PointerData {
         self.scrollDeltaY = scrollDeltaY
     }
 
-    /// The ID of the [NativeView] this [PointerEvent] originated from.
+    /// The ID of the ``NativeView`` this ``PointerEvent`` originated from.
     public var viewId: Int
 
     /// Time of event dispatch, relative to an arbitrary timeline.
@@ -310,7 +310,7 @@ public struct PointerData {
 
     /// Bit field using the *Button constants (primaryMouseButton,
     /// secondaryStylusButton, etc). For example, if this has the value 6 and the
-    /// [kind] is [PointerDeviceKind.invertedStylus], then this indicates an
+    /// ``kind`` is ``PointerDeviceKind/invertedStylus``, then this indicates an
     /// upside-down stylus with both its primary and secondary buttons pressed.
     public var buttons: PointerButtons
 

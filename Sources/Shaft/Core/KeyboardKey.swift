@@ -7,12 +7,12 @@
 // found in the LICENSE file.
 
 /// A class with static values that describe the keys that are returned from
-/// [RawKeyEvent.physicalKey].
+/// ``RawKeyEvent/physicalKey``.
 ///
 /// These represent *physical* keys, which are keys which represent a particular
 /// key location on a QWERTY keyboard. It ignores any modifiers, modes, or
 /// keyboard layouts which may be in effect. This is contrast to
-/// [LogicalKeyboardKey], which represents a logical key interpreted in the
+/// ``LogicalKeyboardKey``, which represents a logical key interpreted in the
 /// context of modifiers, modes, and/or keyboard layouts.
 ///
 /// As an example, if you wanted a game where the key next to the CAPS LOCK (the
@@ -35,1466 +35,1466 @@
 public enum PhysicalKeyboardKey: UInt, CaseIterable {
     /// Represents the location of the "Hyper" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case hyper = 0x0000_0010
 
     /// Represents the location of the "Super Key" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case superKey = 0x0000_0011
 
     /// Represents the location of the "Fn" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case fn = 0x0000_0012
 
     /// Represents the location of the "Fn Lock" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case fnLock = 0x0000_0013
 
     /// Represents the location of the "Suspend" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case suspend = 0x0000_0014
 
     /// Represents the location of the "Resume" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case resume = 0x0000_0015
 
     /// Represents the location of the "Turbo" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case turbo = 0x0000_0016
 
     /// Represents the location of the "Privacy Screen Toggle" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case privacyScreenToggle = 0x0000_0017
 
     /// Represents the location of the "Microphone Mute Toggle" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case microphoneMuteToggle = 0x0000_0018
 
     /// Represents the location of the "Sleep" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case sleep = 0x0001_0082
 
     /// Represents the location of the "Wake Up" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case wakeUp = 0x0001_0083
 
     /// Represents the location of the "Display Toggle Int Ext" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case displayToggleIntExt = 0x0001_00b5
 
     /// Represents the location of the "Game Button 1" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton1 = 0x0005_ff01
 
     /// Represents the location of the "Game Button 2" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton2 = 0x0005_ff02
 
     /// Represents the location of the "Game Button 3" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton3 = 0x0005_ff03
 
     /// Represents the location of the "Game Button 4" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton4 = 0x0005_ff04
 
     /// Represents the location of the "Game Button 5" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton5 = 0x0005_ff05
 
     /// Represents the location of the "Game Button 6" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton6 = 0x0005_ff06
 
     /// Represents the location of the "Game Button 7" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton7 = 0x0005_ff07
 
     /// Represents the location of the "Game Button 8" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton8 = 0x0005_ff08
 
     /// Represents the location of the "Game Button 9" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton9 = 0x0005_ff09
 
     /// Represents the location of the "Game Button 10" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton10 = 0x0005_ff0a
 
     /// Represents the location of the "Game Button 11" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton11 = 0x0005_ff0b
 
     /// Represents the location of the "Game Button 12" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton12 = 0x0005_ff0c
 
     /// Represents the location of the "Game Button 13" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton13 = 0x0005_ff0d
 
     /// Represents the location of the "Game Button 14" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton14 = 0x0005_ff0e
 
     /// Represents the location of the "Game Button 15" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton15 = 0x0005_ff0f
 
     /// Represents the location of the "Game Button 16" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButton16 = 0x0005_ff10
 
     /// Represents the location of the "Game Button A" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonA = 0x0005_ff11
 
     /// Represents the location of the "Game Button B" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonB = 0x0005_ff12
 
     /// Represents the location of the "Game Button C" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonC = 0x0005_ff13
 
     /// Represents the location of the "Game Button Left 1" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonLeft1 = 0x0005_ff14
 
     /// Represents the location of the "Game Button Left 2" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonLeft2 = 0x0005_ff15
 
     /// Represents the location of the "Game Button Mode" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonMode = 0x0005_ff16
 
     /// Represents the location of the "Game Button Right 1" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonRight1 = 0x0005_ff17
 
     /// Represents the location of the "Game Button Right 2" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonRight2 = 0x0005_ff18
 
     /// Represents the location of the "Game Button Select" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonSelect = 0x0005_ff19
 
     /// Represents the location of the "Game Button Start" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonStart = 0x0005_ff1a
 
     /// Represents the location of the "Game Button Thumb Left" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonThumbLeft = 0x0005_ff1b
 
     /// Represents the location of the "Game Button Thumb Right" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonThumbRight = 0x0005_ff1c
 
     /// Represents the location of the "Game Button X" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonX = 0x0005_ff1d
 
     /// Represents the location of the "Game Button Y" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonY = 0x0005_ff1e
 
     /// Represents the location of the "Game Button Z" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case gameButtonZ = 0x0005_ff1f
 
     /// Represents the location of the "Usb Reserved" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case usbReserved = 0x0007_0000
 
     /// Represents the location of the "Usb Error Roll Over" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case usbErrorRollOver = 0x0007_0001
 
     /// Represents the location of the "Usb Post Fail" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case usbPostFail = 0x0007_0002
 
     /// Represents the location of the "Usb Error Undefined" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case usbErrorUndefined = 0x0007_0003
 
     /// Represents the location of the "Key A" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyA = 0x0007_0004
 
     /// Represents the location of the "Key B" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyB = 0x0007_0005
 
     /// Represents the location of the "Key C" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyC = 0x0007_0006
 
     /// Represents the location of the "Key D" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyD = 0x0007_0007
 
     /// Represents the location of the "Key E" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyE = 0x0007_0008
 
     /// Represents the location of the "Key F" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyF = 0x0007_0009
 
     /// Represents the location of the "Key G" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyG = 0x0007_000a
 
     /// Represents the location of the "Key H" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyH = 0x0007_000b
 
     /// Represents the location of the "Key I" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyI = 0x0007_000c
 
     /// Represents the location of the "Key J" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyJ = 0x0007_000d
 
     /// Represents the location of the "Key K" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyK = 0x0007_000e
 
     /// Represents the location of the "Key L" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyL = 0x0007_000f
 
     /// Represents the location of the "Key M" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyM = 0x0007_0010
 
     /// Represents the location of the "Key N" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyN = 0x0007_0011
 
     /// Represents the location of the "Key O" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyO = 0x0007_0012
 
     /// Represents the location of the "Key P" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyP = 0x0007_0013
 
     /// Represents the location of the "Key Q" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyQ = 0x0007_0014
 
     /// Represents the location of the "Key R" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyR = 0x0007_0015
 
     /// Represents the location of the "Key S" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyS = 0x0007_0016
 
     /// Represents the location of the "Key T" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyT = 0x0007_0017
 
     /// Represents the location of the "Key U" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyU = 0x0007_0018
 
     /// Represents the location of the "Key V" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyV = 0x0007_0019
 
     /// Represents the location of the "Key W" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyW = 0x0007_001a
 
     /// Represents the location of the "Key X" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyX = 0x0007_001b
 
     /// Represents the location of the "Key Y" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyY = 0x0007_001c
 
     /// Represents the location of the "Key Z" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyZ = 0x0007_001d
 
     /// Represents the location of the "Digit 1" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit1 = 0x0007_001e
 
     /// Represents the location of the "Digit 2" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit2 = 0x0007_001f
 
     /// Represents the location of the "Digit 3" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit3 = 0x0007_0020
 
     /// Represents the location of the "Digit 4" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit4 = 0x0007_0021
 
     /// Represents the location of the "Digit 5" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit5 = 0x0007_0022
 
     /// Represents the location of the "Digit 6" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit6 = 0x0007_0023
 
     /// Represents the location of the "Digit 7" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit7 = 0x0007_0024
 
     /// Represents the location of the "Digit 8" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit8 = 0x0007_0025
 
     /// Represents the location of the "Digit 9" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit9 = 0x0007_0026
 
     /// Represents the location of the "Digit 0" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case digit0 = 0x0007_0027
 
     /// Represents the location of the "Enter" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case enter = 0x0007_0028
 
     /// Represents the location of the "Escape" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case escape = 0x0007_0029
 
     /// Represents the location of the "Backspace" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case backspace = 0x0007_002a
 
     /// Represents the location of the "Tab" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case tab = 0x0007_002b
 
     /// Represents the location of the "Space" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case space = 0x0007_002c
 
     /// Represents the location of the "Minus" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case minus = 0x0007_002d
 
     /// Represents the location of the "Equal" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case equal = 0x0007_002e
 
     /// Represents the location of the "Bracket Left" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case bracketLeft = 0x0007_002f
 
     /// Represents the location of the "Bracket Right" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case bracketRight = 0x0007_0030
 
     /// Represents the location of the "Backslash" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case backslash = 0x0007_0031
 
     /// Represents the location of the "Semicolon" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case semicolon = 0x0007_0033
 
     /// Represents the location of the "Quote" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case quote = 0x0007_0034
 
     /// Represents the location of the "Backquote" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case backquote = 0x0007_0035
 
     /// Represents the location of the "Comma" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case comma = 0x0007_0036
 
     /// Represents the location of the "Period" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case period = 0x0007_0037
 
     /// Represents the location of the "Slash" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case slash = 0x0007_0038
 
     /// Represents the location of the "Caps Lock" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case capsLock = 0x0007_0039
 
     /// Represents the location of the "F1" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f1 = 0x0007_003a
 
     /// Represents the location of the "F2" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f2 = 0x0007_003b
 
     /// Represents the location of the "F3" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f3 = 0x0007_003c
 
     /// Represents the location of the "F4" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f4 = 0x0007_003d
 
     /// Represents the location of the "F5" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f5 = 0x0007_003e
 
     /// Represents the location of the "F6" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f6 = 0x0007_003f
 
     /// Represents the location of the "F7" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f7 = 0x0007_0040
 
     /// Represents the location of the "F8" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f8 = 0x0007_0041
 
     /// Represents the location of the "F9" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f9 = 0x0007_0042
 
     /// Represents the location of the "F10" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f10 = 0x0007_0043
 
     /// Represents the location of the "F11" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f11 = 0x0007_0044
 
     /// Represents the location of the "F12" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f12 = 0x0007_0045
 
     /// Represents the location of the "Print Screen" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case printScreen = 0x0007_0046
 
     /// Represents the location of the "Scroll Lock" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case scrollLock = 0x0007_0047
 
     /// Represents the location of the "Pause" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case pause = 0x0007_0048
 
     /// Represents the location of the "Insert" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case insert = 0x0007_0049
 
     /// Represents the location of the "Home" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case home = 0x0007_004a
 
     /// Represents the location of the "Page Up" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case pageUp = 0x0007_004b
 
     /// Represents the location of the "Delete" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case delete = 0x0007_004c
 
     /// Represents the location of the "End" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case end = 0x0007_004d
 
     /// Represents the location of the "Page Down" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case pageDown = 0x0007_004e
 
     /// Represents the location of the "Arrow Right" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case arrowRight = 0x0007_004f
 
     /// Represents the location of the "Arrow Left" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case arrowLeft = 0x0007_0050
 
     /// Represents the location of the "Arrow Down" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case arrowDown = 0x0007_0051
 
     /// Represents the location of the "Arrow Up" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case arrowUp = 0x0007_0052
 
     /// Represents the location of the "Num Lock" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numLock = 0x0007_0053
 
     /// Represents the location of the "Numpad Divide" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadDivide = 0x0007_0054
 
     /// Represents the location of the "Numpad Multiply" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadMultiply = 0x0007_0055
 
     /// Represents the location of the "Numpad Subtract" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadSubtract = 0x0007_0056
 
     /// Represents the location of the "Numpad Add" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadAdd = 0x0007_0057
 
     /// Represents the location of the "Numpad Enter" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadEnter = 0x0007_0058
 
     /// Represents the location of the "Numpad 1" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad1 = 0x0007_0059
 
     /// Represents the location of the "Numpad 2" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad2 = 0x0007_005a
 
     /// Represents the location of the "Numpad 3" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad3 = 0x0007_005b
 
     /// Represents the location of the "Numpad 4" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad4 = 0x0007_005c
 
     /// Represents the location of the "Numpad 5" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad5 = 0x0007_005d
 
     /// Represents the location of the "Numpad 6" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad6 = 0x0007_005e
 
     /// Represents the location of the "Numpad 7" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad7 = 0x0007_005f
 
     /// Represents the location of the "Numpad 8" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad8 = 0x0007_0060
 
     /// Represents the location of the "Numpad 9" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad9 = 0x0007_0061
 
     /// Represents the location of the "Numpad 0" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpad0 = 0x0007_0062
 
     /// Represents the location of the "Numpad Decimal" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadDecimal = 0x0007_0063
 
     /// Represents the location of the "Intl Backslash" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case intlBackslash = 0x0007_0064
 
     /// Represents the location of the "Context Menu" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case contextMenu = 0x0007_0065
 
     /// Represents the location of the "Power" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case power = 0x0007_0066
 
     /// Represents the location of the "Numpad Equal" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadEqual = 0x0007_0067
 
     /// Represents the location of the "F13" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f13 = 0x0007_0068
 
     /// Represents the location of the "F14" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f14 = 0x0007_0069
 
     /// Represents the location of the "F15" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f15 = 0x0007_006a
 
     /// Represents the location of the "F16" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f16 = 0x0007_006b
 
     /// Represents the location of the "F17" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f17 = 0x0007_006c
 
     /// Represents the location of the "F18" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f18 = 0x0007_006d
 
     /// Represents the location of the "F19" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f19 = 0x0007_006e
 
     /// Represents the location of the "F20" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f20 = 0x0007_006f
 
     /// Represents the location of the "F21" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f21 = 0x0007_0070
 
     /// Represents the location of the "F22" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f22 = 0x0007_0071
 
     /// Represents the location of the "F23" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f23 = 0x0007_0072
 
     /// Represents the location of the "F24" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case f24 = 0x0007_0073
 
     /// Represents the location of the "Open" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case open = 0x0007_0074
 
     /// Represents the location of the "Help" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case help = 0x0007_0075
 
     /// Represents the location of the "Select" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case select = 0x0007_0077
 
     /// Represents the location of the "Again" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case again = 0x0007_0079
 
     /// Represents the location of the "Undo" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case undo = 0x0007_007a
 
     /// Represents the location of the "Cut" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case cut = 0x0007_007b
 
     /// Represents the location of the "Copy" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case copy = 0x0007_007c
 
     /// Represents the location of the "Paste" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case paste = 0x0007_007d
 
     /// Represents the location of the "Find" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case find = 0x0007_007e
 
     /// Represents the location of the "Audio Volume Mute" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case audioVolumeMute = 0x0007_007f
 
     /// Represents the location of the "Audio Volume Up" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case audioVolumeUp = 0x0007_0080
 
     /// Represents the location of the "Audio Volume Down" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case audioVolumeDown = 0x0007_0081
 
     /// Represents the location of the "Numpad Comma" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadComma = 0x0007_0085
 
     /// Represents the location of the "Intl Ro" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case intlRo = 0x0007_0087
 
     /// Represents the location of the "Kana Mode" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case kanaMode = 0x0007_0088
 
     /// Represents the location of the "Intl Yen" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case intlYen = 0x0007_0089
 
     /// Represents the location of the "Convert" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case convert = 0x0007_008a
 
     /// Represents the location of the "Non Convert" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case nonConvert = 0x0007_008b
 
     /// Represents the location of the "Lang 1" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case lang1 = 0x0007_0090
 
     /// Represents the location of the "Lang 2" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case lang2 = 0x0007_0091
 
     /// Represents the location of the "Lang 3" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case lang3 = 0x0007_0092
 
     /// Represents the location of the "Lang 4" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case lang4 = 0x0007_0093
 
     /// Represents the location of the "Lang 5" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case lang5 = 0x0007_0094
 
     /// Represents the location of the "Abort" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case abort = 0x0007_009b
 
     /// Represents the location of the "Props" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case props = 0x0007_00a3
 
     /// Represents the location of the "Numpad Paren Left" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadParenLeft = 0x0007_00b6
 
     /// Represents the location of the "Numpad Paren Right" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadParenRight = 0x0007_00b7
 
     /// Represents the location of the "Numpad Backspace" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadBackspace = 0x0007_00bb
 
     /// Represents the location of the "Numpad Memory Store" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadMemoryStore = 0x0007_00d0
 
     /// Represents the location of the "Numpad Memory Recall" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadMemoryRecall = 0x0007_00d1
 
     /// Represents the location of the "Numpad Memory Clear" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadMemoryClear = 0x0007_00d2
 
     /// Represents the location of the "Numpad Memory Add" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadMemoryAdd = 0x0007_00d3
 
     /// Represents the location of the "Numpad Memory Subtract" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadMemorySubtract = 0x0007_00d4
 
     /// Represents the location of the "Numpad Sign Change" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadSignChange = 0x0007_00d7
 
     /// Represents the location of the "Numpad Clear" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadClear = 0x0007_00d8
 
     /// Represents the location of the "Numpad Clear Entry" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case numpadClearEntry = 0x0007_00d9
 
     /// Represents the location of the "Control Left" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case controlLeft = 0x0007_00e0
 
     /// Represents the location of the "Shift Left" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case shiftLeft = 0x0007_00e1
 
     /// Represents the location of the "Alt Left" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case altLeft = 0x0007_00e2
 
     /// Represents the location of the "Meta Left" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case metaLeft = 0x0007_00e3
 
     /// Represents the location of the "Control Right" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case controlRight = 0x0007_00e4
 
     /// Represents the location of the "Shift Right" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case shiftRight = 0x0007_00e5
 
     /// Represents the location of the "Alt Right" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case altRight = 0x0007_00e6
 
     /// Represents the location of the "Meta Right" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case metaRight = 0x0007_00e7
 
     /// Represents the location of the "Info" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case info = 0x000c_0060
 
     /// Represents the location of the "Closed Caption Toggle" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case closedCaptionToggle = 0x000c_0061
 
     /// Represents the location of the "Brightness Up" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case brightnessUp = 0x000c_006f
 
     /// Represents the location of the "Brightness Down" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case brightnessDown = 0x000c_0070
 
     /// Represents the location of the "Brightness Toggle" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case brightnessToggle = 0x000c_0072
 
     /// Represents the location of the "Brightness Minimum" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case brightnessMinimum = 0x000c_0073
 
     /// Represents the location of the "Brightness Maximum" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case brightnessMaximum = 0x000c_0074
 
     /// Represents the location of the "Brightness Auto" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case brightnessAuto = 0x000c_0075
 
     /// Represents the location of the "Kbd Illum Up" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case kbdIllumUp = 0x000c_0079
 
     /// Represents the location of the "Kbd Illum Down" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case kbdIllumDown = 0x000c_007a
 
     /// Represents the location of the "Media Last" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaLast = 0x000c_0083
 
     /// Represents the location of the "Launch Phone" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchPhone = 0x000c_008c
 
     /// Represents the location of the "Program Guide" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case programGuide = 0x000c_008d
 
     /// Represents the location of the "Exit" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case exit = 0x000c_0094
 
     /// Represents the location of the "Channel Up" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case channelUp = 0x000c_009c
 
     /// Represents the location of the "Channel Down" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case channelDown = 0x000c_009d
 
     /// Represents the location of the "Media Play" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaPlay = 0x000c_00b0
 
     /// Represents the location of the "Media Pause" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaPause = 0x000c_00b1
 
     /// Represents the location of the "Media Record" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaRecord = 0x000c_00b2
 
     /// Represents the location of the "Media Fast Forward" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaFastForward = 0x000c_00b3
 
     /// Represents the location of the "Media Rewind" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaRewind = 0x000c_00b4
 
     /// Represents the location of the "Media Track Next" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaTrackNext = 0x000c_00b5
 
     /// Represents the location of the "Media Track Previous" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaTrackPrevious = 0x000c_00b6
 
     /// Represents the location of the "Media Stop" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaStop = 0x000c_00b7
 
     /// Represents the location of the "Eject" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case eject = 0x000c_00b8
 
     /// Represents the location of the "Media Play Pause" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaPlayPause = 0x000c_00cd
 
     /// Represents the location of the "Speech Input Toggle" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case speechInputToggle = 0x000c_00cf
 
     /// Represents the location of the "Bass Boost" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case bassBoost = 0x000c_00e5
 
     /// Represents the location of the "Media Select" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mediaSelect = 0x000c_0183
 
     /// Represents the location of the "Launch Word Processor" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchWordProcessor = 0x000c_0184
 
     /// Represents the location of the "Launch Spreadsheet" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchSpreadsheet = 0x000c_0186
 
     /// Represents the location of the "Launch Mail" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchMail = 0x000c_018a
 
     /// Represents the location of the "Launch Contacts" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchContacts = 0x000c_018d
 
     /// Represents the location of the "Launch Calendar" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchCalendar = 0x000c_018e
 
     /// Represents the location of the "Launch App2" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchApp2 = 0x000c_0192
 
     /// Represents the location of the "Launch App1" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchApp1 = 0x000c_0194
 
     /// Represents the location of the "Launch Internet Browser" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchInternetBrowser = 0x000c_0196
 
     /// Represents the location of the "Log Off" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case logOff = 0x000c_019c
 
     /// Represents the location of the "Lock Screen" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case lockScreen = 0x000c_019e
 
     /// Represents the location of the "Launch Control Panel" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchControlPanel = 0x000c_019f
 
     /// Represents the location of the "Select Task" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case selectTask = 0x000c_01a2
 
     /// Represents the location of the "Launch Documents" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchDocuments = 0x000c_01a7
 
     /// Represents the location of the "Spell Check" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case spellCheck = 0x000c_01ab
 
     /// Represents the location of the "Launch Keyboard Layout" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchKeyboardLayout = 0x000c_01ae
 
     /// Represents the location of the "Launch Screen Saver" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchScreenSaver = 0x000c_01b1
 
     /// Represents the location of the "Launch Audio Browser" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchAudioBrowser = 0x000c_01b7
 
     /// Represents the location of the "Launch Assistant" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case launchAssistant = 0x000c_01cb
 
     /// Represents the location of the "New Key" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case newKey = 0x000c_0201
 
     /// Represents the location of the "Close" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case close = 0x000c_0203
 
     /// Represents the location of the "Save" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case save = 0x000c_0207
 
     /// Represents the location of the "Print" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case print = 0x000c_0208
 
     /// Represents the location of the "Browser Search" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case browserSearch = 0x000c_0221
 
     /// Represents the location of the "Browser Home" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case browserHome = 0x000c_0223
 
     /// Represents the location of the "Browser Back" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case browserBack = 0x000c_0224
 
     /// Represents the location of the "Browser Forward" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case browserForward = 0x000c_0225
 
     /// Represents the location of the "Browser Stop" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case browserStop = 0x000c_0226
 
     /// Represents the location of the "Browser Refresh" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case browserRefresh = 0x000c_0227
 
     /// Represents the location of the "Browser Favorites" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case browserFavorites = 0x000c_022a
 
     /// Represents the location of the "Zoom In" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case zoomIn = 0x000c_022d
 
     /// Represents the location of the "Zoom Out" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case zoomOut = 0x000c_022e
 
     /// Represents the location of the "Zoom Toggle" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case zoomToggle = 0x000c_0232
 
     /// Represents the location of the "Redo" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case redo = 0x000c_0279
 
     /// Represents the location of the "Mail Reply" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mailReply = 0x000c_0289
 
     /// Represents the location of the "Mail Forward" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mailForward = 0x000c_028b
 
     /// Represents the location of the "Mail Send" key on a generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case mailSend = 0x000c_028c
 
     /// Represents the location of the "Keyboard Layout Select" key on a
     /// generalized keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case keyboardLayoutSelect = 0x000c_029d
 
     /// Represents the location of the "Show All Windows" key on a generalized
     /// keyboard.
     ///
-    /// See the function [RawKeyEvent.physicalKey] for more information.
+    /// See the function ``RawKeyEvent/physicalKey`` for more information.
     case showAllWindows = 0x000c_029f
 }
 

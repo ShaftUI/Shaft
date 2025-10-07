@@ -22,7 +22,7 @@ public protocol NativeView: AnyObject {
     /// also referred to as device-independent or resolution-independent pixels.
     var devicePixelRatio: Float { get }
 
-    /// Updates the view's rendering on the GPU with the newly provided [Scene].
+    /// Updates the view's rendering on the GPU with the newly provided ``Scene``.
     func render(_ layerTree: LayerTree)
 
     /// Activates the text input connection with the platform. After this is
@@ -163,14 +163,14 @@ public protocol NativeMouseCursor: AnyObject {
     func activate()
 }
 
-/// A collection of system [MouseCursor]s.
+/// A collection of system ``MouseCursor``s.
 ///
 /// System cursors are standard mouse cursors that are provided by the current
 /// platform. They don't require external resources.
 ///
-/// [SystemMouseCursors] is a superset of the system cursors of every platform
+/// ``SystemMouseCursors`` is a superset of the system cursors of every platform
 /// that Flutter supports, therefore some of these objects might map to the same
-/// result, or fallback to the [basic] arrow. This mapping is defined by the
+/// result, or fallback to the ``basic`` arrow. This mapping is defined by the
 /// Flutter engine.
 ///
 /// The cursors should be named based on the cursors' use cases instead of their
@@ -254,7 +254,7 @@ public protocol Backend: AnyObject {
     /// Returns true if the URL was successfully launched, false otherwise.
     func launchUrl(_ url: String) -> Bool
 
-    /// A callback that is invoked whenever the [ViewConfiguration] of the view
+    /// A callback that is invoked whenever the ``ViewConfiguration`` of the view
     /// with the given ID changes.
     ///
     /// For example when the device is rotated or when the application is resized
@@ -268,14 +268,14 @@ public protocol Backend: AnyObject {
     /// A callback invoked when any view begins a frame.
     ///
     /// A callback that is invoked to notify the application that it is an
-    /// appropriate time to provide a scene using the [NativeView.render] method.
+    /// appropriate time to provide a scene using the ``NativeView/render`` method.
     var onBeginFrame: FrameCallback? { get set }
 
-    /// A callback that is invoked for each frame after [onBeginFrame] has
+    /// A callback that is invoked for each frame after ``onBeginFrame`` has
     /// completed and after the microtask queue has been drained.
     ///
     /// This can be used to implement a second phase of frame rendering that
-    /// happens after any deferred work queued by the [onBeginFrame] phase.
+    /// happens after any deferred work queued by the ``onBeginFrame`` phase.
     var onDrawFrame: VoidCallback? { get set }
 
     /// A callback that is invoked when hot reload happens and the application
@@ -292,7 +292,7 @@ public protocol Backend: AnyObject {
     /// Schedule a frame to be rendered.
     func scheduleFrame()
 
-    /// Schedule a reassemble immediately. This causes the [onReassemble]
+    /// Schedule a reassemble immediately. This causes the ``onReassemble``
     /// callback to be called as soon as possible if supported by the backend.
     func scheduleReassemble()
 
@@ -342,7 +342,7 @@ public protocol Backend: AnyObject {
     ///
     /// The list is ordered in order of priority, with lower-indexed locales being
     /// preferred over higher-indexed ones. The first element is the primary
-    /// [locale].
+    /// ``locale``.
     var locales: [Locale] { get }
 }
 
@@ -379,8 +379,8 @@ extension Backend {
 public protocol Timer {
     /// Cancels the timer.
     ///
-    /// Once a [Timer] has been canceled, the callback function will not be called
-    /// by the timer. Calling [cancel] more than once on a [Timer] is allowed, and
+    /// Once a ``Timer`` has been canceled, the callback function will not be called
+    /// by the timer. Calling ``cancel`` more than once on a ``Timer`` is allowed, and
     /// will have no further effect.
     ///
     /// Example:
@@ -402,7 +402,7 @@ public protocol Timer {
 /// A callback function that is invoked when the application's lifecycle state
 /// changes.
 ///
-/// The callback receives the new [AppLifecycleState] as its parameter, allowing
+/// The callback receives the new ``AppLifecycleState`` as its parameter, allowing
 /// applications to respond to changes in the application's lifecycle, such as
 /// when the app is sent to the background or brought back to the foreground.
 ///
@@ -416,24 +416,24 @@ public typealias AppLifecycleStateCallback = (AppLifecycleState) -> Void
 /// transitioning between states which are supported, so that all
 /// implementations share the same state machine.
 ///
-/// The initial value for the state is the [detached] state, updated to the
-/// current state (usually [resumed]) as soon as the first lifecycle update is
+/// The initial value for the state is the ``detached`` state, updated to the
+/// current state (usually ``resumed``) as soon as the first lifecycle update is
 /// received from the platform.
 ///
 /// For historical and name collision reasons, Flutter's application state names
 /// do not correspond one to one with the state names on all platforms. On
 /// Android, for instance, when the OS calls
 /// [`Activity.onPause`](https://developer.android.com/reference/android/app/Activity#onPause()),
-/// Flutter will enter the [inactive] state, but when Android calls
+/// Flutter will enter the ``inactive`` state, but when Android calls
 /// [`Activity.onStop`](https://developer.android.com/reference/android/app/Activity#onStop()),
-/// Flutter enters the [paused] state. See the individual state's documentation
+/// Flutter enters the ``paused`` state. See the individual state's documentation
 /// for descriptions of what they mean on each platform.
 ///
 /// The current application state can be obtained from
-/// [SchedulerBinding.instance.lifecycleState], and changes to the state can be
-/// observed by creating an [AppLifecycleListener], or by using a
-/// [WidgetsBindingObserver] by overriding the
-/// [WidgetsBindingObserver.didChangeAppLifecycleState] method.
+/// ``SchedulerBinding/instance/lifecycleState``, and changes to the state can be
+/// observed by creating an ``AppLifecycleListener``, or by using a
+/// ``WidgetsBindingObserver`` by overriding the
+/// ``WidgetsBindingObserver/didChangeAppLifecycleState`` method.
 ///
 /// Applications should not rely on always receiving all possible notifications.
 ///
@@ -444,9 +444,9 @@ public typealias AppLifecycleStateCallback = (AppLifecycleState) -> Void
 ///
 /// See also:
 ///
-/// * [AppLifecycleListener], an object used observe the lifecycle state that
+/// * ``AppLifecycleListener``, an object used observe the lifecycle state that
 ///   provides state transition callbacks.
-/// * [WidgetsBindingObserver], for a mechanism to observe the lifecycle state
+/// * ``WidgetsBindingObserver``, for a mechanism to observe the lifecycle state
 ///   from the widgets layer.
 /// * iOS's [UIKit activity
 ///   lifecycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle?language=objc)
@@ -479,7 +479,7 @@ public enum AppLifecycleState {
     /// On Android, this state corresponds to the Flutter host view having focus
     /// ([`Activity.onWindowFocusChanged`](https://developer.android.com/reference/android/app/Activity#onWindowFocusChanged(boolean))
     /// was called with true) while in Android's "resumed" state. It is possible
-    /// for the Flutter app to be in the [inactive] state while still being in
+    /// for the Flutter app to be in the ``inactive`` state while still being in
     /// Android's
     /// ["onResume"](https://developer.android.com/guide/components/activities/activity-lifecycle)
     /// state if the app has lost focus
@@ -520,7 +520,7 @@ public enum AppLifecycleState {
     /// notification window shade is down, or the application switcher is visible.
     ///
     /// On Android and iOS, apps in this state should assume that they may be
-    /// [hidden] and [paused] at any time.
+    /// ``hidden`` and ``paused`` at any time.
     case inactive
 
     /// All views of an application are hidden, either because the application is
@@ -529,9 +529,9 @@ public enum AppLifecycleState {
     /// is running in a window or tab that is no longer visible (on the web).
     ///
     /// On iOS and Android, in order to keep the state machine the same on all
-    /// platforms, a transition to this state is synthesized before the [paused]
-    /// state is entered when coming from [inactive], and before the [inactive]
-    /// state is entered when coming from [paused]. This allows cross-platform
+    /// platforms, a transition to this state is synthesized before the ``paused``
+    /// state is entered when coming from ``inactive``, and before the ``inactive``
+    /// state is entered when coming from ``paused``. This allows cross-platform
     /// implementations that want to know when an app is conceptually "hidden" to
     /// only write one handler.
     case hidden
@@ -540,7 +540,7 @@ public enum AppLifecycleState {
     /// to user input.
     ///
     /// When the application is in this state, the engine will not call the
-    /// [PlatformDispatcher.onBeginFrame] and [PlatformDispatcher.onDrawFrame]
+    /// ``PlatformDispatcher/onBeginFrame`` and ``PlatformDispatcher/onDrawFrame``
     /// callbacks.
     ///
     /// This state is only entered on iOS and Android.

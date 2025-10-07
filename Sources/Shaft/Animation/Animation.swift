@@ -28,9 +28,9 @@ public enum AnimationStatus {
 
     /// Whether the current aim of the animation is toward completion.
     ///
-    /// Specifically, returns `true` for [AnimationStatus.forward] or
-    /// [AnimationStatus.completed], and `false` for
-    /// [AnimationStatus.reverse] or [AnimationStatus.dismissed].
+    /// Specifically, returns `true` for ``AnimationStatus/forward`` or
+    /// ``AnimationStatus/completed``, and `false` for
+    /// ``AnimationStatus/reverse`` or ``AnimationStatus/dismissed``.
     var isForwardOrCompleted: Bool {
         switch self {
         case .forward, .completed: return true
@@ -39,10 +39,10 @@ public enum AnimationStatus {
     }
 }
 
-/// Signature for listeners attached using [Animation.addStatusListener].
+/// Signature for listeners attached using ``Animation/addStatusListener``.
 public typealias AnimationStatusListener = (AnimationStatus) -> Void
 
-/// Signature for method used to transform values in [Animation.fromValueListenable].
+/// Signature for method used to transform values in ``Animation/fromValueListenable``.
 public typealias ValueListenableTransformer<T> = (T) -> T
 
 /// An animation with a value of type `T`.
@@ -58,20 +58,20 @@ public typealias ValueListenableTransformer<T> = (T) -> T
 /// the pipeline, just prior to rebuilding widgets.
 ///
 /// To create a new animation that you can run forward and backward, consider
-/// using [AnimationController].
+/// using ``AnimationController``.
 ///
 /// See also:
 ///
-///  * [Tween], which can be used to create [Animation] subclasses that
-///    convert `Animation<double>`s into other kinds of [Animation]s.
+///  * ``Tween``, which can be used to create ``Animation`` subclasses that
+///    convert `Animation<double>`s into other kinds of ``Animation``s.
 public protocol Animation<Value>: Listenable, ValueListenable {
     associatedtype Value
 
-    /// Create a new animation from a [ValueListenable].
+    /// Create a new animation from a ``ValueListenable``.
     ///
     /// The returned animation will always have an animations status of
-    /// [AnimationStatus.forward]. The value of the provided listenable can be
-    /// optionally transformed using the [transformer] function.
+    /// ``AnimationStatus/forward``. The value of the provided listenable can be
+    /// optionally transformed using the ``transformer`` function.
     // static func fromValueListenable(
     //     _ listenable: any ValueListenable<Value>,
     //     transformer: ValueListenableTransformer<Value>?
@@ -79,7 +79,7 @@ public protocol Animation<Value>: Listenable, ValueListenable {
 
     /// Calls listener every time the status of the animation changes.
     ///
-    /// Listeners can be removed with [removeStatusListener].
+    /// Listeners can be removed with ``removeStatusListener``.
     func addStatusListener(_ listener: AnyObject, callback: @escaping AnimationStatusListener)
 
     /// Stops calling the listener every time the status of the animation
@@ -88,7 +88,7 @@ public protocol Animation<Value>: Listenable, ValueListenable {
     /// If `listener` is not currently registered as a status listener, this
     /// method does nothing.
     ///
-    /// Listeners can be added with [addStatusListener].
+    /// Listeners can be added with ``addStatusListener``.
     func removeStatusListener(_ listener: AnyObject)
 
     /// The current status of this animation.
@@ -97,24 +97,24 @@ public protocol Animation<Value>: Listenable, ValueListenable {
     /// The current value of the animation.
     var value: Value { get }
 
-    /// Chains a [Tween] (or [CurveTween]) to this [Animation].
+    /// Chains a ``Tween`` (or ``CurveTween``) to this ``Animation``.
     ///
     /// This method is only valid for `Animation<double>` instances (i.e. when `T`
     /// is `double`). This means, for instance, that it can be called on
-    /// [AnimationController] objects, as well as [CurvedAnimation]s,
-    /// [ProxyAnimation]s, [ReverseAnimation]s, [TrainHoppingAnimation]s, etc.
+    /// ``AnimationController`` objects, as well as ``CurvedAnimation``s,
+    /// ``ProxyAnimation``s, ``ReverseAnimation``s, ``TrainHoppingAnimation``s, etc.
     ///
-    /// It returns an [Animation] specialized to the same type, `U`, as the
+    /// It returns an ``Animation`` specialized to the same type, `U`, as the
     /// argument to the method (`child`), whose value is derived by applying the
-    /// given [Tween] to the value of this [Animation].
+    /// given ``Tween`` to the value of this ``Animation``.
     // func drive<U>(_ child: any Animatable<U>) -> any Animation<U>
 
     /// Provides a string describing the status of this object, but not
     /// including information about the object itself.
     ///
-    /// This function is used by [Animation.toString] so that [Animation]
-    /// subclasses can provide additional details while ensuring all [Animation]
-    /// subclasses have a consistent [toString] style.
+    /// This function is used by ``Animation/toString`` so that ``Animation``
+    /// subclasses can provide additional details while ensuring all ``Animation``
+    /// subclasses have a consistent ``toString`` style.
     func toStringDetails() -> String
 }
 

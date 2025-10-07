@@ -1,14 +1,14 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-// 
+//
 // Copyright 2024 The Shaft Authors.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import SwiftMath
 
-/// A object that receives [PointerEvent]
+/// A object that receives ``PointerEvent``
 public protocol PointerRoute: AnyObject {
     func handleEvent(event: PointerEvent)
 }
@@ -69,17 +69,17 @@ private class PointerRoutes: Sequence {
     }
 }
 
-/// A routing table for [PointerEvent] events.
+/// A routing table for ``PointerEvent`` events.
 public final class PointerRouter {
     private var routeMap = [Int: PointerRoutes]()
     private var globalRoutes = PointerRoutes()
 
     /// Adds a route to the routing table.
     ///
-    /// Whenever this object routes a [PointerEvent] corresponding to
+    /// Whenever this object routes a ``PointerEvent`` corresponding to
     /// pointer, call route.
     ///
-    /// Routes added reentrantly within [PointerRouter.route] will take effect when
+    /// Routes added reentrantly within ``PointerRouter/route`` will take effect when
     /// routing the next event.
     public func addRoute(
         _ pointer: Int,
@@ -93,10 +93,10 @@ public final class PointerRouter {
 
     /// Removes a route from the routing table.
     ///
-    /// No longer call route when routing a [PointerEvent] corresponding to
+    /// No longer call route when routing a ``PointerEvent`` corresponding to
     /// pointer. Requires that this route was previously added to the router.
     ///
-    /// Routes removed reentrantly within [PointerRouter.route] will take effect
+    /// Routes removed reentrantly within ``PointerRouter/route`` will take effect
     /// immediately.
     public func removeRoute(_ pointer: Int, _ handler: PointerRoute) {
         assert(routeMap.keys.contains(pointer))
@@ -110,9 +110,9 @@ public final class PointerRouter {
 
     /// Adds a route to the global entry in the routing table.
     ///
-    /// Whenever this object routes a [PointerEvent], call route.
+    /// Whenever this object routes a ``PointerEvent``, call route.
     ///
-    /// Routes added reentrantly within [PointerRouter.route] will take effect when
+    /// Routes added reentrantly within ``PointerRouter/route`` will take effect when
     /// routing the next event.
     public func addGlobalRoute(
         _ handler: PointerRoute,
@@ -124,10 +124,10 @@ public final class PointerRouter {
 
     /// Removes a route from the global entry in the routing table.
     ///
-    /// No longer call route when routing a [PointerEvent]. Requires that this
-    /// route was previously added via [addGlobalRoute].
+    /// No longer call route when routing a ``PointerEvent``. Requires that this
+    /// route was previously added via ``addGlobalRoute``.
     ///
-    /// Routes removed reentrantly within [PointerRouter.route] will take effect
+    /// Routes removed reentrantly within ``PointerRouter/route`` will take effect
     /// immediately.
     public func removeGlobalRoute(_ handler: PointerRoute) {
         assert(globalRoutes.contains(handler))

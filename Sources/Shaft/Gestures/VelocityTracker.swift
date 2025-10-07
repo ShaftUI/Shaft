@@ -8,7 +8,7 @@
 
 /// A velocity in two dimensions.
 public struct Velocity: Equatable {
-    /// Creates a [Velocity].
+    /// Creates a ``Velocity``.
     public init(pixelsPerSecond: Offset) {
         self.pixelsPerSecond = pixelsPerSecond
     }
@@ -40,13 +40,13 @@ public struct Velocity: Equatable {
         )
     }
 
-    /// Return a velocity whose magnitude has been clamped to [minValue]
-    /// and [maxValue].
+    /// Return a velocity whose magnitude has been clamped to ``minValue``
+    /// and ``maxValue``.
     ///
     /// If the magnitude of this Velocity is less than minValue then return a new
-    /// Velocity with the same direction and with magnitude [minValue]. Similarly,
+    /// Velocity with the same direction and with magnitude ``minValue``. Similarly,
     /// if the magnitude of this Velocity is greater than maxValue then return a
-    /// new Velocity with the same direction and magnitude [maxValue].
+    /// new Velocity with the same direction and magnitude ``maxValue``.
     ///
     /// If the magnitude of this Velocity is within the specified bounds then
     /// just return this.
@@ -128,11 +128,11 @@ private struct PointAtTime {
     let point: Offset
 }
 
-/// Computes a pointer's velocity based on data from [PointerMoveEvent]s.
+/// Computes a pointer's velocity based on data from ``PointerMoveEvent``s.
 ///
-/// The input data is provided by calling [addPosition]. Adding data is cheap.
+/// The input data is provided by calling ``addPosition``. Adding data is cheap.
 ///
-/// To obtain a velocity, call [getVelocity] or [getVelocityEstimate]. This will
+/// To obtain a velocity, call ``getVelocity`` or ``getVelocityEstimate``. This will
 /// compute the velocity based on the data added so far. Only call these when
 /// you need to use the velocity, as they are comparatively expensive.
 ///
@@ -175,7 +175,7 @@ public class VelocityTracker {
     /// Returns an estimate of the velocity of the object being tracked by the
     /// tracker given the current information available to the tracker.
     ///
-    /// Information is added using [addPosition].
+    /// Information is added using ``addPosition``.
     ///
     /// Returns nil if there is no data on which to base an estimate.
     public func getVelocityEstimate() -> VelocityEstimate? {
@@ -266,7 +266,7 @@ public class VelocityTracker {
     ///
     /// This can be expensive. Only call this when you need the velocity.
     ///
-    /// Returns [Velocity.zero] if there is no data from which to compute an
+    /// Returns ``Velocity/zero`` if there is no data from which to compute an
     /// estimate or if the estimated velocity is zero.
     public func getVelocity() -> Velocity {
         guard let estimate = getVelocityEstimate(), estimate.pixelsPerSecond != .zero else {
@@ -276,20 +276,20 @@ public class VelocityTracker {
     }
 }
 
-// /// A [VelocityTracker] subclass that provides a close approximation of iOS
+// /// A ``VelocityTracker`` subclass that provides a close approximation of iOS
 // /// scroll view's velocity estimation strategy.
 // ///
 // /// The estimated velocity reported by this class is a close approximation of
 // /// the velocity an iOS scroll view would report with the same
-// /// [PointerMoveEvent]s, when the touch that initiates a fling is released.
+// /// ``PointerMoveEvent``s, when the touch that initiates a fling is released.
 // ///
-// /// This class differs from the [VelocityTracker] class in that it uses weighted
+// /// This class differs from the ``VelocityTracker`` class in that it uses weighted
 // /// average of the latest few velocity samples of the tracked pointer, instead
 // /// of doing a linear regression on a relatively large amount of data points, to
 // /// estimate the velocity of the tracked pointer. Adding data points and
 // /// estimating the velocity are both cheap.
 // ///
-// /// To obtain a velocity, call [getVelocity] or [getVelocityEstimate]. The
+// /// To obtain a velocity, call ``getVelocity`` or ``getVelocityEstimate``. The
 // /// estimated velocity is typically used as the initial flinging velocity of a
 // /// `Scrollable`, when its drag gesture ends.
 // ///
@@ -400,20 +400,20 @@ public class VelocityTracker {
 //   }
 // }
 
-// /// A [VelocityTracker] subclass that provides a close approximation of macOS
+// /// A ``VelocityTracker`` subclass that provides a close approximation of macOS
 // /// scroll view's velocity estimation strategy.
 // ///
 // /// The estimated velocity reported by this class is a close approximation of
 // /// the velocity a macOS scroll view would report with the same
-// /// [PointerMoveEvent]s, when the touch that initiates a fling is released.
+// /// ``PointerMoveEvent``s, when the touch that initiates a fling is released.
 // ///
-// /// This class differs from the [VelocityTracker] class in that it uses weighted
+// /// This class differs from the ``VelocityTracker`` class in that it uses weighted
 // /// average of the latest few velocity samples of the tracked pointer, instead
 // /// of doing a linear regression on a relatively large amount of data points, to
 // /// estimate the velocity of the tracked pointer. Adding data points and
 // /// estimating the velocity are both cheap.
 // ///
-// /// To obtain a velocity, call [getVelocity] or [getVelocityEstimate]. The
+// /// To obtain a velocity, call ``getVelocity`` or ``getVelocityEstimate``. The
 // /// estimated velocity is typically used as the initial flinging velocity of a
 // /// `Scrollable`, when its drag gesture ends.
 // class MacOSScrollViewFlingVelocityTracker extends IOSScrollViewFlingVelocityTracker {

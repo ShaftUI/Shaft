@@ -18,18 +18,18 @@
 ///
 /// See also:
 ///
-///  * [Curve], a 1D animation easing curve that starts at 0.0 and ends at 1.0.
-///  * [Curve2D], a parametric curve that transforms the parameter to a 2D point.
+///  * ``Curve``, a 1D animation easing curve that starts at 0.0 and ends at 1.0.
+///  * ``Curve2D``, a parametric curve that transforms the parameter to a 2D point.
 open class ParametricCurve<T> {
     /// Returns the value of the curve at point `t`.
     ///
     /// This method asserts that t is between 0 and 1 before delegating to
-    /// [transformInternal].
+    /// ``transformInternal``.
     ///
-    /// It is recommended that subclasses override [transformInternal] instead of
+    /// It is recommended that subclasses override ``transformInternal`` instead of
     /// this function, as the above case is already handled in the default
-    /// implementation of [transform], which delegates the remaining logic to
-    /// [transformInternal].
+    /// implementation of ``transform``, which delegates the remaining logic to
+    /// ``transformInternal``.
     public func transform(_ t: Double) -> T {
         assert(t >= 0.0 && t <= 1.0, "parametric value \(t) is outside of [0, 1] range.")
         return transformInternal(t)
@@ -50,15 +50,15 @@ open class ParametricCurve<T> {
 /// time, allowing them to speed up and slow down, rather than moving at a
 /// constant rate.
 ///
-/// A [Curve] must map t=0.0 to 0.0 and t=1.0 to 1.0.
+/// A ``Curve`` must map t=0.0 to 0.0 and t=1.0 to 1.0.
 ///
 /// See also:
 ///
-///  * [Curves], a collection of common animation easing curves.
-///  * [CurveTween], which can be used to apply a [Curve] to an [Animation].
-///  * [Canvas.drawArc], which draws an arc, and has nothing to do with easing
+///  * ``Curves``, a collection of common animation easing curves.
+///  * ``CurveTween``, which can be used to apply a ``Curve`` to an ``Animation``.
+///  * ``Canvas/drawArc``, which draws an arc, and has nothing to do with easing
 ///    curves.
-///  * [Animatable], for a more flexible interface that maps fractions to
+///  * ``Animatable``, for a more flexible interface that maps fractions to
 ///    arbitrary values.
 open class Curve: ParametricCurve<Double> {
     /// Returns the value of the curve at point `t`.
@@ -68,10 +68,10 @@ open class Curve: ParametricCurve<Double> {
     /// - Values of `t`=0.0 and `t`=1.0 must be mapped to 0.0 and 1.0,
     /// respectively.
     ///
-    /// It is recommended that subclasses override [transformInternal] instead of
+    /// It is recommended that subclasses override ``transformInternal`` instead of
     /// this function, as the above cases are already handled in the default
-    /// implementation of [transform], which delegates the remaining logic to
-    /// [transformInternal].
+    /// implementation of ``transform``, which delegates the remaining logic to
+    /// ``transformInternal``.
     public override func transform(_ t: Double) -> Double {
         if t == 0.0 || t == 1.0 {
             return t
@@ -82,7 +82,7 @@ open class Curve: ParametricCurve<Double> {
 
 /// The identity map over the unit interval.
 ///
-/// See [Curves.linear] for an instance of this class.
+/// See ``Curves/linear`` for an instance of this class.
 class _Linear: Curve {
     override func transformInternal(_ t: Double) -> Double {
         return t
@@ -92,9 +92,9 @@ class _Linear: Curve {
 public struct Curves {
     /// A linear animation curve.
     ///
-    /// This is the identity map over the unit interval: its [Curve.transform]
+    /// This is the identity map over the unit interval: its ``Curve/transform``
     /// method returns its input unmodified. This is useful as a default curve for
-    /// cases where a [Curve] is required but no actual curve is desired.
+    /// cases where a ``Curve`` is required but no actual curve is desired.
     ///
     /// {@animation 464 192 https://flutter.github.io/assets-for-api-docs/assets/animation/curve_linear.mp4}
     public static let linear: Curve = _Linear()
