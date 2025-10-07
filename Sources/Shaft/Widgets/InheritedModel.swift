@@ -1,12 +1,12 @@
-/// An [InheritedWidget] that's intended to be used as the base class for models
+/// An ``InheritedWidget`` that's intended to be used as the base class for models
 /// whose dependents may only depend on one part or "aspect" of the overall
 /// model.
 ///
 /// An inherited widget's dependents are unconditionally rebuilt when the
-/// inherited widget changes per [InheritedWidget.updateShouldNotify]. This
+/// inherited widget changes per ``InheritedWidget/updateShouldNotify``. This
 /// widget is similar except that dependents aren't rebuilt unconditionally.
 ///
-/// Widgets that depend on an [InheritedModel] qualify their dependence with a
+/// Widgets that depend on an ``InheritedModel`` qualify their dependence with a
 /// value that indicates what "aspect" of the model they depend on. When the
 /// model is rebuilt, dependents will also be rebuilt, but only if there was a
 /// change in the model that corresponds to the aspect they provided.
@@ -15,27 +15,30 @@
 ///
 /// {@youtube 560 315 https://www.youtube.com/watch?v=ml5uefGgkaA}
 ///
-/// Widgets create a dependency on an [InheritedModel] with a static method:
-/// [InheritedModel.inheritFrom]. This method's `context` parameter defines the
+/// Widgets create a dependency on an ``InheritedModel`` with a static method:
+/// ``InheritedModel/inheritFrom``. This method's `context` parameter defines the
 /// subtree that will be rebuilt when the model changes. Typically the
 /// `inheritFrom` method is called from a model-specific static `maybeOf` or
 /// `of` methods, a convention that is present in many Flutter framework classes
 /// which look things up. For example:
 ///
-/// ```dart
-/// class MyModel extends InheritedModel<String> {
-///   const MyModel({super.key, required super.child});
-///
-///   // ...
-///   static MyModel? maybeOf(BuildContext context, [String? aspect]) {
-///     return InheritedModel.inheritFrom<MyModel>(context, aspect: aspect);
+/// ```swift
+/// class MyModel: InheritedModel<String> {
+///   init(key: Key? = nil, child: Widget) {
+///     super.init(key: key, child: child)
 ///   }
 ///
 ///   // ...
-///   static MyModel of(BuildContext context, [String? aspect]) {
-///     final MyModel? result = maybeOf(context, aspect);
-///     assert(result != null, 'Unable to find an instance of MyModel...');
-///     return result!;
+///   static func maybeOf(context: BuildContext, aspect: String? = nil) -> MyModel? {
+///     return InheritedModel.inheritFrom<MyModel>(context, aspect: aspect)
+///   }
+///
+///   // ...
+///   static func of(context: BuildContext, aspect: String? = nil) -> MyModel {
+///     guard let result = maybeOf(context: context, aspect: aspect) else {
+///       fatalError("Unable to find an instance of MyModel...")
+///     }
+///     return result
 ///   }
 /// }
 /// ```
@@ -46,17 +49,17 @@
 /// aspects.
 ///
 /// In the previous example the dependencies checked by
-/// [updateShouldNotifyDependent] are just the aspect strings passed to
-/// `dependOnInheritedWidgetOfExactType`. They're represented as a [Set] because
+/// ``updateShouldNotifyDependent`` are just the aspect strings passed to
+/// `dependOnInheritedWidgetOfExactType`. They're represented as a ``Set`` because
 /// one Widget can depend on more than one aspect of the model. If a widget
 /// depends on the model but doesn't specify an aspect, then changes in the
 /// model will cause the widget to be rebuilt unconditionally.
 ///
 /// See also:
 ///
-/// * [InheritedWidget], an inherited widget that only notifies dependents when
+/// * ``InheritedWidget``, an inherited widget that only notifies dependents when
 ///   its value is different.
-/// * [InheritedNotifier], an inherited widget whose value can be a
+/// * ``InheritedNotifier``, an inherited widget whose value can be a
 ///   [Listenable], and which will notify dependents whenever the value sends
 ///   notifications.
 public protocol InheritedModel<AspectType>: InheritedWidget {
@@ -119,14 +122,14 @@ extension InheritedModel {
         _findModels(type, context: modelParent, aspect: aspect, results: &results)
     }
 
-    /// Makes [context] dependent on the specified [aspect] of an [InheritedModel]
+    /// Makes [context] dependent on the specified [aspect] of an ``InheritedModel``
     /// of type T.
     ///
     /// When the given [aspect] of the model changes, the [context] will be
-    /// rebuilt. The [updateShouldNotifyDependent] method must determine if a
+    /// rebuilt. The ``updateShouldNotifyDependent`` method must determine if a
     /// change in the model widget corresponds to an [aspect] value.
     ///
-    /// The dependencies created by this method target all [InheritedModel] ancestors
+    /// The dependencies created by this method target all ``InheritedModel`` ancestors
     /// of type T up to and including the first one for which [isSupportedAspect]
     /// returns true.
     ///
@@ -165,7 +168,7 @@ extension InheritedModel {
 
 }
 
-/// An [Element] that uses a [InheritedModel] as its configuration.
+/// An [Element] that uses a ``InheritedModel`` as its configuration.
 public class InheritedModelElement<T: Hashable>: InheritedElement {
     /// Creates an element that uses the given widget as its configuration.
     public init(_ widget: any InheritedModel<T>) {

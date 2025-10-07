@@ -1,4 +1,4 @@
-/// Asserts that the given context has a [MediaQuery] ancestor.
+/// Asserts that the given context has a ``MediaQuery`` ancestor.
 ///
 /// Used by various widgets to make sure that they are only used in an
 /// appropriate context.
@@ -6,8 +6,8 @@
 /// To invoke this function, use the following pattern, typically in the
 /// relevant Widget's build method:
 ///
-/// ```dart
-/// assert(debugCheckHasMediaQuery(context));
+/// ```swift
+/// assert(debugCheckHasMediaQuery(context))
 /// ```
 ///
 /// Always place this before any early returns, so that the invariant is checked

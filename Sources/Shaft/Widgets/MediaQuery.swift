@@ -9,17 +9,17 @@ public enum Orientation {
 
 /// Information about a piece of media (e.g., a window).
 ///
-/// For example, the [MediaQueryData.size] property contains the width and
+/// For example, the ``MediaQueryData/size`` property contains the width and
 /// height of the current window.
 ///
-/// To obtain individual attributes in a [MediaQueryData], prefer to use the
-/// attribute-specific functions of [MediaQuery] over obtaining the entire
-/// [MediaQueryData] and accessing its members.
+/// To obtain individual attributes in a ``MediaQueryData``, prefer to use the
+/// attribute-specific functions of ``MediaQuery`` over obtaining the entire
+/// ``MediaQueryData`` and accessing its members.
 /// {@macro flutter.widgets.media_query.MediaQuery.useSpecific}
 ///
-/// To obtain the entire current [MediaQueryData] for a given [BuildContext],
-/// use the [MediaQuery.of] function. This can be useful if you are going to use
-/// [copyWith] to replace the [MediaQueryData] with one with an updated
+/// To obtain the entire current ``MediaQueryData`` for a given ``BuildContext``,
+/// use the ``MediaQuery/of`` function. This can be useful if you are going to use
+/// ``copyWith`` to replace the ``MediaQueryData`` with one with an updated
 /// property.
 ///
 /// ## Insets and Padding
@@ -27,8 +27,8 @@ public enum Orientation {
 /// ![A diagram of padding, viewInsets, and viewPadding in correlation with each
 /// other](https://flutter.github.io/assets-for-api-docs/assets/widgets/media_query.png)
 ///
-/// This diagram illustrates how [padding] relates to [viewPadding] and
-/// [viewInsets], shown here in its simplest configuration, as the difference
+/// This diagram illustrates how ``padding`` relates to ``viewPadding`` and
+/// ``viewInsets``, shown here in its simplest configuration, as the difference
 /// between the two. In cases when the viewInsets exceed the viewPadding, like
 /// when a software keyboard is shown below, padding goes to zero rather than a
 /// negative value. Therefore, padding is calculated by taking
@@ -43,7 +43,7 @@ public enum Orientation {
 /// when visible.
 ///
 /// MediaQueryData includes three [EdgeInsets] values:
-/// [padding], [viewPadding], and [viewInsets]. These values reflect the
+/// ``padding``, ``viewPadding``, and ``viewInsets``. These values reflect the
 /// configuration of the device and are used and optionally consumed by widgets
 /// that position content within these insets. The padding value defines areas
 /// that might not be completely visible, like the display "notch" on the iPhone
@@ -57,11 +57,11 @@ public enum Orientation {
 ///
 /// The viewInsets and viewPadding are independent values, they're
 /// measured from the edges of the MediaQuery widget's bounds. Together they
-/// inform the [padding] property. The bounds of the top level MediaQuery
+/// inform the ``padding`` property. The bounds of the top level MediaQuery
 /// created by [WidgetsApp] are the same as the window that contains the app.
 ///
-/// Widgets whose layouts consume space defined by [viewInsets], [viewPadding],
-/// or [padding] should enclose their children in secondary MediaQuery
+/// Widgets whose layouts consume space defined by ``viewInsets``, ``viewPadding``,
+/// or ``padding`` should enclose their children in secondary MediaQuery
 /// widgets that reduce those properties by the same amount.
 /// The [removePadding], [removeViewPadding], and [removeViewInsets] methods are
 /// useful for this.
@@ -69,15 +69,15 @@ public enum Orientation {
 /// See also:
 ///
 ///  * [Scaffold], [SafeArea], [CupertinoTabScaffold], and
-///    [CupertinoPageScaffold], all of which are informed by [padding],
-///    [viewPadding], and [viewInsets].
+///    [CupertinoPageScaffold], all of which are informed by ``padding``,
+///    ``viewPadding``, and ``viewInsets``.
 public struct MediaQueryData: Equatable {
     /// Creates data for a media query with explicit values.
     ///
     /// In a typical application, calling this constructor directly is rarely
     /// needed. Consider using [MediaQueryData.fromView] to create data based on a
     /// [NativeView], or [MediaQueryData.copyWith] to create a new copy
-    /// of [MediaQueryData] with updated properties from a base [MediaQueryData].
+    /// of ``MediaQueryData`` with updated properties from a base ``MediaQueryData``.
     public init(
         size: Size = .zero,
         devicePixelRatio: Float = 1.0,
@@ -120,10 +120,10 @@ public struct MediaQueryData: Equatable {
         self.supportsShowingSystemContextMenu = supportsShowingSystemContextMenu
     }
 
-    /// Creates data for a [MediaQuery] based on the given `view`.
+    /// Creates data for a ``MediaQuery`` based on the given `view`.
     ///
     /// If provided, the `platformData` is used to fill in the platform-specific
-    /// aspects of the newly created [MediaQueryData]. If `platformData` is null,
+    /// aspects of the newly created ``MediaQueryData``. If `platformData` is null,
     /// the `view`'s [PlatformDispatcher] is consulted to construct the
     /// platform-specific data.
     ///
@@ -132,7 +132,7 @@ public struct MediaQueryData: Equatable {
     /// [FlutterView.platformDispatcher] property is considered platform-specific.
     ///
     /// Callers of this method should ensure that they also register for
-    /// notifications so that the [MediaQueryData] can be updated when any data
+    /// notifications so that the ``MediaQueryData`` can be updated when any data
     /// used to construct it changes. Notifications to consider are:
     ///
     ///  * [WidgetsBindingObserver.didChangeMetrics] or
@@ -146,17 +146,17 @@ public struct MediaQueryData: Equatable {
     ///
     /// The last three notifications are only relevant if no `platformData` is
     /// provided. If `platformData` is provided, callers should ensure to call
-    /// this method again when it changes to keep the constructed [MediaQueryData]
+    /// this method again when it changes to keep the constructed ``MediaQueryData``
     /// updated.
     ///
-    /// In general, [MediaQuery.of], and its associated "...Of" methods, are the
-    /// appropriate way to obtain [MediaQueryData] from a widget. This `fromView`
+    /// In general, ``MediaQuery/of``, and its associated "...Of" methods, are the
+    /// appropriate way to obtain ``MediaQueryData`` from a widget. This `fromView`
     /// constructor is primarily for use in the implementation of the framework
     /// itself.
     ///
     /// See also:
     ///
-    ///  * [MediaQuery.fromView], which constructs [MediaQueryData] from a provided
+    ///  * [MediaQuery.fromView], which constructs ``MediaQueryData`` from a provided
     ///    [FlutterView], makes it available to descendant widgets, and sets up
     ///    the appropriate notification listeners to keep the data updated.
     public init(from view: NativeView, platformData: MediaQueryData? = nil) {
@@ -213,12 +213,12 @@ public struct MediaQueryData: Equatable {
     /// number of physical pixels per logical pixel is described by the
     /// [devicePixelRatio].
     ///
-    /// Prefer using [MediaQuery.sizeOf] over [MediaQuery.of]`.size` to get the
+    /// Prefer using [MediaQuery.sizeOf] over ``MediaQuery/of```.size` to get the
     /// size, since the former will only notify of changes in [size], while the
-    /// latter will notify for all [MediaQueryData] changes.
+    /// latter will notify for all ``MediaQueryData`` changes.
     ///
     /// For widgets drawn in an [Overlay], do not assume that the size of the
-    /// [Overlay] is the size of the [MediaQuery]'s size. Nested overlays can have
+    /// [Overlay] is the size of the ``MediaQuery``'s size. Nested overlays can have
     /// different sizes.
     ///
     /// ## Troubleshooting
@@ -242,7 +242,7 @@ public struct MediaQueryData: Equatable {
     /// * [FlutterView.physicalSize], which returns the size of the view in physical pixels.
     /// * [FlutterView.display], which returns reports display information like size, and refresh rate.
     /// * [MediaQuery.sizeOf], a method to find and depend on the size defined for
-    ///   a [BuildContext].
+    ///   a ``BuildContext``.
     public let size: Size
 
     /// The number of device pixels for each logical pixel. This number might not
@@ -252,7 +252,7 @@ public struct MediaQueryData: Equatable {
 
     /// The font scaling strategy to use for laying out textual contents.
     ///
-    /// If this [MediaQueryData] is created by the [MediaQueryData.fromView]
+    /// If this ``MediaQueryData`` is created by the [MediaQueryData.fromView]
     /// constructor, this property reflects the platform's preferred text scaling
     /// strategy, and may change as the user changes the scaling factor in the
     /// operating system's accessibility settings.
@@ -260,7 +260,7 @@ public struct MediaQueryData: Equatable {
     /// See also:
     ///
     ///  * [MediaQuery.textScalerOf], a method to find and depend on the
-    ///    [textScaler] defined for a [BuildContext].
+    ///    [textScaler] defined for a ``BuildContext``.
     ///  * [TextPainter], a class that lays out and paints text.
     public var textScaler: any TextScaler
 
@@ -275,7 +275,7 @@ public struct MediaQueryData: Equatable {
     /// See also:
     ///
     ///  * [MediaQuery.platformBrightnessOf], a method to find and depend on the
-    ///    platformBrightness defined for a [BuildContext].
+    ///    platformBrightness defined for a ``BuildContext``.
     public var platformBrightness: Brightness
 
     /// The parts of the display that are completely obscured by system UI,
@@ -284,8 +284,8 @@ public struct MediaQueryData: Equatable {
     /// When a mobile device's keyboard is visible `viewInsets.bottom`
     /// corresponds to the top of the keyboard.
     ///
-    /// This value is independent of the [padding] and [viewPadding]. viewPadding
-    /// is measured from the edges of the [MediaQuery] widget's bounds. Padding is
+    /// This value is independent of the ``padding`` and ``viewPadding``. viewPadding
+    /// is measured from the edges of the ``MediaQuery`` widget's bounds. Padding is
     /// calculated based on the viewPadding and viewInsets. The bounds of the top
     /// level MediaQuery created by [WidgetsApp] are the same as the window
     /// (often the mobile device screen) that contains the app.
@@ -295,7 +295,7 @@ public struct MediaQueryData: Equatable {
     /// See also:
     ///
     ///  * [FlutterView], which provides some additional detail about this property
-    ///    and how it relates to [padding] and [viewPadding].
+    ///    and how it relates to ``padding`` and ``viewPadding``.
     public var viewInsets: EdgeInsets
 
     /// The parts of the display that are partially obscured by system UI,
@@ -305,18 +305,18 @@ public struct MediaQueryData: Equatable {
     /// accounts for this padding in its layout in such a way that children are
     /// no longer exposed to this padding), you should remove this padding
     /// for subsequent descendants in the widget tree by inserting a new
-    /// [MediaQuery] widget using the [MediaQuery.removePadding] factory.
+    /// ``MediaQuery`` widget using the [MediaQuery.removePadding] factory.
     ///
-    /// Padding is derived from the values of [viewInsets] and [viewPadding].
+    /// Padding is derived from the values of ``viewInsets`` and ``viewPadding``.
     ///
     /// {@youtube 560 315 https://www.youtube.com/watch?v=ceCo8U0XHqw}
     ///
     /// See also:
     ///
     ///  * [FlutterView], which provides some additional detail about this
-    ///    property and how it relates to [viewInsets] and [viewPadding].
+    ///    property and how it relates to ``viewInsets`` and ``viewPadding``.
     ///  * [SafeArea], a widget that consumes this padding with a [Padding] widget
-    ///    and automatically removes it from the [MediaQuery] for its child.
+    ///    and automatically removes it from the ``MediaQuery`` for its child.
     public var padding: EdgeInsets
 
     /// The parts of the display that are partially obscured by system UI,
@@ -327,8 +327,8 @@ public struct MediaQueryData: Equatable {
     /// software keyboard on the bottom of the screen that may cover and consume
     /// the same area that requires bottom padding will not affect this value.
     ///
-    /// This value is independent of the [padding] and [viewInsets]: their values
-    /// are measured from the edges of the [MediaQuery] widget's bounds. The
+    /// This value is independent of the ``padding`` and ``viewInsets``: their values
+    /// are measured from the edges of the ``MediaQuery`` widget's bounds. The
     /// bounds of the top level MediaQuery created by [WidgetsApp] are the
     /// same as the window that contains the app. On mobile devices, this will
     /// typically be the full screen.
@@ -338,7 +338,7 @@ public struct MediaQueryData: Equatable {
     /// See also:
     ///
     ///  * [FlutterView], which provides some additional detail about this
-    ///    property and how it relates to [padding] and [viewInsets].
+    ///    property and how it relates to ``padding`` and ``viewInsets``.
     public var viewPadding: EdgeInsets
 
     /// The areas along the edges of the display where the system consumes
@@ -493,21 +493,21 @@ public struct MediaQueryData: Equatable {
         size.width > size.height ? .landscape : .portrait
     }
 
-    /// Creates a copy of this media query data but with the given [padding]s
+    /// Creates a copy of this media query data but with the given ``padding``s
     /// replaced with zero.
     ///
     /// If all four of the `removeLeft`, `removeTop`, `removeRight`, and
     /// `removeBottom` arguments are false (the default), then this
-    /// [MediaQueryData] is returned unmodified.
+    /// ``MediaQueryData`` is returned unmodified.
     ///
     /// See also:
     ///
-    ///  * [MediaQuery.removePadding], which uses this method to remove [padding]
-    ///    from the ambient [MediaQuery].
-    ///  * [SafeArea], which both removes the padding from the [MediaQuery] and
+    ///  * [MediaQuery.removePadding], which uses this method to remove ``padding``
+    ///    from the ambient ``MediaQuery``.
+    ///  * [SafeArea], which both removes the padding from the ``MediaQuery`` and
     ///    adds a [Padding] widget.
-    ///  * [removeViewInsets], the same thing but for [viewInsets].
-    ///  * [removeViewPadding], the same thing but for [viewPadding].
+    ///  * [removeViewInsets], the same thing but for ``viewInsets``.
+    ///  * [removeViewPadding], the same thing but for ``viewPadding``.
     public func removePadding(
         removeLeft: Bool = false,
         removeTop: Bool = false,
@@ -535,19 +535,19 @@ public struct MediaQueryData: Equatable {
         return result
     }
 
-    /// Creates a copy of this media query data but with the given [viewInsets]
+    /// Creates a copy of this media query data but with the given ``viewInsets``
     /// replaced with zero.
     ///
     /// If all four of the `removeLeft`, `removeTop`, `removeRight`, and
     /// `removeBottom` arguments are false (the default), then this
-    /// [MediaQueryData] is returned unmodified.
+    /// ``MediaQueryData`` is returned unmodified.
     ///
     /// See also:
     ///
     ///  * [MediaQuery.removeViewInsets], which uses this method to remove
-    ///    [viewInsets] from the ambient [MediaQuery].
-    ///  * [removePadding], the same thing but for [padding].
-    ///  * [removeViewPadding], the same thing but for [viewPadding].
+    ///    ``viewInsets`` from the ambient ``MediaQuery``.
+    ///  * [removePadding], the same thing but for ``padding``.
+    ///  * [removeViewPadding], the same thing but for ``viewPadding``.
     public func removeViewInsets(
         removeLeft: Bool = false,
         removeTop: Bool = false,
@@ -574,19 +574,19 @@ public struct MediaQueryData: Equatable {
         return result
     }
 
-    /// Creates a copy of this media query data but with the given [viewPadding]
+    /// Creates a copy of this media query data but with the given ``viewPadding``
     /// replaced with zero.
     ///
     /// If all four of the `removeLeft`, `removeTop`, `removeRight`, and
     /// `removeBottom` arguments are false (the default), then this
-    /// [MediaQueryData] is returned unmodified.
+    /// ``MediaQueryData`` is returned unmodified.
     ///
     /// See also:
     ///
     ///  * [MediaQuery.removeViewPadding], which uses this method to remove
-    ///    [viewPadding] from the ambient [MediaQuery].
-    ///  * [removePadding], the same thing but for [padding].
-    ///  * [removeViewInsets], the same thing but for [viewInsets].
+    ///    ``viewPadding`` from the ambient ``MediaQuery``.
+    ///  * [removePadding], the same thing but for ``padding``.
+    ///  * [removeViewInsets], the same thing but for ``viewInsets``.
     public func removeViewPadding(
         removeLeft: Bool = false,
         removeTop: Bool = false,
@@ -613,11 +613,11 @@ public struct MediaQueryData: Equatable {
     }
 
     /// Creates a copy of this media query data by removing [displayFeatures] that
-    /// are completely outside the given sub-screen and adjusting the [padding],
-    /// [viewInsets] and [viewPadding] to be zero on the sides that are not
+    /// are completely outside the given sub-screen and adjusting the ``padding``,
+    /// ``viewInsets`` and ``viewPadding`` to be zero on the sides that are not
     /// included in the sub-screen.
     ///
-    /// Returns unmodified [MediaQueryData] if the sub-screen coincides with the
+    /// Returns unmodified ``MediaQueryData`` if the sub-screen coincides with the
     /// available screen space.
     ///
     /// Asserts in debug mode, if the given sub-screen is outside the available
@@ -626,7 +626,7 @@ public struct MediaQueryData: Equatable {
     /// See also:
     ///
     ///  * [DisplayFeatureSubScreen], which removes the display features that
-    ///    split the screen, from the [MediaQuery] and adds a [Padding] widget to
+    ///    split the screen, from the ``MediaQuery`` and adds a [Padding] widget to
     ///    position the child to match the selected sub-screen.
     public func removeDisplayFeatures(_ subScreen: Rect) -> MediaQueryData {
         assert(
@@ -697,27 +697,27 @@ public struct MediaQueryData: Equatable {
 /// rebuild automatically whenever that specific property changes.
 ///
 /// {@template flutter.widgets.media_query.MediaQuery.useSpecific}
-/// Querying using [MediaQuery.of] will cause your widget to rebuild
-/// automatically whenever _any_ field of the [MediaQueryData] changes (e.g., if
+/// Querying using ``MediaQuery/of`` will cause your widget to rebuild
+/// automatically whenever _any_ field of the ``MediaQueryData`` changes (e.g., if
 /// the user rotates their device). Therefore, unless you are concerned with the
-/// entire [MediaQueryData] object changing, prefer using the specific methods
+/// entire ``MediaQueryData`` object changing, prefer using the specific methods
 /// (for example: [MediaQuery.sizeOf] and [MediaQuery.paddingOf]), as it will
 /// rebuild more efficiently.
 ///
-/// If no [MediaQuery] is in scope then [MediaQuery.of] and the "...Of" methods
+/// If no ``MediaQuery`` is in scope then ``MediaQuery/of`` and the "...Of" methods
 /// similar to [MediaQuery.sizeOf] will throw an exception. Alternatively, the
 /// "maybe-" variant methods (such as [MediaQuery.maybeOf] and
 /// [MediaQuery.maybeSizeOf]) can be used, which return null, instead of
-/// throwing, when no [MediaQuery] is in scope.
+/// throwing, when no ``MediaQuery`` is in scope.
 /// {@endtemplate}
 ///
 /// {@youtube 560 315 https://www.youtube.com/watch?v=A3WrA4zAaPw}
 ///
 /// See also:
 ///
-///  * [WidgetsApp] and [MaterialApp], which introduce a [MediaQuery] and keep
+///  * [WidgetsApp] and [MaterialApp], which introduce a ``MediaQuery`` and keep
 ///    it up to date with the current screen metrics as they change.
-///  * [MediaQueryData], the data structure that represents the metrics.
+///  * ``MediaQueryData``, the data structure that represents the metrics.
 public class MediaQuery: InheritedModel {
     public typealias AspectType = PartialKeyPath<MediaQueryData>
 
@@ -725,7 +725,7 @@ public class MediaQuery: InheritedModel {
 
     public let child: any Widget
 
-    /// Creates a widget that provides [MediaQueryData] to its descendants.
+    /// Creates a widget that provides ``MediaQueryData`` to its descendants.
     public init(
         key: (any Key)? = nil,
         data: MediaQueryData,
@@ -736,26 +736,26 @@ public class MediaQuery: InheritedModel {
         self.child = child()
     }
 
-    /// Creates a new [MediaQuery] that inherits from the ambient [MediaQuery]
+    /// Creates a new ``MediaQuery`` that inherits from the ambient ``MediaQuery``
     /// from the given context, but removes the specified padding.
     ///
-    /// This should be inserted into the widget tree when the [MediaQuery] padding
+    /// This should be inserted into the widget tree when the ``MediaQuery`` padding
     /// is consumed by a widget in such a way that the padding is no longer
     /// exposed to the widget's descendants or siblings.
     ///
-    /// The [context] argument must have a [MediaQuery] in scope.
+    /// The [context] argument must have a ``MediaQuery`` in scope.
     ///
     /// If all four of the `removeLeft`, `removeTop`, `removeRight`, and
     /// `removeBottom` arguments are false (the default), then the returned
-    /// [MediaQuery] reuses the ambient [MediaQueryData] unmodified, which is not
+    /// ``MediaQuery`` reuses the ambient ``MediaQueryData`` unmodified, which is not
     /// particularly useful.
     ///
     /// See also:
     ///
-    ///  * [SafeArea], which both removes the padding from the [MediaQuery] and
+    ///  * [SafeArea], which both removes the padding from the ``MediaQuery`` and
     ///    adds a [Padding] widget.
     ///  * [MediaQueryData.padding], the affected property of the
-    ///    [MediaQueryData].
+    ///    ``MediaQueryData``.
     ///  * [MediaQuery.removeViewInsets], the same thing but for [MediaQueryData.viewInsets].
     ///  * [MediaQuery.removeViewPadding], the same thing but for
     ///    [MediaQueryData.viewPadding].
@@ -780,24 +780,24 @@ public class MediaQuery: InheritedModel {
         )
     }
 
-    /// Creates a new [MediaQuery] that inherits from the ambient [MediaQuery]
+    /// Creates a new ``MediaQuery`` that inherits from the ambient ``MediaQuery``
     /// from the given context, but removes the specified view insets.
     ///
-    /// This should be inserted into the widget tree when the [MediaQuery] view
+    /// This should be inserted into the widget tree when the ``MediaQuery`` view
     /// insets are consumed by a widget in such a way that the view insets are no
     /// longer exposed to the widget's descendants or siblings.
     ///
-    /// The [context] argument must have a [MediaQuery] in scope.
+    /// The [context] argument must have a ``MediaQuery`` in scope.
     ///
     /// If all four of the `removeLeft`, `removeTop`, `removeRight`, and
     /// `removeBottom` arguments are false (the default), then the returned
-    /// [MediaQuery] reuses the ambient [MediaQueryData] unmodified, which is not
+    /// ``MediaQuery`` reuses the ambient ``MediaQueryData`` unmodified, which is not
     /// particularly useful.
     ///
     /// See also:
     ///
     ///  * [MediaQueryData.viewInsets], the affected property of the
-    ///    [MediaQueryData].
+    ///    ``MediaQueryData``.
     ///  * [MediaQuery.removePadding], the same thing but for [MediaQueryData.padding].
     ///  * [MediaQuery.removeViewPadding], the same thing but for
     ///    [MediaQueryData.viewPadding].
@@ -822,24 +822,24 @@ public class MediaQuery: InheritedModel {
         )
     }
 
-    /// Creates a new [MediaQuery] that inherits from the ambient [MediaQuery]
+    /// Creates a new ``MediaQuery`` that inherits from the ambient ``MediaQuery``
     /// from the given context, but removes the specified view padding.
     ///
-    /// This should be inserted into the widget tree when the [MediaQuery] view
+    /// This should be inserted into the widget tree when the ``MediaQuery`` view
     /// padding is consumed by a widget in such a way that the view padding is no
     /// longer exposed to the widget's descendants or siblings.
     ///
-    /// The [context] argument must have a [MediaQuery] in scope.
+    /// The [context] argument must have a ``MediaQuery`` in scope.
     ///
     /// If all four of the `removeLeft`, `removeTop`, `removeRight`, and
     /// `removeBottom` arguments are false (the default), then the returned
-    /// [MediaQuery] reuses the ambient [MediaQueryData] unmodified, which is not
+    /// ``MediaQuery`` reuses the ambient ``MediaQueryData`` unmodified, which is not
     /// particularly useful.
     ///
     /// See also:
     ///
     ///  * [MediaQueryData.viewPadding], the affected property of the
-    ///    [MediaQueryData].
+    ///    ``MediaQueryData``.
     ///  * [MediaQuery.removePadding], the same thing but for [MediaQueryData.padding].
     ///  * [MediaQuery.removeViewInsets], the same thing but for [MediaQueryData.viewInsets].
     public static func removeViewPadding(
@@ -863,19 +863,19 @@ public class MediaQuery: InheritedModel {
         )
     }
 
-    // /// Wraps the [child] in a [MediaQuery] which is built using data from the
+    // /// Wraps the [child] in a ``MediaQuery`` which is built using data from the
     // /// provided [view].
     // ///
-    // /// The [MediaQuery] is constructed using the platform-specific data of the
-    // /// surrounding [MediaQuery] and the view-specific data of the provided
-    // /// [view]. If no surrounding [MediaQuery] exists, the platform-specific data
+    // /// The ``MediaQuery`` is constructed using the platform-specific data of the
+    // /// surrounding ``MediaQuery`` and the view-specific data of the provided
+    // /// [view]. If no surrounding ``MediaQuery`` exists, the platform-specific data
     // /// is generated from the [PlatformDispatcher] associated with the provided
     // /// [view]. Any information that's exposed via the [PlatformDispatcher] is
     // /// considered platform-specific. Data exposed directly on the [FlutterView]
     // /// (excluding its [FlutterView.platformDispatcher] property) is considered
     // /// view-specific.
     // ///
-    // /// The injected [MediaQuery] automatically updates when any of the data used
+    // /// The injected ``MediaQuery`` automatically updates when any of the data used
     // /// to construct it changes.
     // public static func fromView(
     //     key: (any Key)? = nil,
@@ -889,11 +889,11 @@ public class MediaQuery: InheritedModel {
     //     )
     // }
 
-    /// Wraps the `child` in a [MediaQuery] with its [MediaQueryData.textScaler]
+    /// Wraps the `child` in a ``MediaQuery`` with its [MediaQueryData.textScaler]
     /// set to [TextScaler.noScaling].
     ///
     /// The returned widget must be inserted in a widget tree below an existing
-    /// [MediaQuery] widget.
+    /// ``MediaQuery`` widget.
     ///
     /// This can be used to prevent, for example, icon fonts from scaling as the
     /// user adjusts the platform's text scaling value.
@@ -915,11 +915,11 @@ public class MediaQuery: InheritedModel {
         }
     }
 
-    // /// Wraps the `child` in a [MediaQuery] and applies [TextScaler.clamp] on the
+    // /// Wraps the `child` in a ``MediaQuery`` and applies [TextScaler.clamp] on the
     // /// current [MediaQueryData.textScaler].
     // ///
     // /// The returned widget must be inserted in a widget tree below an existing
-    // /// [MediaQuery] widget.
+    // /// ``MediaQuery`` widget.
     // ///
     // /// This is a convenience function to restrict the range of the scaled text
     // /// size to `[minScaleFactor * fontSize, maxScaleFactor * fontSize]` (to
@@ -955,7 +955,7 @@ public class MediaQuery: InheritedModel {
 
     /// Contains information about the current media.
     ///
-    /// For example, the [MediaQueryData.size] property contains the width and
+    /// For example, the ``MediaQueryData/size`` property contains the width and
     /// height of the current window.
     public let data: MediaQueryData
 
@@ -963,30 +963,30 @@ public class MediaQuery: InheritedModel {
     /// context.
     ///
     /// You can use this function to query the entire set of data held in the
-    /// current [MediaQueryData] object. When any of that information changes,
+    /// current ``MediaQueryData`` object. When any of that information changes,
     /// your widget will be scheduled to be rebuilt, keeping your widget
     /// up-to-date.
     ///
     /// Since it is typical that the widget only requires a subset of properties
-    /// of the [MediaQueryData] object, prefer using the more specific methods
+    /// of the ``MediaQueryData`` object, prefer using the more specific methods
     /// (for example: [MediaQuery.sizeOf] and [MediaQuery.paddingOf]), as those
     /// methods will not cause a widget to rebuild when unrelated properties are
     /// updated.
     ///
     /// Typical usage is as follows:
     ///
-    /// ```dart
-    /// MediaQueryData media = MediaQuery.of(context);
+    /// ```swift
+    /// let media = MediaQuery.of(context)
     /// ```
     ///
-    /// If there is no [MediaQuery] in scope, this method will throw a [TypeError]
+    /// If there is no ``MediaQuery`` in scope, this method will throw a [TypeError]
     /// exception in release builds, and throw a descriptive [FlutterError] in
     /// debug builds.
     ///
     /// See also:
     ///
     /// * [maybeOf], which doesn't throw or assert if it doesn't find a
-    ///   [MediaQuery] ancestor. It returns null instead.
+    ///   ``MediaQuery`` ancestor. It returns null instead.
     /// * [sizeOf] and other specific methods for retrieving and depending on
     ///   changes of a specific value.
     public static func of(_ context: BuildContext) -> MediaQueryData {
@@ -1003,35 +1003,35 @@ public class MediaQuery: InheritedModel {
     /// The data from the closest instance of this class that encloses the given
     /// context, if any.
     ///
-    /// Use this function if you want to allow situations where no [MediaQuery] is
-    /// in scope. Prefer using [MediaQuery.of] in situations where a media query
+    /// Use this function if you want to allow situations where no ``MediaQuery`` is
+    /// in scope. Prefer using ``MediaQuery/of`` in situations where a media query
     /// is always expected to exist.
     ///
-    /// If there is no [MediaQuery] in scope, then this function will return null.
+    /// If there is no ``MediaQuery`` in scope, then this function will return null.
     ///
     /// You can use this function to query the entire set of data held in the
-    /// current [MediaQueryData] object. When any of that information changes,
+    /// current ``MediaQueryData`` object. When any of that information changes,
     /// your widget will be scheduled to be rebuilt, keeping your widget
     /// up-to-date.
     ///
     /// Since it is typical that the widget only requires a subset of properties
-    /// of the [MediaQueryData] object, prefer using the more specific methods
+    /// of the ``MediaQueryData`` object, prefer using the more specific methods
     /// (for example: [MediaQuery.maybeSizeOf] and [MediaQuery.maybePaddingOf]),
     /// as those methods will not cause a widget to rebuild when unrelated
     /// properties are updated.
     ///
     /// Typical usage is as follows:
     ///
-    /// ```dart
-    /// MediaQueryData? mediaQuery = MediaQuery.maybeOf(context);
-    /// if (mediaQuery == null) {
+    /// ```swift
+    /// let mediaQuery = MediaQuery.maybeOf(context)
+    /// if mediaQuery == nil {
     ///   // Do something else instead.
     /// }
     /// ```
     ///
     /// See also:
     ///
-    /// * [of], which will throw if it doesn't find a [MediaQuery] ancestor,
+    /// * [of], which will throw if it doesn't find a ``MediaQuery`` ancestor,
     ///   instead of returning null.
     /// * [maybeSizeOf] and other specific methods for retrieving and depending on
     ///   changes of a specific value.
@@ -1048,80 +1048,80 @@ public class MediaQuery: InheritedModel {
         Self.inheritFrom(MediaQuery.self, context: context, aspect: aspect)?.data
     }
 
-    /// Returns [MediaQueryData.size] from the nearest [MediaQuery] ancestor or
+    /// Returns ``MediaQueryData/size`` from the nearest ``MediaQuery`` ancestor or
     /// throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.size] property of the ancestor [MediaQuery] changes.
+    /// the ``MediaQueryData/size`` property of the ancestor ``MediaQuery`` changes.
     ///
     /// Prefer using this function over getting the attribute directly from the
-    /// [MediaQueryData] returned from [of], because using this function will only
+    /// ``MediaQueryData`` returned from [of], because using this function will only
     /// rebuild the `context` when this specific attribute changes, not when _any_
     /// attribute changes.
     public static func sizeOf(_ context: BuildContext) -> Size {
         Self._of(context, aspect: \.size).size
     }
 
-    /// Returns [MediaQueryData.size] from the nearest [MediaQuery] ancestor or
+    /// Returns ``MediaQueryData/size`` from the nearest ``MediaQuery`` ancestor or
     /// null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.size] property of the ancestor [MediaQuery] changes.
+    /// the ``MediaQueryData/size`` property of the ancestor ``MediaQuery`` changes.
     ///
     /// Prefer using this function over getting the attribute directly from the
-    /// [MediaQueryData] returned from [maybeOf], because using this function will
+    /// ``MediaQueryData`` returned from [maybeOf], because using this function will
     /// only rebuild the `context` when this specific attribute changes, not when
     /// _any_ attribute changes.
     public static func maybeSizeOf(_ context: BuildContext) -> Size? {
         Self._maybeOf(context, aspect: \.size)?.size
     }
 
-    /// Returns [MediaQueryData.orientation] for the nearest [MediaQuery] ancestor or
+    /// Returns [MediaQueryData.orientation] for the nearest ``MediaQuery`` ancestor or
     /// throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.orientation] property of the ancestor [MediaQuery] changes.
+    /// the [MediaQueryData.orientation] property of the ancestor ``MediaQuery`` changes.
     public static func orientationOf(_ context: BuildContext) -> Orientation {
         Self._of(context, aspect: \.orientation).orientation
     }
-    /// Returns [MediaQueryData.orientation] for the nearest [MediaQuery] ancestor or
+    /// Returns [MediaQueryData.orientation] for the nearest ``MediaQuery`` ancestor or
     /// null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.orientation] property of the ancestor [MediaQuery] changes.
+    /// the [MediaQueryData.orientation] property of the ancestor ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeOrientationOf(_ context: BuildContext) -> Orientation? {
         Self._maybeOf(context, aspect: \.orientation)?.orientation
     }
 
-    /// Returns [MediaQueryData.devicePixelRatio] for the nearest [MediaQuery] ancestor or
+    /// Returns [MediaQueryData.devicePixelRatio] for the nearest ``MediaQuery`` ancestor or
     /// throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.devicePixelRatio] property of the ancestor [MediaQuery] changes.
+    /// the [MediaQueryData.devicePixelRatio] property of the ancestor ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func devicePixelRatioOf(_ context: BuildContext) -> Float {
         Self._of(context, aspect: \.devicePixelRatio).devicePixelRatio
     }
 
-    /// Returns [MediaQueryData.devicePixelRatio] for the nearest [MediaQuery] ancestor or
+    /// Returns [MediaQueryData.devicePixelRatio] for the nearest ``MediaQuery`` ancestor or
     /// null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.devicePixelRatio] property of the ancestor [MediaQuery] changes.
+    /// the [MediaQueryData.devicePixelRatio] property of the ancestor ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeDevicePixelRatioOf(_ context: BuildContext) -> Float? {
         Self._maybeOf(context, aspect: \.devicePixelRatio)?.devicePixelRatio
     }
 
-    /// Returns the [MediaQueryData.textScaler] for the nearest [MediaQuery]
+    /// Returns the [MediaQueryData.textScaler] for the nearest ``MediaQuery``
     /// ancestor or [TextScaler.noScaling] if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.textScaler] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.textScaler] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1129,11 +1129,11 @@ public class MediaQuery: InheritedModel {
         Self._of(context, aspect: \.textScaler).textScaler
     }
 
-    /// Returns the [MediaQueryData.textScaler] for the nearest [MediaQuery]
+    /// Returns the [MediaQueryData.textScaler] for the nearest ``MediaQuery``
     /// ancestor or null if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.textScaler] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.textScaler] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1141,35 +1141,35 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.textScaler)?.textScaler
     }
 
-    /// Returns [MediaQueryData.platformBrightness] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.platformBrightness] for the nearest ``MediaQuery``
     /// ancestor or [Brightness.light], if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.platformBrightness] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func platformBrightnessOf(_ context: BuildContext) -> Brightness {
         maybePlatformBrightnessOf(context) ?? .light
     }
 
-    /// Returns [MediaQueryData.platformBrightness] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.platformBrightness] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.platformBrightness] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybePlatformBrightnessOf(_ context: BuildContext) -> Brightness? {
         Self._maybeOf(context, aspect: \.platformBrightness)?.platformBrightness
     }
 
-    /// Returns [MediaQueryData.padding] for the nearest [MediaQuery] ancestor or
+    /// Returns [MediaQueryData.padding] for the nearest ``MediaQuery`` ancestor or
     /// throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.padding] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.padding] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1177,11 +1177,11 @@ public class MediaQuery: InheritedModel {
         Self._of(context, aspect: \.padding).padding
     }
 
-    /// Returns [MediaQueryData.padding] for the nearest [MediaQuery] ancestor
+    /// Returns [MediaQueryData.padding] for the nearest ``MediaQuery`` ancestor
     /// or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.padding] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.padding] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1189,11 +1189,11 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.padding)?.padding
     }
 
-    /// Returns [MediaQueryData.viewInsets] for the nearest [MediaQuery] ancestor
+    /// Returns [MediaQueryData.viewInsets] for the nearest ``MediaQuery`` ancestor
     /// or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.viewInsets] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.viewInsets] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1201,11 +1201,11 @@ public class MediaQuery: InheritedModel {
         Self._of(context, aspect: \.viewInsets).viewInsets
     }
 
-    /// Returns [MediaQueryData.viewInsets] for the nearest [MediaQuery] ancestor
+    /// Returns [MediaQueryData.viewInsets] for the nearest ``MediaQuery`` ancestor
     /// or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.viewInsets] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.viewInsets] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1213,35 +1213,35 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.viewInsets)?.viewInsets
     }
 
-    /// Returns [MediaQueryData.systemGestureInsets] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.systemGestureInsets] for the nearest ``MediaQuery``
     /// ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.systemGestureInsets] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func systemGestureInsetsOf(_ context: BuildContext) -> EdgeInsets {
         Self._of(context, aspect: \.systemGestureInsets).systemGestureInsets
     }
 
-    /// Returns [MediaQueryData.systemGestureInsets] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.systemGestureInsets] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.systemGestureInsets] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeSystemGestureInsetsOf(_ context: BuildContext) -> EdgeInsets? {
         Self._maybeOf(context, aspect: \.systemGestureInsets)?.systemGestureInsets
     }
 
-    /// Returns [MediaQueryData.viewPadding] for the nearest [MediaQuery] ancestor
+    /// Returns [MediaQueryData.viewPadding] for the nearest ``MediaQuery`` ancestor
     /// or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.viewPadding] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.viewPadding] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1249,11 +1249,11 @@ public class MediaQuery: InheritedModel {
         Self._of(context, aspect: \.viewPadding).viewPadding
     }
 
-    /// Returns [MediaQueryData.viewPadding] for the nearest [MediaQuery] ancestor
+    /// Returns [MediaQueryData.viewPadding] for the nearest ``MediaQuery`` ancestor
     /// or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.viewPadding] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.viewPadding] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1262,11 +1262,11 @@ public class MediaQuery: InheritedModel {
     }
 
     /// Returns [MediaQueryData.alwaysUse24HourFormat] for the nearest
-    /// [MediaQuery] ancestor or throws an exception, if no such ancestor exists.
+    /// ``MediaQuery`` ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.alwaysUse24HourFormat] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func alwaysUse24HourFormatOf(_ context: BuildContext) -> Bool {
@@ -1274,46 +1274,46 @@ public class MediaQuery: InheritedModel {
     }
 
     /// Returns [MediaQueryData.alwaysUse24HourFormat] for the nearest
-    /// [MediaQuery] ancestor or null, if no such ancestor exists.
+    /// ``MediaQuery`` ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.alwaysUse24HourFormat] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeAlwaysUse24HourFormatOf(_ context: BuildContext) -> Bool? {
         Self._maybeOf(context, aspect: \.alwaysUse24HourFormat)?.alwaysUse24HourFormat
     }
 
-    /// Returns [MediaQueryData.accessibleNavigation] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.accessibleNavigation] for the nearest ``MediaQuery``
     /// ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.accessibleNavigation] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func accessibleNavigationOf(_ context: BuildContext) -> Bool {
         Self._of(context, aspect: \.accessibleNavigation).accessibleNavigation
     }
 
-    /// Returns [MediaQueryData.accessibleNavigation] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.accessibleNavigation] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.accessibleNavigation] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeAccessibleNavigationOf(_ context: BuildContext) -> Bool? {
         Self._maybeOf(context, aspect: \.accessibleNavigation)?.accessibleNavigation
     }
 
-    /// Returns [MediaQueryData.invertColors] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.invertColors] for the nearest ``MediaQuery``
     /// ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.invertColors] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.invertColors] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1321,11 +1321,11 @@ public class MediaQuery: InheritedModel {
         Self._of(context, aspect: \.invertColors).invertColors
     }
 
-    /// Returns [MediaQueryData.invertColors] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.invertColors] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.invertColors] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.invertColors] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1333,11 +1333,11 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.invertColors)?.invertColors
     }
 
-    /// Returns [MediaQueryData.highContrast] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.highContrast] for the nearest ``MediaQuery``
     /// ancestor or false, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.highContrast] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.highContrast] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1345,11 +1345,11 @@ public class MediaQuery: InheritedModel {
         maybeHighContrastOf(context) ?? false
     }
 
-    /// Returns [MediaQueryData.highContrast] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.highContrast] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.highContrast] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.highContrast] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1357,48 +1357,48 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.highContrast)?.highContrast
     }
 
-    /// Returns [MediaQueryData.onOffSwitchLabels] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.onOffSwitchLabels] for the nearest ``MediaQuery``
     /// ancestor or false, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.onOffSwitchLabels] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func onOffSwitchLabelsOf(_ context: BuildContext) -> Bool {
         maybeOnOffSwitchLabelsOf(context) ?? false
     }
 
-    /// Returns [MediaQueryData.onOffSwitchLabels] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.onOffSwitchLabels] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.onOffSwitchLabels] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeOnOffSwitchLabelsOf(_ context: BuildContext) -> Bool? {
         Self._maybeOf(context, aspect: \.onOffSwitchLabels)?.onOffSwitchLabels
     }
 
-    /// Returns [MediaQueryData.disableAnimations] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.disableAnimations] for the nearest ``MediaQuery``
     /// ancestor or false, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.disableAnimations] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func disableAnimationsOf(_ context: BuildContext) -> Bool {
         Self._of(context, aspect: \.disableAnimations).disableAnimations
     }
 
-    /// Returns [MediaQueryData.disableAnimations] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.disableAnimations] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.disableAnimations] property of the ancestor
-    /// [MediaQuery] changes.
+    /// ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeDisableAnimationsOf(_ context: BuildContext) -> Bool? {
@@ -1406,10 +1406,10 @@ public class MediaQuery: InheritedModel {
     }
 
     /// Returns the [MediaQueryData.boldText] accessibility setting for the
-    /// nearest [MediaQuery] ancestor or false, if no such ancestor exists.
+    /// nearest ``MediaQuery`` ancestor or false, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.boldText] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.boldText] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1418,10 +1418,10 @@ public class MediaQuery: InheritedModel {
     }
 
     /// Returns the [MediaQueryData.boldText] accessibility setting for the
-    /// nearest [MediaQuery] ancestor or null, if no such ancestor exists.
+    /// nearest ``MediaQuery`` ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.boldText] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.boldText] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1429,11 +1429,11 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.boldText)?.boldText
     }
 
-    /// Returns [MediaQueryData.navigationMode] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.navigationMode] for the nearest ``MediaQuery``
     /// ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.navigationMode] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.navigationMode] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1441,11 +1441,11 @@ public class MediaQuery: InheritedModel {
         Self._of(context, aspect: \.navigationMode).navigationMode
     }
 
-    /// Returns [MediaQueryData.navigationMode] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.navigationMode] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.navigationMode] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.navigationMode] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1453,11 +1453,11 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.navigationMode)?.navigationMode
     }
 
-    /// Returns [MediaQueryData.gestureSettings] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.gestureSettings] for the nearest ``MediaQuery``
     /// ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.gestureSettings] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.gestureSettings] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1465,11 +1465,11 @@ public class MediaQuery: InheritedModel {
         Self._of(context, aspect: \.gestureSettings).gestureSettings
     }
 
-    /// Returns [MediaQueryData.gestureSettings] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.gestureSettings] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.gestureSettings] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.gestureSettings] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1477,11 +1477,11 @@ public class MediaQuery: InheritedModel {
         Self._maybeOf(context, aspect: \.gestureSettings)?.gestureSettings
     }
 
-    /// Returns [MediaQueryData.displayFeatures] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.displayFeatures] for the nearest ``MediaQuery``
     /// ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.displayFeatures] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.displayFeatures] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
@@ -1489,11 +1489,11 @@ public class MediaQuery: InheritedModel {
     //     Self._of(context, aspect: \.displayFeatures).displayFeatures
     // }
 
-    /// Returns [MediaQueryData.displayFeatures] for the nearest [MediaQuery]
+    /// Returns [MediaQueryData.displayFeatures] for the nearest ``MediaQuery``
     /// ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
-    /// the [MediaQueryData.displayFeatures] property of the ancestor [MediaQuery]
+    /// the [MediaQueryData.displayFeatures] property of the ancestor ``MediaQuery``
     /// changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
@@ -1502,11 +1502,11 @@ public class MediaQuery: InheritedModel {
     // }
 
     /// Returns [MediaQueryData.supportsShowingSystemContextMenu] for the nearest
-    /// [MediaQuery] ancestor or throws an exception, if no such ancestor exists.
+    /// ``MediaQuery`` ancestor or throws an exception, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.supportsShowingSystemContextMenu] property of the
-    /// ancestor [MediaQuery] changes.
+    /// ancestor ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseOf}
     public static func supportsShowingSystemContextMenu(_ context: BuildContext) -> Bool {
@@ -1515,11 +1515,11 @@ public class MediaQuery: InheritedModel {
     }
 
     /// Returns [MediaQueryData.supportsShowingSystemContextMenu] for the nearest
-    /// [MediaQuery] ancestor or null, if no such ancestor exists.
+    /// ``MediaQuery`` ancestor or null, if no such ancestor exists.
     ///
     /// Use of this method will cause the given [context] to rebuild any time that
     /// the [MediaQueryData.supportsShowingSystemContextMenu] property of the
-    /// ancestor [MediaQuery] changes.
+    /// ancestor ``MediaQuery`` changes.
     ///
     /// {@macro flutter.widgets.media_query.MediaQuery.dontUseMaybeOf}
     public static func maybeSupportsShowingSystemContextMenu(_ context: BuildContext) -> Bool? {
@@ -1586,13 +1586,13 @@ public class MediaQuery: InheritedModel {
     }
 }
 
-/// Describes the navigation mode to be set by a [MediaQuery] widget.
+/// Describes the navigation mode to be set by a ``MediaQuery`` widget.
 ///
 /// The different modes indicate the type of navigation to be used in a widget
 /// subtree for those widgets sensitive to it.
 ///
 /// Use `MediaQuery.navigationModeOf(context)` to determine the navigation mode
-/// in effect for the given context. Use a [MediaQuery] widget to set the
+/// in effect for the given context. Use a ``MediaQuery`` widget to set the
 /// navigation mode for its descendant widgets.
 public enum NavigationMode {
     /// This indicates a traditional keyboard-and-mouse navigation modality.

@@ -766,8 +766,8 @@ public final class EditableText: StatefulWidget {
     /// ## Testing
     /// The following is the recommended way to trigger [onSubmitted] in a test:
     ///
-    /// ```dart
-    /// await tester.testTextInput.receiveAction(TextInputAction.done);
+    /// ```swift
+    /// await tester.testTextInput.receiveAction(TextInputAction.done)
     /// ```
     ///
     /// Sending a `LogicalKeyboardKey.enter` via `tester.sendKeyEvent` will not

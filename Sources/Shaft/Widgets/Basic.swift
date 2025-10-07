@@ -2233,14 +2233,15 @@ public protocol CustomClipper<T>: AnyObject, Listenable {
 /// For example, by combining a [ClipRect] with an [Align], one can show just
 /// the top half of an [Image]:
 ///
-/// ```dart
-/// ClipRect(
-///   child: Align(
+/// ```swift
+/// ClipRect {
+///   Align(
 ///     alignment: Alignment.topCenter,
-///     heightFactor: 0.5,
-///     child: Image.network(userAvatarUrl),
-///   ),
-/// )
+///     heightFactor: 0.5
+///   ) {
+///     Image.network(userAvatarUrl)
+///   }
+/// }
 /// ```
 /// {@end-tool}
 ///
@@ -2453,20 +2454,20 @@ extension Widget {
 /// could be used in a [CustomPaint] widget to display a background to some
 /// text.
 ///
-/// ```dart
-/// CustomPaint(
-///   painter: Sky(),
-///   child: const Center(
-///     child: Text(
-///       'Once upon a time...',
+/// ```swift
+/// CustomPaint(painter: Sky()) {
+///   Center {
+///     Text(
+///       "Once upon a time...",
 ///       style: TextStyle(
 ///         fontSize: 40.0,
 ///         fontWeight: FontWeight.w900,
-///         color: Color(0xFFFFFFFF),
-///       ),
-///     ),
-///   ),
-/// )
+///         color: Color(0xFFFFFFFF)
+///       )
+///     }
+///   }
+/// }
+/// ```
 /// ```
 /// {@end-tool}
 ///

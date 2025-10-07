@@ -7,8 +7,8 @@
 ///
 /// See also:
 ///
-///  * [CustomScrollView], for an explanation of scroll semantics.
-///  * [SliverChildBuilderDelegate], for an explanation of how this is used to
+///  * ``CustomScrollView``, for an explanation of scroll semantics.
+///  * ``SliverChildBuilderDelegate``, for an explanation of how this is used to
 ///    generate indexes.
 public typealias SemanticIndexCallback = (_ widget: Widget, _ localIndex: Int) -> Int?
 
@@ -19,11 +19,11 @@ public func _kDefaultSemanticIndexCallback(_ widget: Widget, _ localIndex: Int) 
 /// A delegate that supplies children for slivers.
 ///
 /// Many slivers lazily construct their box children to avoid creating more
-/// children than are visible through the [Viewport]. Rather than receiving
-/// their children as an explicit [List], they receive their children using a
-/// [SliverChildDelegate].
+/// children than are visible through the ``Viewport``. Rather than receiving
+/// their children as an explicit ``List``, they receive their children using a
+/// ``SliverChildDelegate``.
 ///
-/// It's uncommon to subclass [SliverChildDelegate]. Instead, consider using one
+/// It's uncommon to subclass ``SliverChildDelegate``. Instead, consider using one
 /// of the existing subclasses that provide adaptors to builder callbacks or
 /// explicit child lists.
 ///
@@ -34,8 +34,8 @@ public func _kDefaultSemanticIndexCallback(_ widget: Widget, _ localIndex: Int) 
 ///
 /// While laying out the list, visible children's elements, states and render
 /// objects will be created lazily based on existing widgets (such as in the
-/// case of [SliverChildListDelegate]) or lazily provided ones (such as in the
-/// case of [SliverChildBuilderDelegate]).
+/// case of ``SliverChildListDelegate``) or lazily provided ones (such as in the
+/// case of ``SliverChildBuilderDelegate``).
 ///
 /// ### Destruction
 ///
@@ -54,7 +54,7 @@ public func _kDefaultSemanticIndexCallback(_ widget: Widget, _ localIndex: Int) 
 ///    with their number of upvotes coming from a cached network response, store
 ///    the list of posts and upvote number in a data model outside the list. Let
 ///    the sliver child UI subtree be easily recreate-able from the
-///    source-of-truth model object. Use [StatefulWidget]s in the child widget
+///    source-of-truth model object. Use ``StatefulWidget``s in the child widget
 ///    subtree to store instantaneous UI state only.
 ///
 ///  * Letting [KeepAlive] be the root widget of the sliver child widget subtree
@@ -66,13 +66,13 @@ public func _kDefaultSemanticIndexCallback(_ widget: Widget, _ localIndex: Int) 
 ///    render object is repainted as-is (if it wasn't marked dirty in the
 ///    interim).
 ///
-///    This only works if the [SliverChildDelegate] subclasses don't wrap the
+///    This only works if the ``SliverChildDelegate`` subclasses don't wrap the
 ///    child widget subtree with other widgets such as [AutomaticKeepAlive] and
 ///    [RepaintBoundary] via `addAutomaticKeepAlives` and
 ///    `addRepaintBoundaries`.
 ///
 ///  * Using [AutomaticKeepAlive] widgets (inserted by default in
-///    [SliverChildListDelegate] or [SliverChildListDelegate]).
+///    ``SliverChildListDelegate`` or ``SliverChildListDelegate``).
 ///    [AutomaticKeepAlive] allows descendant widgets to control whether the
 ///    subtree is actually kept alive or not. This behavior is in contrast with
 ///    [KeepAlive], which will unconditionally keep the subtree alive.
@@ -88,7 +88,7 @@ public func _kDefaultSemanticIndexCallback(_ widget: Widget, _ localIndex: Int) 
 ///    [AutomaticKeepAliveClientMixin.wantKeepAlive] getter and calling
 ///    [AutomaticKeepAliveClientMixin.updateKeepAlive].
 ///
-/// ## Using more than one delegate in a [Viewport]
+/// ## Using more than one delegate in a ``Viewport``
 ///
 /// If multiple delegates are used in a single scroll view, the first child of
 /// each delegate will always be laid out, even if it extends beyond the
@@ -99,9 +99,9 @@ public func _kDefaultSemanticIndexCallback(_ widget: Widget, _ localIndex: Int) 
 ///
 /// See also:
 ///
-///  * [SliverChildBuilderDelegate], which is a delegate that uses a builder
+///  * ``SliverChildBuilderDelegate``, which is a delegate that uses a builder
 ///    callback to construct the children.
-///  * [SliverChildListDelegate], which is a delegate that has an explicit list
+///  * ``SliverChildListDelegate``, which is a delegate that has an explicit list
 ///    of children.
 public protocol SliverChildDelegate: AnyObject {
     /// Returns the child with the given index.
@@ -178,7 +178,7 @@ public protocol SliverChildDelegate: AnyObject {
     func findIndexByKey(_ key: any Key) -> Int?
 }
 
-/// Default implementation for [SliverChildDelegate] methods.
+/// Default implementation for ``SliverChildDelegate`` methods.
 extension SliverChildDelegate {
     /// Default implementation of [estimatedChildCount].
     public var estimatedChildCount: Int? {
@@ -235,7 +235,7 @@ public typealias ChildIndexGetter = (_ key: any Key) -> Int?
 /// A delegate that supplies children for slivers using a builder callback.
 ///
 /// Many slivers lazily construct their box children to avoid creating more
-/// children than are visible through the [Viewport]. This delegate provides
+/// children than are visible through the ``Viewport``. This delegate provides
 /// children using a [NullableIndexedWidgetBuilder] callback, so that the children do
 /// not even have to be built until they are displayed.
 ///
@@ -246,7 +246,7 @@ public typealias ChildIndexGetter = (_ key: any Key) -> Int?
 ///
 /// ## Accessibility
 ///
-/// The [CustomScrollView] requires that its semantic children are annotated
+/// The ``CustomScrollView`` requires that its semantic children are annotated
 /// using [IndexedSemantics]. This is done by default in the delegate with
 /// the `addSemanticIndexes` parameter set to true.
 ///
@@ -262,31 +262,31 @@ public typealias ChildIndexGetter = (_ key: any Key) -> Int?
 /// This sample code shows how to use `semanticIndexOffset` to handle multiple
 /// delegates in a single scroll view.
 ///
-/// ```dart
+/// ```swift
 /// CustomScrollView(
-///   semanticChildCount: 4,
-///   slivers: <Widget>[
-///     SliverGrid(
-///       gridDelegate: _gridDelegate,
-///       delegate: SliverChildBuilderDelegate(
-///         (BuildContext context, int index) {
-///            return const Text('...');
-///          },
-///          childCount: 2,
-///        ),
-///      ),
-///     SliverGrid(
-///       gridDelegate: _gridDelegate,
-///       delegate: SliverChildBuilderDelegate(
-///         (BuildContext context, int index) {
-///            return const Text('...');
-///          },
-///          childCount: 2,
-///          semanticIndexOffset: 2,
-///        ),
-///      ),
-///   ],
-/// )
+///   semanticChildCount: 4
+/// ) {
+///   SliverGrid(
+///     gridDelegate: _gridDelegate,
+///     delegate: SliverChildBuilderDelegate(
+///       { (context: BuildContext, index: Int) in
+///         Text("...")
+///       },
+///       childCount: 2
+///     )
+///   )
+///
+///   SliverGrid(
+///     gridDelegate: _gridDelegate,
+///     delegate: SliverChildBuilderDelegate(
+///       { (context: BuildContext, index: Int) in
+///         Text("...")
+///       },
+///       childCount: 2,
+///       semanticIndexOffset: 2
+///     )
+///   )
+/// }
 /// ```
 /// {@end-tool}
 ///
@@ -303,36 +303,36 @@ public typealias ChildIndexGetter = (_ key: any Key) -> Int?
 /// a [Spacer] widget at odd indexes which should not have a semantic
 /// index.
 ///
-/// ```dart
+/// ```swift
 /// CustomScrollView(
-///   semanticChildCount: 5,
-///   slivers: <Widget>[
-///     SliverGrid(
-///       gridDelegate: _gridDelegate,
-///       delegate: SliverChildBuilderDelegate(
-///         (BuildContext context, int index) {
-///            if (index.isEven) {
-///              return const Text('...');
-///            }
-///            return const Spacer();
-///          },
-///          semanticIndexCallback: (Widget widget, int localIndex) {
-///            if (localIndex.isEven) {
-///              return localIndex ~/ 2;
-///            }
-///            return null;
-///          },
-///          childCount: 10,
-///        ),
-///      ),
-///   ],
-/// )
+///   semanticChildCount: 5
+/// ) {
+///   SliverGrid(
+///     gridDelegate: _gridDelegate,
+///     delegate: SliverChildBuilderDelegate(
+///       { (context: BuildContext, index: Int) in
+///         if index.isEven {
+///           Text("...")
+///         } else {
+///           Spacer()
+///         }
+///       },
+///       semanticIndexCallback: { (widget: Widget, localIndex: Int) in
+///         if localIndex.isEven {
+///           return localIndex / 2
+///         }
+///         return nil
+///       },
+///       childCount: 10
+///     )
+///   )
+/// }
 /// ```
 /// {@end-tool}
 ///
 /// See also:
 ///
-///  * [SliverChildListDelegate], which is a delegate that has an explicit list
+///  * ``SliverChildListDelegate``, which is a delegate that has an explicit list
 ///    of children.
 ///  * [IndexedSemantics], for an example of manually annotating child nodes
 ///    with semantic indexes.
@@ -515,13 +515,13 @@ public class SliverChildBuilderDelegate: SliverChildDelegate {
 /// A delegate that supplies children for slivers using an explicit list.
 ///
 /// Many slivers lazily construct their box children to avoid creating more
-/// children than are visible through the [Viewport]. This delegate provides
+/// children than are visible through the ``Viewport``. This delegate provides
 /// children using an explicit list, which is convenient but reduces the benefit
 /// of building children lazily.
 ///
 /// In general building all the widgets in advance is not efficient. It is
 /// better to create a delegate that builds them on demand using
-/// [SliverChildBuilderDelegate] or by subclassing [SliverChildDelegate]
+/// ``SliverChildBuilderDelegate`` or by subclassing ``SliverChildDelegate``
 /// directly.
 ///
 /// This class is provided for the cases where either the list of children is
@@ -539,7 +539,7 @@ public class SliverChildBuilderDelegate: SliverChildDelegate {
 ///
 /// ## Accessibility
 ///
-/// The [CustomScrollView] requires that its semantic children are annotated
+/// The ``CustomScrollView`` requires that its semantic children are annotated
 /// using [IndexedSemantics]. This is done by default in the delegate with
 /// the `addSemanticIndexes` parameter set to true.
 ///
@@ -556,12 +556,12 @@ public class SliverChildBuilderDelegate: SliverChildDelegate {
 /// providing a `semanticIndexCallback` which returns null for separators
 /// indexes and rounds the non-separator indexes down by half.
 ///
-/// See [SliverChildBuilderDelegate] for sample code using
+/// See ``SliverChildBuilderDelegate`` for sample code using
 /// `semanticIndexOffset` and `semanticIndexCallback`.
 ///
 /// See also:
 ///
-///  * [SliverChildBuilderDelegate], which is a delegate that uses a builder
+///  * ``SliverChildBuilderDelegate``, which is a delegate that uses a builder
 ///    callback to construct the children.
 public class SliverChildListDelegate: SliverChildDelegate {
     /// Creates a delegate that supplies children for slivers using the given
@@ -594,7 +594,7 @@ public class SliverChildListDelegate: SliverChildDelegate {
     /// slivers using the given list.
     ///
     /// If the order of the children will change, consider using the regular
-    /// [SliverChildListDelegate] constructor.
+    /// ``SliverChildListDelegate`` constructor.
     ///
     /// The [children], [addAutomaticKeepAlives], [addRepaintBoundaries],
     /// [addSemanticIndexes], and [semanticIndexCallback] arguments must not be

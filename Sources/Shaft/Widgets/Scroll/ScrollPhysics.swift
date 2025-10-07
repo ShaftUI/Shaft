@@ -29,37 +29,37 @@ public enum ScrollDecelerationRate {
 //   const BarScrollPhysics({ super.parent });
 // }
 
-/// Determines the physics of a [Scrollable] widget.
+/// Determines the physics of a ``Scrollable`` widget.
 ///
-/// For example, determines how the [Scrollable] will behave when the user
+/// For example, determines how the ``Scrollable`` will behave when the user
 /// reaches the maximum scroll extent or when the user stops scrolling.
 ///
-/// When starting a physics [Simulation], the current scroll position and
+/// When starting a physics ``Simulation``, the current scroll position and
 /// velocity are used as the initial conditions for the particle in the
 /// simulation. The movement of the particle in the simulation is then used to
 /// determine the scroll position for the widget.
 ///
-/// Instead of creating your own subclasses, [parent] can be used to combine
-/// [ScrollPhysics] objects of different types to get the desired scroll physics.
+/// Instead of creating your own subclasses, ``parent`` can be used to combine
+/// ``ScrollPhysics`` objects of different types to get the desired scroll physics.
 /// For example:
 ///
-/// ```dart
-/// const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())
+/// ```swift
+/// BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())
 /// ```
 ///
 /// You can also use `applyTo`, which is useful when you already have
-/// an instance of [ScrollPhysics]:
+/// an instance of ``ScrollPhysics``:
 ///
-/// ```dart
-/// ScrollPhysics physics = const BouncingScrollPhysics();
+/// ```swift
+/// let physics = BouncingScrollPhysics()
 /// // ...
-/// final ScrollPhysics mergedPhysics = physics.applyTo(const AlwaysScrollableScrollPhysics());
+/// let mergedPhysics = physics.applyTo(AlwaysScrollableScrollPhysics())
 /// ```
 ///
-/// When implementing a subclass, you must override [applyTo] so that it returns
+/// When implementing a subclass, you must override ``applyTo`` so that it returns
 /// an appropriate instance of your subclass.  Otherwise, classes like
-/// [Scrollable] that inform a [ScrollPosition] will combine them with
-/// the default [ScrollPhysics] object instead of your custom subclass.
+/// ``Scrollable`` that inform a ``ScrollPosition`` will combine them with
+/// the default ``ScrollPhysics`` object instead of your custom subclass.
 public class ScrollPhysics {
     /// Creates an object with the default scroll physics.
     public init(parent: ScrollPhysics? = nil) {
@@ -68,33 +68,34 @@ public class ScrollPhysics {
 
     /// If non-null, determines the default behavior for each method.
     ///
-    /// If a subclass of [ScrollPhysics] does not override a method, that subclass
+    /// If a subclass of ``ScrollPhysics`` does not override a method, that subclass
     /// will inherit an implementation from this base class that defers to
-    /// [parent]. This mechanism lets you assemble novel combinations of
-    /// [ScrollPhysics] subclasses at runtime. For example:
+    /// ``parent``. This mechanism lets you assemble novel combinations of
+    /// ``ScrollPhysics`` subclasses at runtime. For example:
     ///
     /// ```dart
     /// const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())
     /// ```
     ///
-    /// will result in a [ScrollPhysics] that has the combined behavior
+    /// will result in a ``ScrollPhysics`` that has the combined behavior
     /// of [BouncingScrollPhysics] and [AlwaysScrollableScrollPhysics]:
     /// behaviors that are not specified in [BouncingScrollPhysics]
     /// (e.g. [shouldAcceptUserOffset]) will defer to [AlwaysScrollableScrollPhysics].
     public let parent: ScrollPhysics?
 
-    /// If [parent] is null then return ancestor, otherwise recursively build a
+    /// If ``parent`` is null then return ancestor, otherwise recursively build a
     /// ScrollPhysics that has [ancestor] as its parent.
     ///
-    /// This method is typically used to define [applyTo] methods like:
+    /// This method is typically used to define ``applyTo`` methods like:
     ///
-    /// ```dart
-    /// class MyScrollPhysics extends ScrollPhysics {
-    ///   const MyScrollPhysics({ super.parent });
+    /// ```swift
+    /// class MyScrollPhysics: ScrollPhysics {
+    ///   init(parent: ScrollPhysics? = nil) {
+    ///     super.init(parent: parent)
+    ///   }
     ///
-    ///   @override
-    ///   MyScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    ///     return MyScrollPhysics(parent: buildParent(ancestor));
+    ///   override func applyTo(ancestor: ScrollPhysics?) -> MyScrollPhysics {
+    ///     return MyScrollPhysics(parent: buildParent(ancestor))
     ///   }
     ///
     ///   // ...
@@ -104,14 +105,14 @@ public class ScrollPhysics {
         return parent?.applyTo(ancestor) ?? ancestor!
     }
 
-    /// Combines this [ScrollPhysics] instance with the given physics.
+    /// Combines this ``ScrollPhysics`` instance with the given physics.
     ///
     /// The returned object uses this instance's physics when it has an
     /// opinion, and defers to the given `ancestor` object's physics
     /// when it does not.
     ///
-    /// If [parent] is null then this returns a [ScrollPhysics] with the
-    /// same [runtimeType], but where the [parent] has been replaced
+    /// If ``parent`` is null then this returns a ``ScrollPhysics`` with the
+    /// same [runtimeType], but where the ``parent`` has been replaced
     /// with the [ancestor].
     ///
     /// If this scroll physics object already has a parent, then this
@@ -121,21 +122,22 @@ public class ScrollPhysics {
     /// Calling this method with a null argument will copy the current
     /// object. This is inefficient.
     ///
-    /// ## Implementing [applyTo]
+    /// ## Implementing ``applyTo``
     ///
-    /// When creating a custom [ScrollPhysics] subclass, this method
+    /// When creating a custom ``ScrollPhysics`` subclass, this method
     /// must be implemented. If the physics class has no constructor
     /// arguments, then implementing this method is merely a matter of
-    /// calling the constructor with a [parent] constructed using
+    /// calling the constructor with a ``parent`` constructed using
     /// [buildParent], as follows:
     ///
-    /// ```dart
-    /// class MyScrollPhysics extends ScrollPhysics {
-    ///   const MyScrollPhysics({ super.parent });
+    /// ```swift
+    /// class MyScrollPhysics: ScrollPhysics {
+    ///   init(parent: ScrollPhysics? = nil) {
+    ///     super.init(parent: parent)
+    ///   }
     ///
-    ///   @override
-    ///   MyScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    ///     return MyScrollPhysics(parent: buildParent(ancestor));
+    ///   override func applyTo(ancestor: ScrollPhysics?) -> MyScrollPhysics {
+    ///     return MyScrollPhysics(parent: buildParent(ancestor))
     ///   }
     ///
     ///   // ...
@@ -147,8 +149,8 @@ public class ScrollPhysics {
     ///
     /// See also:
     ///
-    ///  * [buildParent], a utility method that's often used to define [applyTo]
-    ///    methods for [ScrollPhysics] subclasses.
+    ///  * [buildParent], a utility method that's often used to define ``applyTo``
+    ///    methods for ``ScrollPhysics`` subclasses.
     public func applyTo(_ ancestor: ScrollPhysics?) -> ScrollPhysics {
         return ScrollPhysics(parent: buildParent(ancestor))
     }
@@ -158,7 +160,7 @@ public class ScrollPhysics {
     /// delta to apply (subtract from the current position) using
     /// [ScrollActivityDelegate.setPixels].
     ///
-    /// This is used by some [ScrollPosition] subclasses to apply friction during
+    /// This is used by some ``ScrollPosition`` subclasses to apply friction during
     /// overscroll situations.
     ///
     /// This method must not adjust parts of the offset that are entirely within
@@ -297,11 +299,11 @@ public class ScrollPhysics {
     /// are referred to as the `oldPosition` and `newPosition` (even though they
     /// both technically have the same "position", in the form of
     /// [ScrollMetrics.pixels]) because they are generated from the
-    /// [ScrollPosition] before and after updating the scroll extents.
+    /// ``ScrollPosition`` before and after updating the scroll extents.
     ///
     /// If the returned value does not exactly match the scroll offset given by
     /// the `newPosition` argument (see [ScrollMetrics.pixels]), then the
-    /// [ScrollPosition] will call [ScrollPosition.correctPixels] to update the
+    /// ``ScrollPosition`` will call [ScrollPosition.correctPixels] to update the
     /// new scroll position to the returned value, and layout will be re-run. This
     /// is expensive. The new value is subject to further manipulation by
     /// [applyBoundaryConditions].
@@ -361,13 +363,13 @@ public class ScrollPhysics {
     /// scroll motion is still intended, these calls have no side effects on the
     /// physics beyond continuing that motion.
     ///
-    /// Generally this is ensured by having the [Simulation] conform to a physical
+    /// Generally this is ensured by having the ``Simulation`` conform to a physical
     /// metaphor of a particle in ballistic flight, where the forces on the
     /// particle depend only on its position, velocity, and environment, and not
     /// on the current time or any internal state.  This means that the
     /// time-derivative of [Simulation.dx] should be possible to write
     /// mathematically as a function purely of the values of [Simulation.x],
-    /// [Simulation.dx], and the parameters used to construct the [Simulation],
+    /// [Simulation.dx], and the parameters used to construct the ``Simulation``,
     /// independent of the time.
     // TODO(gnprice): Some scroll physics in the framework violate that invariant; fix them.
     //   An audit found three cases violating the invariant:
@@ -476,7 +478,7 @@ public class ScrollPhysics {
 ///
 /// See also:
 ///
-///  * [ScrollPhysics], which can be used instead of this class when the default
+///  * ``ScrollPhysics``, which can be used instead of this class when the default
 ///    behavior is desired instead.
 ///  * [BouncingScrollPhysics], which provides the bouncing overscroll behavior
 ///    found on iOS.

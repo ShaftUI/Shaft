@@ -8,11 +8,11 @@
 
 /// A widget for the root of the widget tree.
 ///
-/// Exposes an [attach] method to attach the widget tree to a [BuildOwner]. That
+/// Exposes an ``attach`` method to attach the widget tree to a ``BuildOwner``. That
 /// method also bootstraps the element tree.
 ///
-/// Used by [WidgetsBinding.attachRootWidget] (which is indirectly called by
-/// [runApp]) to bootstrap applications.
+/// Used by ``WidgetsBinding/attachRootWidget`` (which is indirectly called by
+/// ``runApp``) to bootstrap applications.
 class RootWidget: Widget {
     internal init(child: Widget? = nil) {
         self.child = child
@@ -23,14 +23,14 @@ class RootWidget: Widget {
 
     func createElement() -> Element { RootElement(self) }
 
-    /// Inflate this widget and attaches it to the provided [BuildOwner].
+    /// Inflate this widget and attaches it to the provided ``BuildOwner``.
     ///
     /// If `element` is null, this function will create a new element.
     /// Otherwise, the given element will have an update scheduled to switch to
     /// this widget.
     ///
-    /// Used by [WidgetsBinding.attachToBuildOwner] (which is indirectly called
-    /// by [runApp]) to bootstrap applications.
+    /// Used by ``WidgetsBinding/attachToBuildOwner`` (which is indirectly called
+    /// by ``runApp``) to bootstrap applications.
     func attach(_ owner: BuildOwner, element: RootElement? = nil) -> Element {
         var element = element
         if element == nil {
@@ -52,14 +52,14 @@ class RootWidget: Widget {
 
 /// The root of the element tree.
 ///
-/// This element class is the instantiation of a [RootWidget]. It can be used
-/// only as the root of an [Element] tree (it cannot be mounted into another
-/// [Element]; its parent must be null).
+/// This element class is the instantiation of a ``RootWidget``. It can be used
+/// only as the root of an ``Element`` tree (it cannot be mounted into another
+/// ``Element``; its parent must be null).
 ///
-/// In typical usage, it will be instantiated for a [RootWidget] by calling
+/// In typical usage, it will be instantiated for a ``RootWidget`` by calling
 /// [RootWidget.attach]. In this usage, it is normally instantiated by the
 /// bootstrapping logic in the [WidgetsFlutterBinding] singleton created by
-/// [runApp].
+/// ``runApp``.
 class RootElement: Element, RootElementMixin {
     init(_ widget: RootWidget) {
         super.init(widget)
@@ -116,7 +116,7 @@ public class WidgetsBinding {
         backend.onAppLifecycleStateChanged = handleAppLifecycleStateChanged
     }
 
-    /// The [BuildOwner] in charge of executing the build pipeline for the
+    /// The ``BuildOwner`` in charge of executing the build pipeline for the
     /// widget tree rooted at this binding.
     public lazy var buildOwner = BuildOwner(onBuildScheduled: handleBuildScheduled)
 
@@ -124,9 +124,9 @@ public class WidgetsBinding {
         SchedulerBinding.shared.ensureVisualUpdate()
     }
 
-    /// The [Element] that is at the root of the element tree hierarchy.
+    /// The ``Element`` that is at the root of the element tree hierarchy.
     ///
-    /// This is initialized the first time [runApp] is called.
+    /// This is initialized the first time ``runApp`` is called.
     public private(set) var rootElement: Element?
 
     private var readyToProduceFrames = false
@@ -339,45 +339,43 @@ public protocol WidgetsBindingObserver: AnyObject {
     /// [WidgetsBindingObserver] protocols necessary to react when the device is
     /// rotated (or otherwise changes dimensions).
     ///
-    /// ```dart
-    /// class MetricsReactor extends StatefulWidget {
-    ///   const MetricsReactor({ super.key });
+    /// ```swift
+    /// class MetricsReactor: StatefulWidget {
+    ///   init(key: Key? = nil) {
+    ///     super.init(key: key)
+    ///   }
     ///
-    ///   @override
-    ///   State<MetricsReactor> createState() => _MetricsReactorState();
+    ///   override func createState() -> _MetricsReactorState {
+    ///     _MetricsReactorState()
+    ///   }
     /// }
     ///
-    /// class _MetricsReactorState extends State<MetricsReactor> with WidgetsBindingObserver {
-    ///   late Size _lastSize;
+    /// class _MetricsReactorState: State<MetricsReactor>, WidgetsBindingObserver {
+    ///   var _lastSize: Size!
     ///
-    ///   @override
-    ///   void initState() {
-    ///     super.initState();
-    ///     WidgetsBinding.instance.addObserver(this);
+    ///   override func initState() {
+    ///     super.initState()
+    ///     WidgetsBinding.instance.addObserver(self)
     ///   }
     ///
-    ///   @override
-    ///   void didChangeDependencies() {
-    ///     super.didChangeDependencies();
-    ///     // [View.of] exposes the view from `WidgetsBinding.instance.platformDispatcher.views`
+    ///   override func didChangeDependencies() {
+    ///     super.didChangeDependencies()
+    ///     // View.of exposes the view from WidgetsBinding.instance.platformDispatcher.views
     ///     // into which this widget is drawn.
-    ///     _lastSize = View.of(context).physicalSize;
+    ///     _lastSize = View.of(context).physicalSize
     ///   }
     ///
-    ///   @override
-    ///   void dispose() {
-    ///     WidgetsBinding.instance.removeObserver(this);
-    ///     super.dispose();
+    ///   override func dispose() {
+    ///     WidgetsBinding.instance.removeObserver(self)
+    ///     super.dispose()
     ///   }
     ///
-    ///   @override
-    ///   void didChangeMetrics() {
-    ///     setState(() { _lastSize = View.of(context).physicalSize; });
+    ///   override func didChangeMetrics() {
+    ///     setState { _lastSize = View.of(context).physicalSize }
     ///   }
     ///
-    ///   @override
-    ///   Widget build(BuildContext context) {
-    ///     return Text('Current size: $_lastSize');
+    ///   override func build(context: BuildContext) -> Widget {
+    ///     Text("Current size: \(_lastSize)")
     ///   }
     /// }
     /// ```
@@ -404,37 +402,36 @@ public protocol WidgetsBindingObserver: AnyObject {
     ///
     /// {@tool snippet}
     ///
-    /// ```dart
-    /// class TextScaleFactorReactor extends StatefulWidget {
-    ///   const TextScaleFactorReactor({ super.key });
+    /// ```swift
+    /// class TextScaleFactorReactor: StatefulWidget {
+    ///   init(key: Key? = nil) {
+    ///     super.init(key: key)
+    ///   }
     ///
-    ///   @override
-    ///   State<TextScaleFactorReactor> createState() => _TextScaleFactorReactorState();
+    ///   override func createState() -> _TextScaleFactorReactorState {
+    ///     _TextScaleFactorReactorState()
+    ///   }
     /// }
     ///
-    /// class _TextScaleFactorReactorState extends State<TextScaleFactorReactor> with WidgetsBindingObserver {
-    ///   @override
-    ///   void initState() {
-    ///     super.initState();
-    ///     WidgetsBinding.instance.addObserver(this);
+    /// class _TextScaleFactorReactorState: State<TextScaleFactorReactor>, WidgetsBindingObserver {
+    ///   override func initState() {
+    ///     super.initState()
+    ///     WidgetsBinding.instance.addObserver(self)
     ///   }
     ///
-    ///   @override
-    ///   void dispose() {
-    ///     WidgetsBinding.instance.removeObserver(this);
-    ///     super.dispose();
+    ///   override func dispose() {
+    ///     WidgetsBinding.instance.removeObserver(self)
+    ///     super.dispose()
     ///   }
     ///
-    ///   late double _lastTextScaleFactor;
+    ///   var _lastTextScaleFactor: Double!
     ///
-    ///   @override
-    ///   void didChangeTextScaleFactor() {
-    ///     setState(() { _lastTextScaleFactor = WidgetsBinding.instance.platformDispatcher.textScaleFactor; });
+    ///   override func didChangeTextScaleFactor() {
+    ///     setState { _lastTextScaleFactor = WidgetsBinding.instance.platformDispatcher.textScaleFactor }
     ///   }
     ///
-    ///   @override
-    ///   Widget build(BuildContext context) {
-    ///     return Text('Current scale factor: $_lastTextScaleFactor');
+    ///   override func build(context: BuildContext) -> Widget {
+    ///     Text("Current scale factor: \(_lastTextScaleFactor)")
     ///   }
     /// }
     /// ```
@@ -579,7 +576,7 @@ extension WidgetsBindingObserver {
 /// (e.g., the top), consider using the [Align] widget. If you wish to center
 /// your widget, you can also use the [Center] widget.
 ///
-/// Calling [runApp] again will detach the previous root widget from the screen
+/// Calling ``runApp`` again will detach the previous root widget from the screen
 /// and attach the given widget in its place. The new widget tree is compared
 /// against the previous widget tree and any differences are applied to the
 /// underlying render tree, similar to what happens when a [StatefulWidget]

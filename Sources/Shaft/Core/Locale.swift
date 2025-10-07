@@ -8,13 +8,13 @@
 /// [IANA Language Subtag
 /// Registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry).
 /// For example, `const Locale('he')` and `const Locale('iw')` are equal and
-/// both have the [languageCode] `he`, because `iw` is a deprecated language
+/// both have the ``languageCode`` `he`, because `iw` is a deprecated language
 /// subtag that was replaced by the subtag `he`.
 ///
 /// See also:
 ///
-///  * [PlatformDispatcher.locale], which specifies the system's currently selected
-///    [Locale].
+///  * ``PlatformDispatcher/locale``, which specifies the system's currently selected
+///    ``Locale``.
 public struct Locale: Equatable, Hashable {
     /// Creates a new Locale object. The first argument is the
     /// primary language subtag, the second is the region (also
@@ -22,9 +22,9 @@ public struct Locale: Equatable, Hashable {
     ///
     /// For example:
     ///
-    /// ```dart
-    /// const Locale swissFrench = Locale('fr', 'CH');
-    /// const Locale canadianFrench = Locale('fr', 'CA');
+    /// ```swift
+    /// let swissFrench = Locale("fr", "CH")
+    /// let canadianFrench = Locale("fr", "CA")
     /// ```
     ///
     /// The primary language subtag must not be null. The region subtag is
@@ -46,7 +46,7 @@ public struct Locale: Equatable, Hashable {
     ///
     /// See also:
     ///
-    ///  * [Locale.fromSubtags], which also allows a [scriptCode] to be
+    ///  * ``Locale/fromSubtags``, which also allows a ``scriptCode`` to be
     ///    specified.
     public init(
         _ languageCode: String,
@@ -69,9 +69,9 @@ public struct Locale: Equatable, Hashable {
     /// [region](https://github.com/unicode-org/cldr/blob/master/common/validity/region.xml) for
     /// each of languageCode, scriptCode and countryCode respectively.
     ///
-    /// The [languageCode] subtag is optional. When there is no language subtag,
+    /// The ``languageCode`` subtag is optional. When there is no language subtag,
     /// the parameter should be omitted or set to "und". When not supplied, the
-    /// [languageCode] defaults to "und", an undefined language code.
+    /// ``languageCode`` defaults to "und", an undefined language code.
     ///
     /// The [countryCode] subtag is optional. When there is no country subtag,
     /// the parameter should be omitted or passed `null` instead of an empty-string.
@@ -103,7 +103,7 @@ public struct Locale: Equatable, Hashable {
     /// Language subtags that are deprecated in the registry and have a preferred
     /// code are changed to their preferred code. For example, `const
     /// Locale('he')` and `const Locale('iw')` are equal, and both have the
-    /// [languageCode] `he`, because `iw` is a deprecated language subtag that was
+    /// ``languageCode`` `he`, because `iw` is a deprecated language subtag that was
     /// replaced by the subtag `he`.
     ///
     /// This must be a valid Unicode Language subtag as listed in [Unicode CLDR
@@ -112,8 +112,8 @@ public struct Locale: Equatable, Hashable {
     ///
     /// See also:
     ///
-    ///  * [Locale.fromSubtags], which describes the conventions for creating
-    ///    [Locale] objects.
+    ///  * ``Locale/fromSubtags``, which describes the conventions for creating
+    ///    ``Locale`` objects.
     public var languageCode: String {
         return Self._deprecatedLanguageSubtagMap[_languageCode] ?? _languageCode
     }
@@ -213,8 +213,8 @@ public struct Locale: Equatable, Hashable {
     ///
     /// See also:
     ///
-    ///  * [Locale.fromSubtags], which describes the conventions for creating
-    ///    [Locale] objects.
+    ///  * ``Locale/fromSubtags``, which describes the conventions for creating
+    ///    ``Locale`` objects.
     public let scriptCode: String?
 
     /// The region subtag for the locale.
@@ -234,8 +234,8 @@ public struct Locale: Equatable, Hashable {
     ///
     /// See also:
     ///
-    ///  * [Locale.fromSubtags], which describes the conventions for creating
-    ///    [Locale] objects.
+    ///  * ``Locale/fromSubtags``, which describes the conventions for creating
+    ///    ``Locale`` objects.
     public var countryCode: String? {
         return Self._deprecatedRegionSubtagMap[_countryCode ?? ""] ?? _countryCode
     }

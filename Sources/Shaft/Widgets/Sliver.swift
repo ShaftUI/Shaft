@@ -347,18 +347,19 @@ public class SliverList: SliverMultiBoxAdaptorWidget {
 /// This example, which would be inserted into a [CustomScrollView.slivers]
 /// list, shows an infinite number of items in varying shades of blue:
 ///
-/// ```dart
+/// ```swift
 /// SliverFixedExtentList(
 ///   itemExtent: 50.0,
 ///   delegate: SliverChildBuilderDelegate(
-///     (BuildContext context, int index) {
-///       return Container(
+///     { (context: BuildContext, index: Int) in
+///       Container(
 ///         alignment: Alignment.center,
-///         color: Colors.lightBlue[100 * (index % 9)],
-///         child: Text('list item $index'),
-///       );
-///     },
-///   ),
+///         color: Colors.lightBlue[100 * (index % 9)]
+///       ) {
+///         Text("list item \(index)")
+///       }
+///     }
+///   )
 /// )
 /// ```
 /// {@end-tool}
@@ -672,21 +673,22 @@ public class SliverVariedExtentList: SliverMultiBoxAdaptorWidget {
 /// This example, which would be inserted into a [CustomScrollView.slivers]
 /// list, shows twenty boxes in a pretty teal grid:
 ///
-/// ```dart
+/// ```swift
 /// SliverGrid(
-///   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+///   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
 ///     maxCrossAxisExtent: 200.0,
 ///     mainAxisSpacing: 10.0,
 ///     crossAxisSpacing: 10.0,
-///     childAspectRatio: 4.0,
+///     childAspectRatio: 4.0
 ///   ),
 ///   delegate: SliverChildBuilderDelegate(
-///     (BuildContext context, int index) {
-///       return Container(
+///     { (context: BuildContext, index: Int) in
+///       Container(
 ///         alignment: Alignment.center,
-///         color: Colors.teal[100 * (index % 9)],
-///         child: Text('grid item $index'),
-///       );
+///         color: Colors.teal[100 * (index % 9)]
+///       ) {
+///         Text("grid item \(index)")
+///       }
 ///     },
 ///     childCount: 20,
 ///   ),

@@ -21,10 +21,10 @@
 ///    `BuildContext`.
 public protocol Intent {}
 
-/// The kind of callback that an [Action] uses to notify of changes to the
+/// The kind of callback that an ``Action`` uses to notify of changes to the
 /// action's state.
 ///
-/// To register an action listener, call [Action.addActionListener].
+/// To register an action listener, call ``Action/addActionListener``.
 public typealias ActionListenerCallback = (any ActionProtocol) -> Void
 
 /// Protocol that all ``Action`` instances implement.
@@ -33,20 +33,20 @@ public protocol ActionProtocol: AnyObject, HashableObject {
 
     /// Returns true if the action is enabled and is ready to be invoked.
     ///
-    /// This will be called by the [ActionDispatcher] before attempting to invoke
+    /// This will be called by the ``ActionDispatcher`` before attempting to invoke
     /// the action.
     ///
-    /// If the action's enable state depends on a [BuildContext], subclass
-    /// [ContextAction] instead of [Action].
+    /// If the action's enable state depends on a ``BuildContext``, subclass
+    /// ``ContextAction`` instead of ``Action``.
     func isEnabled(_ intent: IntentType, context: BuildContext?) -> Bool
 
     /// Called when the action is to be performed.
     ///
-    /// This is called by the [ActionDispatcher] when an action is invoked via
-    /// [Actions.invoke], or when an action is invoked using
-    /// [ActionDispatcher.invokeAction] directly.
+    /// This is called by the ``ActionDispatcher`` when an action is invoked via
+    /// ``Actions/invoke``, or when an action is invoked using
+    /// ``ActionDispatcher/invokeAction`` directly.
     ///
-    /// This method is only meant to be invoked by an [ActionDispatcher], or by
+    /// This method is only meant to be invoked by an ``ActionDispatcher``, or by
     /// its subclasses, and only when [isEnabled] is true.
     ///
     /// When overriding this method, the returned value can be any [Object], but
@@ -72,11 +72,11 @@ public protocol ActionProtocol: AnyObject, HashableObject {
     /// ```
     ///
     /// To receive the result of invoking an action, it must be invoked using
-    /// [Actions.invoke], or by invoking it using an [ActionDispatcher]. An action
+    /// ``Actions/invoke``, or by invoking it using an ``ActionDispatcher``. An action
     /// invoked via a [Shortcuts] widget will have its return value ignored.
     ///
-    /// If the action's behavior depends on a [BuildContext], subclass
-    /// [ContextAction] instead of [Action].
+    /// If the action's behavior depends on a ``BuildContext``, subclass
+    /// ``ContextAction`` instead of ``Action``.
     func invoke(_ intent: IntentType, context: BuildContext?) -> Any?
 
     /// Converts the result of [invoke] of this action to a [KeyEventResult].
@@ -106,7 +106,7 @@ public protocol ActionProtocol: AnyObject, HashableObject {
     /// iteration (i.e. in response to a notification), it will still be called
     /// again. If, on the other hand, it is removed as many times as it was
     /// registered, then it will no longer be called. This odd behavior is the
-    /// result of the [Action] not being able to determine which listener
+    /// result of the ``Action`` not being able to determine which listener
     /// is being removed, since they are identical, and therefore conservatively
     /// still calling all the listeners when it knows that any are still
     /// registered.
@@ -128,7 +128,7 @@ public protocol ActionProtocol: AnyObject, HashableObject {
     func removeActionListener(_ listener: AnyObject)
 }
 
-/// A type-erased [Action] that wraps another [Action].
+/// A type-erased ``Action`` that wraps another ``Action``.
 public struct AnyAction: Hashable {
     public init(_ action: any ActionProtocol) {
         self.inner = action
@@ -147,12 +147,12 @@ public struct AnyAction: Hashable {
 
 /// Base class for an action or command to be performed.
 ///
-/// [Action]s are typically invoked as a result of a user action. For example,
+/// ``Action``s are typically invoked as a result of a user action. For example,
 /// the [Shortcuts] widget will map a keyboard shortcut into an [Intent], which
-/// is given to an [ActionDispatcher] to map the [Intent] to an [Action] and
+/// is given to an ``ActionDispatcher`` to map the [Intent] to an ``Action`` and
 /// invoke it.
 ///
-/// The [ActionDispatcher] can invoke an [Action] on the primary focus, or
+/// The ``ActionDispatcher`` can invoke an ``Action`` on the primary focus, or
 /// without regard for focus.
 ///
 /// ### Action Overriding
@@ -165,61 +165,61 @@ public struct AnyAction: Hashable {
 /// [SelectAllTextIntent] should instead select the text within all 3
 /// [TextField]s.
 ///
-/// An overridable [Action] is a special kind of [Action] created using the
-/// [Action.overridable] constructor. It has access to a default [Action], and a
-/// nullable override [Action]. It has the same behavior as its override if that
+/// An overridable ``Action`` is a special kind of ``Action`` created using the
+/// [Action.overridable] constructor. It has access to a default ``Action``, and a
+/// nullable override ``Action``. It has the same behavior as its override if that
 /// exists, and mirrors the behavior of its `defaultAction` otherwise.
 ///
-/// The [Action.overridable] constructor creates overridable [Action]s that use
-/// a [BuildContext] to find a suitable override in its ancestor [Actions]
+/// The [Action.overridable] constructor creates overridable ``Action``s that use
+/// a ``BuildContext`` to find a suitable override in its ancestor [Actions]
 /// widget. This can be used to provide a default implementation when creating a
 /// general purpose leaf widget, and later override it when building a more
 /// specialized widget using that leaf widget. Using the [TextField] example
-/// above, the [TextField] widget uses an overridable [Action] to provide a
+/// above, the [TextField] widget uses an overridable ``Action`` to provide a
 /// sensible default for [SelectAllTextIntent], while still allowing app
 /// developers to change that if they add an ancestor [Actions] widget that maps
-/// [SelectAllTextIntent] to a different [Action].
+/// [SelectAllTextIntent] to a different ``Action``.
 ///
 /// See also:
 ///
 ///  * [Shortcuts], which is a widget that contains a key map, in which it looks
 ///    up key combinations in order to invoke actions.
-///  * [Actions], which is a widget that defines a map of [Intent] to [Action]
+///  * [Actions], which is a widget that defines a map of [Intent] to ``Action``
 ///    and allows redefining of actions for its descendants.
-///  * [ActionDispatcher], a class that takes an [Action] and invokes it, passing
+///  * ``ActionDispatcher``, a class that takes an ``Action`` and invokes it, passing
 ///    a given [Intent].
-///  * [Action.overridable] for an example on how to make an [Action]
+///  * [Action.overridable] for an example on how to make an ``Action``
 ///    overridable.
 public class Action<IntentType: Intent>: ActionProtocol {
-    /// Creates an [Action].
+    /// Creates an ``Action``.
     public init() {}
 
-    // /// Creates an [Action] that allows itself to be overridden by the closest
-    // /// ancestor [Action] in the given [context] that handles the same [Intent],
+    // /// Creates an ``Action`` that allows itself to be overridden by the closest
+    // /// ancestor ``Action`` in the given [context] that handles the same [Intent],
     // /// if one exists.
     // ///
-    // /// When invoked, the resulting [Action] tries to find the closest [Action] in
+    // /// When invoked, the resulting ``Action`` tries to find the closest ``Action`` in
     // /// the given `context` that handles the same type of [Intent] as the
     // /// `defaultAction`, then calls its [Action.invoke] method. When no override
-    // /// [Action]s can be found, it invokes the `defaultAction`.
+    // /// ``Action``s can be found, it invokes the `defaultAction`.
     // ///
     // /// An overridable action delegates everything to its override if one exists,
     // /// and has the same behavior as its `defaultAction` otherwise. For this
     // /// reason, the override has full control over whether and how an [Intent]
     // /// should be handled, or a key event should be consumed. An override
-    // /// [Action]'s [callingAction] property will be set to the [Action] it
+    // /// ``Action``'s [callingAction] property will be set to the ``Action`` it
     // /// currently overrides, giving it access to the default behavior. See the
     // /// [callingAction] property for an example.
     // ///
-    // /// The `context` argument is the [BuildContext] to find the override with. It
-    // /// is typically a [BuildContext] above the [Actions] widget that contains
-    // /// this overridable [Action].
+    // /// The `context` argument is the ``BuildContext`` to find the override with. It
+    // /// is typically a ``BuildContext`` above the [Actions] widget that contains
+    // /// this overridable ``Action``.
     // ///
-    // /// The `defaultAction` argument is the [Action] to be invoked where there's
-    // /// no ancestor [Action]s can't be found in `context` that handle the same
+    // /// The `defaultAction` argument is the ``Action`` to be invoked where there's
+    // /// no ancestor ``Action``s can't be found in `context` that handle the same
     // /// type of [Intent].
     // ///
-    // /// This is useful for providing a set of default [Action]s in a leaf widget
+    // /// This is useful for providing a set of default ``Action``s in a leaf widget
     // /// to allow further overriding, or to allow the [Intent] to propagate to
     // /// parent widgets that also support this [Intent].
     // ///
@@ -229,7 +229,7 @@ public class Action<IntentType: Intent>: ActionProtocol {
     // ///
     // /// if `CopyableText` is to be provided in a package, developers using the
     // /// widget may want to change how copying is handled. As the author of the
-    // /// package, you can enable that by making the corresponding [Action]
+    // /// package, you can enable that by making the corresponding ``Action``
     // /// overridable. In the second part of the code sample, three `CopyableText`
     // /// widgets are used to build a verification code widget which overrides the
     // /// "copy" action by copying the combined numbers from all three `CopyableText`
@@ -252,21 +252,21 @@ public class Action<IntentType: Intent>: ActionProtocol {
     //   _currentCallingAction = value;
     // }
 
-    // /// The [Action] overridden by this [Action].
+    // /// The ``Action`` overridden by this ``Action``.
     // ///
-    // /// The [Action.overridable] constructor creates an overridable [Action] that
-    // /// allows itself to be overridden by the closest ancestor [Action], and falls
+    // /// The [Action.overridable] constructor creates an overridable ``Action`` that
+    // /// allows itself to be overridden by the closest ancestor ``Action``, and falls
     // /// back to its own `defaultAction` when no overrides can be found. When an
-    // /// override is present, an overridable [Action] forwards all incoming
+    // /// override is present, an overridable ``Action`` forwards all incoming
     // /// method calls to the override, and allows the override to access the
     // /// `defaultAction` via its [callingAction] property.
     // ///
-    // /// Before forwarding the call to the override, the overridable [Action] is
+    // /// Before forwarding the call to the override, the overridable ``Action`` is
     // /// responsible for setting [callingAction] to its `defaultAction`, which is
-    // /// already taken care of by the overridable [Action] created using
+    // /// already taken care of by the overridable ``Action`` created using
     // /// [Action.overridable].
     // ///
-    // /// This property is only non-null when this [Action] is an override of the
+    // /// This property is only non-null when this ``Action`` is an override of the
     // /// [callingAction], and is currently being invoked from [callingAction].
     // ///
     // /// Invoking [callingAction]'s methods, or accessing its properties, is
@@ -277,19 +277,20 @@ public class Action<IntentType: Intent>: ActionProtocol {
     // /// behavior as the overridable action. It's OK to call
     // /// `callingAction?.isActionEnabled` in the implementation of this `Action`.
     // ///
-    // /// ```dart
-    // /// class MyPasteAction extends Action<PasteTextIntent> {
-    // ///   @override
-    // ///   Object? invoke(PasteTextIntent intent) {
-    // ///     print(intent);
-    // ///     return callingAction?.invoke(intent);
+    // /// ```swift
+    // /// class MyPasteAction: Action<PasteTextIntent> {
+    // ///   override func invoke(intent: PasteTextIntent) -> Any? {
+    // ///     print(intent)
+    // ///     return callingAction?.invoke(intent)
     // ///   }
     // ///
-    // ///   @override
-    // ///   bool get isActionEnabled => callingAction?.isActionEnabled ?? false;
+    // ///   override var isActionEnabled: Bool {
+    // ///     callingAction?.isActionEnabled ?? false
+    // ///   }
     // ///
-    // ///   @override
-    // ///   bool consumesKey(PasteTextIntent intent) => callingAction?.consumesKey(intent) ?? false;
+    // ///   override func consumesKey(intent: PasteTextIntent) -> Bool {
+    // ///     callingAction?.consumesKey(intent) ?? false
+    // ///   }
     // /// }
     // /// ```
     // /// {@end-tool}
@@ -299,9 +300,9 @@ public class Action<IntentType: Intent>: ActionProtocol {
     /// Gets the type of intent this action responds to.
     var intentType: Intent.Type { IntentType.self }
 
-    /// Whether this [Action] is inherently enabled.
+    /// Whether this ``Action`` is inherently enabled.
     ///
-    /// If [isActionEnabled] is false, then this [Action] is disabled for any
+    /// If [isActionEnabled] is false, then this ``Action`` is disabled for any
     /// given [Intent].
     //
     /// If the enabled state changes, overriding subclasses must call
@@ -385,16 +386,16 @@ public class Action<IntentType: Intent>: ActionProtocol {
 /// to [Action.invoke], and so forth.
 public typealias OnInvokeCallback<T: Intent> = (T) -> Any?
 
-/// An [Action] that takes a callback in order to configure it without having to
-/// create an explicit [Action] subclass just to call a callback.
+/// An ``Action`` that takes a callback in order to configure it without having to
+/// create an explicit ``Action`` subclass just to call a callback.
 ///
 /// See also:
 ///
 ///  * [Shortcuts], which is a widget that contains a key map, in which it looks
 ///    up key combinations in order to invoke actions.
-///  * [Actions], which is a widget that defines a map of [Intent] to [Action]
+///  * [Actions], which is a widget that defines a map of [Intent] to ``Action``
 ///    and allows redefining of actions for its descendants.
-///  * [ActionDispatcher], a class that takes an [Action] and invokes it using a
+///  * ``ActionDispatcher``, a class that takes an ``Action`` and invokes it using a
 ///    [FocusNode] for context.
 public class CallbackAction<T: Intent>: Action<T> {
     /// A constructor for a [CallbackAction].
@@ -417,17 +418,17 @@ public class CallbackAction<T: Intent>: Action<T> {
 /// An action dispatcher that invokes the actions given to it.
 ///
 /// The [invokeAction] method on this class directly calls the [Action.invoke]
-/// method on the [Action] object.
+/// method on the ``Action`` object.
 ///
-/// For [ContextAction] actions, if no `context` is provided, the
-/// [BuildContext] of the [primaryFocus] is used instead.
+/// For ``ContextAction`` actions, if no `context` is provided, the
+/// ``BuildContext`` of the [primaryFocus] is used instead.
 ///
 /// See also:
 ///
 ///  - [ShortcutManager], that uses this class to invoke actions.
 ///  - [Shortcuts] widget, which defines key mappings to [Intent]s.
 ///  - [Actions] widget, which defines a mapping between a in [Intent] type and
-///    an [Action].
+///    an ``Action``.
 public class ActionDispatcher: Diagnosticable {
     /// Creates an action dispatcher that invokes actions directly.
     public init() {}
@@ -435,15 +436,15 @@ public class ActionDispatcher: Diagnosticable {
     /// Invokes the given `action`, passing it the given `intent`.
     ///
     /// The action will be invoked with the given `context`, if given, but only if
-    /// the action is a [ContextAction] subclass. If no `context` is given, and
-    /// the action is a [ContextAction], then the context from the [primaryFocus]
+    /// the action is a ``ContextAction`` subclass. If no `context` is given, and
+    /// the action is a ``ContextAction``, then the context from the [primaryFocus]
     /// is used.
     ///
     /// Returns the object returned from [Action.invoke].
     ///
     /// The caller must receive a `true` result from [Action.isEnabled] before
     /// calling this function (or [ContextAction.isEnabled] with the same
-    /// `context`, if the `action` is a [ContextAction]). This function will
+    /// `context`, if the `action` is a ``ContextAction``). This function will
     /// assert if the action is not enabled when called.
     ///
     /// Consider using [invokeActionIfEnabled] to invoke the action conditionally
@@ -465,8 +466,8 @@ public class ActionDispatcher: Diagnosticable {
     /// action is enabled.
     ///
     /// The action will be invoked with the given `context`, if given, but only if
-    /// the action is a [ContextAction] subclass. If no `context` is given, and
-    /// the action is a [ContextAction], then the context from the [primaryFocus]
+    /// the action is a ``ContextAction`` subclass. If no `context` is given, and
+    /// the action is a ``ContextAction``, then the context from the [primaryFocus]
     /// is used.
     ///
     /// The return value has two components. The first is a boolean indicating if
@@ -489,20 +490,20 @@ public class ActionDispatcher: Diagnosticable {
     }
 }
 
-/// A widget that maps [Intent]s to [Action]s to be used by its descendants
-/// when invoking an [Action].
+/// A widget that maps [Intent]s to ``Action``s to be used by its descendants
+/// when invoking an ``Action``.
 ///
 /// Actions are typically invoked using [Shortcuts]. They can also be invoked
-/// using [Actions.invoke] on a context containing an ambient [Actions] widget.
+/// using ``Actions/invoke`` on a context containing an ambient [Actions] widget.
 ///
 /// See also:
 ///
 ///  * [Shortcuts], a widget used to bind key combinations to [Intent]s.
 ///  * [Intent], a class that contains configuration information for running an
-///    [Action].
-///  * [Action], a class for containing and defining an invocation of a user
+///    ``Action``.
+///  * ``Action``, a class for containing and defining an invocation of a user
 ///    action.
-///  * [ActionDispatcher], the object that this widget uses to manage actions.
+///  * ``ActionDispatcher``, the object that this widget uses to manage actions.
 public final class Actions: StatefulWidget {
     /// Creates an Actions widget.
     public init(
@@ -589,7 +590,7 @@ public final class Actions: StatefulWidget {
     ///
     /// The value returned from the [Action.invoke] method is discarded when the
     /// returned callback is called. If the return value is needed, consider using
-    /// [Actions.invoke] instead.
+    /// ``Actions/invoke`` instead.
     static func handler<T: Intent>(_ context: BuildContext, _ intent: T) -> VoidCallback? {
         let action = Actions.maybeFind(context) as Action<T>?
         if let action, action.isEnabled(intent, context: context) {
@@ -604,7 +605,7 @@ public final class Actions: StatefulWidget {
         return nil
     }
 
-    /// Finds the [Action] bound to the given intent type `T` in the given `context`.
+    /// Finds the ``Action`` bound to the given intent type `T` in the given `context`.
     ///
     /// Creates a dependency on the [Actions] widget that maps the bound action so
     /// that if the actions change, the context will be rebuilt and find the
@@ -637,7 +638,7 @@ public final class Actions: StatefulWidget {
         return action!
     }
 
-    /// Finds the [Action] bound to the given intent type `T` in the given `context`.
+    /// Finds the ``Action`` bound to the given intent type `T` in the given `context`.
     ///
     /// Creates a dependency on the [Actions] widget that maps the bound action so
     /// that if the actions change, the context will be rebuilt and find the
@@ -690,7 +691,7 @@ public final class Actions: StatefulWidget {
         return action
     }
 
-    // Find the [Action] that handles the given `intent` in the given
+    // Find the ``Action`` that handles the given `intent` in the given
     // `ActionsScope`, and verify it has the right type parameter.
     private static func findAction<T: Intent>(_ actions: [any ActionProtocol])
         -> Action<T>?
@@ -703,10 +704,10 @@ public final class Actions: StatefulWidget {
         return nil
     }
 
-    /// Returns the [ActionDispatcher] associated with the [Actions] widget that
-    /// most tightly encloses the given [BuildContext].
+    /// Returns the ``ActionDispatcher`` associated with the [Actions] widget that
+    /// most tightly encloses the given ``BuildContext``.
     ///
-    /// Will return a newly created [ActionDispatcher] if no ambient [Actions]
+    /// Will return a newly created ``ActionDispatcher`` if no ambient [Actions]
     /// widget is found.
     public static func of(_ context: BuildContext) -> ActionDispatcher {
         let marker = context.dependOnInheritedWidgetOfExactType(ActionsScope.self)
@@ -714,7 +715,7 @@ public final class Actions: StatefulWidget {
     }
 
     /// Invokes the action associated with the given [Intent] using the
-    /// [Actions] widget that most tightly encloses the given [BuildContext].
+    /// [Actions] widget that most tightly encloses the given ``BuildContext``.
     ///
     /// This method returns the result of invoking the action's [Action.invoke]
     /// method.
@@ -723,7 +724,7 @@ public final class Actions: StatefulWidget {
     /// next ancestor [Actions] widget in the hierarchy until it reaches the root.
     ///
     /// This method will throw an exception if no ambient [Actions] widget is
-    /// found, or when a suitable [Action] is found but it returns false for
+    /// found, or when a suitable ``Action`` is found but it returns false for
     /// [Action.isEnabled].
     public static func invoke<T: Intent>(
         _ context: BuildContext,
@@ -767,7 +768,7 @@ public final class Actions: StatefulWidget {
     }
 
     /// Invokes the action associated with the given [Intent] using the
-    /// [Actions] widget that most tightly encloses the given [BuildContext].
+    /// [Actions] widget that most tightly encloses the given ``BuildContext``.
     ///
     /// This method returns the result of invoking the action's [Action.invoke]
     /// method. If no action mapping was found for the specified intent, or if the
@@ -776,7 +777,7 @@ public final class Actions: StatefulWidget {
     ///
     /// If the given `intent` doesn't map to an action, then it will look to the
     /// next ancestor [Actions] widget in the hierarchy until it reaches the root.
-    /// If a suitable [Action] is found but its [Action.isEnabled] returns false,
+    /// If a suitable ``Action`` is found but its [Action.isEnabled] returns false,
     /// the search will stop and this method will return null.
     public static func maybeInvoke<T: Intent>(
         _ context: BuildContext,

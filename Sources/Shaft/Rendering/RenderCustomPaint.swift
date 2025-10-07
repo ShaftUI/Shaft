@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// The interface used by [CustomPaint] (in the widgets library) and
-/// [RenderCustomPaint] (in the rendering library).
+/// The interface used by ``CustomPaint`` (in the widgets library) and
+/// ``RenderCustomPaint`` (in the rendering library).
 ///
 /// To implement a custom painter, either subclass or implement this interface
-/// to define your custom paint delegate. [CustomPainter] subclasses must
-/// implement the [paint] and [shouldRepaint] methods, and may optionally also
-/// implement the [hitTest] and [shouldRebuildSemantics] methods, and the
-/// [semanticsBuilder] getter.
+/// to define your custom paint delegate. ``CustomPainter`` subclasses must
+/// implement the ``paint`` and ``shouldRepaint`` methods, and may optionally also
+/// implement the ``hitTest`` and ``shouldRebuildSemantics`` methods, and the
+/// ``semanticsBuilder`` getter.
 ///
-/// The [paint] method is called whenever the custom object needs to be repainted.
+/// The ``paint`` method is called whenever the custom object needs to be repainted.
 ///
-/// The [shouldRepaint] method is called when a new instance of the class
+/// The ``shouldRepaint`` method is called when a new instance of the class
 /// is provided, to check if the new instance actually represents different
 /// information.
 ///
@@ -22,23 +22,23 @@
 /// The most efficient way to trigger a repaint is to either:
 ///
 /// * Extend this class and supply a `repaint` argument to the constructor of
-///   the [CustomPainter], where that object notifies its listeners when it is
+///   the ``CustomPainter``, where that object notifies its listeners when it is
 ///   time to repaint.
 /// * Extend [Listenable] (e.g. via [ChangeNotifier]) and implement
-///   [CustomPainter], so that the object itself provides the notifications
+///   ``CustomPainter``, so that the object itself provides the notifications
 ///   directly.
 ///
-/// In either case, the [CustomPaint] widget or [RenderCustomPaint]
+/// In either case, the ``CustomPaint`` widget or ``RenderCustomPaint``
 /// render object will listen to the [Listenable] and repaint whenever the
 /// animation ticks, avoiding both the build and layout phases of the pipeline.
 ///
-/// The [hitTest] method is called when the user interacts with the underlying
+/// The ``hitTest`` method is called when the user interacts with the underlying
 /// render object, to determine if the user hit the object or missed it.
 ///
-/// The [semanticsBuilder] is called whenever the custom object needs to rebuild
+/// The ``semanticsBuilder`` is called whenever the custom object needs to rebuild
 /// its semantics information.
 ///
-/// The [shouldRebuildSemantics] method is called when a new instance of the
+/// The ``shouldRebuildSemantics`` method is called when a new instance of the
 /// class is provided, to check if the new instance contains different
 /// information that affects the semantics tree.
 ///
@@ -47,43 +47,41 @@
 /// This sample extends the same code shown for [RadialGradient] to create a
 /// custom painter that paints a sky.
 ///
-/// ```dart
-/// class Sky extends CustomPainter {
-///   @override
-///   void paint(Canvas canvas, Size size) {
-///     final Rect rect = Offset.zero & size;
-///     const RadialGradient gradient = RadialGradient(
+/// ```swift
+/// class Sky: CustomPainter {
+///   override func paint(canvas: Canvas, size: Size) {
+///     let rect = Offset.zero & size
+///     let gradient = RadialGradient(
 ///       center: Alignment(0.7, -0.6),
 ///       radius: 0.2,
-///       colors: <Color>[Color(0xFFFFFF00), Color(0xFF0099FF)],
-///       stops: <double>[0.4, 1.0],
-///     );
+///       colors: [Color(0xFFFFFF00), Color(0xFF0099FF)],
+///       stops: [0.4, 1.0]
+///     )
 ///     canvas.drawRect(
 ///       rect,
-///       Paint()..shader = gradient.createShader(rect),
-///     );
+///       Paint().apply { $0.shader = gradient.createShader(rect) }
+///     )
 ///   }
 ///
-///   @override
-///   SemanticsBuilderCallback get semanticsBuilder {
-///     return (Size size) {
+///   override var semanticsBuilder: SemanticsBuilderCallback {
+///     return { (size: Size) in
 ///       // Annotate a rectangle containing the picture of the sun
 ///       // with the label "Sun". When text to speech feature is enabled on the
 ///       // device, a user will be able to locate the sun on this picture by
 ///       // touch.
-///       Rect rect = Offset.zero & size;
-///       final double width = size.shortestSide * 0.4;
-///       rect = const Alignment(0.8, -0.9).inscribe(Size(width, width), rect);
-///       return <CustomPainterSemantics>[
+///       var rect = Offset.zero & size
+///       let width = size.shortestSide * 0.4
+///       rect = Alignment(0.8, -0.9).inscribe(Size(width, width), rect)
+///       return [
 ///         CustomPainterSemantics(
 ///           rect: rect,
-///           properties: const SemanticsProperties(
-///             label: 'Sun',
-///             textDirection: TextDirection.ltr,
-///           ),
-///         ),
-///       ];
-///     };
+///           properties: SemanticsProperties(
+///             label: "Sun",
+///             textDirection: TextDirection.ltr
+///           )
+///         )
+///       ]
+///     }
 ///   }
 ///
 ///   // Since this Sky painter has no fields, it always paints
@@ -91,10 +89,8 @@
 ///   // Therefore we return false here. If we had fields (set
 ///   // from the constructor) then we would return true if any
 ///   // of them differed from the same fields on the oldDelegate.
-///   @override
-///   bool shouldRepaint(Sky oldDelegate) => false;
-///   @override
-///   bool shouldRebuildSemantics(Sky oldDelegate) => false;
+///   override func shouldRepaint(oldDelegate: Sky) -> Bool { false }
+///   override func shouldRebuildSemantics(oldDelegate: Sky) -> Bool { false }
 /// }
 /// ```
 /// {@end-tool}
@@ -103,8 +99,8 @@
 ///
 /// Widgets (or rather, render objects) are composited together using a minimum
 /// number of [Canvas]es, for performance reasons. As a result, a
-/// [CustomPainter]'s [Canvas] may be the same as that used by other widgets
-/// (including other [CustomPaint] widgets).
+/// ``CustomPainter``'s [Canvas] may be the same as that used by other widgets
+/// (including other ``CustomPaint`` widgets).
 ///
 /// This is mostly unnoticeable, except when using unusual [BlendMode]s. For
 /// example, trying to use [BlendMode.dstOut] to "punch a hole" through a
@@ -119,7 +115,7 @@
 /// See also:
 ///
 ///  * [Canvas], the class that a custom painter uses to paint.
-///  * [CustomPaint], the widget that uses [CustomPainter], and whose sample
+///  * ``CustomPaint``, the widget that uses ``CustomPainter``, and whose sample
 ///    code shows how to use the above `Sky` class.
 ///  * [RadialGradient], whose sample code section shows a different take
 ///    on the sample code above.
@@ -137,7 +133,7 @@ public protocol CustomPainter: Listenable {
     /// clipped. It may sometimes be difficult to guarantee that a certain
     /// operation is inside the bounds (e.g., drawing a rectangle whose size is
     /// determined by user inputs). In that case, consider calling
-    /// [Canvas.clipRect] at the beginning of [paint] so everything that follows
+    /// [Canvas.clipRect] at the beginning of ``paint`` so everything that follows
     /// will be guaranteed to only draw within the clipped area.
     ///
     /// Implementations should be wary of correctly pairing any calls to
@@ -156,15 +152,15 @@ public protocol CustomPainter: Listenable {
     ///    (see [ImageStream.addListener]), create a new instance of your custom
     ///    paint delegate, giving it the new [ImageInfo] object.
     ///
-    /// 3. In your delegate's [paint] method, call the [Canvas.drawImage],
+    /// 3. In your delegate's ``paint`` method, call the [Canvas.drawImage],
     ///    [Canvas.drawImageRect], or [Canvas.drawImageNine] methods to paint the
     ///    [ImageInfo.image] object, applying the [ImageInfo.scale] value to
     ///    obtain the correct rendering size.
     func paint(canvas: Canvas, size: Size)
 
     /// Called whenever a new instance of the custom painter delegate class is
-    /// provided to the [RenderCustomPaint] object, or any time that a new
-    /// [CustomPaint] object is created with a new instance of the custom painter
+    /// provided to the ``RenderCustomPaint`` object, or any time that a new
+    /// ``CustomPaint`` object is created with a new instance of the custom painter
     /// delegate class (which amounts to the same thing, because the latter is
     /// implemented in terms of the former).
     ///
@@ -172,13 +168,13 @@ public protocol CustomPainter: Listenable {
     /// instance, then the method should return true, otherwise it should return
     /// false.
     ///
-    /// If the method returns false, then the [paint] call might be optimized
+    /// If the method returns false, then the ``paint`` call might be optimized
     /// away.
     ///
-    /// It's possible that the [paint] method will get called even if
-    /// [shouldRepaint] returns false (e.g. if an ancestor or descendant needed to
-    /// be repainted). It's also possible that the [paint] method will get called
-    /// without [shouldRepaint] being called at all (e.g. if the box changes
+    /// It's possible that the ``paint`` method will get called even if
+    /// ``shouldRepaint`` returns false (e.g. if an ancestor or descendant needed to
+    /// be repainted). It's also possible that the ``paint`` method will get called
+    /// without ``shouldRepaint`` being called at all (e.g. if the box changes
     /// size).
     ///
     /// If a custom delegate has a particularly expensive paint function such that
@@ -193,7 +189,7 @@ public protocol CustomPainter: Listenable {
     /// this custom paint delegate.
     ///
     /// The given point is relative to the same coordinate space as the last
-    /// [paint] call.
+    /// ``paint`` call.
     ///
     /// The default behavior is to consider all points to be hits for
     /// background painters, and no points to be hits for foreground painters.
@@ -208,7 +204,7 @@ public protocol CustomPainter: Listenable {
 extension CustomPainter {
     /// Register a closure to be notified when it is time to repaint.
     ///
-    /// The [CustomPainter] implementation merely forwards to the same method on
+    /// The ``CustomPainter`` implementation merely forwards to the same method on
     /// the [Listenable] provided to the constructor in the `repaint` argument, if
     /// it was not null.
     public func addListener(_ listener: AnyObject, callback: @escaping VoidCallback) {
@@ -218,7 +214,7 @@ extension CustomPainter {
     /// Remove a previously registered closure from the list of closures that the
     /// object notifies when it is time to repaint.
     ///
-    /// The [CustomPainter] implementation merely forwards to the same method on
+    /// The ``CustomPainter`` implementation merely forwards to the same method on
     /// the [Listenable] provided to the constructor in the `repaint` argument, if
     /// it was not null.
     public func removeListener(_ listener: AnyObject) {
@@ -242,7 +238,7 @@ extension CustomPainter {
 
 /// A base class for custom painters that provides a default implementation.
 ///
-/// This class implements the [CustomPainter] protocol and provides a concrete
+/// This class implements the ``CustomPainter`` protocol and provides a concrete
 /// base that can be subclassed when you need to store the repaint listenable.
 open class CustomPainterBase: CustomPainter {
     public let repaint: Listenable?
@@ -280,16 +276,16 @@ extension CustomPainterBase: CustomStringConvertible {
 
 /// Provides a canvas on which to draw during the paint phase.
 ///
-/// When asked to paint, [RenderCustomPaint] first asks its [painter] to paint
+/// When asked to paint, ``RenderCustomPaint`` first asks its [painter] to paint
 /// on the current canvas, then it paints its child, and then, after painting
 /// its child, it asks its [foregroundPainter] to paint. The coordinate system of
-/// the canvas matches the coordinate system of the [CustomPaint] object. The
+/// the canvas matches the coordinate system of the ``CustomPaint`` object. The
 /// painters are expected to paint within a rectangle starting at the origin and
 /// encompassing a region of the given size. (If the painters paint outside
 /// those bounds, there might be insufficient memory allocated to rasterize the
 /// painting commands and the resulting behavior is undefined.)
 ///
-/// Painters are implemented by subclassing or implementing [CustomPainter].
+/// Painters are implemented by subclassing or implementing ``CustomPainter``.
 ///
 /// Because custom paint calls its painters during paint, you cannot mark the
 /// tree as needing a new layout during the callback (the layout for this frame
@@ -301,7 +297,7 @@ extension CustomPainterBase: CustomStringConvertible {
 ///
 /// See also:
 ///
-///  * [CustomPainter], the class that custom painter delegates should extend.
+///  * ``CustomPainter``, the class that custom painter delegates should extend.
 ///  * [Canvas], the API provided to custom painter delegates.
 public class RenderCustomPaint: RenderProxyBox {
     /// Creates a render object that delegates its painting.
@@ -361,7 +357,7 @@ public class RenderCustomPaint: RenderProxyBox {
         }
     }
 
-    /// The size that this [RenderCustomPaint] should aim for, given the layout
+    /// The size that this ``RenderCustomPaint`` should aim for, given the layout
     /// constraints, if there is no child.
     ///
     /// Defaults to [Size.zero].
