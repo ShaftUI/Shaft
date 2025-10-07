@@ -22,7 +22,7 @@ import SwiftMath
 ///
 /// See also:
 ///
-///  * [RenderProxySliver], a base class for render slivers that resemble their
+///  * ``RenderProxySliver``, a base class for render slivers that resemble their
 ///    children.
 open class RenderProxyBox: RenderBox, RenderObjectWithSingleChild {
     public init(child: RenderBox? = nil) {
@@ -76,8 +76,8 @@ open class RenderProxyBox: RenderBox, RenderObjectWithSingleChild {
         }
     }
 
-    /// Calculate the size the [RenderProxyBox] would have under the given
-    /// [BoxConstraints] for the case where it does not have a child.
+    /// Calculate the size the ``RenderProxyBox`` would have under the given
+    /// ``BoxConstraints`` for the case where it does not have a child.
     open func computeSizeForNoChild(_ constraints: BoxConstraints) -> Size {
         return constraints.smallest
     }
@@ -125,7 +125,7 @@ public class RenderProxyBoxWithHitTestBehavior: RenderProxyBox {
     ///
     /// Defaults to [HitTestBehavior.deferToChild].
     ///
-    /// See [HitTestBehavior] for the allowed values and their meanings.
+    /// See ``HitTestBehavior`` for the allowed values and their meanings.
     public var behavior: HitTestBehavior
 
     public override func hitTest(_ result: HitTestResult, position: Offset) -> Bool {
@@ -148,22 +148,22 @@ public class RenderProxyBoxWithHitTestBehavior: RenderProxyBox {
 ///
 /// A render constrained box proxies most functions in the render box protocol
 /// to its child, except that when laying out its child, it tightens the
-/// constraints provided by its parent by enforcing the [additionalConstraints]
+/// constraints provided by its parent by enforcing the ``additionalConstraints``
 /// as well.
 ///
-/// For example, if you wanted [child] to have a minimum height of 50.0 logical
+/// For example, if you wanted ``child`` to have a minimum height of 50.0 logical
 /// pixels, you could use `const BoxConstraints(minHeight: 50.0)` as the
-/// [additionalConstraints].
+/// ``additionalConstraints``.
 public class RenderConstrainedBox: RenderProxyBox {
     /// Creates a render box that constrains its child.
     ///
-    /// The [additionalConstraints] argument must be valid.
+    /// The ``additionalConstraints`` argument must be valid.
     public init(additionalConstraints: BoxConstraints, child: RenderBox? = nil) {
         self.additionalConstraints = additionalConstraints
         super.init(child: child)
     }
 
-    /// Additional constraints to apply to [child] during layout.
+    /// Additional constraints to apply to ``child`` during layout.
     public var additionalConstraints: BoxConstraints {
         didSet {
             // assert(additionalConstraints.isValid)
@@ -192,7 +192,7 @@ public enum DecorationPosition {
     case foreground
 }
 
-/// Paints a [Decoration] either before or after its child paints.
+/// Paints a ``Decoration`` either before or after its child paints.
 public class RenderDecoratedBox: RenderProxyBox {
     public init(
         decoration: Decoration,
@@ -234,7 +234,7 @@ public class RenderDecoratedBox: RenderProxyBox {
     /// [BoxPainter.paint].
     ///
     /// The [ImageConfiguration.textDirection] field is also used by
-    /// direction-sensitive [Decoration]s for painting and hit-testing.
+    /// direction-sensitive ``Decoration``s for painting and hit-testing.
     var configuration: ImageConfiguration {
         didSet {
             if configuration != oldValue {

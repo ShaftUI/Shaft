@@ -22,7 +22,7 @@ public struct ViewConfiguration: Equatable {
         self.devicePixelRatio = devicePixelRatio
     }
 
-    /// Creates a transformation matrix that applies the [devicePixelRatio].
+    /// Creates a transformation matrix that applies the ``devicePixelRatio``.
     func toMatrix() -> Matrix4x4f {
         Matrix4x4f.scale(sx: Float(devicePixelRatio), sy: Float(devicePixelRatio), sz: 1)
     }
@@ -48,7 +48,7 @@ public class RenderView: RenderObject, RenderObjectWithSingleChild {
         configuration = Self.createViewConfigurationFor(nativeView)
     }
 
-    /// Returns a [ViewConfiguration] configured for the provided [RenderView]
+    /// Returns a ``ViewConfiguration`` configured for the provided ``RenderView``
     /// based on the current environment.
     private static func createViewConfigurationFor(_ view: NativeView) -> ViewConfiguration {
         return ViewConfiguration(
@@ -59,10 +59,10 @@ public class RenderView: RenderObject, RenderObjectWithSingleChild {
 
     /// The constraints used for the root layout.
     ///
-    /// Typically, this configuration is set by the [RendererBinding], when the
-    /// [RenderView] is registered with it. It will also update the configuration
-    /// if necessary. Therefore, if used in conjunction with the [RendererBinding]
-    /// this property must not be set manually as the [RendererBinding] will just
+    /// Typically, this configuration is set by the ``RendererBinding``, when the
+    /// ``RenderView`` is registered with it. It will also update the configuration
+    /// if necessary. Therefore, if used in conjunction with the ``RendererBinding``
+    /// this property must not be set manually as the ``RendererBinding`` will just
     /// override it.
     public private(set) var configuration: ViewConfiguration {
         didSet {
@@ -81,7 +81,7 @@ public class RenderView: RenderObject, RenderObjectWithSingleChild {
         }
     }
 
-    /// The [nativeView] into which this [RenderView] will render into.
+    /// The ``nativeView`` into which this ``RenderView`` will render into.
     var nativeView: NativeView
 
     private var rootTransform: Matrix4x4f?
@@ -95,11 +95,11 @@ public class RenderView: RenderObject, RenderObjectWithSingleChild {
     /// Bootstrap the rendering pipeline by preparing the first frame.
     ///
     /// This should only be called once, and must be called before changing
-    /// [configuration]. It is typically called immediately after calling the
+    /// ``configuration``. It is typically called immediately after calling the
     /// constructor.
     ///
     /// This does not actually schedule the first frame. Call
-    /// [PipelineOwner.requestVisualUpdate] on [owner] to do that.
+    /// ``PipelineOwner/requestVisualUpdate`` on ``owner`` to do that.
     public func prepareInitialFrame() {
         assert(owner != nil)
         assert(rootTransform == nil)
@@ -156,9 +156,9 @@ public class RenderView: RenderObject, RenderObjectWithSingleChild {
     /// of its descendants. Adds any render objects that contain the point to the
     /// given hit test result.
     ///
-    /// The [position] argument is in the coordinate system of the render view,
+    /// The ``position`` argument is in the coordinate system of the render view,
     /// which is to say, in logical pixels. This is not necessarily the same
-    /// coordinate system as that expected by the root [Layer], which will
+    /// coordinate system as that expected by the root ``Layer``, which will
     /// normally be in physical (device) pixels.
     public func hitTest(_ result: HitTestResult, position: Offset) {
         if let child {

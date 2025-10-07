@@ -10,20 +10,20 @@
 ///
 /// See also:
 ///
-///  * [RenderFlex], the flex render object.
-///  * [Column], [Row], and [Flex], the flex widgets.
-///  * [Expanded], the widget equivalent of [tight].
-///  * [Flexible], the widget equivalent of [loose].
+///  * ``RenderFlex``, the flex render object.
+///  * ``Column``, ``Row``, and ``Flex``, the flex widgets.
+///  * ``Expanded``, the widget equivalent of [tight].
+///  * ``Flexible``, the widget equivalent of [loose].
 public enum FlexFit {
     /// The child is forced to fill the available space.
     ///
-    /// The [Expanded] widget assigns this kind of [FlexFit] to its child.
+    /// The ``Expanded`` widget assigns this kind of [FlexFit] to its child.
     case tight
 
     /// The child can be at most as large as the available space (but is
     /// allowed to be smaller).
     ///
-    /// The [Flexible] widget assigns this kind of [FlexFit] to its child.
+    /// The ``Flexible`` widget assigns this kind of [FlexFit] to its child.
     case loose
 }
 
@@ -36,22 +36,22 @@ public enum FlexFit {
 ///
 /// See also:
 ///
-///  * [Column], [Row], and [Flex], the flex widgets.
-///  * [Expanded] and [Flexible], the widgets that controls a flex widgets'
+///  * ``Column``, ``Row``, and ``Flex``, the flex widgets.
+///  * ``Expanded`` and ``Flexible``, the widgets that controls a flex widgets'
 ///    children's flex.
-///  * [RenderFlex], the flex render object.
+///  * ``RenderFlex``, the flex render object.
 ///  * [MainAxisAlignment], which controls how the free space is distributed.
 public enum MainAxisSize {
     /// Minimize the amount of free space along the main axis, subject to the
     /// incoming layout constraints.
     ///
     /// If the incoming layout constraints have a large enough
-    /// [BoxConstraints.minWidth] or [BoxConstraints.minHeight], there might still
+    /// ``BoxConstraints/minWidth`` or ``BoxConstraints/minHeight``, there might still
     /// be a non-zero amount of free space.
     ///
     /// If the incoming layout constraints are unbounded, and any children have a
     /// non-zero [FlexParentData.flex] and a [FlexFit.tight] fit (as applied by
-    /// [Expanded]), the [RenderFlex] will assert, because there would be infinite
+    /// ``Expanded``), the ``RenderFlex`` will assert, because there would be infinite
     /// remaining free space and boxes cannot be given infinite size.
     case min
 
@@ -62,7 +62,7 @@ public enum MainAxisSize {
     /// [BoxConstraints.maxWidth] or [BoxConstraints.maxHeight], there might still
     /// be no free space.
     ///
-    /// If the incoming layout constraints are unbounded, the [RenderFlex] will
+    /// If the incoming layout constraints are unbounded, the ``RenderFlex`` will
     /// assert, because there would be infinite remaining free space and boxes
     /// cannot be given infinite size.
     case max
@@ -72,8 +72,8 @@ public enum MainAxisSize {
 ///
 /// See also:
 ///
-///  * [Column], [Row], and [Flex], the flex widgets.
-///  * [RenderFlex], the flex render object.
+///  * ``Column``, ``Row``, and ``Flex``, the flex widgets.
+///  * ``RenderFlex``, the flex render object.
 public enum MainAxisAlignment {
     /// Place the children as close to the start of the main axis as possible.
     ///
@@ -112,8 +112,8 @@ public enum MainAxisAlignment {
 ///
 /// See also:
 ///
-///  * [Column], [Row], and [Flex], the flex widgets.
-///  * [RenderFlex], the flex render object.
+///  * ``Column``, ``Row``, and ``Flex``, the flex widgets.
+///  * ``RenderFlex``, the flex render object.
 public enum CrossAxisAlignment {
     /// Place the children with their start edge aligned with the start side of
     /// the cross axis.

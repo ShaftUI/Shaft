@@ -8,13 +8,13 @@
 
 import SwiftMath
 
-/// Parent data used by [RenderBox] and its subclasses.
+/// Parent data used by ``RenderBox`` and its subclasses.
 public class BoxParentData: ParentData {
     var offset = Offset.zero
 }
 
-/// Abstract [ParentData] subclass for [RenderBox] subclasses that want the
-/// [ContainerRenderObjectMixin].
+/// Abstract ``ParentData`` subclass for ``RenderBox`` subclasses that want the
+/// ``ContainerRenderObjectMixin``.
 ///
 /// This is a convenience class that mixes in the relevant classes with
 /// the relevant type arguments.
@@ -23,13 +23,13 @@ public class ContainerBoxParentData<ChildType: RenderBox>: BoxParentData, Contai
     public weak var previousSibling: ChildType?
 }
 
-/// Immutable layout constraints for [RenderBox] layout.
+/// Immutable layout constraints for ``RenderBox`` layout.
 ///
-/// A [Size] respects a [BoxConstraints] if, and only if, all of the following
+/// A ``Size`` respects a ``BoxConstraints`` if, and only if, all of the following
 /// relations hold:
 ///
-/// * [minWidth] <= [Size.width] <= [maxWidth]
-/// * [minHeight] <= [Size.height] <= [maxHeight]
+/// * ``minWidth`` <= ``Size/width`` <= ``maxWidth``
+/// * ``minHeight`` <= ``Size/height`` <= ``maxHeight``
 public struct BoxConstraints: Constraints, Equatable {
     /// Creates box constraints with the given constraints.
     public init(
@@ -168,8 +168,8 @@ public struct BoxConstraints: Constraints, Equatable {
     /// Returns the size that both satisfies the constraints and is as close as
     /// possible to the given width and height.
     ///
-    /// When you already have a [Size], prefer [constrain], which applies the same
-    /// algorithm to a [Size] directly.
+    /// When you already have a ``Size``, prefer ``constrain``, which applies the same
+    /// algorithm to a ``Size`` directly.
     public func constrainDimensions(width: Float, height: Float) -> Size {
         return Size(constrainWidth(width), constrainHeight(height))
     }
@@ -219,8 +219,8 @@ public struct BoxConstraints: Constraints, Equatable {
     ///
     /// See also:
     ///
-    ///  * [hasBoundedHeight], the equivalent for the vertical axis.
-    ///  * [hasInfiniteWidth], which describes whether the minimum width
+    ///  * ``hasBoundedHeight``, the equivalent for the vertical axis.
+    ///  * ``hasInfiniteWidth``, which describes whether the minimum width
     ///    constraint is infinite.
     public var hasBoundedWidth: Bool {
         maxWidth < Float.infinity
@@ -230,8 +230,8 @@ public struct BoxConstraints: Constraints, Equatable {
     ///
     /// See also:
     ///
-    ///  * [hasBoundedWidth], the equivalent for the horizontal axis.
-    ///  * [hasInfiniteHeight], which describes whether the minimum height
+    ///  * ``hasBoundedWidth``, the equivalent for the horizontal axis.
+    ///  * ``hasInfiniteHeight``, which describes whether the minimum height
     ///    constraint is infinite.
     public var hasBoundedHeight: Bool {
         maxHeight < Float.infinity
@@ -241,14 +241,14 @@ public struct BoxConstraints: Constraints, Equatable {
     ///
     /// Such a constraint is used to indicate that a box should grow as large as
     /// some other constraint (in this case, horizontally). If constraints are
-    /// infinite, then they must have other (non-infinite) constraints [enforce]d
-    /// upon them, or must be [tighten]ed, before they can be used to derive a
-    /// [Size] for a [RenderBox.size].
+    /// infinite, then they must have other (non-infinite) constraints ``enforce``d
+    /// upon them, or must be ``tighten``ed, before they can be used to derive a
+    /// ``Size`` for a ``RenderBox/size``.
     ///
     /// See also:
     ///
-    ///  * [hasInfiniteHeight], the equivalent for the vertical axis.
-    ///  * [hasBoundedWidth], which describes whether the maximum width
+    ///  * ``hasInfiniteHeight``, the equivalent for the vertical axis.
+    ///  * ``hasBoundedWidth``, which describes whether the maximum width
     ///    constraint is finite.
     public var hasInfiniteWidth: Bool {
         minWidth >= Float.infinity
@@ -258,14 +258,14 @@ public struct BoxConstraints: Constraints, Equatable {
     ///
     /// Such a constraint is used to indicate that a box should grow as large as
     /// some other constraint (in this case, vertically). If constraints are
-    /// infinite, then they must have other (non-infinite) constraints [enforce]d
-    /// upon them, or must be [tighten]ed, before they can be used to derive a
-    /// [Size] for a [RenderBox.size].
+    /// infinite, then they must have other (non-infinite) constraints ``enforce``d
+    /// upon them, or must be ``tighten``ed, before they can be used to derive a
+    /// ``Size`` for a ``RenderBox/size``.
     ///
     /// See also:
     ///
-    ///  * [hasInfiniteWidth], the equivalent for the horizontal axis.
-    ///  * [hasBoundedHeight], which describes whether the maximum height
+    ///  * ``hasInfiniteWidth``, the equivalent for the horizontal axis.
+    ///  * ``hasBoundedHeight``, which describes whether the maximum height
     ///    constraint is finite.
     public var hasInfiniteHeight: Bool {
         minHeight >= Float.infinity
@@ -289,69 +289,69 @@ extension BoxConstraints {
     }
 }
 
-/// Method signature for hit testing a [RenderBox].
+/// Method signature for hit testing a ``RenderBox``.
 ///
-/// Used by [BoxHitTestResult.addWithPaintTransform] to hit test children
-/// of a [RenderBox].
+/// Used by ``BoxHitTestResult/addWithPaintTransform`` to hit test children
+/// of a ``RenderBox``.
 ///
 /// See also:
 ///
-///  * [RenderBox.hitTest], which documents more details around hit testing
-///    [RenderBox]es.
+///  * ``RenderBox/hitTest``, which documents more details around hit testing
+///    ``RenderBox``es.
 public typealias BoxHitTest = (BoxHitTestResult, Offset) -> Bool
 
-/// Method signature for hit testing a [RenderBox] with a manually
+/// Method signature for hit testing a ``RenderBox`` with a manually
 /// managed position (one that is passed out-of-band).
 ///
-/// Used by [RenderSliverSingleBoxAdapter.hitTestBoxChild] to hit test
-/// [RenderBox] children of a [RenderSliver].
+/// Used by ``RenderSliverSingleBoxAdapter/hitTestBoxChild`` to hit test
+/// ``RenderBox`` children of a ``RenderSliver``.
 ///
 /// See also:
 ///
-///  * [RenderBox.hitTest], which documents more details around hit testing
-///    [RenderBox]es.
+///  * ``RenderBox/hitTest``, which documents more details around hit testing
+///    ``RenderBox``es.
 public typealias BoxHitTestWithOutOfBandPosition = (BoxHitTestResult) -> Bool
 
-/// The result of performing a hit test on [RenderBox]es.
+/// The result of performing a hit test on ``RenderBox``es.
 ///
-/// An instance of this class is provided to [RenderBox.hitTest] to record the
+/// An instance of this class is provided to ``RenderBox/hitTest`` to record the
 /// result of the hit test.
 public class BoxHitTestResult: HitTestResult {
     public override init() {
         super.init()
     }
 
-    /// Wraps `result` to create a [HitTestResult] that implements the
-    /// [BoxHitTestResult] protocol for hit testing on [RenderBox]es.
+    /// Wraps `result` to create a ``HitTestResult`` that implements the
+    /// ``BoxHitTestResult`` protocol for hit testing on ``RenderBox``es.
     ///
-    /// This method is used by [RenderObject]s that adapt between the
-    /// [RenderBox]-world and the non-[RenderBox]-world to convert a (subtype of)
-    /// [HitTestResult] to a [BoxHitTestResult] for hit testing on [RenderBox]es.
+    /// This method is used by ``RenderObject``s that adapt between the
+    /// ``RenderBox``-world and the non-``RenderBox``-world to convert a (subtype of)
+    /// ``HitTestResult`` to a ``BoxHitTestResult`` for hit testing on ``RenderBox``es.
     ///
-    /// The [HitTestEntry] instances added to the returned [BoxHitTestResult] are
+    /// The ``HitTestEntry`` instances added to the returned ``BoxHitTestResult`` are
     /// also added to the wrapped `result` (both share the same underlying data
-    /// structure to store [HitTestEntry] instances).
+    /// structure to store ``HitTestEntry`` instances).
     public override init(wrap: HitTestResult) {
         super.init(wrap: wrap)
     }
 
     /// Convenience method for hit testing children, that are translated by
-    /// an [Offset].
+    /// an ``Offset``.
     ///
     /// The actual hit testing of the child needs to be implemented in the
     /// provided `hitTest` callback, which is invoked with the transformed
     /// `position` as argument.
     ///
-    /// This method can be used as a convenience over [addWithPaintTransform] if
+    /// This method can be used as a convenience over ``addWithPaintTransform`` if
     /// a parent paints a child at an `offset`.
     ///
-    /// A null value for `offset` is treated as if [Offset.zero] was provided.
+    /// A null value for `offset` is treated as if ``Offset/zero`` was provided.
     ///
     /// The function returns the return value of the `hitTest` callback.
     ///
     /// See also:
     ///
-    ///  * [addWithPaintTransform], which takes a generic paint transform matrix and
+    ///  * ``addWithPaintTransform``, which takes a generic paint transform matrix and
     ///    documents the intended usage of this API in more detail.
     public func addWithPaintOffset(
         offset: Offset? = nil,
@@ -378,7 +378,7 @@ public class BoxHitTestResult: HitTestResult {
     ///
     /// The provided paint `transform` (which describes the transform from the
     /// child to the parent in 3D) is processed by
-    /// [PointerEvent.removePerspectiveTransform] to remove the
+    /// ``PointerEvent/removePerspectiveTransform`` to remove the
     /// perspective component and inverted before it is used to transform
     /// `position` from the coordinate system of the parent to the system of the
     /// child.
@@ -398,9 +398,9 @@ public class BoxHitTestResult: HitTestResult {
     ///
     /// See also:
     ///
-    ///  * [addWithPaintOffset], which can be used for `transform`s that are just
-    ///    simple matrix translations by an [Offset].
-    ///  * [addWithRawTransform], which takes a transform matrix that is directly
+    ///  * ``addWithPaintOffset``, which can be used for `transform`s that are just
+    ///    simple matrix translations by an ``Offset``.
+    ///  * ``addWithRawTransform``, which takes a transform matrix that is directly
     ///    used to transform the position without any pre-processing.
     public func addWithPaintTransform(
         transform: Matrix4x4f?,
@@ -429,7 +429,7 @@ public class BoxHitTestResult: HitTestResult {
     /// provided `hitTest` callback, which is invoked with the transformed
     /// `position` as argument.
     ///
-    /// Unlike [addWithPaintTransform], the provided `transform` matrix is used
+    /// Unlike ``addWithPaintTransform``, the provided `transform` matrix is used
     /// directly to transform `position` without any pre-processing.
     ///
     /// If `transform` is null it will be treated as the identity transform ad
@@ -439,7 +439,7 @@ public class BoxHitTestResult: HitTestResult {
     ///
     /// See also:
     ///
-    ///  * [addWithPaintTransform], which accomplishes the same thing, but takes a
+    ///  * ``addWithPaintTransform``, which accomplishes the same thing, but takes a
     ///    _paint_ transform matrix.
     public func addWithRawTransform(
         transform: Matrix4x4f?,
@@ -471,20 +471,20 @@ public class BoxHitTestResult: HitTestResult {
     /// passed to the method to update the hit test stack.
     ///
     ///  * `paintOffset` has the semantics of the `offset` passed to
-    ///    [addWithPaintOffset].
+    ///    ``addWithPaintOffset``.
     ///
     ///  * `paintTransform` has the semantics of the `transform` passed to
-    ///    [addWithPaintTransform], except that it must be invertible; it
+    ///    ``addWithPaintTransform``, except that it must be invertible; it
     ///    is the responsibility of the caller to ensure this.
     ///
     ///  * `rawTransform` has the semantics of the `transform` passed to
-    ///    [addWithRawTransform].
+    ///    ``addWithRawTransform``.
     ///
     /// Exactly one of these must be non-null.
     ///
     /// See also:
     ///
-    ///  * [addWithPaintTransform], which takes a generic paint transform matrix and
+    ///  * ``addWithPaintTransform``, which takes a generic paint transform matrix and
     ///    documents the intended usage of this API in more detail.
     public func addWithOutOfBandPosition(
         paintOffset: Offset? = nil,
@@ -529,7 +529,7 @@ private struct IntrinsicDimensionsCacheEntry: Hashable {
 
 /// A render object in a 2D Cartesian coordinate system.
 ///
-/// The [size] of each box is expressed as a width and a height. Each box has
+/// The ``size`` of each box is expressed as a width and a height. Each box has
 /// its own coordinate system in which its upper left corner is placed at (0,
 /// 0). The lower right corner of the box is therefore at (width, height). The
 /// box contains all the points including the upper left corner and extending
@@ -546,7 +546,7 @@ open class RenderBox: RenderObject {
 
     public var size: Size!
 
-    /// Whether this render object has undergone layout and has a [size].
+    /// Whether this render object has undergone layout and has a ``size``.
     var hasSize: Bool { size != nil }
 
     private var cachedBaselines: [TextBaseline: Double]?
@@ -577,15 +577,15 @@ open class RenderBox: RenderObject {
         )
     }
 
-    /// Computes the value returned by [getMinIntrinsicWidth]. Do not call this
-    /// function directly, instead, call [getMinIntrinsicWidth].
+    /// Computes the value returned by ``getMinIntrinsicWidth``. Do not call this
+    /// function directly, instead, call ``getMinIntrinsicWidth``.
     open func computeMinIntrinsicWidth(_ height: Float) -> Float {
         return 0.0
     }
 
     /// Returns the smallest width beyond which increasing the width never
     /// decreases the preferred height. The preferred height is the value that
-    /// would be returned by [getMinIntrinsicHeight] for that width.
+    /// would be returned by ``getMinIntrinsicHeight`` for that width.
     public final func getMaxIntrinsicWidth(_ height: Float) -> Float {
         assert(height >= 0.0, "The height argument to getMaxIntrinsicWidth() must be positive.")
         return computeIntrinsicDimension(
@@ -595,8 +595,8 @@ open class RenderBox: RenderObject {
         )
     }
 
-    /// Computes the value returned by [getMaxIntrinsicWidth]. Do not call this
-    /// function directly, instead, call [getMaxIntrinsicWidth].
+    /// Computes the value returned by ``getMaxIntrinsicWidth``. Do not call this
+    /// function directly, instead, call ``getMaxIntrinsicWidth``.
     open func computeMaxIntrinsicWidth(_ height: Float) -> Float {
         return 0.0
     }
@@ -612,15 +612,15 @@ open class RenderBox: RenderObject {
         )
     }
 
-    /// Computes the value returned by [getMinIntrinsicHeight]. Do not call this
-    /// function directly, instead, call [getMinIntrinsicHeight].
+    /// Computes the value returned by ``getMinIntrinsicHeight``. Do not call this
+    /// function directly, instead, call ``getMinIntrinsicHeight``.
     open func computeMinIntrinsicHeight(_ width: Float) -> Float {
         return 0.0
     }
 
     /// Returns the smallest height beyond which increasing the height never
     /// decreases the preferred width. The preferred width is the value that
-    /// would be returned by [getMinIntrinsicWidth] for that height.
+    /// would be returned by ``getMinIntrinsicWidth`` for that height.
     public final func getMaxIntrinsicHeight(_ width: Float) -> Float {
         assert(width >= 0.0, "The width argument to getMaxIntrinsicHeight() must be positive.")
         return computeIntrinsicDimension(
@@ -630,14 +630,14 @@ open class RenderBox: RenderObject {
         )
     }
 
-    /// Computes the value returned by [getMaxIntrinsicHeight]. Do not call this
-    /// function directly, instead, call [getMaxIntrinsicHeight].
+    /// Computes the value returned by ``getMaxIntrinsicHeight``. Do not call this
+    /// function directly, instead, call ``getMaxIntrinsicHeight``.
     open func computeMaxIntrinsicHeight(_ width: Float) -> Float {
         return 0.0
     }
 
-    /// Computes the value returned by [getDryLayout]. Do not call this
-    /// function directly, instead, call [getDryLayout].
+    /// Computes the value returned by ``getDryLayout``. Do not call this
+    /// function directly, instead, call ``getDryLayout``.
     open func computeDryLayout(_ constraints: BoxConstraints) -> Size {
         return Size.zero
     }
@@ -684,9 +684,9 @@ open class RenderBox: RenderObject {
         super.layout(constraints, parentUsesSize: parentUsesSize)
     }
 
-    /// By default this method sets [size] to the result of [computeDryLayout]
-    /// called with the current [constraints]. Instead of overriding this method,
-    /// consider overriding [computeDryLayout].
+    /// By default this method sets ``size`` to the result of ``computeDryLayout``
+    /// called with the current ``constraints``. Instead of overriding this method,
+    /// consider overriding ``computeDryLayout``.
     open override func performResize() {
         // default behavior for subclasses that have sizedByParent = true
         size = computeDryLayout(boxConstraint)
@@ -710,9 +710,9 @@ open class RenderBox: RenderObject {
     /// absorbs the hit (preventing objects below this one from being hit).
     /// Returns false if the hit can continue to other objects below this one.
     ///
-    /// The caller is responsible for transforming [position] from global
-    /// coordinates to its location relative to the origin of this [RenderBox].
-    /// This [RenderBox] is responsible for checking whether the given position is
+    /// The caller is responsible for transforming ``position`` from global
+    /// coordinates to its location relative to the origin of this ``RenderBox``.
+    /// This ``RenderBox`` is responsible for checking whether the given position is
     /// within its bounds.
     open func hitTest(_ result: HitTestResult, position: Offset) -> Bool {
         assert(hasSize, "Cannot hit test a render box with no size.")
@@ -733,12 +733,12 @@ open class RenderBox: RenderObject {
     /// Returns true if the specified `position` should be considered a hit
     /// on this render object.
     ///
-    /// The caller is responsible for transforming [position] from global
-    /// coordinates to its location relative to the origin of this [RenderBox].
-    /// This [RenderBox] is responsible for checking whether the given position is
+    /// The caller is responsible for transforming ``position`` from global
+    /// coordinates to its location relative to the origin of this ``RenderBox``.
+    /// This ``RenderBox`` is responsible for checking whether the given position is
     /// within its bounds.
     ///
-    /// Used by [hitTest]. If you override [hitTest] and do not call this
+    /// Used by ``hitTest``. If you override ``hitTest`` and do not call this
     /// function, then you don't need to implement this function.
     open func hitTestSelf(_ position: Offset) -> Bool {
         return false
@@ -754,10 +754,10 @@ open class RenderBox: RenderObject {
     /// hit tests at locations where children overlap hit the child that is
     /// visually "on top" (i.e., paints later).
     ///
-    /// The caller is responsible for transforming [position] from global
-    /// coordinates to its location relative to the origin of this [RenderBox].
-    /// Likewise, this [RenderBox] is responsible for transforming the position
-    /// that it passes to its children when it calls [hitTest] on each child.
+    /// The caller is responsible for transforming ``position`` from global
+    /// coordinates to its location relative to the origin of this ``RenderBox``.
+    /// Likewise, this ``RenderBox`` is responsible for transforming the position
+    /// that it passes to its children when it calls ``hitTest`` on each child.
     open func hitTestChildren(_ result: HitTestResult, position: Offset) -> Bool {
         return false
     }
@@ -769,9 +769,9 @@ open class RenderBox: RenderObject {
     /// Subclasses that apply transforms during painting should override this
     /// function to factor those transforms into the calculation.
     ///
-    /// The [RenderBox] implementation takes care of adjusting the matrix for the
+    /// The ``RenderBox`` implementation takes care of adjusting the matrix for the
     /// position of the given child as determined during layout and stored on the
-    /// child's [parentData] in the [BoxParentData.offset] field.
+    /// child's ``parentData`` in the ``BoxParentData/offset`` field.
     open override func applyPaintTransform(_ child: RenderObject, transform: inout Matrix4x4f) {
         assert(child.parent === self)
         let childParentData = child.parentData as! BoxParentData
@@ -793,16 +793,16 @@ extension RenderBox {
     /// pixels to the local coordinate system for this box.
     ///
     /// This method will un-project the point from the screen onto the widget,
-    /// which makes it different from [MatrixUtils.transformPoint].
+    /// which makes it different from ``MatrixUtils/transformPoint``.
     ///
     /// If the transform from global coordinates to local coordinates is
-    /// degenerate, this function returns [Offset.zero].
+    /// degenerate, this function returns ``Offset/zero``.
     ///
     /// If `ancestor` is non-null, this function converts the given point from
     /// the coordinate system of `ancestor` (which must be an ancestor of this
     /// render object) instead of from the global coordinate system.
     ///
-    /// This method is implemented in terms of [getTransformTo].
+    /// This method is implemented in terms of ``getTransformTo``.
     public func globalToLocal(_ point: Offset, ancestor: RenderObject? = nil) -> Offset {
         var transform = getTransformTo(ancestor)
         if transform.determinant == 0.0 {
@@ -838,7 +838,7 @@ extension RenderBox {
     /// coordinate system of `ancestor` (which must be an ancestor of this render
     /// object) instead of to the global coordinate system.
     ///
-    /// This method is implemented in terms of [getTransformTo]. If the transform
+    /// This method is implemented in terms of ``getTransformTo``. If the transform
     /// matrix puts the given `point` on the line at infinity (for instance, when
     /// the transform matrix is the zero matrix), this method returns (NaN, NaN).
     public func localToGlobal(_ point: Offset, ancestor: RenderObject? = nil) -> Offset {
@@ -846,13 +846,13 @@ extension RenderBox {
     }
 }
 
-/// A hit test entry used by [RenderBox].
+/// A hit test entry used by ``RenderBox``.
 public final class BoxHitTestEntry: HitTestEntry {
     public init(_ target: HitTestTarget, _ localPosition: Offset) {
         self.localPosition = localPosition
         super.init(target)
     }
 
-    /// The position of the hit test in the local coordinates of [target].
+    /// The position of the hit test in the local coordinates of ``target``.
     let localPosition: Offset
 }

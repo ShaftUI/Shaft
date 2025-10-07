@@ -6,12 +6,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// Signature for a function that transforms a [BoxConstraints] to another
-/// [BoxConstraints].
+/// Signature for a function that transforms a ``BoxConstraints`` to another
+/// ``BoxConstraints``.
 ///
-/// Used by [RenderConstraintsTransformBox] and [ConstraintsTransformBox].
-/// Typically the caller requires the returned [BoxConstraints] to be
-/// [BoxConstraints.isNormalized].
+/// Used by ``RenderConstraintsTransformBox`` and ``ConstraintsTransformBox``.
+/// Typically the caller requires the returned ``BoxConstraints`` to be
+/// ``BoxConstraints/isNormalized``.
 public class RenderShiftedBox: RenderBox, RenderObjectWithSingleChild {
     public typealias ChildType = RenderBox
     public var childMixin = RenderSingleChildMixin<RenderBox>()
@@ -63,7 +63,7 @@ public class RenderPadding: RenderShiftedBox {
 
     /// The amount to pad the child in each dimension.
     ///
-    /// If this is set to an [EdgeInsetsDirectional] object, then [textDirection]
+    /// If this is set to an [EdgeInsetsDirectional] object, then ``textDirection``
     /// must not be null.
 
     public var padding: EdgeInsetsGeometry {
@@ -74,9 +74,9 @@ public class RenderPadding: RenderShiftedBox {
         }
     }
 
-    /// The text direction with which to resolve [padding].
+    /// The text direction with which to resolve ``padding``.
     ///
-    /// This may be changed to null, but only after the [padding] has been changed
+    /// This may be changed to null, but only after the ``padding`` has been changed
     /// to a value that does not depend on the direction.
     public var textDirection: TextDirection? {
         didSet {
@@ -128,11 +128,11 @@ public class RenderPadding: RenderShiftedBox {
 }
 
 /// Abstract class for one-child-layout render boxes that use a
-/// [AlignmentGeometry] to align their children.
+/// ``AlignmentGeometry`` to align their children.
 public class RenderAligningShiftedBox: RenderShiftedBox {
     /// Initializes member variables for subclasses.
     ///
-    /// The [textDirection] must be non-null if the [alignment] is
+    /// The ``textDirection`` must be non-null if the ``alignment`` is
     /// direction-sensitive.
     public init(
         alignment: any AlignmentGeometry = .center,
@@ -146,8 +146,8 @@ public class RenderAligningShiftedBox: RenderShiftedBox {
 
     /// The [Alignment] to use for aligning the child.
     ///
-    /// This is the [alignment] resolved against [textDirection]. Subclasses should
-    /// use [resolvedAlignment] instead of [alignment] directly, for computing the
+    /// This is the ``alignment`` resolved against ``textDirection``. Subclasses should
+    /// use [resolvedAlignment] instead of ``alignment`` directly, for computing the
     /// child's offset.
     ///
     /// The [performLayout] method will be called when the value changes.
@@ -172,7 +172,7 @@ public class RenderAligningShiftedBox: RenderShiftedBox {
     /// with the center of the parent.
     ///
     /// If this is set to an [AlignmentDirectional] object, then
-    /// [textDirection] must not be null.
+    /// ``textDirection`` must not be null.
     public var alignment: any AlignmentGeometry {
         didSet {
             if alignment.isEqualTo(oldValue) {
@@ -182,9 +182,9 @@ public class RenderAligningShiftedBox: RenderShiftedBox {
         }
     }
 
-    /// The text direction with which to resolve [alignment].
+    /// The text direction with which to resolve ``alignment``.
     ///
-    /// This may be changed to null, but only after [alignment] has been changed
+    /// This may be changed to null, but only after ``alignment`` has been changed
     /// to a value that does not depend on the direction.
     public var textDirection: TextDirection = .ltr {
         didSet {
@@ -195,7 +195,7 @@ public class RenderAligningShiftedBox: RenderShiftedBox {
         }
     }
 
-    /// Apply the current [alignment] to the [child].
+    /// Apply the current ``alignment`` to the [child].
     ///
     /// Subclasses should call this method if they have a child, to have
     /// this class perform the actual alignment. If there is no child,
@@ -212,7 +212,7 @@ public class RenderAligningShiftedBox: RenderShiftedBox {
         childParentData.offset = resolvedAlignment.alongOffset(size - child!.size)
     }
 }
-/// Positions its child using an [AlignmentGeometry].
+/// Positions its child using an ``AlignmentGeometry``.
 ///
 /// For example, to align a box at the bottom right, you would pass this box a
 /// tight constraint that is bigger than the child's natural size,

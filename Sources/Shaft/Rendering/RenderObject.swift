@@ -8,7 +8,7 @@
 
 import SwiftMath
 
-/// Base class for data associated with a [RenderObject] by its parent.
+/// Base class for data associated with a ``RenderObject`` by its parent.
 ///
 /// Some render objects wish to store data on their children, such as the
 /// children's input parameters to the parent's layout algorithm or the
@@ -48,7 +48,7 @@ public class PaintingContext: ClipContext {
 
     /// Repaint the given render object.
     ///
-    /// The render object must be attached to a [PipelineOwner], must have a
+    /// The render object must be attached to a ``PipelineOwner``, must have a
     /// composited layer, and must be in need of painting. The render object's
     /// layer, if any, is re-used, along with any layers in the subtree that don't
     /// need to be repainted.
@@ -72,9 +72,9 @@ public class PaintingContext: ClipContext {
         childContext.stopRecordingIfNeeded()
     }
 
-    /// Update the composited layer of [child] without repainting its children.
+    /// Update the composited layer of ``child`` without repainting its children.
     ///
-    /// The render object must be attached to a [PipelineOwner], must have a
+    /// The render object must be attached to a ``PipelineOwner``, must have a
     /// composited layer, and must be in need of a composited layer update but
     /// not in need of painting. The render object's layer is re-used, and none
     /// of its children are repaint or their layers updated.
@@ -124,9 +124,9 @@ public class PaintingContext: ClipContext {
     /// Adds a layer to the recording requiring that the recording is already
     /// stopped.
     ///
-    /// Do not call this function directly: call [addLayer] or [pushLayer]
+    /// Do not call this function directly: call ``addLayer`` or ``pushLayer``
     /// instead. This function is called internally when all layers not
-    /// generated from the [canvas] are added.
+    /// generated from the ``canvas`` are added.
     ///
     /// Subclasses that need to customize how layers are added should override
     /// this method.
@@ -160,7 +160,7 @@ public class PaintingContext: ClipContext {
     ///
     /// See also:
     ///
-    ///  * [addLayer], for pushing a layer without painting further contents
+    ///  * ``addLayer``, for pushing a layer without painting further contents
     ///    within it.
     public func pushLayer(
         _ childLayer: ContainerLayer,
@@ -227,10 +227,10 @@ public class PaintingContext: ClipContext {
     ///
     /// The `needsCompositing` argument specifies whether the child needs
     /// compositing. Typically this matches the value of
-    /// [RenderObject.needsCompositing] for the caller. If false, this method
+    /// ``RenderObject/needsCompositing`` for the caller. If false, this method
     /// returns null, indicating that a layer is no longer necessary. If a
     /// render object calling this method stores the `oldLayer` in its
-    /// [RenderObject.layer] field, it should set that field to null.
+    /// ``RenderObject/layer`` field, it should set that field to null.
     ///
     /// When `needsCompositing` is false, this method will use a more efficient
     /// way to apply the layer effect than actually creating a layer.
@@ -242,18 +242,18 @@ public class PaintingContext: ClipContext {
     /// {@endtemplate}
     ///
     /// The `clipRect` is the rectangle (in the caller's coordinate system) to
-    /// use to clip the painting done by [painter]. It should not include the
+    /// use to clip the painting done by ``painter``. It should not include the
     /// `offset`.
     ///
     /// The `painter` callback will be called while the `clipRect` is applied.
-    /// It is called synchronously during the call to [pushClipRect].
+    /// It is called synchronously during the call to ``pushClipRect``.
     ///
     /// The `clipBehavior` argument controls how the rectangle is clipped.
     ///
     /// {@template flutter.rendering.PaintingContext.pushClipRect.oldLayer} For
     /// the `oldLayer` argument, specify the layer created in the previous
     /// frame. This gives the engine more information for performance
-    /// optimizations. Typically this is the value of [RenderObject.layer] that
+    /// optimizations. Typically this is the value of ``RenderObject/layer`` that
     /// a render object creates once, then reuses for all subsequent frames
     /// until a layer is no longer needed (e.g. the render object no longer
     /// needs compositing) or until the render object changes the type of the
@@ -410,7 +410,7 @@ public class RenderOwner: HashableObject {
     internal var nodesNeedingLayout: [RenderObject] = []
 
     /// Whether the current [flushLayout] call should pause to incorporate the
-    /// [RenderObject]s in `_nodesNeedingLayout` into the current dirty list,
+    /// ``RenderObject``s in `_nodesNeedingLayout` into the current dirty list,
     /// before continuing to process dirty relayout boundaries.
     private var shouldMergeDirtyNodes = false
 
@@ -474,7 +474,7 @@ public class RenderOwner: HashableObject {
 
     internal var nodesNeedingCompositingBitsUpdate: [RenderObject] = []
 
-    /// Updates the [RenderObject.needsCompositing] bits.
+    /// Updates the ``RenderObject/needsCompositing`` bits.
     ///
     /// Called as part of the rendering pipeline after [flushLayout] and before
     /// [flushPaint].
@@ -542,17 +542,17 @@ public class RenderOwner: HashableObject {
 
 /// An object in the render tree.
 ///
-/// The [RenderObject] class hierarchy is the core of the rendering
+/// The ``RenderObject`` class hierarchy is the core of the rendering
 /// library's reason for being.
 ///
 /// {@youtube 560 315 https://www.youtube.com/watch?v=zmbmrw07qBc}
 ///
-/// [RenderObject]s have a [parent], and have a slot called [parentData] in
-/// which the parent [RenderObject] can store child-specific data, for example,
-/// the child position. The [RenderObject] class also implements the basic
+/// ``RenderObject``s have a [parent], and have a slot called [parentData] in
+/// which the parent ``RenderObject`` can store child-specific data, for example,
+/// the child position. The ``RenderObject`` class also implements the basic
 /// layout and paint protocols.
 ///
-/// The [RenderObject] class, however, does not define a child model (e.g.
+/// The ``RenderObject`` class, however, does not define a child model (e.g.
 /// whether a node has zero, one, or more children). It also doesn't define a
 /// coordinate system (e.g. whether children are positioned in Cartesian
 /// coordinates, in polar coordinates, etc) or a specific layout protocol (e.g.
@@ -561,17 +561,17 @@ public class RenderOwner: HashableObject {
 /// the child lays out, etc; or indeed whether the children are allowed to read
 /// their parent's [parentData] slot).
 ///
-/// The [RenderBox] subclass introduces the opinion that the layout
+/// The ``RenderBox`` subclass introduces the opinion that the layout
 /// system uses Cartesian coordinates.
 ///
 /// ## Lifecycle
 ///
-/// A [RenderObject] must [dispose] when it is no longer needed. The creator
+/// A ``RenderObject`` must [dispose] when it is no longer needed. The creator
 /// of the object is responsible for disposing of it. Typically, the creator is
 /// a [RenderObjectElement], and that element will dispose the object it creates
 /// when it is unmounted.
 ///
-/// [RenderObject]s are responsible for cleaning up any expensive resources
+/// ``RenderObject``s are responsible for cleaning up any expensive resources
 /// they hold when [dispose] is called, such as [Picture] or [Image] objects.
 /// This includes any [Layer]s that the render object has directly created. The
 /// base implementation of dispose will nullify the [layer] property. Subclasses
@@ -579,35 +579,35 @@ public class RenderOwner: HashableObject {
 ///
 /// ## Writing a RenderObject subclass
 ///
-/// In most cases, subclassing [RenderObject] itself is overkill, and
-/// [RenderBox] would be a better starting point. However, if a render object
+/// In most cases, subclassing ``RenderObject`` itself is overkill, and
+/// ``RenderBox`` would be a better starting point. However, if a render object
 /// doesn't want to use a Cartesian coordinate system, then it should indeed
-/// inherit from [RenderObject] directly. This allows it to define its own
-/// layout protocol by using a new subclass of [Constraints] rather than using
+/// inherit from ``RenderObject`` directly. This allows it to define its own
+/// layout protocol by using a new subclass of ``Constraints`` rather than using
 /// [BoxConstraints], and by potentially using an entirely new set of objects
 /// and values to represent the result of the output rather than just a [Size].
 /// This increased flexibility comes at the cost of not being able to rely on
-/// the features of [RenderBox]. For example, [RenderBox] implements an
+/// the features of ``RenderBox``. For example, ``RenderBox`` implements an
 /// intrinsic sizing protocol that allows you to measure a child without fully
 /// laying it out, in such a way that if that child changes size, the parent
 /// will be laid out again (to take into account the new dimensions of the
 /// child). This is a subtle and bug-prone feature to get right.
 ///
-/// Most aspects of writing a [RenderBox] apply to writing a [RenderObject] as
-/// well, and therefore the discussion at [RenderBox] is recommended background
+/// Most aspects of writing a ``RenderBox`` apply to writing a ``RenderObject`` as
+/// well, and therefore the discussion at ``RenderBox`` is recommended background
 /// reading. The main differences are around layout and hit testing, since those
-/// are the aspects that [RenderBox] primarily specializes.
+/// are the aspects that ``RenderBox`` primarily specializes.
 ///
 /// ### Layout
 ///
-/// A layout protocol begins with a subclass of [Constraints]. See the
-/// discussion at [Constraints] for more information on how to write a
-/// [Constraints] subclass.
+/// A layout protocol begins with a subclass of ``Constraints``. See the
+/// discussion at ``Constraints`` for more information on how to write a
+/// ``Constraints`` subclass.
 ///
 /// The [performLayout] method should take the [constraints], and apply them.
 /// The output of the layout algorithm is fields set on the object that describe
 /// the geometry of the object for the purposes of the parent's layout. For
-/// example, with [RenderBox] the output is the [RenderBox.size] field. This
+/// example, with ``RenderBox`` the output is the [RenderBox.size] field. This
 /// output should only be read by the parent if the parent specified
 /// `parentUsesSize` as true when calling [layout] on the child.
 ///
@@ -620,7 +620,7 @@ public class RenderOwner: HashableObject {
 /// override, you are expected to provide one.
 ///
 /// The general behavior of your hit-testing method should be similar to the
-/// behavior described for [RenderBox]. The main difference is that the input
+/// behavior described for ``RenderBox``. The main difference is that the input
 /// need not be an [Offset]. You are also allowed to use a different subclass of
 /// [HitTestEntry] when adding entries to the [HitTestResult]. When the
 /// [handleEvent] method is called, the same object that was added to the
@@ -631,20 +631,20 @@ public class RenderOwner: HashableObject {
 /// ### Adapting from one protocol to another
 ///
 /// In general, the root of a Flutter render object tree is a [RenderView]. This
-/// object has a single child, which must be a [RenderBox]. Thus, if you want to
-/// have a custom [RenderObject] subclass in the render tree, you have two
+/// object has a single child, which must be a ``RenderBox``. Thus, if you want to
+/// have a custom ``RenderObject`` subclass in the render tree, you have two
 /// choices: you either need to replace the [RenderView] itself, or you need to
-/// have a [RenderBox] that has your class as its child. (The latter is the much
+/// have a ``RenderBox`` that has your class as its child. (The latter is the much
 /// more common case.)
 ///
-/// This [RenderBox] subclass converts from the box protocol to the protocol of
+/// This ``RenderBox`` subclass converts from the box protocol to the protocol of
 /// your class.
 ///
 /// In particular, this means that for hit testing it overrides
 /// [RenderBox.hitTest], and calls whatever method you have in your class for
 /// hit testing.
 ///
-/// Similarly, it overrides [performLayout] to create a [Constraints] object
+/// Similarly, it overrides [performLayout] to create a ``Constraints`` object
 /// appropriate for your class and passes that to the child's [layout] method.
 ///
 /// ### Layout interactions between render objects
@@ -656,7 +656,7 @@ public class RenderOwner: HashableObject {
 /// parent will not be notified when the child changes its layout outputs.
 ///
 /// It is possible to set up render object protocols that transfer additional
-/// information. For example, in the [RenderBox] protocol you can query your
+/// information. For example, in the ``RenderBox`` protocol you can query your
 /// children's intrinsic dimensions and baseline geometry. However, if this is
 /// done then it is imperative that the child call [markNeedsLayout] on the
 /// parent any time that additional information changes, if the parent used it
@@ -666,7 +666,7 @@ public class RenderOwner: HashableObject {
 /// or baseline information, it gets marked dirty whenever the child's geometry
 /// changes.
 open class RenderObject: HitTestTarget, DiagnosticableTree {
-    /// Cause the entire subtree rooted at the given [RenderObject] to be marked
+    /// Cause the entire subtree rooted at the given ``RenderObject`` to be marked
     /// dirty for layout, paint, etc, so that the effects of a hot reload can be
     /// seen, or so that the effect of changing a global debug flag (such as
     /// [debugPaintSizeEnabled]) can be applied.
@@ -842,7 +842,7 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
     /// the tree.
     private(set) var depth: Int = 0
 
-    /// Adjust the [depth] of the given [child] to be greater than this node's own
+    /// Adjust the [depth] of the given ``child`` to be greater than this node's own
     /// [depth].
     ///
     /// Only call this method from overrides of [redepthChildren].
@@ -1026,7 +1026,7 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
 
     /// Allows mutations to be made to this object's child list (and any
     /// descendants) as well as to any other dirty nodes in the render tree owned
-    /// by the same [PipelineOwner] as this object. The `callback` argument is
+    /// by the same ``PipelineOwner`` as this object. The `callback` argument is
     /// invoked synchronously, and the mutations are allowed only during that
     /// callback's execution.
     ///
@@ -1103,7 +1103,7 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
     /// An estimate of the bounds within which this render object will paint.
     /// Useful for debugging flags such as [debugPaintLayerBordersEnabled].
     ///
-    /// These are also the bounds used by [showOnScreen] to make a [RenderObject]
+    /// These are also the bounds used by [showOnScreen] to make a ``RenderObject``
     /// visible on screen.
     open var paintBounds: Rect { Rect.zero }
 
@@ -1214,18 +1214,18 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
         return true
     }
 
-    /// Applies the paint transform from this [RenderObject] to the `target`
-    /// [RenderObject].
+    /// Applies the paint transform from this ``RenderObject`` to the `target`
+    /// ``RenderObject``.
     ///
     /// Returns a matrix that maps the local paint coordinate system to the
     /// coordinate system of `target`, or a [Matrix4.zero] if the paint transform
     /// can not be computed.
     ///
     /// This method throws an exception when the `target` is not in the same render
-    /// tree as this [RenderObject], as the behavior is undefined.
+    /// tree as this ``RenderObject``, as the behavior is undefined.
     ///
     /// This method ignores [RenderObject.paintsChild]. This means it will still
-    /// try to compute the paint transform even if this [RenderObject] or
+    /// try to compute the paint transform even if this ``RenderObject`` or
     /// `target` is currently not visible.
     ///
     /// If `target` is null, this method returns a matrix that maps from the
@@ -1244,10 +1244,10 @@ open class RenderObject: HitTestTarget, DiagnosticableTree {
         //
         // [this, ...., commonAncestorRenderObject], or null if `this` is the common
         // ancestor.
-        var fromPath: [RenderObject]?
+        var fromPath: ``RenderObject``?
         // [target, ...., commonAncestorRenderObject], or null if `target` is the
         // common ancestor.
-        var toPath: [RenderObject]?
+        var toPath: ``RenderObject``?
 
         var from: RenderObject = self
         var to: RenderObject = target ?? owner!.rootNode!
@@ -1456,7 +1456,7 @@ public protocol RenderObjectWithChild<ChildType>: RenderObject {
     /// child.
     func visitChildren(visitor: (ChildType) -> Void)
 
-    /// Adjust the [depth] of the given [child] to be greater than this node's
+    /// Adjust the [depth] of the given ``child`` to be greater than this node's
     /// own [depth].
     ///
     /// Only call this method from overrides of [redepthChildren].
@@ -1483,7 +1483,7 @@ extension RenderObjectWithChild {
 
 // MARK: - Single Child
 
-/// Opaque storage for a [RenderObject] that uses a [RenderObjectWithSingleChild]
+/// Opaque storage for a ``RenderObject`` that uses a [RenderObjectWithSingleChild]
 public struct RenderSingleChildMixin<T: RenderObject> {
     fileprivate var child: T?
 }
@@ -1491,7 +1491,7 @@ public struct RenderSingleChildMixin<T: RenderObject> {
 /// Generic mixin for render objects with one child.
 ///
 /// Provides a child model for a render object subclass that has a unique child,
-/// which is accessible via the [child] getter.
+/// which is accessible via the ``child`` getter.
 public protocol RenderObjectWithSingleChild: RenderObjectWithChild {
     /// Storage required to store children.
     var childMixin: RenderSingleChildMixin<ChildType> { get set }
@@ -1541,7 +1541,7 @@ public protocol ContainerParentData<ChildType>: ParentData {
     var previousSibling: ChildType? { get set }
 }
 
-/// Opaque storage for a [RenderObject] that uses a [RenderObjectWithSingleChild]
+/// Opaque storage for a ``RenderObject`` that uses a [RenderObjectWithSingleChild]
 public struct RenderContainerMixin<T: RenderObject> {
     fileprivate var firstChild: T?
     fileprivate var lastChild: T?
@@ -1682,7 +1682,7 @@ extension RenderObjectWithChildren {
     }
 
     /// Add all the children to the end of this render object's child list.
-    public func addAll(_ children: [RenderObject]) {
+    public func addAll(_ children: ``RenderObject``) {
         for child in children {
             add(child)
         }
