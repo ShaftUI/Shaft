@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "csprogress",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gregcotten/CSProgress",
-      "state" : {
-        "revision" : "b831bb234a8a2af02ccc04d6e91a62f7dabb7de4",
-        "version" : "0.0.1"
-      }
-    },
-    {
       "identity" : "rainbow",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Rainbow",
@@ -82,15 +73,6 @@
       }
     },
     {
-      "identity" : "swift-system",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-system",
-      "state" : {
-        "revision" : "a34201439c74b53f0fd71ef11741af7e7caf01e1",
-        "version" : "1.4.2"
-      }
-    },
-    {
       "identity" : "swiftmath",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShaftUI/SwiftMath",
@@ -124,15 +106,6 @@
       "state" : {
         "revision" : "2688707e563b44d7d87c29ba6c5ca04ce86ae58b",
         "version" : "5.3.0"
-      }
-    },
-    {
-      "identity" : "zipfoundationmodern",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gregcotten/ZIPFoundationModern",
-      "state" : {
-        "revision" : "97755f1b1217dc2aa1ca9219630c1ba450519313",
-        "version" : "0.0.3"
       }
     }
   ],

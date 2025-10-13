@@ -29,7 +29,7 @@ A blog post introducing Shaft in details has been posted [here](https://medium.c
     sudo apt install ninja-build pkg-config libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev libusb-1.0-0-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev libunwind-dev libpipewire-0.3-dev libdecor-0-dev libfontconfig-dev
     ```
 
-- **Windows**: Install Swift following the [official guide](https://www.swift.org/install/windows/) shoube be enough. However, the stable release of Swift for Windows have a few issues that may prevent Shaft from running. It's **highly recommended** to use development snapshots instead. You can find the latest snapshot [here](https://www.swift.org/install/windows/#development-snapshots).
+- **Windows**: Install Swift following the [official guide](https://www.swift.org/install/windows/) shoube be enough.
 
 ## Get Stared
 ```sh
@@ -37,14 +37,10 @@ git clone https://github.com/ShaftUI/Shaft.git
 
 cd Shaft
 
-swift package plugin setup-skia
-
 swift run Playground
 ```
 
 These commands will launch the built-in [Playground](/Sources/Playground/main.swift) application, which serves as both an interactive demonstration and comprehensive documentation for the Shaft framework.
-
-> The `setup-skia` command downloads prebuilt Skia binaries to the `./.shaft` directory for the package to use. In the future we may get rid of this when [swift-package-manager#7035](https://github.com/swiftlang/swift-package-manager/issues/7035) has made progress.
 
 To create a new project with Shaft, the [CounterTemplate](https://github.com/ShaftUI/CounterTemplate) is a good starting point.
 

@@ -64,10 +64,6 @@ let package = Package(
             .upToNextMinor(from: "1.3.0")
         ),
         .package(
-            url: "https://github.com/gregcotten/ZIPFoundationModern",
-            .upToNextMajor(from: "0.0.1")
-        ),
-        .package(
             url: "https://github.com/ShaftUI/Splash",
             branch: "master"
         ),
@@ -168,23 +164,6 @@ let package = Package(
         ),
 
         .plugin(
-            name: "CSkiaSetupPlugin",
-            capability: .command(
-                intent: .custom(verb: "setup-skia", description: "Download prebuilt Skia binaries"),
-                permissions: [
-                    .allowNetworkConnections(
-                        scope: .all(),
-                        reason: "To download the Skia binaries"
-                    ),
-                    .writeToPackageDirectory(reason: "To extract the Skia binaries"),
-                ]
-            ),
-            dependencies: [
-                "CSkiaSetup"
-            ]
-        ),
-
-        .plugin(
             name: "BuilderPlugin",
             capability: .command(
                 intent: .custom(verb: "build", description: "Build application bundle"),
@@ -196,13 +175,6 @@ let package = Package(
                     .writeToPackageDirectory(reason: "To read configuration files"),
                 ]
             )
-        ),
-
-        .executableTarget(
-            name: "CSkiaSetup",
-            dependencies: [
-                .product(name: "ZIPFoundation", package: "zipfoundationmodern")
-            ]
         ),
 
         .target(
