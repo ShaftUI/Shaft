@@ -31,6 +31,33 @@ import Shaft
             gr_mtl_direct_context_make(&grMtlBackendContext)
         }()
 
+        /// Maps MTLPixelFormat to the corresponding SkColorType.
+        /// Returns the appropriate Skia color type for the given Metal pixel format,
+        /// or BGRA_8888 as a safe fallback for unsupported formats.
+        private func skColorType(from pixelFormat: MTLPixelFormat) -> SkColorType {
+            switch pixelFormat {
+            case .bgra8Unorm, .bgra8Unorm_srgb:
+                return kBGRA_8888_SkColorType
+            case .rgba8Unorm, .rgba8Unorm_srgb:
+                return kRGBA_8888_SkColorType
+            case .rgba16Float:
+                return kRGBA_F16_SkColorType
+            case .rgba32Float:
+                return kRGBA_F32_SkColorType
+            case .bgra10_xr, .bgr10_xr:
+                return kBGR_101010x_XR_SkColorType
+            case .r8Unorm:
+                return kR8_unorm_SkColorType
+            case .rg8Unorm:
+                return kR8G8_unorm_SkColorType
+            case .rgba16Unorm:
+                return kR16G16B16A16_unorm_SkColorType
+            default:
+                // Fallback to most common format for compatibility
+                return kBGRA_8888_SkColorType
+            }
+        }
+
         public func createMetalCanvas(
             texture: MTLTexture,
             size: ISize
@@ -71,11 +98,15 @@ import Shaft
                 grMtlTextureInfo
             )
 
+            // Detect the color type from the texture's pixel format
+            let colorType = skColorType(from: texture.pixelFormat)
+
             let skImage = SkImages.AdoptTextureFrom(
                 gr_direct_context_unwrap(&grMtlDirectContext),
                 grBackendTexture,
                 GrSurfaceOrigin.init(0),
-                kBGRA_8888_SkColorType
+                colorType,
+                kPremul_SkAlphaType,
             )
 
             return SkiaImage(skImage: skImage)
