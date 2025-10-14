@@ -330,7 +330,7 @@ public class RenderImage: RenderBox {
             flipHorizontally: flipHorizontally!,
             invertColors: invertColors,
             filterQuality: filterQuality,
-            blendMode: colorBlendMode
+            blendMode: .srcOver
                 // isAntiAlias: isAntiAlias
         ).paint(canvas: context.canvas, rect: offset & size)
     }
