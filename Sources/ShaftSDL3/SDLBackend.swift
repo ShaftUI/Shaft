@@ -101,6 +101,10 @@ public class SDLBackend: Backend {
             onMouseButton(event.button, isDown: true)
         case SDL_EVENT_MOUSE_WHEEL:
             onMouseWheel(event.wheel)
+        case SDL_EVENT_WINDOW_MOUSE_ENTER:
+            onMouseEnter(event.window)
+        case SDL_EVENT_WINDOW_MOUSE_LEAVE:
+            onMouseLeave(event.window)
         // case SDL_EVENT_WINDOWEVENT:
         //     switch SDL_WindowEventID(Uint32(event.window.event)) {
         //     case SDL_EVENT_WINDOWEVENT_RESIZED:
@@ -420,6 +424,60 @@ public class SDLBackend: Backend {
             buttons: buttonState,
             scrollDeltaX: Double(Float(scrollDeltaX) * sdlPixelDensity),
             scrollDeltaY: Double(Float(scrollDeltaY) * sdlPixelDensity)
+        )
+        onPointerData?(packet)
+    }
+
+    /// Fires ``onPointerData``
+    private func onMouseEnter(_ event: SDL_WindowEvent) {
+        guard let view = viewByID[Int(event.windowID)] else {
+            return
+        }
+
+        // Get the current mouse position
+        var x: Float = 0
+        var y: Float = 0
+        SDL_GetMouseState(&x, &y)
+
+        // Convert to physical coordinates
+        let sdlPixelDensity = view.sdlPixelDensity
+        let packet = PointerData(
+            viewId: Int(event.windowID),
+            timeStamp: Duration.milliseconds(event.timestamp),
+            change: .add,
+            kind: .mouse,
+            device: 0,
+            pointerIdentifier: 0,
+            physicalX: Int(x * sdlPixelDensity),
+            physicalY: Int(y * sdlPixelDensity),
+            buttons: buttonState
+        )
+        onPointerData?(packet)
+    }
+
+    /// Fires ``onPointerData``
+    private func onMouseLeave(_ event: SDL_WindowEvent) {
+        guard let view = viewByID[Int(event.windowID)] else {
+            return
+        }
+
+        // Get the current mouse position
+        var x: Float = 0
+        var y: Float = 0
+        SDL_GetMouseState(&x, &y)
+
+        // Convert to physical coordinates
+        let sdlPixelDensity = view.sdlPixelDensity
+        let packet = PointerData(
+            viewId: Int(event.windowID),
+            timeStamp: Duration.milliseconds(event.timestamp),
+            change: .remove,
+            kind: .mouse,
+            device: 0,
+            pointerIdentifier: 0,
+            physicalX: Int(x * sdlPixelDensity),
+            physicalY: Int(y * sdlPixelDensity),
+            buttons: buttonState
         )
         onPointerData?(packet)
     }
