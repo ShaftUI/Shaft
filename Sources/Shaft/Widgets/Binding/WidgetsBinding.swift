@@ -587,7 +587,8 @@ extension WidgetsBindingObserver {
 /// `NativeView` will be created.
 public func runApp(_ app: Widget, view: NativeView? = nil) {
     runPlainApp(
-        DefaultApp { app }
+        DefaultApp { app },
+        view: view
     )
 }
 
