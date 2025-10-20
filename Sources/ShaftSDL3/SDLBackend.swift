@@ -370,7 +370,7 @@ public class SDLBackend: Backend {
             pointerIdentifier += 1
         }
 
-        updateButtonState(event.button, isDown: true)
+        updateButtonState(event.button, isDown: isDown)
 
         guard let view = viewByID[Int(event.windowID)] else {
             // When a button is pressed outside of any view, 0 is used as the
