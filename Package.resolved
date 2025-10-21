@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShaftUI/SwiftSDL3",
       "state" : {
-        "branch" : "main",
-        "revision" : "d33d998856d263f19f7fc8c5f893fbb82e6564dc"
+        "revision" : "e31265f51e20ef73d849521f34ea10b85ae44f0c",
+        "version" : "0.1.0"
       }
     },
     {
