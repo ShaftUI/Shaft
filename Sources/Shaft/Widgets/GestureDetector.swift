@@ -946,6 +946,13 @@ public final class GestureDetector: StatelessWidget {
                     instance.onTapUp = self.onTapUp
                     instance.onTap = self.onTap
                     instance.onTapCancel = self.onTapCancel
+                    instance.onSecondaryTap = self.onSecondaryTap
+                    instance.onSecondaryTapDown = self.onSecondaryTapDown
+                    instance.onSecondaryTapUp = self.onSecondaryTapUp
+                    instance.onSecondaryTapCancel = self.onSecondaryTapCancel
+                    instance.onTertiaryTapDown = self.onTertiaryTapDown
+                    instance.onTertiaryTapUp = self.onTertiaryTapUp
+                    instance.onTertiaryTapCancel = self.onTertiaryTapCancel
                     instance.gestureSettings = gestureSettings
                     instance.supportedDevices = self.supportedDevices
                 }
