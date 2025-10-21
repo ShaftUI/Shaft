@@ -364,13 +364,32 @@ public class SDLBackend: Backend {
         onPointerData?(packet)
     }
 
+    private var downButtons = Set<Uint8>()
+
     /// Fires ``onPointerData``
     private func onMouseButton(_ event: SDL_MouseButtonEvent, isDown: Bool) {
+        updateButtonState(event.button, isDown: isDown)
+
         if isDown {
-            pointerIdentifier += 1
+            downButtons.insert(event.button)
+        } else {
+            downButtons.remove(event.button)
         }
 
-        updateButtonState(event.button, isDown: isDown)
+        if isDown {
+            // If this is the first button to be pressed, we need to increment
+            // the pointer identifier and fire a PointerDownEvent. Otherwise, we
+            // don't need to do anything.
+            if downButtons.count == 1 {
+                pointerIdentifier += 1
+            } else {
+                return
+            }
+        } else if downButtons.count != 0 {
+            // If this is the last button to be released, we need to fire a
+            // PointerUpEvent. Otherwise, we don't need to do anything.
+            return
+        }
 
         guard let view = viewByID[Int(event.windowID)] else {
             // When a button is pressed outside of any view, 0 is used as the
