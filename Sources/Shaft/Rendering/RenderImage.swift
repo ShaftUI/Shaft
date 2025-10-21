@@ -87,6 +87,8 @@ public class RenderImage: RenderBox {
     /// Used when determining the best display size for the image.
     public var scale: Float {
         didSet {
+            assert(scale.isFinite)
+
             if scale != oldValue {
                 markNeedsLayout()
             }
