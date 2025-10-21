@@ -124,7 +124,12 @@ public class SDLView: NativeView {
     }
 
     public var devicePixelRatio: Float {
-        return SDL_GetWindowDisplayScale(sdlWindow)
+        let scale = SDL_GetWindowDisplayScale(sdlWindow)
+        // There is a bug in SDL3 return NaN during space switch, so we return 1 as a fallback
+        if !scale.isFinite {
+            return 1
+        }
+        return scale
     }
 
     /// Retrieves the suggested amplification factor when drawing in native
