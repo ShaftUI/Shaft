@@ -379,7 +379,6 @@ public class SDLBackend: Backend {
     /// Fires ``onPointerData``
     private func onMouseMotion(_ event: SDL_MouseMotionEvent) {
         updateButtonsState(event.state)
-        mark("buttonState: \(buttonState)")
 
         let buttonPressed = event.state != 0  // non-zero SDL_MouseButtonFlags
         // SDL2 reports logical coordinates even in high DPI mode. So we need to
