@@ -52,9 +52,12 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/ShaftUI/SwiftSDL3",
-            .upToNextMinor(from: "0.1.0")
-            // branch: "main"
+            .upToNextMinor(from: "0.1.1")
         ),
+        // .package(
+        //     name: "SwiftSDL3",
+        //     path: "../SwiftSDL3"
+        // ),
         .package(
             url: "https://github.com/onevcat/Rainbow",
             .upToNextMajor(from: "4.0.0")
