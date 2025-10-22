@@ -342,8 +342,45 @@ public class SDLBackend: Backend {
         }
     }
 
+    private func updateButtonsState(_ flags: SDL_MouseButtonFlags) {
+        // #define SDL_BUTTON_MASK(X)  (1u << ((X)-1))
+        // #define SDL_BUTTON_LMASK    SDL_BUTTON_MASK(SDL_BUTTON_LEFT)
+        // #define SDL_BUTTON_MMASK    SDL_BUTTON_MASK(SDL_BUTTON_MIDDLE)
+        // #define SDL_BUTTON_RMASK    SDL_BUTTON_MASK(SDL_BUTTON_RIGHT)
+        // #define SDL_BUTTON_X1MASK   SDL_BUTTON_MASK(SDL_BUTTON_X1)
+        // #define SDL_BUTTON_X2MASK   SDL_BUTTON_MASK(SDL_BUTTON_X2)
+        if flags & 0x01 == 0 {
+            buttonState.remove(PointerButtons.primaryMouseButton)
+        } else {
+            buttonState.insert(PointerButtons.primaryMouseButton)
+        }
+        if flags & 0x02 != 0 {
+            buttonState.insert(PointerButtons.middleMouseButton)
+        } else {
+            buttonState.remove(PointerButtons.middleMouseButton)
+        }
+        if flags & 0x04 != 0 {
+            buttonState.insert(PointerButtons.secondaryMouseButton)
+        } else {
+            buttonState.remove(PointerButtons.secondaryMouseButton)
+        }
+        if flags & 0x08 != 0 {
+            buttonState.insert(PointerButtons.backMouseButton)
+        } else {
+            buttonState.remove(PointerButtons.backMouseButton)
+        }
+        if flags & 0x10 != 0 {
+            buttonState.insert(PointerButtons.forwardMouseButton)
+        } else {
+            buttonState.remove(PointerButtons.forwardMouseButton)
+        }
+    }
+
     /// Fires ``onPointerData``
     private func onMouseMotion(_ event: SDL_MouseMotionEvent) {
+        updateButtonsState(event.state)
+        mark("buttonState: \(buttonState)")
+
         let buttonPressed = event.state != 0  // non-zero SDL_MouseButtonFlags
         // SDL2 reports logical coordinates even in high DPI mode. So we need to
         // convert them back to physical coordinates.
@@ -364,28 +401,20 @@ public class SDLBackend: Backend {
         onPointerData?(packet)
     }
 
-    private var downButtons = Set<Uint8>()
-
     /// Fires ``onPointerData``
     private func onMouseButton(_ event: SDL_MouseButtonEvent, isDown: Bool) {
         updateButtonState(event.button, isDown: isDown)
 
         if isDown {
-            downButtons.insert(event.button)
-        } else {
-            downButtons.remove(event.button)
-        }
-
-        if isDown {
             // If this is the first button to be pressed, we need to increment
             // the pointer identifier and fire a PointerDownEvent. Otherwise, we
             // don't need to do anything.
-            if downButtons.count == 1 {
+            if buttonState.count == 1 {
                 pointerIdentifier += 1
             } else {
                 return
             }
-        } else if downButtons.count != 0 {
+        } else if !buttonState.isEmpty {
             // If this is the last button to be released, we need to fire a
             // PointerUpEvent. Otherwise, we don't need to do anything.
             return

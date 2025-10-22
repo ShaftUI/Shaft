@@ -143,6 +143,16 @@ public struct PointerButtons: OptionSet {
         self.rawValue = rawValue
     }
 
+    /// The number of buttons currently pressed.
+    public var count: Int {
+        return rawValue.nonzeroBitCount
+    }
+
+    /// Whether no buttons are currently pressed.
+    public var isEmpty: Bool {
+        return rawValue == 0
+    }
+
     /// The bit of ``PointerEvent/buttons`` that corresponds to a cross-device
     /// behavior of "primary operation".
     ///
