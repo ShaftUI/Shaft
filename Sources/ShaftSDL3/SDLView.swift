@@ -123,25 +123,49 @@ public class SDLView: NativeView {
         return ISize(Int(width), Int(height))
     }
 
+    private var lastDevicePixelRatio: Float = 1
+
     public var devicePixelRatio: Float {
         let scale = SDL_GetWindowDisplayScale(sdlWindow)
-        // There is a bug in SDL3 return NaN during space switch, so we return 1 as a fallback
+
+        // There is a bug in SDL3 return NaN during space switch, so we return
+        // the last known device pixel ratio as a fallback.
         if !scale.isFinite {
-            return 1
+            return lastDevicePixelRatio
         }
+
+        lastDevicePixelRatio = scale
         return scale
     }
+
+    private var lastSdlContentScale: Float = 1
 
     /// Retrieves the suggested amplification factor when drawing in native
     /// coordinates.
     internal var sdlContentScale: Float {
-        return SDL_GetDisplayContentScale(SDL_GetDisplayForWindow(sdlWindow))
+        let scale = SDL_GetDisplayContentScale(SDL_GetDisplayForWindow(sdlWindow))
+        // There is a bug in SDL3 return NaN during space switch, so we return
+        // the last known device pixel ratio as a fallback.
+        if !scale.isFinite {
+            return lastSdlContentScale
+        }
+        lastSdlContentScale = scale
+        return scale
     }
+
+    private var lastSdlPixelDensity: Float = 1
 
     /// Retrieves how many addressable pixels correspond to one unit of native
     /// coordinates.
     internal var sdlPixelDensity: Float {
-        return SDL_GetWindowPixelDensity(sdlWindow)
+        let density = SDL_GetWindowPixelDensity(sdlWindow)
+        // There is a bug in SDL3 return NaN during space switch, so we return
+        // the last known device pixel ratio as a fallback.
+        if !density.isFinite {
+            return lastSdlPixelDensity
+        }
+        lastSdlPixelDensity = density
+        return density
     }
 
     private func handleWindowResize(_ event: SDL_WindowEvent) {
