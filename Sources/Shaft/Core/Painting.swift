@@ -722,6 +722,18 @@ public struct Color: Hashable {
     }
 }
 
+extension Color: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: UInt32) {
+        self.init(value)
+    }
+}
+
+extension Color: CustomStringConvertible {
+    public var description: String {
+        return "Color(r: \(red), g: \(green), b: \(blue), a: \(alpha))"
+    }
+}
+
 /// Different ways to clip a widget's content.
 public enum Clip {
     /// No clip at all.
