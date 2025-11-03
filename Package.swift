@@ -52,7 +52,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/ShaftUI/SwiftSDL3",
-            .upToNextMinor(from: "0.1.1")
+            exact: "0.1.2"
         ),
         // .package(
         //     name: "SwiftSDL3",
