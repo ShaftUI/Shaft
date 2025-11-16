@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "0687f71944021d616d34d922343dcef086855920",
-        "version" : "600.0.1"
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShaftUI/SwiftReload.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "587b0673a45ce058040594988a168709f424cb3b"
+        "revision" : "517f6197e4f7062c6a4b585aac3cfd775d4aea39",
+        "version" : "602.0.0"
       }
     },
     {
