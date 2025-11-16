@@ -2797,7 +2797,7 @@ public class Wrap: MultiChildRenderObjectWidget {
             runAlignment: runAlignment,
             runSpacing: runSpacing,
             crossAxisAlignment: crossAxisAlignment,
-            // textDirection: textDirection ?? Directionality.maybeOf(context),
+            textDirection: textDirection ?? .ltr,  // Directionality.maybeOf(context),
             verticalDirection: verticalDirection,
             clipBehavior: clipBehavior
         )
@@ -2810,7 +2810,7 @@ public class Wrap: MultiChildRenderObjectWidget {
         renderObject.runAlignment = runAlignment
         renderObject.runSpacing = runSpacing
         renderObject.crossAxisAlignment = crossAxisAlignment
-        // renderObject.textDirection = textDirection ?? Directionality.maybeOf(context)
+        renderObject.textDirection = textDirection ?? .ltr  // Directionality.maybeOf(context)
         renderObject.verticalDirection = verticalDirection
         renderObject.clipBehavior = clipBehavior
     }
