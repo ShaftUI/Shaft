@@ -72,7 +72,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/ShaftUI/SwiftReload.git",
-            from: "602.0.0"
+            from: "0.0.1"
         ),
         .package(
             url: "https://github.com/swiftlang/swift-markdown.git",

@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShaftUI/SwiftReload.git",
       "state" : {
-        "revision" : "517f6197e4f7062c6a4b585aac3cfd775d4aea39",
-        "version" : "602.0.0"
+        "revision" : "e0b67c14779b880c475de7c3c5e4778b23cf90fa",
+        "version" : "0.0.1"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jpsim/Yams.git",
       "state" : {
-        "revision" : "2688707e563b44d7d87c29ba6c5ca04ce86ae58b",
-        "version" : "5.3.0"
+        "revision" : "b4b8042411dc7bbb696300a34a4bf3ba1b7ad19b",
+        "version" : "5.3.1"
       }
     }
   ],
